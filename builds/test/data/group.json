@@ -1,0 +1,228 @@
+{
+  "groups": [
+    {
+      "mark": "System",
+      "name": "系统基础",
+      "des": "",
+      "cover": "",
+      "child": [
+        {
+          "mark": "Basic",
+          "name": "基础",
+          "des": "包括应用基础、其他基本项"
+        },
+        {
+          "mark": "EarlyWarning",
+          "name": "预警",
+          "des": "系统预警服务设置"
+        },
+        {
+          "mark": "Email",
+          "name": "邮箱",
+          "des": "系统统一邮箱设置"
+        },
+        {
+          "mark": "SMS",
+          "name": "短信",
+          "des": "系统短信设置"
+        },
+        {
+          "mark": "VerificationCodeSMS",
+          "name": "短信验证码",
+          "des": "针对登陆和敏感操作的短信验证码"
+        },
+        {
+          "mark": "VerificationCodeImage",
+          "name": "图形验证码",
+          "des": "针对登陆和敏感操作的图形验证码"
+        },
+        {
+          "mark": "File",
+          "name": "文件",
+          "des": "文件系统设置"
+        },
+        {
+          "mark": "IP",
+          "name": "IP",
+          "des": "IP模块设置"
+        },
+        {
+          "mark": "MQTT",
+          "name": "MQTT",
+          "des": "MQTT中间件设置，该模块也被用于物联网"
+        },
+        {
+          "mark": "Safety",
+          "name": "安全规则",
+          "des": "系统安全策略设置"
+        },
+        {
+          "mark": "SystemAnalysis",
+          "name": "系统监测",
+          "des": "检测服务器运行性能"
+        },
+        {
+          "mark": "Token",
+          "name": "会话规则",
+          "des": "系统基础通信识别"
+        },
+        {
+          "mark": "Weixin",
+          "name": "微信",
+          "des": "微信、微信小程序、公众号"
+        },
+        {
+          "mark": "Backup",
+          "name": "备份和还原",
+          "des": "对系统进行自动备份的相关设置"
+        }
+      ]
+    },
+    {
+      "mark": "Map",
+      "name": "地图",
+      "des": "",
+      "cover": "",
+      "child": [
+        {
+          "mark": "Map",
+          "name": "地图",
+          "des": "系统地图、电子围栏设置"
+        },
+        {
+          "mark": "MapAD",
+          "name": "分区广告",
+          "des": "分区展示广告的设置"
+        }
+      ]
+    },
+    {
+      "mark": "Device",
+      "name": "物联网",
+      "des": "",
+      "cover": "",
+      "child": [
+        {
+          "mark": "Device",
+          "name": "物联网基础",
+          "des": "物联网基础部分设置"
+        }
+      ]
+    },
+    {
+      "mark": "Finance",
+      "name": "财务",
+      "des": "",
+      "cover": "",
+      "child": [
+        {
+          "mark": "FinanceAnalysis",
+          "name": "统计",
+          "des": "财务统计设置"
+        },
+        {
+          "mark": "FinancePay",
+          "name": "支付",
+          "des": "支付系统设置"
+        },
+        {
+          "mark": "FinanceSafe",
+          "name": "财务安全",
+          "des": "财务安全策略设置"
+        },
+        {
+          "mark": "FinanceAssets",
+          "name": "资产",
+          "des": "财务资产设置"
+        }
+      ]
+    },
+    {
+      "mark": "User",
+      "name": "用户",
+      "des": "",
+      "cover": "",
+      "child": [
+        {
+          "mark": "Login",
+          "name": "登陆注册",
+          "des": "用户登陆和注册设置"
+        },
+        {
+          "mark": "User",
+          "name": "用户",
+          "des": "用户基础设置"
+        },
+        {
+          "mark": "UserAddress",
+          "name": "收货地址",
+          "des": "商城的收货地址"
+        },
+        {
+          "mark": "UserRecord",
+          "name": "操作日志",
+          "des": "用户操作日志"
+        },
+        {
+          "mark": "UserIntegral",
+          "name": "积分",
+          "des": "用户积分系统"
+        },
+        {
+          "mark": "UserGPS",
+          "name": "定位",
+          "des": "用户定位系统"
+        }
+      ]
+    },
+    {
+      "mark": "Service",
+      "name": "服务业务",
+      "des": "",
+      "cover": "",
+      "child": [
+        {
+          "mark": "ServiceFeedback",
+          "name": "客户服务",
+          "des": "用户客户服务系统"
+        },
+        {
+          "mark": "ServiceWarehouse",
+          "name": "仓储系统",
+          "des": "物流和仓库储运管理系统"
+        },
+        {
+          "mark": "ServiceTransport",
+          "name": "物流配送系统",
+          "des": "自营配送服务系统"
+        }
+      ]
+    },
+    {
+      "mark": "Mall",
+      "name": "商城",
+      "des": "",
+      "cover": "",
+      "child": [
+        {
+          "mark": "Mall",
+          "name": "商城核心",
+          "des": "商城的基础设置"
+        }
+      ]
+    },
+    {
+      "mark": "Org",
+      "name": "商户",
+      "des": "",
+      "cover": "",
+      "child": [
+        {
+          "mark": "Org",
+          "name": "商户基础",
+          "des": "商户的基础设置"
+        }
+      ]
+    }
+  ]
+}
