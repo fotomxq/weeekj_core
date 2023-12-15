@@ -21,11 +21,11 @@ func TestCreateConfig(t *testing.T) {
 		OrgID:         0,
 		System:        "aliyun",
 		Name:          "阿里云短信",
-		AppID:         "LTAI4FpWxT9qsYh6XX87h8mv",
-		AppKey:        "XA6JjdktsQP18TSCcKrrTIkkc6pJrZ",
+		AppID:         "",
+		AppKey:        "",
 		DefaultExpire: "300s",
 		TimeSpacing:   60,
-		TemplateID:    "SMS_181852664",
+		TemplateID:    "",
 		TemplateSign:  "海多智链",
 		TemplateParams: CoreSQLConfig.FieldsConfigsType{
 			{

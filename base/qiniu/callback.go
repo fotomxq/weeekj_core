@@ -10,7 +10,7 @@ import (
 
 //七牛云反馈处理
 
-// 根据数据集合，创建数据
+// ArgsCreateByReport 根据数据集合，创建数据
 // param data []byte 解析数据集合
 // param ip string IP地址
 // param from string 来源
