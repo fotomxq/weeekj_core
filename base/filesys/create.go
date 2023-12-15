@@ -3,11 +3,11 @@ package BaseFileSys
 import (
 	"errors"
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 )
 

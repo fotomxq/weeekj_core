@@ -1,7 +1,7 @@
 package UserChat
 
 import (
-	IOTMQTT "gitee.com/weeekj/weeekj_core/v5/iot/mqtt"
+	IOTMQTT "github.com/fotomxq/weeekj_core/v5/iot/mqtt"
 	"sync"
 )
 

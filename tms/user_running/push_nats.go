@@ -1,6 +1,6 @@
 package TMSUserRunning
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // pushNatsStatusUpdate 通知跑腿状态变更
 func pushNatsStatusUpdate(action string, id int64, des string) {

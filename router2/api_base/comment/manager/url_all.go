@@ -2,15 +2,15 @@ package Router2APIBaseCommentManager
 
 import (
 	"fmt"
-	BaseFileSys2 "gitee.com/weeekj/weeekj_core/v5/base/filesys2"
-	ClassComment "gitee.com/weeekj/weeekj_core/v5/class/comment"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	Router2Params "gitee.com/weeekj/weeekj_core/v5/router2/params"
-	Router2Record "gitee.com/weeekj/weeekj_core/v5/router2/record"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	BaseFileSys2 "github.com/fotomxq/weeekj_core/v5/base/filesys2"
+	ClassComment "github.com/fotomxq/weeekj_core/v5/class/comment"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	Router2Params "github.com/fotomxq/weeekj_core/v5/router2/params"
+	Router2Record "github.com/fotomxq/weeekj_core/v5/router2/record"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"github.com/lib/pq"
 )
 

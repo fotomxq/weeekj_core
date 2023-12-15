@@ -1,8 +1,8 @@
 package BlogCustomerProfile
 
 import (
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 	"time"
 )
 

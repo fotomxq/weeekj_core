@@ -2,13 +2,13 @@ package UserFocus2
 
 import (
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BlogCoreMod "gitee.com/weeekj/weeekj_core/v5/blog/core/mod"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceInfoExchangeMod "gitee.com/weeekj/weeekj_core/v5/service/info_exchange/mod"
-	UserCoreMod "gitee.com/weeekj/weeekj_core/v5/user/core/mod"
-	UserMessageMod "gitee.com/weeekj/weeekj_core/v5/user/message/mod"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BlogCoreMod "github.com/fotomxq/weeekj_core/v5/blog/core/mod"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceInfoExchangeMod "github.com/fotomxq/weeekj_core/v5/service/info_exchange/mod"
+	UserCoreMod "github.com/fotomxq/weeekj_core/v5/user/core/mod"
+	UserMessageMod "github.com/fotomxq/weeekj_core/v5/user/message/mod"
 	"time"
 )
 

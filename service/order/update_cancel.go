@@ -2,11 +2,11 @@ package ServiceOrder
 
 import (
 	"errors"
-	AnalysisAny2 "gitee.com/weeekj/weeekj_core/v5/analysis/any2"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	AnalysisAny2 "github.com/fotomxq/weeekj_core/v5/analysis/any2"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 )
 

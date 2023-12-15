@@ -1,9 +1,9 @@
 package IOTMQTT
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSystemClose "gitee.com/weeekj/weeekj_core/v5/core/system_close"
-	IOTMission "gitee.com/weeekj/weeekj_core/v5/iot/mission"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSystemClose "github.com/fotomxq/weeekj_core/v5/core/system_close"
+	IOTMission "github.com/fotomxq/weeekj_core/v5/iot/mission"
 	"github.com/robfig/cron"
 )
 

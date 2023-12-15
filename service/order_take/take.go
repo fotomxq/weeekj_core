@@ -2,11 +2,11 @@ package OrderTake
 
 import (
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreCache "gitee.com/weeekj/weeekj_core/v5/core/cache"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // IsOpenTakeCode 检查是否打开了自提验证功能

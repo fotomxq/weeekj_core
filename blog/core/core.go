@@ -1,9 +1,9 @@
 package BlogCore
 
 import (
-	ClassComment "gitee.com/weeekj/weeekj_core/v5/class/comment"
-	ClassSort "gitee.com/weeekj/weeekj_core/v5/class/sort"
-	ClassTag "gitee.com/weeekj/weeekj_core/v5/class/tag"
+	ClassComment "github.com/fotomxq/weeekj_core/v5/class/comment"
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
+	ClassTag "github.com/fotomxq/weeekj_core/v5/class/tag"
 	"sync"
 )
 

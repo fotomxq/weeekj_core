@@ -2,12 +2,12 @@ package TestOrg
 
 import (
 	"fmt"
-	ClassConfig "gitee.com/weeekj/weeekj_core/v5/class/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	OrgTime "gitee.com/weeekj/weeekj_core/v5/org/time"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	OrgTime "github.com/fotomxq/weeekj_core/v5/org/time"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"testing"
 	"time"
 )

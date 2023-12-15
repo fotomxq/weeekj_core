@@ -3,8 +3,8 @@ package RouterMidAPI
 import (
 	"errors"
 	"fmt"
-	BaseToken2 "gitee.com/weeekj/weeekj_core/v5/base/token2"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	BaseToken2 "github.com/fotomxq/weeekj_core/v5/base/token2"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"github.com/gin-gonic/gin"
 )
 

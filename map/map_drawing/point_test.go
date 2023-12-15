@@ -1,8 +1,8 @@
 package MapMapDrawing
 
 import (
-	CoreSQLGPS "gitee.com/weeekj/weeekj_core/v5/core/sql/gps"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	CoreSQLGPS "github.com/fotomxq/weeekj_core/v5/core/sql/gps"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 )
 

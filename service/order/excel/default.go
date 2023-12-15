@@ -2,13 +2,13 @@ package ServiceOrderExcel
 
 import (
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLanguage "gitee.com/weeekj/weeekj_core/v5/core/language"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	ServiceCompany "gitee.com/weeekj/weeekj_core/v5/service/company"
-	ServiceOrder "gitee.com/weeekj/weeekj_core/v5/service/order"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLanguage "github.com/fotomxq/weeekj_core/v5/core/language"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	ServiceCompany "github.com/fotomxq/weeekj_core/v5/service/company"
+	ServiceOrder "github.com/fotomxq/weeekj_core/v5/service/order"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"strings"
 )
 

@@ -4,12 +4,12 @@ import (
 	"testing"
 	"time"
 
-	ClassSort "gitee.com/weeekj/weeekj_core/v5/class/sort"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	ServiceUserInfo "gitee.com/weeekj/weeekj_core/v5/service/user_info"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	ServiceUserInfo "github.com/fotomxq/weeekj_core/v5/service/user_info"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 )
 
 var (

@@ -1,8 +1,8 @@
 package ServiceUserInfoMod
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	"time"
 )
 

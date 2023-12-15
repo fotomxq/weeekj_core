@@ -1,11 +1,11 @@
 package OrgTime
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	OrgCoreCoreMod "gitee.com/weeekj/weeekj_core/v5/org/core/mod"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ToolsHolidaySeason "gitee.com/weeekj/weeekj_core/v5/tools/holiday_season"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	OrgCoreCoreMod "github.com/fotomxq/weeekj_core/v5/org/core/mod"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ToolsHolidaySeason "github.com/fotomxq/weeekj_core/v5/tools/holiday_season"
 	"github.com/golang-module/carbon"
 )
 

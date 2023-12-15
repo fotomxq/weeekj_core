@@ -2,8 +2,8 @@ package BaseMonitorGlob
 
 import (
 	"fmt"
-	BaseSystemMission "gitee.com/weeekj/weeekj_core/v5/base/system_mission"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	BaseSystemMission "github.com/fotomxq/weeekj_core/v5/base/system_mission"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 )
 
 //全局性能检测模块

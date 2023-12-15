@@ -2,7 +2,7 @@ package OrgUserMod
 
 import (
 	"fmt"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 )
 
 // PushUpdateUserData 请求更新用户的聚合数据

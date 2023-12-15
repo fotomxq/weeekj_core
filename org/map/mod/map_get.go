@@ -1,7 +1,7 @@
 package OrgMapMod
 
 import (
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // GetMapByID 获取地图数据包

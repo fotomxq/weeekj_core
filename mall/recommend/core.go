@@ -1,6 +1,6 @@
 package MallRecommend
 
-import CoreHighf "gitee.com/weeekj/weeekj_core/v5/core/highf"
+import CoreHighf "github.com/fotomxq/weeekj_core/v5/core/highf"
 
 //给用户推荐商品模块
 /**

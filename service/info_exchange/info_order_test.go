@@ -1,11 +1,11 @@
 package ServiceInfoExchange
 
 import (
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	ServiceOrder "gitee.com/weeekj/weeekj_core/v5/service/order"
-	ServiceOrderMod "gitee.com/weeekj/weeekj_core/v5/service/order/mod"
-	ServiceOrderWait "gitee.com/weeekj/weeekj_core/v5/service/order/wait"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	ServiceOrder "github.com/fotomxq/weeekj_core/v5/service/order"
+	ServiceOrderMod "github.com/fotomxq/weeekj_core/v5/service/order/mod"
+	ServiceOrderWait "github.com/fotomxq/weeekj_core/v5/service/order/wait"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 	"time"
 )

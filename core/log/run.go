@@ -1,7 +1,7 @@
 package CoreLog
 
 import (
-	CoreSystemClose "gitee.com/weeekj/weeekj_core/v5/core/system_close"
+	CoreSystemClose "github.com/fotomxq/weeekj_core/v5/core/system_close"
 	"github.com/robfig/cron"
 )
 

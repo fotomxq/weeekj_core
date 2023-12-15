@@ -1,14 +1,14 @@
 package TMSTransport
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLAnalysis "gitee.com/weeekj/weeekj_core/v5/core/sql/analysis"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	UserGPS "gitee.com/weeekj/weeekj_core/v5/user/gps"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLAnalysis "github.com/fotomxq/weeekj_core/v5/core/sql/analysis"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	UserGPS "github.com/fotomxq/weeekj_core/v5/user/gps"
 	"time"
 )
 

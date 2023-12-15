@@ -2,12 +2,12 @@ package ERPProduct
 
 import (
 	"errors"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	MallCoreMod "gitee.com/weeekj/weeekj_core/v5/mall/core/mod"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceCompany "gitee.com/weeekj/weeekj_core/v5/service/company"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	MallCoreMod "github.com/fotomxq/weeekj_core/v5/mall/core/mod"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceCompany "github.com/fotomxq/weeekj_core/v5/service/company"
 	"github.com/lib/pq"
 )
 

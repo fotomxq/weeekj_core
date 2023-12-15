@@ -2,10 +2,10 @@ package Router2File
 
 import (
 	"encoding/base64"
-	BaseFileSys "gitee.com/weeekj/weeekj_core/v5/base/filesys"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
+	BaseFileSys "github.com/fotomxq/weeekj_core/v5/base/filesys"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
 )
 
 // ViewLocalFileBase64 下载本地文件

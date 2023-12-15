@@ -2,9 +2,9 @@ package MapRoom
 
 import (
 	"fmt"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceUserInfo "gitee.com/weeekj/weeekj_core/v5/service/user_info"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceUserInfo "github.com/fotomxq/weeekj_core/v5/service/user_info"
 )
 
 type DataInfoNoInRoom struct {

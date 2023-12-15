@@ -1,6 +1,6 @@
 package OrgWorkTipMod
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // ArgsAppendTip 添加一个数据
 type ArgsAppendTip struct {

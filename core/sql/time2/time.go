@@ -2,8 +2,8 @@ package CoreSQLTime2
 
 import (
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
 	"time"
 )
 

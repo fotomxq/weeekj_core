@@ -1,7 +1,7 @@
 package MapAddress
 
 import (
-	MapCityData "gitee.com/weeekj/weeekj_core/v5/map/city_data"
+	MapCityData "github.com/fotomxq/weeekj_core/v5/map/city_data"
 	"github.com/pupuk/addr"
 )
 

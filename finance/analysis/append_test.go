@@ -1,8 +1,8 @@
 package FinanceAnalysis
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	"testing"
 )
 

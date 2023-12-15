@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	MapMathArgs "gitee.com/weeekj/weeekj_core/v5/map/math/args"
+	MapMathArgs "github.com/fotomxq/weeekj_core/v5/map/math/args"
 )
 
 func TestCheckXYInArea(t *testing.T) {

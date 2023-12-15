@@ -1,8 +1,8 @@
 package MarketCore
 
 import (
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 	"testing"
 )
 

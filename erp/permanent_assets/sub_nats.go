@@ -1,7 +1,7 @@
 package ERPPermanentAssets
 
 import (
-	BaseSystemMission "gitee.com/weeekj/weeekj_core/v5/base/system_mission"
+	BaseSystemMission "github.com/fotomxq/weeekj_core/v5/base/system_mission"
 )
 
 func subNats() {

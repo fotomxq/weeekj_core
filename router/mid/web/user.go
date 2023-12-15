@@ -3,12 +3,12 @@ package RouterMidWeb
 import (
 	"errors"
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BasePedometer "gitee.com/weeekj/weeekj_core/v5/base/pedometer"
-	BaseSafe "gitee.com/weeekj/weeekj_core/v5/base/safe"
-	CoreRPCX "gitee.com/weeekj/weeekj_core/v5/core/rpcx"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	RouterMidAPI "gitee.com/weeekj/weeekj_core/v5/router/mid/api"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BasePedometer "github.com/fotomxq/weeekj_core/v5/base/pedometer"
+	BaseSafe "github.com/fotomxq/weeekj_core/v5/base/safe"
+	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	RouterMidAPI "github.com/fotomxq/weeekj_core/v5/router/mid/api"
 	"github.com/gin-gonic/gin"
 )
 

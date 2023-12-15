@@ -1,11 +1,11 @@
 package PedometerCore
 
 import (
-	CoreRPCX "gitee.com/weeekj/weeekj_core/v5/core/rpcx"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 )
 

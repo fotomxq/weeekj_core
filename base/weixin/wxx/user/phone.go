@@ -3,12 +3,12 @@ package BaseWeixinWXXUser
 import (
 	"errors"
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BaseWeixinWXXClient "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/client"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
-	UserLogin2 "gitee.com/weeekj/weeekj_core/v5/user/login2"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseWeixinWXXClient "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/client"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
+	UserLogin2 "github.com/fotomxq/weeekj_core/v5/user/login2"
 )
 
 // ArgsGetPhone 通过用户加密摘要，解密用户手机号参数

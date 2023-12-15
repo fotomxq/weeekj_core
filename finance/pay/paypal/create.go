@@ -3,10 +3,10 @@ package FinancePayPaypal
 import (
 	"errors"
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreCurrency "gitee.com/weeekj/weeekj_core/v5/core/currency"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreCurrency "github.com/fotomxq/weeekj_core/v5/core/currency"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 	"github.com/plutov/paypal"
 )
 

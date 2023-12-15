@@ -1,7 +1,7 @@
 package UserFocus2
 
 import (
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // CheckFocus 检查是否关注了数据

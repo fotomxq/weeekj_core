@@ -1,7 +1,7 @@
 package UserSubscription
 
 import (
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsCheckSub 检查目标人的订阅状态参数

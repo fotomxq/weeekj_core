@@ -1,11 +1,11 @@
 package UserTicketSend
 
 import (
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
-	UserTicket "gitee.com/weeekj/weeekj_core/v5/user/ticket"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
+	UserTicket "github.com/fotomxq/weeekj_core/v5/user/ticket"
 	"testing"
 )
 

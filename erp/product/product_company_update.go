@@ -1,10 +1,10 @@
 package ERPProduct
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsUpdateProductCompany 更新产品和供货商关系参数

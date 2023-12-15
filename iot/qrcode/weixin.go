@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	BaseWeixinWXXQRCodeCore "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/qrcode"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
+	BaseWeixinWXXQRCodeCore "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/qrcode"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
 )
 
 // ArgsMakeWeixinWXX 微信小程序二维码参数

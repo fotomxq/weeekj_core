@@ -2,9 +2,9 @@ package UserCore
 
 import (
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 	"time"
 )

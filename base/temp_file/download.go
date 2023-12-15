@@ -1,9 +1,9 @@
 package BaseTempFile
 
 import (
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
 	"net/http"
 )
 

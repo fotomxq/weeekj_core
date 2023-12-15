@@ -4,7 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 )
 
 type FieldsExcelConfig struct {

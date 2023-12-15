@@ -3,9 +3,9 @@ package BaseQiniu
 import (
 	"errors"
 	"fmt"
-	BaseFileSys "gitee.com/weeekj/weeekj_core/v5/base/filesys"
-	CoreHttp "gitee.com/weeekj/weeekj_core/v5/core/http"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
+	BaseFileSys "github.com/fotomxq/weeekj_core/v5/base/filesys"
+	CoreHttp "github.com/fotomxq/weeekj_core/v5/core/http"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	"github.com/qiniu/api.v7/v7/storage"
 )
 

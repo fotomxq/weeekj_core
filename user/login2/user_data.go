@@ -1,9 +1,9 @@
 package UserLogin2
 
 import (
-	BaseFileSys2 "gitee.com/weeekj/weeekj_core/v5/base/filesys2"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	BaseFileSys2 "github.com/fotomxq/weeekj_core/v5/base/filesys2"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 // DataGetUserData 登录时的数据包汇总

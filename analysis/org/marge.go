@@ -1,17 +1,17 @@
 package AnalysisOrg
 
 import (
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	FinanceAnalysis "gitee.com/weeekj/weeekj_core/v5/finance/analysis"
-	MallCore "gitee.com/weeekj/weeekj_core/v5/mall/core"
-	MarketCore "gitee.com/weeekj/weeekj_core/v5/market/core"
-	OrgUser "gitee.com/weeekj/weeekj_core/v5/org/user"
-	ServiceOrder "gitee.com/weeekj/weeekj_core/v5/service/order"
-	ServiceOrderAnalysis "gitee.com/weeekj/weeekj_core/v5/service/order/analysis"
-	TMSTransport "gitee.com/weeekj/weeekj_core/v5/tms/transport"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	FinanceAnalysis "github.com/fotomxq/weeekj_core/v5/finance/analysis"
+	MallCore "github.com/fotomxq/weeekj_core/v5/mall/core"
+	MarketCore "github.com/fotomxq/weeekj_core/v5/market/core"
+	OrgUser "github.com/fotomxq/weeekj_core/v5/org/user"
+	ServiceOrder "github.com/fotomxq/weeekj_core/v5/service/order"
+	ServiceOrderAnalysis "github.com/fotomxq/weeekj_core/v5/service/order/analysis"
+	TMSTransport "github.com/fotomxq/weeekj_core/v5/tms/transport"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 // ArgsMarge 聚合统计参数

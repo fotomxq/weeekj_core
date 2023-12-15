@@ -2,10 +2,10 @@ package OrgMap
 
 import (
 	"errors"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	UserSystemTip "gitee.com/weeekj/weeekj_core/v5/user/system_tip"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	UserSystemTip "github.com/fotomxq/weeekj_core/v5/user/system_tip"
 	"github.com/lib/pq"
 )
 

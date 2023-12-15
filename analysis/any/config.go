@@ -2,9 +2,9 @@ package AnalysisAny
 
 import (
 	"errors"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 )
 
 // ArgsInitConfig 初始化配置设置参数

@@ -3,7 +3,7 @@ package RouterMidAPI
 import (
 	"errors"
 	"fmt"
-	BaseToken2 "gitee.com/weeekj/weeekj_core/v5/base/token2"
+	BaseToken2 "github.com/fotomxq/weeekj_core/v5/base/token2"
 	"github.com/gin-gonic/gin"
 )
 

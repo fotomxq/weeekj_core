@@ -1,9 +1,9 @@
 package ERPWarehouse
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsGetBatchList 获取批次列表参数

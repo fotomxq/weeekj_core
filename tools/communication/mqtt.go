@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 
-	BaseQiniu "gitee.com/weeekj/weeekj_core/v5/base/qiniu"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	IOTMQTT "gitee.com/weeekj/weeekj_core/v5/iot/mqtt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	BaseQiniu "github.com/fotomxq/weeekj_core/v5/base/qiniu"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	IOTMQTT "github.com/fotomxq/weeekj_core/v5/iot/mqtt"
 )
 
 //广播房间的关闭或删除\退出

@@ -3,10 +3,10 @@ package BaseConfig
 import (
 	"errors"
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 var (

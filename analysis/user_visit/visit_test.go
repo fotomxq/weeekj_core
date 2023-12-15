@@ -1,9 +1,9 @@
 package AnalysisUserVisit
 
 import (
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 )
 

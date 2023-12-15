@@ -2,12 +2,12 @@ package BlogStuRead
 
 import (
 	"errors"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	UserSubscription "gitee.com/weeekj/weeekj_core/v5/user/subscription"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	UserSubscription "github.com/fotomxq/weeekj_core/v5/user/subscription"
 	"time"
 )
 

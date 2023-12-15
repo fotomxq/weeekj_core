@@ -2,17 +2,17 @@ package MallCoreV3
 
 import (
 	"errors"
-	BaseQiniu "gitee.com/weeekj/weeekj_core/v5/base/qiniu"
-	ClassSort "gitee.com/weeekj/weeekj_core/v5/class/sort"
-	CoreSQLIDs "gitee.com/weeekj/weeekj_core/v5/core/sql/ids"
-	OrgCoreCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	UserSubscription "gitee.com/weeekj/weeekj_core/v5/user/subscription"
-	UserTicket "gitee.com/weeekj/weeekj_core/v5/user/ticket"
+	BaseQiniu "github.com/fotomxq/weeekj_core/v5/base/qiniu"
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
+	CoreSQLIDs "github.com/fotomxq/weeekj_core/v5/core/sql/ids"
+	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	UserSubscription "github.com/fotomxq/weeekj_core/v5/user/subscription"
+	UserTicket "github.com/fotomxq/weeekj_core/v5/user/ticket"
 	"time"
 
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 	"github.com/lib/pq"
 )
 

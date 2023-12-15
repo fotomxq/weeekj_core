@@ -2,13 +2,13 @@ package UserRole
 
 import (
 	"errors"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"github.com/lib/pq"
 )
 

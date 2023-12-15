@@ -2,11 +2,11 @@ package OrgSubscription
 
 import (
 	"fmt"
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	ServiceOrderWait "gitee.com/weeekj/weeekj_core/v5/service/order/wait"
-	ServiceOrderWaitFields "gitee.com/weeekj/weeekj_core/v5/service/order/wait_fields"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	ServiceOrderWait "github.com/fotomxq/weeekj_core/v5/service/order/wait"
+	ServiceOrderWaitFields "github.com/fotomxq/weeekj_core/v5/service/order/wait_fields"
 	"time"
 )
 

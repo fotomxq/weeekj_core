@@ -1,8 +1,8 @@
 package BlogCoreMod
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // GetContentByIDNoErr 无错误获取文章信息

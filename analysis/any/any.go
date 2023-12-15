@@ -3,13 +3,13 @@ package AnalysisAny
 import (
 	"errors"
 	"fmt"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/golang-module/carbon"
 	"time"
 
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
 )
 
 // ArgsAppendAny 添加新的记录参数

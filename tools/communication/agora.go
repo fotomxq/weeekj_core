@@ -2,9 +2,9 @@ package ToolsCommunication
 
 import (
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
 	rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/RtcTokenBuilder"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"strconv"
 	"time"
 )

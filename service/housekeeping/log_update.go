@@ -3,11 +3,11 @@ package ServiceHousekeeping
 import (
 	"errors"
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceOrderMod "gitee.com/weeekj/weeekj_core/v5/service/order/mod"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceOrderMod "github.com/fotomxq/weeekj_core/v5/service/order/mod"
 	"github.com/lib/pq"
 	"time"
 )

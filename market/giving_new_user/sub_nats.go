@@ -1,10 +1,10 @@
 package MarketGivingNewUser
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"github.com/nats-io/nats.go"
 	"github.com/tidwall/gjson"
 )

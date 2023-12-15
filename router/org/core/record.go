@@ -2,10 +2,10 @@ package RouterOrgCore
 
 import (
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	OrgRecord "gitee.com/weeekj/weeekj_core/v5/org/record"
-	RouterMidOrg "gitee.com/weeekj/weeekj_core/v5/router/mid/org"
-	RouterUserRecord "gitee.com/weeekj/weeekj_core/v5/router/user/record"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	OrgRecord "github.com/fotomxq/weeekj_core/v5/org/record"
+	RouterMidOrg "github.com/fotomxq/weeekj_core/v5/router/mid/org"
+	RouterUserRecord "github.com/fotomxq/weeekj_core/v5/router/user/record"
 	"github.com/gin-gonic/gin"
 	"strings"
 )

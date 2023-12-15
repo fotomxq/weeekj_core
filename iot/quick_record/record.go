@@ -2,11 +2,11 @@ package IOTQuickRecord
 
 import (
 	"errors"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsGetList 获取列表参数

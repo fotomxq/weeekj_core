@@ -4,8 +4,8 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	ERPCore "gitee.com/weeekj/weeekj_core/v5/erp/core"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	ERPCore "github.com/fotomxq/weeekj_core/v5/erp/core"
 	"time"
 )
 

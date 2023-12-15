@@ -2,7 +2,7 @@ package BaseWeixinWXXMessageTemplate
 
 import (
 	"encoding/json"
-	BaseWeixinWXXClient "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/client"
+	BaseWeixinWXXClient "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/client"
 )
 
 // WeappTemplateMsg 小程序模板消息

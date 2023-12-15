@@ -2,8 +2,8 @@ package TestBaseConfig
 
 import (
 	"encoding/json"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	TestAPI "gitee.com/weeekj/weeekj_core/v5/tools/test_api"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	TestAPI "github.com/fotomxq/weeekj_core/v5/tools/test_api"
 	"testing"
 )
 

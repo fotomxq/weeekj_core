@@ -2,9 +2,9 @@ package BaseFileUpload
 
 import (
 	"errors"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	"os"
 	"strconv"
 	"strings"

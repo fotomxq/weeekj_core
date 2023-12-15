@@ -1,7 +1,7 @@
 package Router2Mid
 
 import (
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	"github.com/gin-gonic/gin"
 )
 

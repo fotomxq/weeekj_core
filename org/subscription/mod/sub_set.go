@@ -1,6 +1,6 @@
 package OrgSubscriptionMod
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // ArgsSetSubAdd 向后续约指定时间参数
 type ArgsSetSubAdd struct {

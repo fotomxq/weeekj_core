@@ -1,10 +1,10 @@
 package IOTError
 
 import (
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLAnalysis "gitee.com/weeekj/weeekj_core/v5/core/sql/analysis"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLAnalysis "github.com/fotomxq/weeekj_core/v5/core/sql/analysis"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsGetAnalysisError 设备发生故障总数参数

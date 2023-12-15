@@ -1,9 +1,9 @@
 package RouterFinance
 
 import (
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	FinanceDeposit "gitee.com/weeekj/weeekj_core/v5/finance/deposit"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 //储蓄相关组件

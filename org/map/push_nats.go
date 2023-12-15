@@ -1,6 +1,6 @@
 package OrgMap
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // 通知地图通过审核
 func pushNatsMapAudit(mapID int64) {

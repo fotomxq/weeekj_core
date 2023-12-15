@@ -2,9 +2,9 @@ package BaseQiniu
 
 import (
 	"encoding/json"
-	BaseFileSys "gitee.com/weeekj/weeekj_core/v5/base/filesys"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
+	BaseFileSys "github.com/fotomxq/weeekj_core/v5/base/filesys"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	"time"
 )
 

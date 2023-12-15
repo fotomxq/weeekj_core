@@ -1,8 +1,8 @@
 package CoreSQL2
 
 import (
-	CoreCache "gitee.com/weeekj/weeekj_core/v5/core/cache"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"github.com/golang-module/carbon"
 	"sync"
 )

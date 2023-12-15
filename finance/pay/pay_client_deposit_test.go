@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	TestFinanceDeposit "gitee.com/weeekj/weeekj_core/v5/tools/test_finance_deposit"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	TestFinanceDeposit "github.com/fotomxq/weeekj_core/v5/tools/test_finance_deposit"
 )
 
 // 本测试部分不进行跑通测试，而是进行和储蓄相关的存取测试

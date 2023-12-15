@@ -2,8 +2,8 @@ package TestFinanceDeposit
 
 import (
 	"encoding/json"
-	FinanceDeposit "gitee.com/weeekj/weeekj_core/v5/finance/deposit"
-	TestAPI "gitee.com/weeekj/weeekj_core/v5/tools/test_api"
+	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
+	TestAPI "github.com/fotomxq/weeekj_core/v5/tools/test_api"
 	"testing"
 )
 

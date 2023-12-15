@@ -1,6 +1,6 @@
 package BlogCore
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // 新的文章
 func pushCreate(contentID int64) {

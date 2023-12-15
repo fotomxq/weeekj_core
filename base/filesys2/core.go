@@ -1,8 +1,8 @@
 package BaseFileSys2
 
 import (
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 var (

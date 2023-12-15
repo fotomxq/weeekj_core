@@ -3,9 +3,9 @@ package FinanceAnalysis
 import (
 	"testing"
 
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
 )
 
 func TestInit3(t *testing.T) {

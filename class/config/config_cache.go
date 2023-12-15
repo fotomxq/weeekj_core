@@ -2,7 +2,7 @@ package ClassConfig
 
 import (
 	"fmt"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 func (t *Config) getConfigCacheMark(mark string, bindID int64) string {

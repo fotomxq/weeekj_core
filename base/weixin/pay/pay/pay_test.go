@@ -1,8 +1,8 @@
 package BaseWeixinPayPay
 
 import (
-	BaseWeixinPayClient "gitee.com/weeekj/weeekj_core/v5/base/weixin/pay/client"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	BaseWeixinPayClient "github.com/fotomxq/weeekj_core/v5/base/weixin/pay/client"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 )
 

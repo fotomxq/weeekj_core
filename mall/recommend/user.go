@@ -1,9 +1,9 @@
 package MallRecommend
 
 import (
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	MallCore "gitee.com/weeekj/weeekj_core/v5/mall/core"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	MallCore "github.com/fotomxq/weeekj_core/v5/mall/core"
 )
 
 // GetRecommendDefaultList 获取某个用户在某个商户下的推荐商品列

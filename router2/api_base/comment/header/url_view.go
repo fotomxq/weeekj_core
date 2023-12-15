@@ -3,15 +3,15 @@ package Router2APIBaseCommentHeader
 import (
 	"errors"
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BaseFileSys2 "gitee.com/weeekj/weeekj_core/v5/base/filesys2"
-	ClassComment "gitee.com/weeekj/weeekj_core/v5/class/comment"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	Router2Params "gitee.com/weeekj/weeekj_core/v5/router2/params"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseFileSys2 "github.com/fotomxq/weeekj_core/v5/base/filesys2"
+	ClassComment "github.com/fotomxq/weeekj_core/v5/class/comment"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	Router2Params "github.com/fotomxq/weeekj_core/v5/router2/params"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 // URLView 通用查看评论数据包

@@ -2,9 +2,9 @@ package MarketGivingUserSub
 
 import (
 	"fmt"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	MarketGivingCore "gitee.com/weeekj/weeekj_core/v5/market/giving_core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	MarketGivingCore "github.com/fotomxq/weeekj_core/v5/market/giving_core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsCreateLog 创建新的请求参数

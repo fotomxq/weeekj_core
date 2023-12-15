@@ -2,9 +2,9 @@ package BaseMonitorPostgresql
 
 import (
 	"fmt"
-	BaseSystemMission "gitee.com/weeekj/weeekj_core/v5/base/system_mission"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseSystemMission "github.com/fotomxq/weeekj_core/v5/base/system_mission"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // postgresql监控器

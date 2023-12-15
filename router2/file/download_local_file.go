@@ -1,10 +1,10 @@
 package Router2File
 
 import (
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"net/http"
 )
 

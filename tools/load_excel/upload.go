@@ -2,10 +2,10 @@ package ToolsLoadExcel
 
 import (
 	"errors"
-	BaseFileUpload "gitee.com/weeekj/weeekj_core/v5/base/fileupload"
-	CoreExcel "gitee.com/weeekj/weeekj_core/v5/core/excel"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
 	"github.com/360EntSecGroup-Skylar/excelize"
+	BaseFileUpload "github.com/fotomxq/weeekj_core/v5/base/fileupload"
+	CoreExcel "github.com/fotomxq/weeekj_core/v5/core/excel"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
 	"github.com/gin-gonic/gin"
 )
 

@@ -2,7 +2,7 @@ package BaseFileSys2
 
 import (
 	"errors"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 )
 
 func DeleteClaim(claimId int64, orgID int64, userID int64) (err error) {

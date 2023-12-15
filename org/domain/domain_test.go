@@ -3,9 +3,9 @@ package OrgDomain
 import (
 	"testing"
 
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 )
 
 var (

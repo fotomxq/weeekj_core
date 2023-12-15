@@ -1,11 +1,11 @@
 package RouterAPIInitFile
 
 import (
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFileUpload "gitee.com/weeekj/weeekj_core/v5/base/fileupload"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFileUpload "github.com/fotomxq/weeekj_core/v5/base/fileupload"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	"github.com/gin-gonic/gin"
 	"strings"
 )

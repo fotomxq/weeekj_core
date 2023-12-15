@@ -1,6 +1,6 @@
 package ERPCore
 
-import CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
+import CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 
 // FieldsComponentVal 节点组
 type FieldsComponentVal struct {

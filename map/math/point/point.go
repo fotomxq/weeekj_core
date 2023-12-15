@@ -2,8 +2,8 @@ package MapMathPoint
 
 import (
 	"errors"
-	MapMathArgs "gitee.com/weeekj/weeekj_core/v5/map/math/args"
-	MapMathConversion "gitee.com/weeekj/weeekj_core/v5/map/math/conversion"
+	MapMathArgs "github.com/fotomxq/weeekj_core/v5/map/math/args"
+	MapMathConversion "github.com/fotomxq/weeekj_core/v5/map/math/conversion"
 	"math"
 )
 

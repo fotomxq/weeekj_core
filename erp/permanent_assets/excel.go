@@ -2,9 +2,9 @@ package ERPPermanentAssets
 
 import (
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	Router2Excel "gitee.com/weeekj/weeekj_core/v5/router2/excel"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	Router2Excel "github.com/fotomxq/weeekj_core/v5/router2/excel"
 	"time"
 )
 

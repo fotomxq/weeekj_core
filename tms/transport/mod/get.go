@@ -1,6 +1,6 @@
 package TMSTransportMod
 
-import Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+import Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 
 // ArgsGetTransport 获取配送信息参数
 type ArgsGetTransport struct {

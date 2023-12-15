@@ -1,8 +1,8 @@
 package UserLogin2URL
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 func getUserPermissionsByUserInfo(userInfo *UserCore.FieldsUserType) []string {

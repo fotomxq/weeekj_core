@@ -1,6 +1,6 @@
 package BaseFileSys2
 
-import CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
+import CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 
 type argsCreateCore struct {
 	//创建IP

@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	OrgShareSpaceMod "gitee.com/weeekj/weeekj_core/v5/org/share_space/mod"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	OrgShareSpaceMod "github.com/fotomxq/weeekj_core/v5/org/share_space/mod"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // GetDocByID 查看文档

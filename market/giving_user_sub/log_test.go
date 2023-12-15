@@ -1,7 +1,7 @@
 package MarketGivingUserSub
 
 import (
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 	"testing"
 )
 

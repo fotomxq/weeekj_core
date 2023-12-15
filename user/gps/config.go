@@ -1,8 +1,8 @@
 package UserGPS
 
 import (
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 )
 
 // getUserGPSRecordLimitDistance 最短记录距离

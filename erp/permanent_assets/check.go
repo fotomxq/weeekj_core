@@ -2,9 +2,9 @@ package ERPPermanentAssets
 
 import (
 	"errors"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	"time"
 )
 

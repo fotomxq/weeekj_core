@@ -1,9 +1,9 @@
 package ToolsWeather
 
 import (
-	CoreHttp "gitee.com/weeekj/weeekj_core/v5/core/http"
-	MapArea "gitee.com/weeekj/weeekj_core/v5/map/area"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	CoreHttp "github.com/fotomxq/weeekj_core/v5/core/http"
+	MapArea "github.com/fotomxq/weeekj_core/v5/map/area"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 )
 

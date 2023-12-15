@@ -1,8 +1,8 @@
 package BaseWeixin
 
 import (
-	BaseWeixinWXXMessage "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/message"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
+	BaseWeixinWXXMessage "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/message"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 )
 
 // Run 打开启动服务

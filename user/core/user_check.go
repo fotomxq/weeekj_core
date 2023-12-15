@@ -1,6 +1,6 @@
 package UserCore
 
-import CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
+import CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 
 // CheckUserHaveEmail 检查用户是否具备email
 func CheckUserHaveEmail(userInfo *FieldsUserType) bool {

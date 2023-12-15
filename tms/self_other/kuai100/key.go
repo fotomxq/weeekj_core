@@ -3,9 +3,9 @@ package TMSSelfOtherKuai100
 import (
 	"errors"
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	"strings"
 )
 

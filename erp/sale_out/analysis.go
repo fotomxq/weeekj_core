@@ -2,10 +2,10 @@ package ERPSaleOut
 
 import (
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	CoreSQLTime2 "gitee.com/weeekj/weeekj_core/v5/core/sql/time2"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	CoreSQLTime2 "github.com/fotomxq/weeekj_core/v5/core/sql/time2"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 type ArgsGetAnalysisMarge struct {

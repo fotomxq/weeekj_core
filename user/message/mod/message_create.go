@@ -1,9 +1,9 @@
 package UserMessageMod
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 	"time"
 )
 

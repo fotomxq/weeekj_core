@@ -2,7 +2,7 @@ package ServiceInfoExchange
 
 import (
 	"fmt"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // 获取信息交互缓冲名称

@@ -1,7 +1,7 @@
 package IOTMQTTClient
 
 import (
-	CoreMQTTSimple "gitee.com/weeekj/weeekj_core/v5/core/mqtt"
+	CoreMQTTSimple "github.com/fotomxq/weeekj_core/v5/core/mqtt"
 	"github.com/robfig/cron"
 )
 

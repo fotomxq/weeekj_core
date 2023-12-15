@@ -2,13 +2,13 @@ package ServiceHousekeeping
 
 import (
 	"errors"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	FinancePay "gitee.com/weeekj/weeekj_core/v5/finance/pay"
-	FinancePayCreate "gitee.com/weeekj/weeekj_core/v5/finance/pay_create"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceOrderMod "gitee.com/weeekj/weeekj_core/v5/service/order/mod"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	FinancePay "github.com/fotomxq/weeekj_core/v5/finance/pay"
+	FinancePayCreate "github.com/fotomxq/weeekj_core/v5/finance/pay_create"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceOrderMod "github.com/fotomxq/weeekj_core/v5/service/order/mod"
 )
 
 // ArgsPayLog 支付请求参数

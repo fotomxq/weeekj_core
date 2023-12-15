@@ -2,9 +2,9 @@ package IOTMQTT
 
 import (
 	"encoding/json"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
 )
 
 // 请求获取当前设备控制列表

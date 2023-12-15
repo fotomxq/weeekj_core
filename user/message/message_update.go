@@ -3,11 +3,11 @@ package UserMessage
 import (
 	"errors"
 	"fmt"
-	AnalysisAny2 "gitee.com/weeekj/weeekj_core/v5/analysis/any2"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	AnalysisAny2 "github.com/fotomxq/weeekj_core/v5/analysis/any2"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 	"time"
 )

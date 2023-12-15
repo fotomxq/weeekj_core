@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
 )
 
 // ArgsPushDeviceOnline 设备在线情况更正参数

@@ -2,9 +2,9 @@ package BaseFileSys2
 
 import (
 	"fmt"
-	CoreCache "gitee.com/weeekj/weeekj_core/v5/core/cache"
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 type ArgsGetClaimList struct {

@@ -3,8 +3,8 @@ package CoreLog
 import (
 	"context"
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"github.com/golang-module/carbon"
 	"github.com/mholt/archiver/v4"
 	"os"

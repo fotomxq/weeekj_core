@@ -2,12 +2,12 @@ package OrgMap
 
 import (
 	"errors"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	FinanceDeposit "gitee.com/weeekj/weeekj_core/v5/finance/deposit"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 )
 

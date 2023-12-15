@@ -1,12 +1,12 @@
 package OrgTip
 
 import (
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	"github.com/lib/pq"
 )
 

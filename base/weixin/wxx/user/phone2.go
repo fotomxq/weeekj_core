@@ -3,9 +3,9 @@ package BaseWeixinWXXUser
 import (
 	"errors"
 	"fmt"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
-	UserLogin2 "gitee.com/weeekj/weeekj_core/v5/user/login2"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
+	UserLogin2 "github.com/fotomxq/weeekj_core/v5/user/login2"
 )
 
 // ArgsLoginByPhone 手机号授权登录

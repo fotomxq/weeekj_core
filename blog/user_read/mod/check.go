@@ -1,6 +1,6 @@
 package BlogUserReadMod
 
-import Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+import Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 
 // CheckUserLogExist 检查用户是否存在访问记录
 func CheckUserLogExist(userID int64, contentID int64) bool {

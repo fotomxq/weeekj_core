@@ -3,11 +3,11 @@ package ServiceAD
 import (
 	"errors"
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLGPS "gitee.com/weeekj/weeekj_core/v5/core/sql/gps"
-	MapArea "gitee.com/weeekj/weeekj_core/v5/map/area"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLGPS "github.com/fotomxq/weeekj_core/v5/core/sql/gps"
+	MapArea "github.com/fotomxq/weeekj_core/v5/map/area"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 	"github.com/robfig/cron"
 )

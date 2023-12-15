@@ -1,7 +1,7 @@
 package Router2VCode
 
 import (
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
 	"github.com/gin-gonic/gin"
 )
 

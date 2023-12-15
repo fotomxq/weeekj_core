@@ -1,11 +1,11 @@
 package RouterAPIBaseTagBase
 
 import (
-	ClassTag "gitee.com/weeekj/weeekj_core/v5/class/tag"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	RouterMidAPI "gitee.com/weeekj/weeekj_core/v5/router/mid/api"
-	RouterParams "gitee.com/weeekj/weeekj_core/v5/router/params"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
+	ClassTag "github.com/fotomxq/weeekj_core/v5/class/tag"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	RouterMidAPI "github.com/fotomxq/weeekj_core/v5/router/mid/api"
+	RouterParams "github.com/fotomxq/weeekj_core/v5/router/params"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 )

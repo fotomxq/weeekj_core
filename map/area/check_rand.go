@@ -3,7 +3,7 @@ package MapArea
 import (
 	"errors"
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 )
 
 // CheckPointInAreasRand 获取符合条件的分区，但抽取任意一个

@@ -2,7 +2,7 @@ package CoreLog
 
 import (
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
 	"github.com/robfig/cron"
 )
 

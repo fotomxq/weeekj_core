@@ -2,9 +2,9 @@ package BaseWeixinWXXMessage
 
 import (
 	"errors"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BaseWeixinWXXMessageTemplate "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/message/template"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseWeixinWXXMessageTemplate "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/message/template"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 )
 
 // ArgsSendMessageTemplate 推送模版消息参数

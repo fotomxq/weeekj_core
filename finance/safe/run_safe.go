@@ -2,14 +2,14 @@ package FinanceSafe
 
 import (
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	FinanceLog "gitee.com/weeekj/weeekj_core/v5/finance/log"
-	FinancePay "gitee.com/weeekj/weeekj_core/v5/finance/pay"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	FinanceLog "github.com/fotomxq/weeekj_core/v5/finance/log"
+	FinancePay "github.com/fotomxq/weeekj_core/v5/finance/pay"
 	"time"
 )
 

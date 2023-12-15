@@ -1,9 +1,9 @@
 package RouterMidOrg
 
 import (
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	RouterMidAPI "gitee.com/weeekj/weeekj_core/v5/router/mid/api"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	RouterMidAPI "github.com/fotomxq/weeekj_core/v5/router/mid/api"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	"github.com/gin-gonic/gin"
 )
 

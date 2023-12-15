@@ -1,7 +1,7 @@
 package Router2Params
 
 import (
-	Router2Report "gitee.com/weeekj/weeekj_core/v5/router2/mid"
+	Router2Report "github.com/fotomxq/weeekj_core/v5/router2/mid"
 )
 
 // ActionIDType 常见action类动作请求参数头

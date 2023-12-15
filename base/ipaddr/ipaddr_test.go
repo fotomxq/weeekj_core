@@ -1,10 +1,10 @@
 package BaseIPAddr
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreRPCX "gitee.com/weeekj/weeekj_core/v5/core/rpcx"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 	"time"
 )

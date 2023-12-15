@@ -1,8 +1,8 @@
 package BaseWeixinPayProtocol
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 func runNext() {

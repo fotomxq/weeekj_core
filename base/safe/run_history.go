@@ -1,9 +1,9 @@
 package BaseSafe
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQLHistory "gitee.com/weeekj/weeekj_core/v5/core/sql/history"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQLHistory "github.com/fotomxq/weeekj_core/v5/core/sql/history"
 )
 
 // 历史归档服务

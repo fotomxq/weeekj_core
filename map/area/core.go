@@ -3,14 +3,14 @@ package MapArea
 import (
 	"errors"
 	"fmt"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLGPS "gitee.com/weeekj/weeekj_core/v5/core/sql/gps"
-	CoreSQLIDs "gitee.com/weeekj/weeekj_core/v5/core/sql/ids"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	MapMathArea "gitee.com/weeekj/weeekj_core/v5/map/math/area"
-	MapMathArgs "gitee.com/weeekj/weeekj_core/v5/map/math/args"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLGPS "github.com/fotomxq/weeekj_core/v5/core/sql/gps"
+	CoreSQLIDs "github.com/fotomxq/weeekj_core/v5/core/sql/ids"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	MapMathArea "github.com/fotomxq/weeekj_core/v5/map/math/area"
+	MapMathArgs "github.com/fotomxq/weeekj_core/v5/map/math/args"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 )
 

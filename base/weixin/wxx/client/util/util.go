@@ -6,7 +6,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"io/ioutil"
 	"math/rand"
 	"net"

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	"github.com/nats-io/nats.go"
 	"time"
 )

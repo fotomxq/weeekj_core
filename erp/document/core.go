@@ -1,9 +1,9 @@
 package ERPDocument
 
 import (
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
-	ERPCore "gitee.com/weeekj/weeekj_core/v5/erp/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	ERPCore "github.com/fotomxq/weeekj_core/v5/erp/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 //ERP文档数据集

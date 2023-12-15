@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	BaseWeixinWXXClientUtil "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/client/util"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
+	BaseWeixinWXXClientUtil "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/client/util"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	"net/http"
 	"strings"
 )

@@ -1,8 +1,8 @@
 package CoreLog
 
 import (
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"github.com/sirupsen/logrus"
 	"os"
 	"time"

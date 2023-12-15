@@ -1,13 +1,13 @@
 package AnalysisOrg
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	TMSTransport "gitee.com/weeekj/weeekj_core/v5/tms/transport"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	TMSTransport "github.com/fotomxq/weeekj_core/v5/tms/transport"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"testing"
 )
 

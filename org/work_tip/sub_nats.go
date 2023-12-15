@@ -2,8 +2,8 @@ package OrgWorkTip
 
 import (
 	"encoding/json"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	"github.com/nats-io/nats.go"
 )
 

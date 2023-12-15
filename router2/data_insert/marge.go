@@ -2,13 +2,13 @@ package Router2DataInsert
 
 import (
 	"encoding/json"
-	ClassConfig "gitee.com/weeekj/weeekj_core/v5/class/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	MapRoom "gitee.com/weeekj/weeekj_core/v5/map/room"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	ServiceCompany "gitee.com/weeekj/weeekj_core/v5/service/company"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	MapRoom "github.com/fotomxq/weeekj_core/v5/map/room"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	ServiceCompany "github.com/fotomxq/weeekj_core/v5/service/company"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"github.com/tidwall/gjson"
 )
 

@@ -1,10 +1,10 @@
 package ServiceUserInfo
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 	"github.com/nats-io/nats.go"
 	"github.com/tidwall/gjson"
 )

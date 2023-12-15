@@ -3,11 +3,11 @@ package OrgCoreCore
 import (
 	"errors"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 )
 

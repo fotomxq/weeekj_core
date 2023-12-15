@@ -3,14 +3,14 @@ package UserSubscription
 import (
 	"errors"
 	"fmt"
-	ClassConfig "gitee.com/weeekj/weeekj_core/v5/class/config"
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceOrderWait "gitee.com/weeekj/weeekj_core/v5/service/order/wait"
-	ServiceOrderWaitFields "gitee.com/weeekj/weeekj_core/v5/service/order/wait_fields"
+	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceOrderWait "github.com/fotomxq/weeekj_core/v5/service/order/wait"
+	ServiceOrderWaitFields "github.com/fotomxq/weeekj_core/v5/service/order/wait_fields"
 	"time"
 )
 

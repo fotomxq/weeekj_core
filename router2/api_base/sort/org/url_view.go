@@ -2,13 +2,13 @@ package Router2APIBaseSortOrg
 
 import (
 	"fmt"
-	BaseFileSys2 "gitee.com/weeekj/weeekj_core/v5/base/filesys2"
-	ClassSort "gitee.com/weeekj/weeekj_core/v5/class/sort"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	Router2Params "gitee.com/weeekj/weeekj_core/v5/router2/params"
+	BaseFileSys2 "github.com/fotomxq/weeekj_core/v5/base/filesys2"
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	Router2Params "github.com/fotomxq/weeekj_core/v5/router2/params"
 	"github.com/lib/pq"
 )
 

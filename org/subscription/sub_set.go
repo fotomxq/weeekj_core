@@ -3,14 +3,14 @@ package OrgSubscription
 import (
 	"errors"
 	"fmt"
-	BaseExpireTip "gitee.com/weeekj/weeekj_core/v5/base/expire_tip"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	OrgCoreCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceOrderMod "gitee.com/weeekj/weeekj_core/v5/service/order/mod"
+	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceOrderMod "github.com/fotomxq/weeekj_core/v5/service/order/mod"
 	"github.com/golang-module/carbon"
 )
 

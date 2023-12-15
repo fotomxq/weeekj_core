@@ -1,10 +1,10 @@
 package ToolsCommunication
 
 import (
-	ClassSort "gitee.com/weeekj/weeekj_core/v5/class/sort"
-	ClassTag "gitee.com/weeekj/weeekj_core/v5/class/tag"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTMQTT "gitee.com/weeekj/weeekj_core/v5/iot/mqtt"
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
+	ClassTag "github.com/fotomxq/weeekj_core/v5/class/tag"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTMQTT "github.com/fotomxq/weeekj_core/v5/iot/mqtt"
 	"github.com/robfig/cron"
 )
 

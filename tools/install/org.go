@@ -3,9 +3,9 @@ package ToolsInstall
 import (
 	"errors"
 	"fmt"
-	ClassConfig "gitee.com/weeekj/weeekj_core/v5/class/config"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 )
 
 // InstallOrg 安装组织数据包

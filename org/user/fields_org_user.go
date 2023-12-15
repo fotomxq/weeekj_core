@@ -4,8 +4,8 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	ServiceOrder "gitee.com/weeekj/weeekj_core/v5/service/order"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	ServiceOrder "github.com/fotomxq/weeekj_core/v5/service/order"
 	"time"
 )
 

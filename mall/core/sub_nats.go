@@ -2,12 +2,12 @@ package MallCore
 
 import (
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	ServiceOrderMod "gitee.com/weeekj/weeekj_core/v5/service/order/mod"
-	UserTicket "gitee.com/weeekj/weeekj_core/v5/user/ticket"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	ServiceOrderMod "github.com/fotomxq/weeekj_core/v5/service/order/mod"
+	UserTicket "github.com/fotomxq/weeekj_core/v5/user/ticket"
 	"github.com/lib/pq"
 	"github.com/nats-io/nats.go"
 	"github.com/tidwall/gjson"

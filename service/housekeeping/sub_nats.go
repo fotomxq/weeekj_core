@@ -2,9 +2,9 @@ package ServiceHousekeeping
 
 import (
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	ServiceOrderMod "gitee.com/weeekj/weeekj_core/v5/service/order/mod"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	ServiceOrderMod "github.com/fotomxq/weeekj_core/v5/service/order/mod"
 	"github.com/lib/pq"
 	"github.com/nats-io/nats.go"
 	"github.com/tidwall/gjson"

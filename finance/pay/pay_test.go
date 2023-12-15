@@ -1,13 +1,13 @@
 package FinancePay
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	FinanceDeposit "gitee.com/weeekj/weeekj_core/v5/finance/deposit"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestFinanceDeposit "gitee.com/weeekj/weeekj_core/v5/tools/test_finance_deposit"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestFinanceDeposit "github.com/fotomxq/weeekj_core/v5/tools/test_finance_deposit"
 	"testing"
 	"time"
 )

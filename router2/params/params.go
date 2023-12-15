@@ -3,7 +3,7 @@ package Router2Params
 import (
 	"encoding/json"
 	"fmt"
-	Router2Report "gitee.com/weeekj/weeekj_core/v5/router2/mid"
+	Router2Report "github.com/fotomxq/weeekj_core/v5/router2/mid"
 )
 
 // GetJSON 获取和验证参数

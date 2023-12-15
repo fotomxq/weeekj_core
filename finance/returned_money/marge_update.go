@@ -3,10 +3,10 @@ package FinanceReturnedMoney
 import (
 	"errors"
 	"fmt"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	OrgWorkTipMod "gitee.com/weeekj/weeekj_core/v5/org/work_tip/mod"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceCompany "gitee.com/weeekj/weeekj_core/v5/service/company"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	OrgWorkTipMod "github.com/fotomxq/weeekj_core/v5/org/work_tip/mod"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceCompany "github.com/fotomxq/weeekj_core/v5/service/company"
 )
 
 // ArgsUpdateMargeConfirm 确认催收款参数

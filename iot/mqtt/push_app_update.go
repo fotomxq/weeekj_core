@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	BaseQiniu "gitee.com/weeekj/weeekj_core/v5/base/qiniu"
-	ToolsAppUpdate "gitee.com/weeekj/weeekj_core/v5/tools/app_update"
+	BaseQiniu "github.com/fotomxq/weeekj_core/v5/base/qiniu"
+	ToolsAppUpdate "github.com/fotomxq/weeekj_core/v5/tools/app_update"
 	"strings"
 )
 

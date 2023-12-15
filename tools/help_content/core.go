@@ -1,8 +1,8 @@
 package ToolsHelpContent
 
 import (
-	ClassSort "gitee.com/weeekj/weeekj_core/v5/class/sort"
-	ClassTag "gitee.com/weeekj/weeekj_core/v5/class/tag"
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
+	ClassTag "github.com/fotomxq/weeekj_core/v5/class/tag"
 )
 
 //帮助内容系统

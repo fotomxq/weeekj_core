@@ -1,13 +1,13 @@
 package BlogUserRead
 
 import (
-	BlogCore "gitee.com/weeekj/weeekj_core/v5/blog/core"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	BlogCore "github.com/fotomxq/weeekj_core/v5/blog/core"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 	"github.com/golang-module/carbon"
 	"testing"
 )

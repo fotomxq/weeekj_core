@@ -3,13 +3,13 @@ package FinanceTakeCut
 import (
 	"errors"
 	"fmt"
-	ClassConfig "gitee.com/weeekj/weeekj_core/v5/class/config"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	FinanceDeposit "gitee.com/weeekj/weeekj_core/v5/finance/deposit"
-	OrgCoreCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
+	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsGetLogList 获取日志参数

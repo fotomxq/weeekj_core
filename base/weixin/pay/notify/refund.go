@@ -4,12 +4,12 @@ import (
 	"encoding/base64"
 	"encoding/xml"
 	"errors"
-	BaseWeixinPayClientCrypto "gitee.com/weeekj/weeekj_core/v5/base/weixin/pay/client/crypto"
-	BaseWeixinWXXClient "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/client"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	FinancePay "gitee.com/weeekj/weeekj_core/v5/finance/pay"
+	BaseWeixinPayClientCrypto "github.com/fotomxq/weeekj_core/v5/base/weixin/pay/client/crypto"
+	BaseWeixinWXXClient "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/client"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	FinancePay "github.com/fotomxq/weeekj_core/v5/finance/pay"
 	"strings"
 )
 

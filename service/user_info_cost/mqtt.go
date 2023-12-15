@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	IOTMQTT "gitee.com/weeekj/weeekj_core/v5/iot/mqtt"
-	MapRoom "gitee.com/weeekj/weeekj_core/v5/map/room"
-	ServiceUserInfo "gitee.com/weeekj/weeekj_core/v5/service/user_info"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	IOTMQTT "github.com/fotomxq/weeekj_core/v5/iot/mqtt"
+	MapRoom "github.com/fotomxq/weeekj_core/v5/map/room"
+	ServiceUserInfo "github.com/fotomxq/weeekj_core/v5/service/user_info"
 )
 
 // 请求信息档案列表

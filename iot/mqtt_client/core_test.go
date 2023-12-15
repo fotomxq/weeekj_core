@@ -1,8 +1,8 @@
 package IOTMQTTClient
 
 import (
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 )
 

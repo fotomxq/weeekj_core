@@ -2,9 +2,9 @@ package FinancePay
 
 import (
 	"errors"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 )
 

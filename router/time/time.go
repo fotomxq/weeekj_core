@@ -2,8 +2,8 @@ package RouterTime
 
 import (
 	"fmt"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	"github.com/gin-gonic/gin"
 )
 

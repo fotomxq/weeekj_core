@@ -2,8 +2,8 @@ package ToolsInstall
 
 import (
 	"errors"
-	BaseEarlyWarning "gitee.com/weeekj/weeekj_core/v5/base/early_warning"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseEarlyWarning "github.com/fotomxq/weeekj_core/v5/base/early_warning"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 func InstallEarlyWarning() error {

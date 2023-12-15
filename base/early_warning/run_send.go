@@ -1,13 +1,13 @@
 package BaseEarlyWarning
 
 import (
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BaseEmail "gitee.com/weeekj/weeekj_core/v5/base/email"
-	BaseSMS "gitee.com/weeekj/weeekj_core/v5/base/sms"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseEmail "github.com/fotomxq/weeekj_core/v5/base/email"
+	BaseSMS "github.com/fotomxq/weeekj_core/v5/base/sms"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"strings"
 )
 

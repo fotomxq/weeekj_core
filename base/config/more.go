@@ -1,6 +1,6 @@
 package BaseConfig
 
-import CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+import CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 
 // GetDataInt 扩展支持，直接转化对应的数据值
 func GetDataInt(mark string) (data int, err error) {

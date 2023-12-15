@@ -2,10 +2,10 @@ package BaseSystemMission
 
 import (
 	"fmt"
-	CoreCache "gitee.com/weeekj/weeekj_core/v5/core/cache"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 )
 

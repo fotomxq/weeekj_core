@@ -1,14 +1,14 @@
 package FinanceTakeCut
 
 import (
-	ClassConfig "gitee.com/weeekj/weeekj_core/v5/class/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	FinanceDeposit "gitee.com/weeekj/weeekj_core/v5/finance/deposit"
-	OrgCoreCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
+	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 	"testing"
 )
 

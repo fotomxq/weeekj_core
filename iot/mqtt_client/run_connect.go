@@ -1,9 +1,9 @@
 package IOTMQTTClient
 
 import (
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 )
 
 func runConnect() {

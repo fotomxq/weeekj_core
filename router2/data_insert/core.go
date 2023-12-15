@@ -1,6 +1,6 @@
 package Router2DataInsert
 
-import BaseQiniu "gitee.com/weeekj/weeekj_core/v5/base/qiniu"
+import BaseQiniu "github.com/fotomxq/weeekj_core/v5/base/qiniu"
 
 //快速数据填充模块
 

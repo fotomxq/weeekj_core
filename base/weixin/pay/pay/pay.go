@@ -3,9 +3,9 @@ package BaseWeixinPayPay
 import (
 	"encoding/json"
 	"errors"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BaseWeixinPayClient "gitee.com/weeekj/weeekj_core/v5/base/weixin/pay/client"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseWeixinPayClient "github.com/fotomxq/weeekj_core/v5/base/weixin/pay/client"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"time"
 )
 

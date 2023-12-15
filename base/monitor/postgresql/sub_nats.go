@@ -2,11 +2,11 @@ package BaseMonitorPostgresql
 
 import (
 	"fmt"
-	BaseSystemMission "gitee.com/weeekj/weeekj_core/v5/base/system_mission"
-	CoreCache "gitee.com/weeekj/weeekj_core/v5/core/cache"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseSystemMission "github.com/fotomxq/weeekj_core/v5/base/system_mission"
+	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 func subNats() {

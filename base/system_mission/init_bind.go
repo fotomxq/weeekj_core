@@ -1,9 +1,9 @@
 package BaseSystemMission
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	"time"
 )
 

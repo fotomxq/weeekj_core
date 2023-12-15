@@ -2,9 +2,9 @@ package IOTMQTT
 
 import (
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTLog "gitee.com/weeekj/weeekj_core/v5/iot/log"
-	IOTMission "gitee.com/weeekj/weeekj_core/v5/iot/mission"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTLog "github.com/fotomxq/weeekj_core/v5/iot/log"
+	IOTMission "github.com/fotomxq/weeekj_core/v5/iot/mission"
 )
 
 func runMission() {

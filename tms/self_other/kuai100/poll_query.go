@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	CoreHttp2 "gitee.com/weeekj/weeekj_core/v5/core/http2"
+	CoreHttp2 "github.com/fotomxq/weeekj_core/v5/core/http2"
 )
 
 // PollQueryData 实时快递单号查询数据

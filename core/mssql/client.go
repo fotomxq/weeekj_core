@@ -3,8 +3,8 @@ package CoreMsSQL
 import (
 	"database/sql"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
 	_ "github.com/denisenkom/go-mssqldb"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	"github.com/jmoiron/sqlx"
 	"time"
 )

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	IOTBind "gitee.com/weeekj/weeekj_core/v5/iot/bind"
+	IOTBind "github.com/fotomxq/weeekj_core/v5/iot/bind"
 )
 
 // PushDeviceBind 推送设备所有绑定关系

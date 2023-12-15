@@ -1,13 +1,13 @@
 package ServiceDistribution
 
 import (
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	MarketGivingCore "gitee.com/weeekj/weeekj_core/v5/market/giving_core"
-	MarketGivingUserSub "gitee.com/weeekj/weeekj_core/v5/market/giving_user_sub"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
-	UserSubscription "gitee.com/weeekj/weeekj_core/v5/user/subscription"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	MarketGivingCore "github.com/fotomxq/weeekj_core/v5/market/giving_core"
+	MarketGivingUserSub "github.com/fotomxq/weeekj_core/v5/market/giving_user_sub"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
+	UserSubscription "github.com/fotomxq/weeekj_core/v5/user/subscription"
 	"testing"
 )
 

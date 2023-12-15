@@ -2,8 +2,8 @@ package BaseDistribution
 
 import (
 	"context"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	RPCXClient "github.com/smallnest/rpcx/client"
 	"sync"
 	"time"

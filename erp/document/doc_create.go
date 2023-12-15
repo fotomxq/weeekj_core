@@ -3,10 +3,10 @@ package ERPDocument
 import (
 	"errors"
 	"fmt"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	ERPCore "gitee.com/weeekj/weeekj_core/v5/erp/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	ERPCore "github.com/fotomxq/weeekj_core/v5/erp/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 type ArgsCreateDoc struct {

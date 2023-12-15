@@ -1,11 +1,11 @@
 package BlogUserRead
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 	"testing"
 )
 

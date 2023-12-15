@@ -2,8 +2,8 @@ package OrgMap
 
 import (
 	"errors"
-	MapMathConversion "gitee.com/weeekj/weeekj_core/v5/map/math/conversion"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	MapMathConversion "github.com/fotomxq/weeekj_core/v5/map/math/conversion"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsFindMapByArea 查询GPS附件的商户信息列参数

@@ -2,14 +2,14 @@ package ServiceInfoExchange
 
 import (
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	OrgMapMod "gitee.com/weeekj/weeekj_core/v5/org/map/mod"
-	ServiceOrderMod "gitee.com/weeekj/weeekj_core/v5/service/order/mod"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	OrgMapMod "github.com/fotomxq/weeekj_core/v5/org/map/mod"
+	ServiceOrderMod "github.com/fotomxq/weeekj_core/v5/service/order/mod"
 	"github.com/nats-io/nats.go"
 	"github.com/tidwall/gjson"
 )

@@ -1,8 +1,8 @@
 package MapRoom
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTMQTT "gitee.com/weeekj/weeekj_core/v5/iot/mqtt"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTMQTT "github.com/fotomxq/weeekj_core/v5/iot/mqtt"
 )
 
 // 订阅方法集合

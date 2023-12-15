@@ -1,9 +1,9 @@
 package ERPWarehouse
 
 import (
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsCreateWarehouse 创建仓库参数

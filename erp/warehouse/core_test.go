@@ -1,12 +1,12 @@
 package ERPWarehouse
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	ERPProduct "gitee.com/weeekj/weeekj_core/v5/erp/product"
-	ServiceCompany "gitee.com/weeekj/weeekj_core/v5/service/company"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	ERPProduct "github.com/fotomxq/weeekj_core/v5/erp/product"
+	ServiceCompany "github.com/fotomxq/weeekj_core/v5/service/company"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 	"testing"
 )
 

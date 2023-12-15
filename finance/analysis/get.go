@@ -1,11 +1,11 @@
 package FinanceAnalysis
 
 import (
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLAnalysis "gitee.com/weeekj/weeekj_core/v5/core/sql/analysis"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLAnalysis "github.com/fotomxq/weeekj_core/v5/core/sql/analysis"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsGetAnalysis 获取平台总统计数据参数

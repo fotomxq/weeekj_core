@@ -2,12 +2,12 @@ package BaseSMS
 
 import (
 	"errors"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	ClassConfig "gitee.com/weeekj/weeekj_core/v5/class/config"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 //短信模块

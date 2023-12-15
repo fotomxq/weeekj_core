@@ -1,11 +1,11 @@
 package RouterAPIRunBase
 
 import (
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BasePedometer "gitee.com/weeekj/weeekj_core/v5/base/pedometer"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BasePedometer "github.com/fotomxq/weeekj_core/v5/base/pedometer"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 )
 

@@ -2,7 +2,7 @@ package BaseSystemMission
 
 import (
 	"errors"
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
 
 // ArgsGetMissionList 获取服务列表参数

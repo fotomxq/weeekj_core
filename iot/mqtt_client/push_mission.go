@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
 )
 
 // ArgsPushDeviceMissionResult 反馈设备任务结果参数

@@ -3,10 +3,10 @@ package BaseWeixinPayPay
 import (
 	"encoding/xml"
 	"errors"
-	BaseWeixinPayClient "gitee.com/weeekj/weeekj_core/v5/base/weixin/pay/client"
-	BaseWeixinPayClientCrypto "gitee.com/weeekj/weeekj_core/v5/base/weixin/pay/client/crypto"
-	BaseWeixinPayClientUtil "gitee.com/weeekj/weeekj_core/v5/base/weixin/pay/client/util"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
+	BaseWeixinPayClient "github.com/fotomxq/weeekj_core/v5/base/weixin/pay/client"
+	BaseWeixinPayClientCrypto "github.com/fotomxq/weeekj_core/v5/base/weixin/pay/client/crypto"
+	BaseWeixinPayClientUtil "github.com/fotomxq/weeekj_core/v5/base/weixin/pay/client/util"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
 	"strconv"
 	"time"
 )

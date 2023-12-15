@@ -3,7 +3,7 @@ package CorePostgres
 import (
 	"errors"
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
 )
 
 // Install 自动安装配置文件

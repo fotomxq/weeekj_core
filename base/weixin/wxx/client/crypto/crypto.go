@@ -11,7 +11,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	BaseWeixinWXXClientECB "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/client/ecb"
+	BaseWeixinWXXClientECB "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/client/ecb"
 	"io"
 	"sort"
 	"strings"

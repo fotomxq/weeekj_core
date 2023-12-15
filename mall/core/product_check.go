@@ -3,10 +3,10 @@ package MallCore
 import (
 	"errors"
 	"fmt"
-	ClassSort "gitee.com/weeekj/weeekj_core/v5/class/sort"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	UserSubscription "gitee.com/weeekj/weeekj_core/v5/user/subscription"
-	UserTicket "gitee.com/weeekj/weeekj_core/v5/user/ticket"
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	UserSubscription "github.com/fotomxq/weeekj_core/v5/user/subscription"
+	UserTicket "github.com/fotomxq/weeekj_core/v5/user/ticket"
 	"github.com/lib/pq"
 	"strings"
 )

@@ -3,7 +3,7 @@ package UserTicketSend
 import (
 	"errors"
 	"fmt"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsGetSendListByUser 获取用户可领取的票据列表参数

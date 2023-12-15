@@ -2,9 +2,9 @@ package RouterSystem
 
 import (
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSystemClose "gitee.com/weeekj/weeekj_core/v5/core/system_close"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSystemClose "github.com/fotomxq/weeekj_core/v5/core/system_close"
 	"time"
 )
 

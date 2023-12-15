@@ -3,8 +3,8 @@ package CoreHttp
 import (
 	"errors"
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
 	"github.com/PuerkitoBio/goquery"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"io/ioutil"
 	"math/rand"
 	"net/http"

@@ -3,7 +3,7 @@ package ERPWarehouse
 import (
 	"errors"
 	"fmt"
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
 
 // ArgsBatchOutAuto 按照规则自动完成产品出库参数

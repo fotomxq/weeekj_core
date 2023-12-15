@@ -1,9 +1,9 @@
 package CoreRPCX
 
 import (
-	BaseDistribution "gitee.com/weeekj/weeekj_core/v5/base/distribution"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseDistribution "github.com/fotomxq/weeekj_core/v5/base/distribution"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	PRCXServer "github.com/smallnest/rpcx/server"
 	"time"
 )

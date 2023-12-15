@@ -1,6 +1,6 @@
 package MapRoom
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // pushNatsUpdateStatus 推送消息中间件
 func pushNatsUpdateStatus(roomID int64, action string, mark string) {

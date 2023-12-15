@@ -1,7 +1,7 @@
 package ERPSaleOut
 
 import (
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
 	"time"
 )
 

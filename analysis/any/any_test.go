@@ -2,10 +2,10 @@ package AnalysisAny
 
 import (
 	"fmt"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
 	"testing"
 
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 )
 
 func TestInitAny(t *testing.T) {

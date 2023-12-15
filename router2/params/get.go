@@ -1,8 +1,8 @@
 package Router2Params
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	Router2Report "gitee.com/weeekj/weeekj_core/v5/router2/mid"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	Router2Report "github.com/fotomxq/weeekj_core/v5/router2/mid"
 )
 
 // GetID 获取参数带有ID的头

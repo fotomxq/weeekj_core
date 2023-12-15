@@ -2,13 +2,13 @@ package Router2Mid
 
 import (
 	"fmt"
-	BasePedometer "gitee.com/weeekj/weeekj_core/v5/base/pedometer"
-	BaseSafe "gitee.com/weeekj/weeekj_core/v5/base/safe"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreRPCX "gitee.com/weeekj/weeekj_core/v5/core/rpcx"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BasePedometer "github.com/fotomxq/weeekj_core/v5/base/pedometer"
+	BaseSafe "github.com/fotomxq/weeekj_core/v5/base/safe"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/gin-gonic/gin"
 )
 

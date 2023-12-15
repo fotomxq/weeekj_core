@@ -2,7 +2,7 @@ package ServiceUserInfo
 
 import (
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"strings"
 	"time"
 )

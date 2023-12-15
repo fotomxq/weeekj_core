@@ -1,6 +1,6 @@
 package ServiceAD2
 
-import AnalysisAny2 "gitee.com/weeekj/weeekj_core/v5/analysis/any2"
+import AnalysisAny2 "github.com/fotomxq/weeekj_core/v5/analysis/any2"
 
 //第二代广告模块
 /**

@@ -2,10 +2,10 @@ package BaseFileSys2
 
 import (
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BaseFileSys "gitee.com/weeekj/weeekj_core/v5/base/filesys"
-	BaseQiniu "gitee.com/weeekj/weeekj_core/v5/base/qiniu"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseFileSys "github.com/fotomxq/weeekj_core/v5/base/filesys"
+	BaseQiniu "github.com/fotomxq/weeekj_core/v5/base/qiniu"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 )
 
 // GetPublicURLByClaimID 获取文件URL地址

@@ -2,7 +2,7 @@ package UserSystemTip
 
 import (
 	"fmt"
-	UserMessageMod "gitee.com/weeekj/weeekj_core/v5/user/message/mod"
+	UserMessageMod "github.com/fotomxq/weeekj_core/v5/user/message/mod"
 	"time"
 )
 

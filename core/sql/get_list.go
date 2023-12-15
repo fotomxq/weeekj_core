@@ -2,7 +2,7 @@ package CoreSQL
 
 import (
 	"fmt"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
 	"github.com/jmoiron/sqlx"
 )
 

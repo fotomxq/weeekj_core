@@ -1,7 +1,7 @@
 package BaseEmail
 
 import (
-	CoreRunCache "gitee.com/weeekj/weeekj_core/v5/core/run_cache"
+	CoreRunCache "github.com/fotomxq/weeekj_core/v5/core/run_cache"
 	"github.com/robfig/cron"
 )
 

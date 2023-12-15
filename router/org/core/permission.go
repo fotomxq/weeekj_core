@@ -1,10 +1,10 @@
 package RouterOrgCore
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	RouterMidAPI "gitee.com/weeekj/weeekj_core/v5/router/mid/api"
-	RouterMidOrg "gitee.com/weeekj/weeekj_core/v5/router/mid/org"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	RouterMidAPI "github.com/fotomxq/weeekj_core/v5/router/mid/api"
+	RouterMidOrg "github.com/fotomxq/weeekj_core/v5/router/mid/org"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	"github.com/gin-gonic/gin"
 )
 

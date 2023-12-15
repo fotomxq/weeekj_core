@@ -1,18 +1,18 @@
 package MapUserArea
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLGPS "gitee.com/weeekj/weeekj_core/v5/core/sql/gps"
-	IOTTrack "gitee.com/weeekj/weeekj_core/v5/iot/track"
-	MapArea "gitee.com/weeekj/weeekj_core/v5/map/area"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	OrgMission "gitee.com/weeekj/weeekj_core/v5/org/mission"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceUserInfo "gitee.com/weeekj/weeekj_core/v5/service/user_info"
-	UserGPS "gitee.com/weeekj/weeekj_core/v5/user/gps"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLGPS "github.com/fotomxq/weeekj_core/v5/core/sql/gps"
+	IOTTrack "github.com/fotomxq/weeekj_core/v5/iot/track"
+	MapArea "github.com/fotomxq/weeekj_core/v5/map/area"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	OrgMission "github.com/fotomxq/weeekj_core/v5/org/mission"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceUserInfo "github.com/fotomxq/weeekj_core/v5/service/user_info"
+	UserGPS "github.com/fotomxq/weeekj_core/v5/user/gps"
 	"time"
 )
 

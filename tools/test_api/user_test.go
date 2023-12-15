@@ -3,7 +3,7 @@ package TestAPI
 import (
 	"testing"
 
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 var (

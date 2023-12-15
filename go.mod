@@ -1,4 +1,4 @@
-module gitee.com/weeekj/weeekj_core/v5
+module github.com/fotomxq/weeekj_core/v5
 
 go 1.19
 

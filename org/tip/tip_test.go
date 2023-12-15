@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 )
 
 var (

@@ -1,11 +1,11 @@
 package UserCore
 
 import (
-	AnalysisAny2 "gitee.com/weeekj/weeekj_core/v5/analysis/any2"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	OrgUserMod "gitee.com/weeekj/weeekj_core/v5/org/user/mod"
+	AnalysisAny2 "github.com/fotomxq/weeekj_core/v5/analysis/any2"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	OrgUserMod "github.com/fotomxq/weeekj_core/v5/org/user/mod"
 	"github.com/nats-io/nats.go"
 	"time"
 )

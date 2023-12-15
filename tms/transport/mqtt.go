@@ -3,8 +3,8 @@ package TMSTransport
 import (
 	"encoding/json"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTMQTT "gitee.com/weeekj/weeekj_core/v5/iot/mqtt"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTMQTT "github.com/fotomxq/weeekj_core/v5/iot/mqtt"
 )
 
 // MQTT订阅

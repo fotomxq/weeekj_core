@@ -3,7 +3,7 @@ package BaseConfig
 import (
 	"encoding/json"
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
 )
 
 // DataGroup 分组配置

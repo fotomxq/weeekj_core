@@ -2,12 +2,12 @@ package Router2Excel
 
 import (
 	"fmt"
-	BaseTempFile "gitee.com/weeekj/weeekj_core/v5/base/temp_file"
-	CoreExcel "gitee.com/weeekj/weeekj_core/v5/core/excel"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
 	"github.com/360EntSecGroup-Skylar/excelize"
+	BaseTempFile "github.com/fotomxq/weeekj_core/v5/base/temp_file"
+	CoreExcel "github.com/fotomxq/weeekj_core/v5/core/excel"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 //excel快速组装方法集

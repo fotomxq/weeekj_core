@@ -1,9 +1,9 @@
 package UserAddress
 
 import (
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	OrgUserMod "gitee.com/weeekj/weeekj_core/v5/org/user/mod"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	OrgUserMod "github.com/fotomxq/weeekj_core/v5/org/user/mod"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsGetDefaultAddress 获取用户默认地址参数

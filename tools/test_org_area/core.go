@@ -3,12 +3,12 @@ package TestOrgArea
 import (
 	"testing"
 
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLGPS "gitee.com/weeekj/weeekj_core/v5/core/sql/gps"
-	MapArea "gitee.com/weeekj/weeekj_core/v5/map/area"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLGPS "github.com/fotomxq/weeekj_core/v5/core/sql/gps"
+	MapArea "github.com/fotomxq/weeekj_core/v5/map/area"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 )
 
 var (

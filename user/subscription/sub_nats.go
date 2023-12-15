@@ -1,10 +1,10 @@
 package UserSubscription
 
 import (
-	BaseExpireTip "gitee.com/weeekj/weeekj_core/v5/base/expire_tip"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	OrgUserMod "gitee.com/weeekj/weeekj_core/v5/org/user/mod"
+	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	OrgUserMod "github.com/fotomxq/weeekj_core/v5/org/user/mod"
 	"github.com/nats-io/nats.go"
 )
 

@@ -1,9 +1,9 @@
 package ERPWarehouse
 
 import (
-	AnalysisAny2 "gitee.com/weeekj/weeekj_core/v5/analysis/any2"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	AnalysisAny2 "github.com/fotomxq/weeekj_core/v5/analysis/any2"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // updateAnalysis 更新基本数据

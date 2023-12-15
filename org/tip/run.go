@@ -1,8 +1,8 @@
 package OrgTip
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSystemClose "gitee.com/weeekj/weeekj_core/v5/core/system_close"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSystemClose "github.com/fotomxq/weeekj_core/v5/core/system_close"
 	"github.com/robfig/cron"
 	"time"
 )

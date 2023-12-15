@@ -3,7 +3,7 @@ package CoreRPCX
 import (
 	"context"
 	"errors"
-	BaseDistribution "gitee.com/weeekj/weeekj_core/v5/base/distribution"
+	BaseDistribution "github.com/fotomxq/weeekj_core/v5/base/distribution"
 	RPCXClient "github.com/smallnest/rpcx/client"
 	"sync"
 	"time"

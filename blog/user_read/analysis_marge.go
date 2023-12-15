@@ -1,6 +1,6 @@
 package BlogUserRead
 
-import CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
+import CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
 
 // ArgsMarge 聚合统计参数
 type ArgsMarge struct {

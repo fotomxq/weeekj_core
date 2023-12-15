@@ -2,10 +2,10 @@ package ToolsInstall
 
 import (
 	"errors"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	FinanceDeposit "gitee.com/weeekj/weeekj_core/v5/finance/deposit"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
 )
 
 // InstallFinance 财务系统初始化

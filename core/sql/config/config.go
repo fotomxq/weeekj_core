@@ -4,7 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 )
 
 // FieldsConfigType 简化得扩展结构

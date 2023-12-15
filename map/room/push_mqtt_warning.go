@@ -3,9 +3,9 @@ package MapRoom
 import (
 	"encoding/json"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTMQTT "gitee.com/weeekj/weeekj_core/v5/iot/mqtt"
-	OrgRecord "gitee.com/weeekj/weeekj_core/v5/org/record"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTMQTT "github.com/fotomxq/weeekj_core/v5/iot/mqtt"
+	OrgRecord "github.com/fotomxq/weeekj_core/v5/org/record"
 )
 
 // 发布紧急呼叫

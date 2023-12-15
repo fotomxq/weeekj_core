@@ -1,6 +1,6 @@
 package FinanceLog
 
-import CoreHighf "gitee.com/weeekj/weeekj_core/v5/core/highf"
+import CoreHighf "github.com/fotomxq/weeekj_core/v5/core/highf"
 
 var (
 	//OpenSub 是否启动订阅

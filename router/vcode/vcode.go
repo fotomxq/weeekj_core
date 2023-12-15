@@ -1,11 +1,11 @@
 package RouterVcode
 
 import (
-	BaseSMS "gitee.com/weeekj/weeekj_core/v5/base/sms"
-	BaseVcode "gitee.com/weeekj/weeekj_core/v5/base/vcode"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseSMS "github.com/fotomxq/weeekj_core/v5/base/sms"
+	BaseVcode "github.com/fotomxq/weeekj_core/v5/base/vcode"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/gin-gonic/gin"
 )
 

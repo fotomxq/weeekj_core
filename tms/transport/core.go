@@ -1,8 +1,8 @@
 package TMSTransport
 
 import (
-	CoreHighf "gitee.com/weeekj/weeekj_core/v5/core/highf"
-	IOTMQTT "gitee.com/weeekj/weeekj_core/v5/iot/mqtt"
+	CoreHighf "github.com/fotomxq/weeekj_core/v5/core/highf"
+	IOTMQTT "github.com/fotomxq/weeekj_core/v5/iot/mqtt"
 	"sync"
 )
 

@@ -1,7 +1,7 @@
 package OrgUser
 
 import (
-	CoreHighf "gitee.com/weeekj/weeekj_core/v5/core/highf"
+	CoreHighf "github.com/fotomxq/weeekj_core/v5/core/highf"
 )
 
 //用户足迹模块

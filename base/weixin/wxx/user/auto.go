@@ -3,14 +3,14 @@ package BaseWeixinWXXUser
 import (
 	"errors"
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BaseFileSys "gitee.com/weeekj/weeekj_core/v5/base/filesys"
-	BaseQiniu "gitee.com/weeekj/weeekj_core/v5/base/qiniu"
-	BaseWeixinWXXClient "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/client"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
-	UserLogin2 "gitee.com/weeekj/weeekj_core/v5/user/login2"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseFileSys "github.com/fotomxq/weeekj_core/v5/base/filesys"
+	BaseQiniu "github.com/fotomxq/weeekj_core/v5/base/qiniu"
+	BaseWeixinWXXClient "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/client"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
+	UserLogin2 "github.com/fotomxq/weeekj_core/v5/user/login2"
 	"time"
 )
 

@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTMQTT "gitee.com/weeekj/weeekj_core/v5/iot/mqtt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTMQTT "github.com/fotomxq/weeekj_core/v5/iot/mqtt"
 )
 
 // SubBaseOnlineHandle 设备在线判定

@@ -2,10 +2,10 @@ package IOTMQTT
 
 import (
 	"encoding/json"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
 	"reflect"
 )
 

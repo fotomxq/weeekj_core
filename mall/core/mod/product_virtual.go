@@ -1,6 +1,6 @@
 package MallCoreMod
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // SendProductVirtual 处理虚拟商品，交付给用户
 func SendProductVirtual(productID int64, count int64, userID, orgID int64, orderID int64) {

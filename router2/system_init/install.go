@@ -3,9 +3,9 @@ package Router2SystemInit
 import (
 	"errors"
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ToolsInstall "gitee.com/weeekj/weeekj_core/v5/tools/install"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ToolsInstall "github.com/fotomxq/weeekj_core/v5/tools/install"
 )
 
 func Install() (err error) {

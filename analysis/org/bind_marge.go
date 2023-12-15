@@ -1,7 +1,7 @@
 package AnalysisOrg
 
 import (
-	TMSTransport "gitee.com/weeekj/weeekj_core/v5/tms/transport"
+	TMSTransport "github.com/fotomxq/weeekj_core/v5/tms/transport"
 )
 
 // ArgsGetBindMarge 获取聚合统计参数

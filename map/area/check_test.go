@@ -1,7 +1,7 @@
 package MapArea
 
 import (
-	CoreSQLGPS "gitee.com/weeekj/weeekj_core/v5/core/sql/gps"
+	CoreSQLGPS "github.com/fotomxq/weeekj_core/v5/core/sql/gps"
 	"testing"
 )
 

@@ -2,7 +2,7 @@ package UserFocus2
 
 import (
 	"fmt"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // 获取缓冲

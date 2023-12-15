@@ -1,7 +1,7 @@
 package BlogCore
 
 import (
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"github.com/mozillazg/go-pinyin"
 	"testing"
 )

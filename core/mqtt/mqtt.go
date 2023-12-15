@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"time"
 
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 )
 
 type MQTTSimple struct {

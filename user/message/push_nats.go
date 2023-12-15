@@ -1,6 +1,6 @@
 package UserMessage
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // 自动请求审核
 func pushNatsAutoAudit(id int64) {

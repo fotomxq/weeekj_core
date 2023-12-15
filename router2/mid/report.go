@@ -2,10 +2,10 @@ package Router2Mid
 
 import (
 	"fmt"
-	CoreLanguage "gitee.com/weeekj/weeekj_core/v5/core/language"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreLanguage "github.com/fotomxq/weeekj_core/v5/core/language"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

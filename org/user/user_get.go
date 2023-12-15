@@ -3,12 +3,12 @@ package OrgUser
 import (
 	"errors"
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	UserAddress "gitee.com/weeekj/weeekj_core/v5/user/address"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	UserAddress "github.com/fotomxq/weeekj_core/v5/user/address"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 // ArgsGetUserDataList 获取用户数据列表参数

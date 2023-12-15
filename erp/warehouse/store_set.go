@@ -3,9 +3,9 @@ package ERPWarehouse
 import (
 	"errors"
 	"fmt"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	ERPProduct "gitee.com/weeekj/weeekj_core/v5/erp/product"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	ERPProduct "github.com/fotomxq/weeekj_core/v5/erp/product"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 )
 

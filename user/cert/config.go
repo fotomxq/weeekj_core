@@ -1,6 +1,6 @@
 package UserCert
 
-import Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+import Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 
 // 获取配置列表
 type ArgsGetConfigList struct {

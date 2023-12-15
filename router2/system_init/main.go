@@ -2,11 +2,11 @@ package Router2SystemInit
 
 import (
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreReg "gitee.com/weeekj/weeekj_core/v5/core/reg"
-	RouterGinSet "gitee.com/weeekj/weeekj_core/v5/router/gin_set"
-	RouterSystem "gitee.com/weeekj/weeekj_core/v5/router/system"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreReg "github.com/fotomxq/weeekj_core/v5/core/reg"
+	RouterGinSet "github.com/fotomxq/weeekj_core/v5/router/gin_set"
+	RouterSystem "github.com/fotomxq/weeekj_core/v5/router/system"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // Main 初始化程序设计

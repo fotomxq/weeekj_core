@@ -1,9 +1,9 @@
 package BaseCache
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSystemClose "gitee.com/weeekj/weeekj_core/v5/core/system_close"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSystemClose "github.com/fotomxq/weeekj_core/v5/core/system_close"
 	"github.com/robfig/cron"
 	"time"
 )

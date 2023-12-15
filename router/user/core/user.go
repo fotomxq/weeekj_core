@@ -1,8 +1,8 @@
 package RouterUserCore
 
 import (
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 //服务主体通用的用户部分结构

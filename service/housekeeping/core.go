@@ -1,7 +1,7 @@
 package ServiceHousekeeping
 
 import (
-	ClassComment "gitee.com/weeekj/weeekj_core/v5/class/comment"
+	ClassComment "github.com/fotomxq/weeekj_core/v5/class/comment"
 	"github.com/robfig/cron"
 )
 

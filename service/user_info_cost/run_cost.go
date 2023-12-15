@@ -1,16 +1,16 @@
 package ServiceUserInfoCost
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	IOTBind "gitee.com/weeekj/weeekj_core/v5/iot/bind"
-	IOTSensor "gitee.com/weeekj/weeekj_core/v5/iot/sensor"
-	MapRoom "gitee.com/weeekj/weeekj_core/v5/map/room"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	IOTBind "github.com/fotomxq/weeekj_core/v5/iot/bind"
+	IOTSensor "github.com/fotomxq/weeekj_core/v5/iot/sensor"
+	MapRoom "github.com/fotomxq/weeekj_core/v5/map/room"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 func runCost() {

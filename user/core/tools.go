@@ -3,9 +3,9 @@ package UserCore
 import (
 	"errors"
 	"fmt"
-	BaseQiniu "gitee.com/weeekj/weeekj_core/v5/base/qiniu"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
+	BaseQiniu "github.com/fotomxq/weeekj_core/v5/base/qiniu"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 )
 
 // ArgsGetUserData 获取用户的整合信息参数

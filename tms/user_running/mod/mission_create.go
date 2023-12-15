@@ -1,9 +1,9 @@
 package TMSUserRunningMod
 
 import (
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 )
 
 // ArgsCreateMission 创建新的任务参数

@@ -1,9 +1,9 @@
 package TestOrg
 
 import (
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	OrgTime "gitee.com/weeekj/weeekj_core/v5/org/time"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	OrgTime "github.com/fotomxq/weeekj_core/v5/org/time"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 var (

@@ -2,11 +2,11 @@ package RouterOrgAuth
 
 import (
 	"fmt"
-	ClassConfig "gitee.com/weeekj/weeekj_core/v5/class/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	RouterMidOrg "gitee.com/weeekj/weeekj_core/v5/router/mid/org"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
+	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	RouterMidOrg "github.com/fotomxq/weeekj_core/v5/router/mid/org"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	"github.com/gin-gonic/gin"
 	"strings"
 )

@@ -1,6 +1,6 @@
 package TMSSelfOther
 
-import TMSSelfOtherKuai100 "gitee.com/weeekj/weeekj_core/v5/tms/self_other/kuai100"
+import TMSSelfOtherKuai100 "github.com/fotomxq/weeekj_core/v5/tms/self_other/kuai100"
 
 //第三方配送单查询聚合方案
 /**

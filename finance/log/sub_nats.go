@@ -1,10 +1,10 @@
 package FinanceLog
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQLHistory "gitee.com/weeekj/weeekj_core/v5/core/sql/history"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQLHistory "github.com/fotomxq/weeekj_core/v5/core/sql/history"
 	"github.com/nats-io/nats.go"
 )
 

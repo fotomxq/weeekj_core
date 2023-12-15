@@ -3,7 +3,7 @@ package CoreSQL2
 import (
 	"errors"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	"strings"
 )
 

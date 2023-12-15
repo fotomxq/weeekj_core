@@ -1,7 +1,7 @@
 package FinanceDeposit2
 
 import (
-	AnalysisAny2 "gitee.com/weeekj/weeekj_core/v5/analysis/any2"
+	AnalysisAny2 "github.com/fotomxq/weeekj_core/v5/analysis/any2"
 	"sync"
 )
 

@@ -2,10 +2,10 @@ package OrgTime
 
 import (
 	"fmt"
-	BaseSystemMission "gitee.com/weeekj/weeekj_core/v5/base/system_mission"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseSystemMission "github.com/fotomxq/weeekj_core/v5/base/system_mission"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 func subNats() {

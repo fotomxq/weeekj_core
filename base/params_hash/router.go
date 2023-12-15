@@ -1,6 +1,6 @@
 package BaseParamsHash
 
-import Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
+import Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
 
 // CheckParamsHash 检查随机掩码
 func CheckParamsHash(c any, hash string) (b bool) {

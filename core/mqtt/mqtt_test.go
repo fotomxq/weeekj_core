@@ -3,8 +3,8 @@ package CoreMQTTSimple
 import (
 	"testing"
 
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 )
 
 var (

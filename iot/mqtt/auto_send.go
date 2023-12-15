@@ -3,8 +3,8 @@ package IOTMQTT
 import (
 	"errors"
 	"fmt"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	IOTMission "gitee.com/weeekj/weeekj_core/v5/iot/mission"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	IOTMission "github.com/fotomxq/weeekj_core/v5/iot/mission"
 )
 
 // 推送目标消息

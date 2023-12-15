@@ -2,7 +2,7 @@ package BaseQiniuClient
 
 import (
 	"errors"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
 )
 
 // 获取key数据

@@ -2,12 +2,12 @@ package ERPSaleOut
 
 import (
 	"errors"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	ERPProduct "gitee.com/weeekj/weeekj_core/v5/erp/product"
-	MallCore "gitee.com/weeekj/weeekj_core/v5/mall/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	ERPProduct "github.com/fotomxq/weeekj_core/v5/erp/product"
+	MallCore "github.com/fotomxq/weeekj_core/v5/mall/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 )
 

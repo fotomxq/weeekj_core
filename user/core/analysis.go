@@ -1,9 +1,9 @@
 package UserCore
 
 import (
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsGetAnalysisOrgCount 获取之间时间段新增用户量

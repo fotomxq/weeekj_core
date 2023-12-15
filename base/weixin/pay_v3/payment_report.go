@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	FinancePayMod "gitee.com/weeekj/weeekj_core/v5/finance/pay/mod"
+	FinancePayMod "github.com/fotomxq/weeekj_core/v5/finance/pay/mod"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/auth/verifiers"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/downloader"
 	"github.com/wechatpay-apiv3/wechatpay-go/core/notify"

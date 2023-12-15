@@ -1,8 +1,8 @@
 package OrgTime
 
 import (
-	BaseSystemMission "gitee.com/weeekj/weeekj_core/v5/base/system_mission"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseSystemMission "github.com/fotomxq/weeekj_core/v5/base/system_mission"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"sync"
 	"time"
 )

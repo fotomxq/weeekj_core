@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	IOTLog "gitee.com/weeekj/weeekj_core/v5/iot/log"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	IOTLog "github.com/fotomxq/weeekj_core/v5/iot/log"
 )
 
 // subDeviceOnline 设备在线情况更正

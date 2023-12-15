@@ -1,8 +1,8 @@
 package MallLog
 
 import (
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	MallCore "gitee.com/weeekj/weeekj_core/v5/mall/core"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	MallCore "github.com/fotomxq/weeekj_core/v5/mall/core"
 	"github.com/nats-io/nats.go"
 	"github.com/tidwall/gjson"
 )

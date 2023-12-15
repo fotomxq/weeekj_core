@@ -2,7 +2,7 @@ package CoreDocx
 
 import (
 	"encoding/json"
-	BasePython "gitee.com/weeekj/weeekj_core/v5/base/python"
+	BasePython "github.com/fotomxq/weeekj_core/v5/base/python"
 )
 
 // CoreDocx2Type 第二代word处理模块

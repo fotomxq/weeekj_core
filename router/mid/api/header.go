@@ -3,15 +3,15 @@ package RouterMidAPI
 import (
 	"fmt"
 
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BasePedometer "gitee.com/weeekj/weeekj_core/v5/base/pedometer"
-	BaseSafe "gitee.com/weeekj/weeekj_core/v5/base/safe"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreRPCX "gitee.com/weeekj/weeekj_core/v5/core/rpcx"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	RouterMidCore "gitee.com/weeekj/weeekj_core/v5/router/mid/core"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BasePedometer "github.com/fotomxq/weeekj_core/v5/base/pedometer"
+	BaseSafe "github.com/fotomxq/weeekj_core/v5/base/safe"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	RouterMidCore "github.com/fotomxq/weeekj_core/v5/router/mid/core"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/gin-gonic/gin"
 )
 

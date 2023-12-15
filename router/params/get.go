@@ -1,8 +1,8 @@
 package RouterParams
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	"github.com/gin-gonic/gin"
 )
 

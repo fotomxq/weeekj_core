@@ -1,11 +1,11 @@
 package RouterOrgFinance
 
 import (
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	FinanceDeposit "gitee.com/weeekj/weeekj_core/v5/finance/deposit"
-	FinancePay "gitee.com/weeekj/weeekj_core/v5/finance/pay"
-	RouterFinance "gitee.com/weeekj/weeekj_core/v5/router/finance"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
+	FinancePay "github.com/fotomxq/weeekj_core/v5/finance/pay"
+	RouterFinance "github.com/fotomxq/weeekj_core/v5/router/finance"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"github.com/gin-gonic/gin"
 	"time"
 )

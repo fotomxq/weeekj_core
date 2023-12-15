@@ -2,11 +2,11 @@ package RouterOrgCore
 
 import (
 	"errors"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"github.com/gin-gonic/gin"
 )
 

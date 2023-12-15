@@ -3,9 +3,9 @@ package BaseWeixinPayPay
 import (
 	"encoding/json"
 	"errors"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BaseWeixinPayClient "gitee.com/weeekj/weeekj_core/v5/base/weixin/pay/client"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseWeixinPayClient "github.com/fotomxq/weeekj_core/v5/base/weixin/pay/client"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 )
 
 // ArgsMerchantChange 商户能力支持参数

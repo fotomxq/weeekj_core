@@ -3,7 +3,7 @@ package BaseConfig
 import (
 	"testing"
 
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 )
 
 //本测试模块将进行增删等操作测试

@@ -3,9 +3,9 @@ package BaseWeixinPayClient
 import (
 	"errors"
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	OrgCoreCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
 )
 
 // ClientType 商户支付平台初始化组件

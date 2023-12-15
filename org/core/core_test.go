@@ -1,9 +1,9 @@
 package OrgCoreCore
 
 import (
-	OrgTime "gitee.com/weeekj/weeekj_core/v5/org/time"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	OrgTime "github.com/fotomxq/weeekj_core/v5/org/time"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"testing"
 )
 

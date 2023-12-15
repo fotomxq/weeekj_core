@@ -10,7 +10,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"errors"
-	BaseWeixinPayClientECB "gitee.com/weeekj/weeekj_core/v5/base/weixin/pay/client/ecb"
+	BaseWeixinPayClientECB "github.com/fotomxq/weeekj_core/v5/base/weixin/pay/client/ecb"
 	"io"
 	"sort"
 	"strings"

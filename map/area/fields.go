@@ -1,8 +1,8 @@
 package MapArea
 
 import (
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLGPS "gitee.com/weeekj/weeekj_core/v5/core/sql/gps"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLGPS "github.com/fotomxq/weeekj_core/v5/core/sql/gps"
 	"time"
 )
 

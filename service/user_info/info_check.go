@@ -2,7 +2,7 @@ package ServiceUserInfo
 
 import (
 	"fmt"
-	OrgWorkTipMod "gitee.com/weeekj/weeekj_core/v5/org/work_tip/mod"
+	OrgWorkTipMod "github.com/fotomxq/weeekj_core/v5/org/work_tip/mod"
 )
 
 // CheckInfoArg 检查档案完整性，并推送工作消息

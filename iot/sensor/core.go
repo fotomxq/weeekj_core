@@ -1,9 +1,9 @@
 package IOTSensor
 
 import (
-	CoreHighf "gitee.com/weeekj/weeekj_core/v5/core/highf"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTMQTT "gitee.com/weeekj/weeekj_core/v5/iot/mqtt"
+	CoreHighf "github.com/fotomxq/weeekj_core/v5/core/highf"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTMQTT "github.com/fotomxq/weeekj_core/v5/iot/mqtt"
 	"github.com/robfig/cron"
 )
 

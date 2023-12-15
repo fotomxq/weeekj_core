@@ -2,7 +2,7 @@ package BaseDistribution
 
 import (
 	"encoding/json"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
 )
 
 // 将数据定期存储进入数据库中，方便突然中断服务后加载数据

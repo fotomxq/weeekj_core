@@ -2,13 +2,13 @@ package FinancePayCreate
 
 import (
 	"errors"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	ClassConfig "gitee.com/weeekj/weeekj_core/v5/class/config"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	FinancePay "gitee.com/weeekj/weeekj_core/v5/finance/pay"
-	FinancePayMod "gitee.com/weeekj/weeekj_core/v5/finance/pay/mod"
-	OrgCoreCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	FinancePay "github.com/fotomxq/weeekj_core/v5/finance/pay"
+	FinancePayMod "github.com/fotomxq/weeekj_core/v5/finance/pay/mod"
+	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	"time"
 )
 

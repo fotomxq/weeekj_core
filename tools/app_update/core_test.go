@@ -1,10 +1,10 @@
 package ToolsAppUpdate
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 )
 

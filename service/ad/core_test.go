@@ -1,9 +1,9 @@
 package ServiceAD
 
 import (
-	CoreSQLGPS "gitee.com/weeekj/weeekj_core/v5/core/sql/gps"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
-	TestOrgArea "gitee.com/weeekj/weeekj_core/v5/tools/test_org_area"
+	CoreSQLGPS "github.com/fotomxq/weeekj_core/v5/core/sql/gps"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
+	TestOrgArea "github.com/fotomxq/weeekj_core/v5/tools/test_org_area"
 	"testing"
 )
 

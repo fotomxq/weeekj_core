@@ -2,7 +2,7 @@ package TestAPI
 
 import (
 	"fmt"
-	RouterAPISecret "gitee.com/weeekj/weeekj_core/v5/router/api/secret"
+	RouterAPISecret "github.com/fotomxq/weeekj_core/v5/router/api/secret"
 )
 
 var (

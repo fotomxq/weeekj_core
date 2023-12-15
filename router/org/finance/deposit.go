@@ -2,10 +2,10 @@ package RouterOrgFinance
 
 import (
 	"errors"
-	ClassConfig "gitee.com/weeekj/weeekj_core/v5/class/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	FinanceDeposit "gitee.com/weeekj/weeekj_core/v5/finance/deposit"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 )
 
 // GetDepositDataAndDefaultMark 获取组织默认收款配置项

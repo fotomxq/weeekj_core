@@ -1,7 +1,7 @@
 package CoreNextTime
 
 import (
-	ToolsHolidaySeason "gitee.com/weeekj/weeekj_core/v5/tools/holiday_season"
+	ToolsHolidaySeason "github.com/fotomxq/weeekj_core/v5/tools/holiday_season"
 	"github.com/golang-module/carbon"
 )
 

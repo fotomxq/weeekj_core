@@ -2,10 +2,10 @@ package ERPPermanentAssets
 
 import (
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	"math"
 )
 

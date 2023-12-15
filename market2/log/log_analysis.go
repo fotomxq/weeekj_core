@@ -1,6 +1,6 @@
 package Market2Log
 
-import Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+import Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 
 // GetLogSUMByFrom 聚合统计指定的值
 // 支持：giving_user_integral, giving_deposit_price, giving_ticket_count, giving_user_sub_add_hour

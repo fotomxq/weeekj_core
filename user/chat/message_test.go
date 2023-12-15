@@ -1,11 +1,11 @@
 package UserChat
 
 import (
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	FinanceDeposit "gitee.com/weeekj/weeekj_core/v5/finance/deposit"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	UserTicket "gitee.com/weeekj/weeekj_core/v5/user/ticket"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	UserTicket "github.com/fotomxq/weeekj_core/v5/user/ticket"
 	"testing"
 )
 

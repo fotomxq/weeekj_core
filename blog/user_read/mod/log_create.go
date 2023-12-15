@@ -1,7 +1,7 @@
 package BlogUserReadMod
 
 import (
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 )
 
 // ArgsCreateLog 添加日志参数

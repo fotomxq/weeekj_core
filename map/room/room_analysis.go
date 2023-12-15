@@ -1,8 +1,8 @@
 package MapRoom
 
 import (
-	AnalysisAny2 "gitee.com/weeekj/weeekj_core/v5/analysis/any2"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	AnalysisAny2 "github.com/fotomxq/weeekj_core/v5/analysis/any2"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 )
 

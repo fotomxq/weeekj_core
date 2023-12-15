@@ -3,14 +3,14 @@ package IOTDevice
 import (
 	"errors"
 	"fmt"
-	BaseExpireTip "gitee.com/weeekj/weeekj_core/v5/base/expire_tip"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
 	"github.com/lib/pq"
 )
 

@@ -1,14 +1,14 @@
 package TMSUserRunning
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
-	MapMathArgs "gitee.com/weeekj/weeekj_core/v5/map/math/args"
-	MapMathConversion "gitee.com/weeekj/weeekj_core/v5/map/math/conversion"
-	MapMathPoint "gitee.com/weeekj/weeekj_core/v5/map/math/point"
-	MapTMap "gitee.com/weeekj/weeekj_core/v5/map/tmap"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	MapMathArgs "github.com/fotomxq/weeekj_core/v5/map/math/args"
+	MapMathConversion "github.com/fotomxq/weeekj_core/v5/map/math/conversion"
+	MapMathPoint "github.com/fotomxq/weeekj_core/v5/map/math/point"
+	MapTMap "github.com/fotomxq/weeekj_core/v5/map/tmap"
 )
 
 // ArgsGetRunPrice 自动计算跑腿费用参数

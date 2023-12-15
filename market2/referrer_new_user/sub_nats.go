@@ -2,13 +2,13 @@ package Market2ReferrerNewUser
 
 import (
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	Market2Log "gitee.com/weeekj/weeekj_core/v5/market2/log"
-	Market2LogMod "gitee.com/weeekj/weeekj_core/v5/market2/log/mod"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	Market2Log "github.com/fotomxq/weeekj_core/v5/market2/log"
+	Market2LogMod "github.com/fotomxq/weeekj_core/v5/market2/log/mod"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"github.com/nats-io/nats.go"
 )
 

@@ -1,10 +1,10 @@
 package MapArea
 
 import (
-	CoreSQLGPS "gitee.com/weeekj/weeekj_core/v5/core/sql/gps"
-	MapMathArea "gitee.com/weeekj/weeekj_core/v5/map/math/area"
-	MapMathArgs "gitee.com/weeekj/weeekj_core/v5/map/math/args"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQLGPS "github.com/fotomxq/weeekj_core/v5/core/sql/gps"
+	MapMathArea "github.com/fotomxq/weeekj_core/v5/map/math/area"
+	MapMathArgs "github.com/fotomxq/weeekj_core/v5/map/math/args"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsCheckPointInArea 检查某点在哪组分区参数

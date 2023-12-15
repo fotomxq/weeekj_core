@@ -3,7 +3,7 @@ package ERPWarehouse
 import (
 	"errors"
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 )
 
 // ArgsBatchOut 批次出库参数

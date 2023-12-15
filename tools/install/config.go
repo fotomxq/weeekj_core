@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
 )
 
 func InstallConfig() error {

@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"time"
 )
 

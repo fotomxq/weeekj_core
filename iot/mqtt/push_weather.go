@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	ToolsWeather "gitee.com/weeekj/weeekj_core/v5/tools/weather"
+	ToolsWeather "github.com/fotomxq/weeekj_core/v5/tools/weather"
 )
 
 // PushWeather 推送给设备天气预报信息

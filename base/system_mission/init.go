@@ -1,11 +1,11 @@
 package BaseSystemMission
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreHighf "gitee.com/weeekj/weeekj_core/v5/core/highf"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreHighf "github.com/fotomxq/weeekj_core/v5/core/highf"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	"github.com/golang-module/carbon"
 	"github.com/nats-io/nats.go"
 	"time"

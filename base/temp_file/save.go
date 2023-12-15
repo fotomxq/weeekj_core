@@ -3,11 +3,11 @@ package BaseTempFile
 import (
 	"errors"
 	"fmt"
-	BaseExpireTip "gitee.com/weeekj/weeekj_core/v5/base/expire_tip"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // CreateTempFileSrc 创建临时文件

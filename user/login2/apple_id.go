@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"github.com/jmind-systems/go-apple-signin"
 )
 

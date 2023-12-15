@@ -1,9 +1,9 @@
 package UserMessage
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	UserCoreMod "gitee.com/weeekj/weeekj_core/v5/user/core/mod"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	UserCoreMod "github.com/fotomxq/weeekj_core/v5/user/core/mod"
 	"github.com/nats-io/nats.go"
 )
 

@@ -2,9 +2,9 @@ package ERPDocument
 
 import (
 	"fmt"
-	CoreCache "gitee.com/weeekj/weeekj_core/v5/core/cache"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // GetExcelConfigByConfigID 获取指定配置

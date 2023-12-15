@@ -3,13 +3,13 @@ package ERPAudit
 import (
 	"errors"
 	"fmt"
-	BaseExpireTip "gitee.com/weeekj/weeekj_core/v5/base/expire_tip"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	ERPCore "gitee.com/weeekj/weeekj_core/v5/erp/core"
-	OrgWorkTipMod "gitee.com/weeekj/weeekj_core/v5/org/work_tip/mod"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	ERPCore "github.com/fotomxq/weeekj_core/v5/erp/core"
+	OrgWorkTipMod "github.com/fotomxq/weeekj_core/v5/org/work_tip/mod"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsUpdateStepAudit 审批目标节点参数

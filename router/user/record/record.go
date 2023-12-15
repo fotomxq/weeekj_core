@@ -2,9 +2,9 @@ package RouterUserRecord
 
 import (
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	RouterMidAPI "gitee.com/weeekj/weeekj_core/v5/router/mid/api"
-	UserRecord "gitee.com/weeekj/weeekj_core/v5/user/record"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	RouterMidAPI "github.com/fotomxq/weeekj_core/v5/router/mid/api"
+	UserRecord "github.com/fotomxq/weeekj_core/v5/user/record"
 	"github.com/gin-gonic/gin"
 	"strings"
 )

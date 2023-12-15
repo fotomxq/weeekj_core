@@ -1,9 +1,9 @@
 package ERPWarehouse
 
 import (
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 	"testing"
 )
 

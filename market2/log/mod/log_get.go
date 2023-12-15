@@ -1,6 +1,6 @@
 package Market2LogMod
 
-import Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+import Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 
 // GetLastLogByFrom 获取被奖励目标最后一次奖励
 func GetLastLogByFrom(action string, bindID int64, orgID int64, orgBindID int64, userID int64, bindUserID int64) (data FieldsLog) {

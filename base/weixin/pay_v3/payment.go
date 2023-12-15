@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	OrgCoreCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
 )
 
 // ArgsCreatePay 发起支付请求参数

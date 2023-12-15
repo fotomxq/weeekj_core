@@ -2,9 +2,9 @@ package ERPCore
 
 import (
 	"fmt"
-	BaseFileSys2 "gitee.com/weeekj/weeekj_core/v5/base/filesys2"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLanguage "gitee.com/weeekj/weeekj_core/v5/core/language"
+	BaseFileSys2 "github.com/fotomxq/weeekj_core/v5/base/filesys2"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLanguage "github.com/fotomxq/weeekj_core/v5/core/language"
 	"github.com/gin-gonic/gin"
 )
 

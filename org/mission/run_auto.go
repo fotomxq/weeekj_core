@@ -2,10 +2,10 @@ package OrgMission
 
 import (
 	"errors"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNextTime "gitee.com/weeekj/weeekj_core/v5/core/next_time"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNextTime "github.com/fotomxq/weeekj_core/v5/core/next_time"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/golang-module/carbon"
 )
 

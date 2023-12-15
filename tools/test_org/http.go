@@ -2,9 +2,9 @@ package TestOrg
 
 import (
 	"encoding/json"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	TestAPI "gitee.com/weeekj/weeekj_core/v5/tools/test_api"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	TestAPI "github.com/fotomxq/weeekj_core/v5/tools/test_api"
 	"testing"
 )
 

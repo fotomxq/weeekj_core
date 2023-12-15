@@ -4,8 +4,8 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-	OrgCoreCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	"time"
 )
 

@@ -2,7 +2,7 @@ package FinancePay
 
 import (
 	"fmt"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 )
 
 // GetPayFrom 根据渠道来源，获取支付渠道同一化字符串

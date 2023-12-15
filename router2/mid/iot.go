@@ -1,8 +1,8 @@
 package Router2Mid
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
 	"github.com/gin-gonic/gin"
 )
 

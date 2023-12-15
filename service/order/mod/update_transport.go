@@ -1,6 +1,6 @@
 package ServiceOrderMod
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // ArgsUpdateTransportID 修改配送ID参数
 type ArgsUpdateTransportID struct {

@@ -2,12 +2,12 @@ package ToolsHelpContent
 
 import (
 	"errors"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLIDs "gitee.com/weeekj/weeekj_core/v5/core/sql/ids"
-	CoreSQLMarks "gitee.com/weeekj/weeekj_core/v5/core/sql/marks"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLIDs "github.com/fotomxq/weeekj_core/v5/core/sql/ids"
+	CoreSQLMarks "github.com/fotomxq/weeekj_core/v5/core/sql/marks"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 )
 

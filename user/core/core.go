@@ -1,9 +1,9 @@
 package UserCore
 
 import (
-	AnalysisAny2 "gitee.com/weeekj/weeekj_core/v5/analysis/any2"
-	ClassSort "gitee.com/weeekj/weeekj_core/v5/class/sort"
-	ClassTag "gitee.com/weeekj/weeekj_core/v5/class/tag"
+	AnalysisAny2 "github.com/fotomxq/weeekj_core/v5/analysis/any2"
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
+	ClassTag "github.com/fotomxq/weeekj_core/v5/class/tag"
 	"sync"
 )
 

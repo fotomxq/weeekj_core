@@ -3,13 +3,13 @@ package FinancePay
 import (
 	"errors"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	FinanceReturnedMoney "gitee.com/weeekj/weeekj_core/v5/finance/returned_money"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceCompany "gitee.com/weeekj/weeekj_core/v5/service/company"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	FinanceReturnedMoney "github.com/fotomxq/weeekj_core/v5/finance/returned_money"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceCompany "github.com/fotomxq/weeekj_core/v5/service/company"
 )
 
 // ArgsUpdateStatusRefund 发起退款参数

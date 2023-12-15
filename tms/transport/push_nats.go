@@ -1,6 +1,6 @@
 package TMSTransport
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // 请求统计配送员信息
 func pushNatsAnalysisBind(orgBindID int64) {

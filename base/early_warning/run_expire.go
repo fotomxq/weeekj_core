@@ -1,7 +1,7 @@
 package BaseEarlyWarning
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 )
 
 // 清理过期数据

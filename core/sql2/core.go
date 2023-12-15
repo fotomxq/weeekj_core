@@ -1,8 +1,8 @@
 package CoreSQL2
 
 import (
-	CoreMsSQL "gitee.com/weeekj/weeekj_core/v5/core/mssql"
-	CorePostgres "gitee.com/weeekj/weeekj_core/v5/core/postgres"
+	CoreMsSQL "github.com/fotomxq/weeekj_core/v5/core/mssql"
+	CorePostgres "github.com/fotomxq/weeekj_core/v5/core/postgres"
 	"github.com/jmoiron/sqlx"
 )
 

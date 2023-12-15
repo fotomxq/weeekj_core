@@ -2,9 +2,9 @@ package BaseMonitorGlob
 
 import (
 	"fmt"
-	BaseSystemMission "gitee.com/weeekj/weeekj_core/v5/base/system_mission"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseSystemMission "github.com/fotomxq/weeekj_core/v5/base/system_mission"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"

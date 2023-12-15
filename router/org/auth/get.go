@@ -2,9 +2,9 @@ package RouterOrgAuth
 
 import (
 	"fmt"
-	OrgCoreCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	RouterMidOrg "gitee.com/weeekj/weeekj_core/v5/router/mid/org"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
+	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	RouterMidOrg "github.com/fotomxq/weeekj_core/v5/router/mid/org"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	"github.com/gin-gonic/gin"
 )
 

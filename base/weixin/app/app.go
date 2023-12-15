@@ -1,8 +1,8 @@
 package BaseWeixinApp
 
 import (
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 )
 
 // 获取商户的APPID等配置

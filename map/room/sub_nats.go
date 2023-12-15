@@ -1,8 +1,8 @@
 package MapRoom
 
 import (
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	ServiceUserInfo "gitee.com/weeekj/weeekj_core/v5/service/user_info"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	ServiceUserInfo "github.com/fotomxq/weeekj_core/v5/service/user_info"
 	"github.com/nats-io/nats.go"
 	"time"
 )

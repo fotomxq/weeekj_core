@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 //API基础配置结构

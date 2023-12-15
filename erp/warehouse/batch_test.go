@@ -1,8 +1,8 @@
 package ERPWarehouse
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	"testing"
 )
 

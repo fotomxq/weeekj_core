@@ -1,11 +1,11 @@
 package MallLog
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	MallCore "gitee.com/weeekj/weeekj_core/v5/mall/core"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	MallCore "github.com/fotomxq/weeekj_core/v5/mall/core"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/gin-gonic/gin"
 )
 

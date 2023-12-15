@@ -3,7 +3,7 @@ package AnalysisAny
 import (
 	"testing"
 
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 )
 
 func TestInitConfig(t *testing.T) {

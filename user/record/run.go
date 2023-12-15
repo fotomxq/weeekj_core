@@ -1,11 +1,11 @@
 package UserRecordCore
 
 import (
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQLHistory "gitee.com/weeekj/weeekj_core/v5/core/sql/history"
-	CoreSystemClose "gitee.com/weeekj/weeekj_core/v5/core/system_close"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQLHistory "github.com/fotomxq/weeekj_core/v5/core/sql/history"
+	CoreSystemClose "github.com/fotomxq/weeekj_core/v5/core/system_close"
 	"github.com/robfig/cron"
 	"time"
 )

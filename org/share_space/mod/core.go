@@ -1,6 +1,6 @@
 package OrgShareSpaceMod
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // UpdateFileSize 请求更新文件的尺寸
 func UpdateFileSize(system string, fileID int64, fileSize int64) {

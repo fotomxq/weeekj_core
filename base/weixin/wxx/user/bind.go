@@ -2,8 +2,8 @@ package BaseWeixinWXXUser
 
 import (
 	"errors"
-	BaseWeixinWXXClient "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/client"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	BaseWeixinWXXClient "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/client"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 // ArgsBindExistUser 绑定存在用户

@@ -3,8 +3,8 @@ package BaseWeixinWXXUser
 import (
 	"errors"
 	"fmt"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 // ArgsGetOpenIDByUserInfo 从user数据中获取openid数据参数

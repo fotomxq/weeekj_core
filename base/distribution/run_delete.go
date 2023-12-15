@@ -1,7 +1,7 @@
 package BaseDistribution
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 )
 
 // 子服务2，检查关联服务的存在状态，如不存在将自动移除服务、子服务、子服务run

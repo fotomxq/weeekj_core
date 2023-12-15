@@ -1,7 +1,7 @@
 package RouterParams
 
 import (
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	"github.com/gin-gonic/gin"
 )
 

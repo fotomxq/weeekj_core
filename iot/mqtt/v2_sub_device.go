@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	IOTBind "gitee.com/weeekj/weeekj_core/v5/iot/bind"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	IOTBind "github.com/fotomxq/weeekj_core/v5/iot/bind"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
 )
 
 // subDeviceFind 查询设备

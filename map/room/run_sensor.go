@@ -1,16 +1,16 @@
 package MapRoom
 
 import (
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	IOTBind "gitee.com/weeekj/weeekj_core/v5/iot/bind"
-	IOTSensor "gitee.com/weeekj/weeekj_core/v5/iot/sensor"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	IOTBind "github.com/fotomxq/weeekj_core/v5/iot/bind"
+	IOTSensor "github.com/fotomxq/weeekj_core/v5/iot/sensor"
 )
 
 // 将统计数据整合迁移

@@ -2,7 +2,7 @@ package ServiceOrderWait
 
 import (
 	"errors"
-	ServiceOrderWaitFields "gitee.com/weeekj/weeekj_core/v5/service/order/wait_fields"
+	ServiceOrderWaitFields "github.com/fotomxq/weeekj_core/v5/service/order/wait_fields"
 )
 
 // ArgsCheckOrder 检查订单推送状态参数

@@ -3,10 +3,10 @@ package TMSTransport
 import (
 	"errors"
 	"fmt"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	MapMathArgs "gitee.com/weeekj/weeekj_core/v5/map/math/args"
-	MapMathPoint "gitee.com/weeekj/weeekj_core/v5/map/math/point"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	MapMathArgs "github.com/fotomxq/weeekj_core/v5/map/math/args"
+	MapMathPoint "github.com/fotomxq/weeekj_core/v5/map/math/point"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // 更新配送员统计数据

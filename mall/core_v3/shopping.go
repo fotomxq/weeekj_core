@@ -1,13 +1,13 @@
 package MallCoreV3
 
 import (
-	BaseQiniu "gitee.com/weeekj/weeekj_core/v5/base/qiniu"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseQiniu "github.com/fotomxq/weeekj_core/v5/base/qiniu"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"gopkg.in/errgo.v2/fmt/errors"
 	"time"
 
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
 )
 
 // ArgsGetShoppingList 获取购物车列表参数

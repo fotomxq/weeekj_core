@@ -1,8 +1,8 @@
 package RouterIOT
 
 import (
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	"github.com/gin-gonic/gin"
 )
 

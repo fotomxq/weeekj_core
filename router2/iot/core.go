@@ -1,9 +1,9 @@
 package Router2IOT
 
 import (
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
 )
 
 // ArgsCheckDeviceAndOrg 检查设备是否存在且授权参数

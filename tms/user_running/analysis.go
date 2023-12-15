@@ -1,8 +1,8 @@
 package TMSUserRunning
 
 import (
-	CoreSQLTime2 "gitee.com/weeekj/weeekj_core/v5/core/sql/time2"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQLTime2 "github.com/fotomxq/weeekj_core/v5/core/sql/time2"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsGetAnalysis 获取统计通用参数

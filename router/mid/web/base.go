@@ -1,9 +1,9 @@
 package RouterMidWeb
 
 import (
-	BaseStyle "gitee.com/weeekj/weeekj_core/v5/base/style"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	OrgDomain "gitee.com/weeekj/weeekj_core/v5/org/domain"
+	BaseStyle "github.com/fotomxq/weeekj_core/v5/base/style"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	OrgDomain "github.com/fotomxq/weeekj_core/v5/org/domain"
 	"github.com/gin-gonic/gin"
 )
 

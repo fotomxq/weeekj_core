@@ -3,13 +3,13 @@ package RouterSystem
 import (
 	"encoding/json"
 	"fmt"
-	CoreFile "gitee.com/weeekj/weeekj_core/v5/core/file"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	CoreReg "gitee.com/weeekj/weeekj_core/v5/core/reg"
-	RouterGinSet "gitee.com/weeekj/weeekj_core/v5/router/gin_set"
-	RouterParams "gitee.com/weeekj/weeekj_core/v5/router/params"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	CoreReg "github.com/fotomxq/weeekj_core/v5/core/reg"
+	RouterGinSet "github.com/fotomxq/weeekj_core/v5/router/gin_set"
+	RouterParams "github.com/fotomxq/weeekj_core/v5/router/params"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/gin-gonic/gin"
 )
 

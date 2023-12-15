@@ -2,10 +2,10 @@ package IOTMQTT
 
 import (
 	"encoding/json"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	ToolsAppUpdate "gitee.com/weeekj/weeekj_core/v5/tools/app_update"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	ToolsAppUpdate "github.com/fotomxq/weeekj_core/v5/tools/app_update"
 )
 
 // subDeviceOnline 设备在线情况更正

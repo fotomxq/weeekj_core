@@ -3,11 +3,11 @@ package FinancePay
 import (
 	"errors"
 	"fmt"
-	WeixinPayV3 "gitee.com/weeekj/weeekj_core/v5/base/weixin/pay_v3"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	WeixinPayV3 "github.com/fotomxq/weeekj_core/v5/base/weixin/pay_v3"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // payRefundOther 处理第三方退款

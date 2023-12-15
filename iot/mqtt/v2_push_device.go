@@ -3,7 +3,7 @@ package IOTMQTT
 import (
 	"encoding/json"
 	"fmt"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 )
 
 // PushDeviceRest 请求重启设备

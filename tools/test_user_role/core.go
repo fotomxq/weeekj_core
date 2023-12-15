@@ -1,10 +1,10 @@
 package ToolsTestUserRole
 
 import (
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
-	UserRole "gitee.com/weeekj/weeekj_core/v5/user/role"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
+	UserRole "github.com/fotomxq/weeekj_core/v5/user/role"
 	"testing"
 )
 

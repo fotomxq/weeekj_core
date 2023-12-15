@@ -2,14 +2,14 @@ package Market2Log
 
 import (
 	"errors"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	FinanceDeposit2 "gitee.com/weeekj/weeekj_core/v5/finance/deposit2"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	UserIntegral "gitee.com/weeekj/weeekj_core/v5/user/integral"
-	UserSubscription "gitee.com/weeekj/weeekj_core/v5/user/subscription"
-	UserTicket "gitee.com/weeekj/weeekj_core/v5/user/ticket"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	FinanceDeposit2 "github.com/fotomxq/weeekj_core/v5/finance/deposit2"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	UserIntegral "github.com/fotomxq/weeekj_core/v5/user/integral"
+	UserSubscription "github.com/fotomxq/weeekj_core/v5/user/subscription"
+	UserTicket "github.com/fotomxq/weeekj_core/v5/user/ticket"
 )
 
 // ArgsAppendLog 添加新的日志参数

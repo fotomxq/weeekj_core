@@ -1,14 +1,14 @@
 package RouterAPIBaseSortBase
 
 import (
-	BaseQiniu "gitee.com/weeekj/weeekj_core/v5/base/qiniu"
-	ClassSort "gitee.com/weeekj/weeekj_core/v5/class/sort"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	RouterMidAPI "gitee.com/weeekj/weeekj_core/v5/router/mid/api"
-	RouterParams "gitee.com/weeekj/weeekj_core/v5/router/params"
-	RouterReport "gitee.com/weeekj/weeekj_core/v5/router/report"
-	RouterUserRecord "gitee.com/weeekj/weeekj_core/v5/router/user/record"
+	BaseQiniu "github.com/fotomxq/weeekj_core/v5/base/qiniu"
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	RouterMidAPI "github.com/fotomxq/weeekj_core/v5/router/mid/api"
+	RouterParams "github.com/fotomxq/weeekj_core/v5/router/params"
+	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
+	RouterUserRecord "github.com/fotomxq/weeekj_core/v5/router/user/record"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 )

@@ -4,7 +4,7 @@ package BaseWeixinWXXMessageTemplate
 import (
 	"errors"
 	"fmt"
-	BaseWeixinWXXClientCore "gitee.com/weeekj/weeekj_core/v5/base/weixin/wxx/client"
+	BaseWeixinWXXClientCore "github.com/fotomxq/weeekj_core/v5/base/weixin/wxx/client"
 	"strconv"
 	"strings"
 )

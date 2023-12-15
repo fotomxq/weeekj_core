@@ -1,8 +1,8 @@
 package Router2Record
 
 import (
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	UserRecord2Mod "gitee.com/weeekj/weeekj_core/v5/user/record2/mod"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	UserRecord2Mod "github.com/fotomxq/weeekj_core/v5/user/record2/mod"
 	"github.com/gin-gonic/gin"
 	"strings"
 )

@@ -3,13 +3,13 @@ package TMSTransport
 import (
 	"errors"
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	MapMathArgs "gitee.com/weeekj/weeekj_core/v5/map/math/args"
-	MapMathPoint "gitee.com/weeekj/weeekj_core/v5/map/math/point"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceOrderMod "gitee.com/weeekj/weeekj_core/v5/service/order/mod"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	MapMathArgs "github.com/fotomxq/weeekj_core/v5/map/math/args"
+	MapMathPoint "github.com/fotomxq/weeekj_core/v5/map/math/point"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceOrderMod "github.com/fotomxq/weeekj_core/v5/service/order/mod"
 )
 
 // ArgsUpdateTransportFinish 更新配送单状态为完成参数

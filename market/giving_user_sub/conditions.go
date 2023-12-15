@@ -2,13 +2,13 @@ package MarketGivingUserSub
 
 import (
 	"errors"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	CoreSQLIDs "gitee.com/weeekj/weeekj_core/v5/core/sql/ids"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	UserSubscriptionMod "gitee.com/weeekj/weeekj_core/v5/user/subscription/mod"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	CoreSQLIDs "github.com/fotomxq/weeekj_core/v5/core/sql/ids"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	UserSubscriptionMod "github.com/fotomxq/weeekj_core/v5/user/subscription/mod"
 	"github.com/lib/pq"
 )
 

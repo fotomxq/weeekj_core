@@ -2,9 +2,9 @@ package Router2Mid
 
 import (
 	"errors"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
-	UserRole "gitee.com/weeekj/weeekj_core/v5/user/role"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
+	UserRole "github.com/fotomxq/weeekj_core/v5/user/role"
 	"github.com/gin-gonic/gin"
 )
 

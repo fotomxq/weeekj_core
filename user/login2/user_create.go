@@ -1,11 +1,11 @@
 package UserLogin2
 
 import (
-	AnalysisUserVisit "gitee.com/weeekj/weeekj_core/v5/analysis/user_visit"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
-	UserCore "gitee.com/weeekj/weeekj_core/v5/user/core"
+	AnalysisUserVisit "github.com/fotomxq/weeekj_core/v5/analysis/user_visit"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 // ArgsCreateUser 创建用户并完成邀请处理等机制的汇总处理参数

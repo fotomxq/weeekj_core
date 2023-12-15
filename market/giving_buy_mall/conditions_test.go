@@ -1,10 +1,10 @@
 package MarketGivingBuyMall
 
 import (
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	MarketGivingCore "gitee.com/weeekj/weeekj_core/v5/market/giving_core"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	MarketGivingCore "github.com/fotomxq/weeekj_core/v5/market/giving_core"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 	"testing"
 )
 

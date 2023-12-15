@@ -2,11 +2,11 @@ package ERPWarehouse
 
 import (
 	"errors"
-	AnalysisAny2 "gitee.com/weeekj/weeekj_core/v5/analysis/any2"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	ERPProduct "gitee.com/weeekj/weeekj_core/v5/erp/product"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	AnalysisAny2 "github.com/fotomxq/weeekj_core/v5/analysis/any2"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	ERPProduct "github.com/fotomxq/weeekj_core/v5/erp/product"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"math"
 	"time"
 )

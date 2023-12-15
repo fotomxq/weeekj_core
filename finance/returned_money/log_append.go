@@ -3,10 +3,10 @@ package FinanceReturnedMoney
 import (
 	"errors"
 	"fmt"
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	ServiceCompany "gitee.com/weeekj/weeekj_core/v5/service/company"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	ServiceCompany "github.com/fotomxq/weeekj_core/v5/service/company"
 )
 
 // ArgsAppendLog 添加一个回款记录参数

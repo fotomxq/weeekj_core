@@ -2,11 +2,11 @@ package IOTMQTT
 
 import (
 	"encoding/json"
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	IOTLog "gitee.com/weeekj/weeekj_core/v5/iot/log"
-	IOTMission "gitee.com/weeekj/weeekj_core/v5/iot/mission"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	IOTLog "github.com/fotomxq/weeekj_core/v5/iot/log"
+	IOTMission "github.com/fotomxq/weeekj_core/v5/iot/mission"
 )
 
 type subDeviceMissionResultData struct {

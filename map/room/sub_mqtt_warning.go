@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 
-	CoreLog "gitee.com/weeekj/weeekj_core/v5/core/log"
-	IOTBind "gitee.com/weeekj/weeekj_core/v5/iot/bind"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
-	OrgRecord "gitee.com/weeekj/weeekj_core/v5/org/record"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
+	IOTBind "github.com/fotomxq/weeekj_core/v5/iot/bind"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
+	OrgRecord "github.com/fotomxq/weeekj_core/v5/org/record"
 )
 
 // 请求紧急呼叫

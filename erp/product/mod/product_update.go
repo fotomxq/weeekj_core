@@ -1,7 +1,7 @@
 package ERPProductMod
 
 import (
-	CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	"github.com/lib/pq"
 )
 

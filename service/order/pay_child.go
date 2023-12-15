@@ -3,11 +3,11 @@ package ServiceOrder
 import (
 	"errors"
 	"fmt"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	FinancePay "gitee.com/weeekj/weeekj_core/v5/finance/pay"
-	FinancePayCreate "gitee.com/weeekj/weeekj_core/v5/finance/pay_create"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	FinancePay "github.com/fotomxq/weeekj_core/v5/finance/pay"
+	FinancePayCreate "github.com/fotomxq/weeekj_core/v5/finance/pay_create"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // ArgsCreateChildPay 支付订单子项目参数

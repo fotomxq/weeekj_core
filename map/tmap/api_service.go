@@ -3,7 +3,7 @@ package MapTMap
 import (
 	"encoding/xml"
 	"fmt"
-	CoreSQL2 "gitee.com/weeekj/weeekj_core/v5/core/sql2"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
 
 // GetGeocoder 逆地理编码查询

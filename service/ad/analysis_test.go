@@ -1,10 +1,10 @@
 package ServiceAD
 
 import (
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLTime "gitee.com/weeekj/weeekj_core/v5/core/sql/time"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
-	TestOrgArea "gitee.com/weeekj/weeekj_core/v5/tools/test_org_area"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
+	TestOrgArea "github.com/fotomxq/weeekj_core/v5/tools/test_org_area"
 	"testing"
 )
 

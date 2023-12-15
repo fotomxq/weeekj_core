@@ -1,9 +1,9 @@
 package Router2VCode
 
 import (
-	BaseVcode "gitee.com/weeekj/weeekj_core/v5/base/vcode"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	BaseVcode "github.com/fotomxq/weeekj_core/v5/base/vcode"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // CheckImage 检查图形验证码

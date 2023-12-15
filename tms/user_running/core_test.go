@@ -1,9 +1,9 @@
 package TMSUserRunning
 
 import (
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
-	ToolsTestUserRole "gitee.com/weeekj/weeekj_core/v5/tools/test_user_role"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
+	ToolsTestUserRole "github.com/fotomxq/weeekj_core/v5/tools/test_user_role"
 	"testing"
 )
 

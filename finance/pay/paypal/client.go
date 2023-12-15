@@ -3,7 +3,7 @@ package FinancePayPaypal
 import (
 	"errors"
 	"fmt"
-	OrgCore "gitee.com/weeekj/weeekj_core/v5/org/core"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	"github.com/plutov/paypal"
 )
 

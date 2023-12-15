@@ -2,10 +2,10 @@ package ERPDocument
 
 import (
 	"fmt"
-	CoreCache "gitee.com/weeekj/weeekj_core/v5/core/cache"
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLConfig "gitee.com/weeekj/weeekj_core/v5/core/sql/config"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
 // GetExcelAllSheet 获取文档所有子表

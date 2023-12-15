@@ -2,9 +2,9 @@ package AnalysisAny2
 
 import (
 	"fmt"
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	MapCityData "gitee.com/weeekj/weeekj_core/v5/map/city_data"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	MapCityData "github.com/fotomxq/weeekj_core/v5/map/city_data"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
 )
 

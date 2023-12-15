@@ -3,13 +3,13 @@ package MallCore
 import (
 	"testing"
 
-	CoreFilter "gitee.com/weeekj/weeekj_core/v5/core/filter"
-	CoreSQLAddress "gitee.com/weeekj/weeekj_core/v5/core/sql/address"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	ToolsTest "gitee.com/weeekj/weeekj_core/v5/tools/test"
-	TestOrg "gitee.com/weeekj/weeekj_core/v5/tools/test_org"
-	UserSubscription "gitee.com/weeekj/weeekj_core/v5/user/subscription"
-	UserTicket "gitee.com/weeekj/weeekj_core/v5/user/ticket"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
+	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
+	UserSubscription "github.com/fotomxq/weeekj_core/v5/user/subscription"
+	UserTicket "github.com/fotomxq/weeekj_core/v5/user/ticket"
 )
 
 var (

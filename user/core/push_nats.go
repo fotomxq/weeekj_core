@@ -1,6 +1,6 @@
 package UserCore
 
-import CoreNats "gitee.com/weeekj/weeekj_core/v5/core/nats"
+import CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 
 // 为用户创建自动化头像
 func pushNatsCreateAvatar(userID int64) {

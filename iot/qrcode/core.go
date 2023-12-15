@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	BaseConfig "gitee.com/weeekj/weeekj_core/v5/base/config"
-	BaseQRCode "gitee.com/weeekj/weeekj_core/v5/base/qrcode"
-	IOTDevice "gitee.com/weeekj/weeekj_core/v5/iot/device"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseQRCode "github.com/fotomxq/weeekj_core/v5/base/qrcode"
+	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
 )
 
 //二维码生成和存储模块

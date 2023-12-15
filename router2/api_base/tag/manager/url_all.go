@@ -2,11 +2,11 @@ package Router2APIBaseTagManager
 
 import (
 	"fmt"
-	ClassTag "gitee.com/weeekj/weeekj_core/v5/class/tag"
-	CoreSQLPages "gitee.com/weeekj/weeekj_core/v5/core/sql/pages"
-	Router2Mid "gitee.com/weeekj/weeekj_core/v5/router2/mid"
-	Router2Params "gitee.com/weeekj/weeekj_core/v5/router2/params"
-	Router2Record "gitee.com/weeekj/weeekj_core/v5/router2/record"
+	ClassTag "github.com/fotomxq/weeekj_core/v5/class/tag"
+	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
+	Router2Params "github.com/fotomxq/weeekj_core/v5/router2/params"
+	Router2Record "github.com/fotomxq/weeekj_core/v5/router2/record"
 	"github.com/lib/pq"
 )
 

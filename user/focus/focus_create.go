@@ -1,10 +1,10 @@
 package UserFocus
 
 import (
-	CoreSQL "gitee.com/weeekj/weeekj_core/v5/core/sql"
-	CoreSQLFrom "gitee.com/weeekj/weeekj_core/v5/core/sql/from"
-	Router2SystemConfig "gitee.com/weeekj/weeekj_core/v5/router2/system_config"
-	UserFocus2 "gitee.com/weeekj/weeekj_core/v5/user/focus2"
+	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
+	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	UserFocus2 "github.com/fotomxq/weeekj_core/v5/user/focus2"
 )
 
 // ArgsCreate 创建关注参数
