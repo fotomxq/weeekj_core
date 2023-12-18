@@ -21,7 +21,7 @@ func TestCreateSMS(t *testing.T) {
 		ConfigID:   newConfigData.ID,
 		Token:      int64(newUpdateHash),
 		NationCode: "86",
-		Phone:      "17635705566",
+		Phone:      "17000000001",
 		FromInfo: CoreSQLFrom.FieldsFrom{
 			System: "user",
 			ID:     1,

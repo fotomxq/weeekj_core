@@ -33,7 +33,7 @@ func TestCreateUser(t *testing.T) {
 		Name:                 "test_test",
 		Password:             "test_testXXX",
 		NationCode:           "86",
-		Phone:                "17635705567",
+		Phone:                "17000000001",
 		AllowSkipPhoneVerify: true,
 		AllowSkipWaitEmail:   true,
 		Email:                "xxxxx@qq.com",
@@ -87,7 +87,7 @@ func TestGetUserByPhone(t *testing.T) {
 	var err error
 	userData, err = GetUserByPhone(&ArgsGetUserByPhone{
 		OrgID:      0,
-		NationCode: "86", Phone: "17635705567",
+		NationCode: "86", Phone: "17000000001",
 	})
 	if err != nil {
 		t.Error(err)

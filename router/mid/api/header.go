@@ -7,7 +7,6 @@ import (
 	BasePedometer "github.com/fotomxq/weeekj_core/v5/base/pedometer"
 	BaseSafe "github.com/fotomxq/weeekj_core/v5/base/safe"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	RouterMidCore "github.com/fotomxq/weeekj_core/v5/router/mid/core"
 	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
@@ -28,9 +27,7 @@ func HeaderBaseData(c *gin.Context) {
 		return
 	}
 	//如果关闭debug / 启动了IP安全检查 / 计数器超出限制
-	if !Router2SystemConfig.Debug && SafetyIPON && BasePedometer.CheckData(&CoreRPCX.ArgsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "safe-ip", Mark: ipAddr},
-	}) {
+	if !Router2SystemConfig.Debug && SafetyIPON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{System: "safe-ip", Mark: ipAddr}) {
 		BaseSafe.CreateLog(&BaseSafe.ArgsCreateLog{
 			System: "api.token_ban",
 			Level:  1,
@@ -65,7 +62,7 @@ func HeaderLoginBefore(c *gin.Context) {
 	if err != nil {
 		SafetyTokenON = true
 	}
-	if SafetyTokenON && BasePedometer.CheckData(&CoreRPCX.ArgsFrom{From: CoreSQLFrom.FieldsFrom{System: "safe_token", ID: tokenInfo.ID}}) {
+	if SafetyTokenON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{System: "safe_token", ID: tokenInfo.ID}) {
 		BaseSafe.CreateLog(&BaseSafe.ArgsCreateLog{
 			System: "api.token_ban",
 			Level:  1,
@@ -101,7 +98,7 @@ func HeaderLoggedUser(c *gin.Context) {
 	if err != nil {
 		SafetyTokenON = true
 	}
-	if SafetyTokenON && BasePedometer.CheckData(&CoreRPCX.ArgsFrom{From: CoreSQLFrom.FieldsFrom{System: "safe-token", ID: tokenInfo.ID}}) {
+	if SafetyTokenON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{System: "safe-token", ID: tokenInfo.ID}) {
 		BaseSafe.CreateLog(&BaseSafe.ArgsCreateLog{
 			System: "api.token_ban",
 			Level:  1,
@@ -125,7 +122,7 @@ func HeaderLoggedUser(c *gin.Context) {
 	if err != nil {
 		SafetyUserON = true
 	}
-	if SafetyUserON && BasePedometer.CheckData(&CoreRPCX.ArgsFrom{From: CoreSQLFrom.FieldsFrom{System: "safe_user", ID: userData.Info.ID}}) {
+	if SafetyUserON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{System: "safe_user", ID: userData.Info.ID}) {
 		BaseSafe.CreateLog(&BaseSafe.ArgsCreateLog{
 			System: "api.token_ban",
 			Level:  1,

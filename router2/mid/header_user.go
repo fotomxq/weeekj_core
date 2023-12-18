@@ -5,7 +5,6 @@ import (
 	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
 	BasePedometer "github.com/fotomxq/weeekj_core/v5/base/pedometer"
 	BaseSafe "github.com/fotomxq/weeekj_core/v5/base/safe"
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/gin-gonic/gin"
@@ -25,7 +24,7 @@ func headerLoggedUser(c *gin.Context) {
 	if err != nil {
 		SafetyTokenON = true
 	}
-	if SafetyTokenON && BasePedometer.CheckData(&CoreRPCX.ArgsFrom{From: CoreSQLFrom.FieldsFrom{System: "safe-token", ID: tokenInfo.ID}}) {
+	if SafetyTokenON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{From: CoreSQLFrom.FieldsFrom{System: "safe-token", ID: tokenInfo.ID}}) {
 		BaseSafe.CreateLog(&BaseSafe.ArgsCreateLog{
 			System: "api.token_ban",
 			Level:  1,
@@ -48,7 +47,7 @@ func headerLoggedUser(c *gin.Context) {
 	if err != nil {
 		SafetyUserON = true
 	}
-	if SafetyUserON && BasePedometer.CheckData(&CoreRPCX.ArgsFrom{From: CoreSQLFrom.FieldsFrom{System: "safe_user", ID: userID}}) {
+	if SafetyUserON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{From: CoreSQLFrom.FieldsFrom{System: "safe_user", ID: userID}}) {
 		BaseSafe.CreateLog(&BaseSafe.ArgsCreateLog{
 			System: "api.token_ban",
 			Level:  1,

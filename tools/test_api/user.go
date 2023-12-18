@@ -14,7 +14,7 @@ var (
 	LoginUsername   = "weeekj_admin"
 	LoginPassword   = "weeekj_admin_weeekj_admin"
 	LoginNationCode = "86"
-	LoginPhone      = "17635705566"
+	LoginPhone      = "17000000001"
 )
 
 // 使用标准接口登陆

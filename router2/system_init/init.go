@@ -6,7 +6,6 @@ import (
 	AnalysisAny "github.com/fotomxq/weeekj_core/v5/analysis/any"
 	AnalysisBindVisit "github.com/fotomxq/weeekj_core/v5/analysis/bind_visit"
 	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
-	BaseDistribution "github.com/fotomxq/weeekj_core/v5/base/distribution"
 	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
 	BaseFileSys2 "github.com/fotomxq/weeekj_core/v5/base/filesys2"
 	BaseIPAddr "github.com/fotomxq/weeekj_core/v5/base/ipaddr"
@@ -68,11 +67,6 @@ import (
 )
 
 func Init() (err error) {
-	//分布式模块
-	if err = BaseDistribution.Init(); err != nil {
-		err = errors.New("base distribution, " + err.Error())
-		return
-	}
 	//postgresql数据库监控服务
 	BaseMonitorPostgresql.OpenSub = OpenSub
 	BaseMonitorPostgresql.Init()

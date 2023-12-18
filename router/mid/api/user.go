@@ -6,7 +6,6 @@ import (
 	BasePedometer "github.com/fotomxq/weeekj_core/v5/base/pedometer"
 	BaseSafe "github.com/fotomxq/weeekj_core/v5/base/safe"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	RouterReport "github.com/fotomxq/weeekj_core/v5/router/report"
 	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
@@ -171,7 +170,7 @@ func CheckUserPermission(c *gin.Context, permissionMark string) bool {
 		Des:    fmt.Sprint("用户不具备权限[", permissionMark, "],但尝试访问API,URL:", c.Request.URL),
 	})
 	//安全事件
-	if _, err := BasePedometer.NextData(&CoreRPCX.ArgsFrom{
+	if _, err := BasePedometer.NextData(CoreSQLFrom.FieldsFrom{
 		From: CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userData.Info.ID},
 	}); err != nil {
 		CoreLog.Error("cannot add user by safe, ", err)

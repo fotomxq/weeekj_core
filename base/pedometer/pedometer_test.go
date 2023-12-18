@@ -1,7 +1,6 @@
 package PedometerCore
 
 import (
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -65,9 +64,7 @@ func TestSetData(t *testing.T) {
 }
 
 func TestGetData(t *testing.T) {
-	newData1, err := GetData(&CoreRPCX.ArgsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "user", ID: 1, Mark: "mark"},
-	})
+	newData1, err := GetData(CoreSQLFrom.FieldsFrom{System: "user", ID: 1, Mark: "mark"})
 	if err != nil {
 		t.Error(err)
 	} else {
@@ -84,9 +81,7 @@ func TestClearData(t *testing.T) {
 }
 
 func TestNextData(t *testing.T) {
-	if newData, err := NextData(&CoreRPCX.ArgsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "prev", ID: 1, Mark: "mark"},
-	}); err != nil {
+	if newData, err := NextData(CoreSQLFrom.FieldsFrom{System: "prev", ID: 1, Mark: "mark"}); err != nil {
 		t.Error(err)
 	} else {
 		t.Log("change next new data: ", newData)
@@ -94,9 +89,7 @@ func TestNextData(t *testing.T) {
 }
 
 func TestPrevData(t *testing.T) {
-	if newData, err := PrevData(&CoreRPCX.ArgsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "prev", ID: 1, Mark: "mark"},
-	}); err != nil {
+	if newData, err := PrevData(CoreSQLFrom.FieldsFrom{System: "prev", ID: 1, Mark: "mark"}); err != nil {
 		t.Error(err)
 	} else {
 		t.Log("change prev new data: ", newData)
@@ -104,33 +97,25 @@ func TestPrevData(t *testing.T) {
 }
 
 func TestGetCount(t *testing.T) {
-	newData := GetCount(&CoreRPCX.ArgsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "prev", ID: 1, Mark: "mark"},
-	})
+	newData := GetCount(CoreSQLFrom.FieldsFrom{System: "prev", ID: 1, Mark: "mark"})
 	t.Log("get data by mark: ", newData)
 }
 
 func TestCheckData(t *testing.T) {
-	newData := CheckData(&CoreRPCX.ArgsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "prev", ID: 1, Mark: "mark"},
-	})
+	newData := CheckData(CoreSQLFrom.FieldsFrom{System: "prev", ID: 1, Mark: "mark"})
 	t.Log("get data by mark: ", newData)
 }
 
 // 检查陌生IP数据
 func TestCheckDataByIPNoHave(t *testing.T) {
-	newData := CheckData(&CoreRPCX.ArgsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "x1", ID: 1, Mark: "213.123.123.213"},
-	})
+	newData := CheckData(CoreSQLFrom.FieldsFrom{System: "x1", ID: 1, Mark: "213.123.123.213"})
 	if newData {
 		t.Log("get data by mark: ", newData)
 	}
 }
 
 func TestReturnData(t *testing.T) {
-	newData, err := ReturnData(&CoreRPCX.ArgsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "prev", ID: 1, Mark: "mark"},
-	})
+	newData, err := ReturnData(CoreSQLFrom.FieldsFrom{System: "prev", ID: 1, Mark: "mark"})
 	if err != nil {
 		t.Error(err)
 	} else {

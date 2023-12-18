@@ -8,7 +8,6 @@ import (
 	BaseQiniu "github.com/fotomxq/weeekj_core/v5/base/qiniu"
 	BaseToken2 "github.com/fotomxq/weeekj_core/v5/base/token2"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	OrgUserMod "github.com/fotomxq/weeekj_core/v5/org/user/mod"
@@ -378,7 +377,7 @@ func checkUserNotBan(c *gin.Context, userInfo *UserCore.FieldsUserType) bool {
 	if err != nil {
 		SafetyUserON = true
 	}
-	if SafetyUserON && BasePedometer.CheckData(&CoreRPCX.ArgsFrom{
+	if SafetyUserON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{
 		From: CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userInfo.ID},
 	}) {
 		RouterReport.ErrorLog(c, "login user is ban", nil, "user_ban", "用户登陆异常，请稍后再试")

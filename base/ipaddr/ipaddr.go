@@ -2,9 +2,7 @@ package BaseIPAddr
 
 import (
 	"errors"
-	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -34,34 +32,30 @@ func Init() (err error) {
 }
 
 // SetOpenBan 设置是否启用黑名单
-func SetOpenBan(args *CoreRPCX.ArgsOpen) {
-	allowOpenBan = args.Open
+func SetOpenBan(args bool) {
+	allowOpenBan = args
 }
 
 // SetOpenWhite 设置是否启用白名单
-func SetOpenWhite(args *CoreRPCX.ArgsOpen) {
-	allowOpenWhite = args.Open
+func SetOpenWhite(args bool) {
+	allowOpenWhite = args
 }
 
 // CheckAuto 自动化通过处理
 // 不能是ban，同时必须white
 // 可根据情况跳过相关设定，但注意是全局跳过，否则必须遵守上述规则
-func CheckAuto(args *CoreRPCX.ArgsString) bool {
-	isBan := CheckIsBan(&CoreRPCX.ArgsString{
-		String: args.String,
-	})
-	isWhite := CheckIsWhite(&CoreRPCX.ArgsString{
-		String: args.String,
-	})
+func CheckAuto(args string) bool {
+	isBan := CheckIsBan(args)
+	isWhite := CheckIsWhite(args)
 	return isWhite && !isBan
 }
 
 // CheckIsBan 检查IP是否在黑名单
-func CheckIsBan(args *CoreRPCX.ArgsString) bool {
+func CheckIsBan(args string) bool {
 	if !allowOpenBan {
 		return false
 	}
-	data, err := getIP(args.String)
+	data, err := getIP(args)
 	if err != nil {
 		return false
 	}
@@ -74,7 +68,7 @@ func CheckIsBan(args *CoreRPCX.ArgsString) bool {
 		return false
 	}
 	if !data.IsBan {
-		matchData := checkMatchData(args.String)
+		matchData := checkMatchData(args)
 		for _, v := range matchData {
 			if v.IsBan {
 				return true
@@ -85,11 +79,11 @@ func CheckIsBan(args *CoreRPCX.ArgsString) bool {
 }
 
 // CheckIsWhite 检查IP是否在白名单
-func CheckIsWhite(args *CoreRPCX.ArgsString) bool {
+func CheckIsWhite(args string) bool {
 	if !allowOpenWhite {
 		return true
 	}
-	data, err := getIP(args.String)
+	data, err := getIP(args)
 	if err != nil {
 		return false
 	}
@@ -102,7 +96,7 @@ func CheckIsWhite(args *CoreRPCX.ArgsString) bool {
 		return false
 	}
 	if !data.IsWhite {
-		matchData := checkMatchData(args.String)
+		matchData := checkMatchData(args)
 		for _, v := range matchData {
 			if v.IsWhite {
 				return true
@@ -122,7 +116,6 @@ type ArgsGetList struct {
 
 // GetList 获取列表
 func GetList(args *ArgsGetList) (dataList []FieldsIPAddr, dataCount int64, err error) {
-	where := "ip ILIKE '%' || :search || '%'"
 	maps := map[string]interface{}{
 		"search": args.Search,
 	}
@@ -131,11 +124,8 @@ func GetList(args *ArgsGetList) (dataList []FieldsIPAddr, dataCount int64, err e
 		&dataList,
 		"core_ipaddr",
 		"id",
-		fmt.Sprint(
-			"SELECT id, create_at, update_at, expire_at, ip, is_match, is_ban, is_white FROM core_ipaddr WHERE ",
-			where,
-		),
-		where,
+		"SELECT id, create_at, update_at, expire_at, ip, is_match, is_ban, is_white FROM core_ipaddr WHERE ip ILIKE '%' || :search || '%'",
+		"ip ILIKE '%' || :search || '%'",
 		maps,
 		&args.Pages,
 		[]string{"id", "create_at", "update_at", "expire_at", "ip"},

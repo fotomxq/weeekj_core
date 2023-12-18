@@ -5,7 +5,6 @@ import (
 	BasePedometer "github.com/fotomxq/weeekj_core/v5/base/pedometer"
 	BaseSafe "github.com/fotomxq/weeekj_core/v5/base/safe"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -98,7 +97,7 @@ func checkPermissionUser(c *gin.Context, userID, orgID int64, permissionMarks []
 		return true
 	}
 	//安全事件
-	if _, err := BasePedometer.NextData(&CoreRPCX.ArgsFrom{
+	if _, err := BasePedometer.NextData(CoreSQLFrom.FieldsFrom{
 		From: CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userID},
 	}); err != nil {
 		reportGin(c, true, 0, err, "add user by safe", false, "err_permission", 0, nil)

@@ -79,7 +79,7 @@ func TestSendTemplate(t *testing.T) {
 		},
 		CreateInfo:  CoreSQLFrom.FieldsFrom{},
 		SendAt:      time.Time{},
-		ToEmailList: []string{"fotomxq@qq.com"},
+		ToEmailList: []string{"fotomxq@gmail.com"},
 	})
 	ToolsTest.ReportError(t, err)
 }

@@ -8,7 +8,6 @@ import (
 	BaseSafe "github.com/fotomxq/weeekj_core/v5/base/safe"
 	BaseToken2 "github.com/fotomxq/weeekj_core/v5/base/token2"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/gin-gonic/gin"
@@ -27,7 +26,7 @@ func headerBaseData(c *gin.Context) {
 		return
 	}
 	//如果关闭debug / 启动了IP安全检查 / 计数器超出限制
-	if !Router2SystemConfig.Debug && SafetyIPON && BasePedometer.CheckData(&CoreRPCX.ArgsFrom{
+	if !Router2SystemConfig.Debug && SafetyIPON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{
 		From: CoreSQLFrom.FieldsFrom{System: "safe-ip", Mark: ipAddr},
 	}) {
 		BaseSafe.CreateLog(&BaseSafe.ArgsCreateLog{
@@ -58,7 +57,7 @@ func headerLoginBefore(c *gin.Context) {
 	if err != nil {
 		SafetyTokenON = true
 	}
-	if SafetyTokenON && BasePedometer.CheckData(&CoreRPCX.ArgsFrom{From: CoreSQLFrom.FieldsFrom{System: "safe_token", ID: tokenInfo.ID}}) {
+	if SafetyTokenON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{From: CoreSQLFrom.FieldsFrom{System: "safe_token", ID: tokenInfo.ID}}) {
 		BaseSafe.CreateLog(&BaseSafe.ArgsCreateLog{
 			System: "api.token_ban",
 			Level:  1,

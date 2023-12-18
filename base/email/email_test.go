@@ -12,7 +12,7 @@ import (
 
 var (
 	serverID    int64
-	sendToEmail = "fotomxq@qq.com"
+	sendToEmail = "fotomxq@gmail.com"
 
 	newData FieldsEmailType
 

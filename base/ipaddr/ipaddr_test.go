@@ -2,7 +2,6 @@ package BaseIPAddr
 
 import (
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
 	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
@@ -26,15 +25,11 @@ func TestInit(t *testing.T) {
 }
 
 func TestSetOpenBan(t *testing.T) {
-	SetOpenBan(&CoreRPCX.ArgsOpen{
-		Open: true,
-	})
+	SetOpenBan(true)
 }
 
 func TestSetOpenWhite(t *testing.T) {
-	SetOpenWhite(&CoreRPCX.ArgsOpen{
-		Open: true,
-	})
+	SetOpenWhite(true)
 }
 
 func TestSetBan(t *testing.T) {
@@ -43,22 +38,14 @@ func TestSetBan(t *testing.T) {
 	}); err != nil {
 		t.Error(err)
 	}
-	if !CheckIsBan(&CoreRPCX.ArgsString{
-		String: "0.0.0.1",
-	}) {
+	if !CheckIsBan("0.0.0.1") {
 		t.Error("check is ban is false")
 	}
-	SetOpenBan(&CoreRPCX.ArgsOpen{
-		Open: false,
-	})
-	if CheckIsBan(&CoreRPCX.ArgsString{
-		String: "0.0.0.1",
-	}) {
+	SetOpenBan(false)
+	if CheckIsBan("0.0.0.1") {
 		t.Error("change open ban is false, but ip is ban")
 	}
-	SetOpenBan(&CoreRPCX.ArgsOpen{
-		Open: true,
-	})
+	SetOpenBan(true)
 }
 
 func TestSetWhite(t *testing.T) {
@@ -67,22 +54,14 @@ func TestSetWhite(t *testing.T) {
 	}); err != nil {
 		t.Error(err)
 	}
-	if !CheckIsWhite(&CoreRPCX.ArgsString{
-		String: "0.0.0.2",
-	}) {
+	if !CheckIsWhite("0.0.0.2") {
 		t.Error("check is white is false")
 	}
-	SetOpenWhite(&CoreRPCX.ArgsOpen{
-		Open: false,
-	})
-	if !CheckIsWhite(&CoreRPCX.ArgsString{
-		String: "0.0.0.2",
-	}) {
+	SetOpenWhite(false)
+	if !CheckIsWhite("0.0.0.2") {
 		t.Error("change open white is false, but ip is not white")
 	}
-	SetOpenWhite(&CoreRPCX.ArgsOpen{
-		Open: true,
-	})
+	SetOpenWhite(true)
 	if err := SetWhite(&ArgsSetWhite{
 		IP: "192.168.1.252", B: true, ExpireTime: "2021-01-25T16:00:00.000Z",
 	}); err != nil {
@@ -96,23 +75,17 @@ func TestSetWhite(t *testing.T) {
 }
 
 func TestCheckAuto(t *testing.T) {
-	if CheckAuto(&CoreRPCX.ArgsString{
-		String: "0.0.0.1",
-	}) {
+	if CheckAuto("0.0.0.1") {
 		t.Error("check auto 0.0.0.1 is true")
 	}
-	if !CheckAuto(&CoreRPCX.ArgsString{
-		String: "0.0.0.2",
-	}) {
+	if !CheckAuto("0.0.0.2") {
 		t.Error("check auto 0.0.0.2 is false")
 	}
 }
 
 // 检查一个不存在的IP
 func TestCheckIsBanNotHave(t *testing.T) {
-	if CheckAuto(&CoreRPCX.ArgsString{
-		String: "123.222.312.442",
-	}) {
+	if CheckAuto("123.222.312.442") {
 		t.Error("check auto 0.0.0.1 is true")
 	}
 }
@@ -144,17 +117,13 @@ func TestCheckIP(t *testing.T) {
 }
 
 func TestCheckIsBan(t *testing.T) {
-	if !CheckIsBan(&CoreRPCX.ArgsString{
-		String: "0.0.0.1",
-	}) {
+	if !CheckIsBan("0.0.0.1") {
 		t.Error("check is ban is false")
 	}
 }
 
 func TestCheckIsWhite(t *testing.T) {
-	if !CheckIsWhite(&CoreRPCX.ArgsString{
-		String: "0.0.0.2",
-	}) {
+	if !CheckIsWhite("0.0.0.2") {
 		t.Error("check is white is false")
 	}
 }
@@ -185,9 +154,7 @@ func TestClearIP(t *testing.T) {
 	}); err != nil {
 		t.Error(err)
 	}
-	if CheckIsBan(&CoreRPCX.ArgsString{
-		String: "0.0.0.1",
-	}) {
+	if CheckIsBan("0.0.0.1") {
 		t.Error("check is white is true")
 	}
 }
@@ -196,9 +163,7 @@ func TestClearAll(t *testing.T) {
 	if err := ClearAll(); err != nil {
 		t.Error(err)
 	}
-	if CheckIsWhite(&CoreRPCX.ArgsString{
-		String: "0.0.0.2",
-	}) {
+	if CheckIsWhite("0.0.0.2") {
 		t.Error("check is white is true")
 	}
 }

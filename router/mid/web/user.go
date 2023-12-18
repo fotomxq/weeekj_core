@@ -6,7 +6,6 @@ import (
 	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
 	BasePedometer "github.com/fotomxq/weeekj_core/v5/base/pedometer"
 	BaseSafe "github.com/fotomxq/weeekj_core/v5/base/safe"
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	RouterMidAPI "github.com/fotomxq/weeekj_core/v5/router/mid/api"
 	"github.com/gin-gonic/gin"
@@ -27,7 +26,7 @@ func getUserData(c *gin.Context) (bool, error) {
 	if err != nil {
 		SafetyUserON = true
 	}
-	if SafetyUserON && BasePedometer.CheckData(&CoreRPCX.ArgsFrom{From: CoreSQLFrom.FieldsFrom{System: "safe_user", ID: userData.Info.ID}}) {
+	if SafetyUserON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{System: "safe_user", ID: userData.Info.ID}) {
 		BaseSafe.CreateLog(&BaseSafe.ArgsCreateLog{
 			System: "api.token_ban",
 			Level:  1,

@@ -3,7 +3,6 @@ package PedometerCore
 import (
 	"errors"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
-	CoreRPCX "github.com/fotomxq/weeekj_core/v5/core/rpcx"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -11,15 +10,15 @@ import (
 )
 
 // 获取数据
-func GetData(args *CoreRPCX.ArgsFrom) (data FieldsPedometerType, err error) {
-	err = args.From.GetFromOne(Router2SystemConfig.MainDB.DB, "core_pedometer", "id, create_at, update_at, expire_at, create_info, count", "create_info", &data)
+func GetData(args CoreSQLFrom.FieldsFrom) (data FieldsPedometerType, err error) {
+	err = args.GetFromOne(Router2SystemConfig.MainDB.DB, "core_pedometer", "id, create_at, update_at, expire_at, create_info, count", "create_info", &data)
 	return
 }
 
 // 进一位
 // 自动协调进一步或退一步
-func NextData(args *CoreRPCX.ArgsFrom) (int, error) {
-	count, err := saveData(args.From, 1, false, false)
+func NextData(args CoreSQLFrom.FieldsFrom) (int, error) {
+	count, err := saveData(args, 1, false, false)
 	if err != nil {
 		return 0, err
 	}
@@ -27,8 +26,8 @@ func NextData(args *CoreRPCX.ArgsFrom) (int, error) {
 }
 
 // 回退一步
-func PrevData(args *CoreRPCX.ArgsFrom) (int, error) {
-	count, err := saveData(args.From, -1, false, false)
+func PrevData(args CoreSQLFrom.FieldsFrom) (int, error) {
+	count, err := saveData(args, -1, false, false)
 	if err != nil {
 		return 0, err
 	}
@@ -36,8 +35,8 @@ func PrevData(args *CoreRPCX.ArgsFrom) (int, error) {
 }
 
 // 归位数据
-func ReturnData(args *CoreRPCX.ArgsFrom) (int, error) {
-	count, err := saveData(args.From, 0, true, false)
+func ReturnData(args CoreSQLFrom.FieldsFrom) (int, error) {
+	count, err := saveData(args, 0, true, false)
 	if err != nil {
 		return 0, err
 	}
@@ -84,7 +83,7 @@ func ClearData(args *ArgsClearData) error {
 }
 
 // 检查当前有多少个
-func GetCount(args *CoreRPCX.ArgsFrom) int {
+func GetCount(args CoreSQLFrom.FieldsFrom) int {
 	data, err := GetData(args)
 	if err != nil {
 		return 0
@@ -93,12 +92,12 @@ func GetCount(args *CoreRPCX.ArgsFrom) int {
 }
 
 // 达到max/min时反馈true
-func CheckData(args *CoreRPCX.ArgsFrom) bool {
+func CheckData(args CoreSQLFrom.FieldsFrom) bool {
 	data, err := GetData(args)
 	if err != nil {
 		return false
 	}
-	configData, err := getConfig(args.From.Mark)
+	configData, err := getConfig(args.Mark)
 	if err != nil {
 		//如果配置不存在则自动放行，避免异常
 		return false
@@ -133,9 +132,7 @@ func saveData(createInfo CoreSQLFrom.FieldsFrom, stepCount int, needReturn bool,
 		expireTime = CoreFilter.GetNowTime().Add(time.Minute * 30)
 	}
 	//尝试获取数据
-	data, err := GetData(&CoreRPCX.ArgsFrom{
-		From: createInfo,
-	})
+	data, err := GetData(createInfo)
 	//写入数据
 	if err == nil {
 		var count int

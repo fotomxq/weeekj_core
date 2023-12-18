@@ -5,7 +5,6 @@ import (
 	"fmt"
 	AnalysisAny "github.com/fotomxq/weeekj_core/v5/analysis/any"
 	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
-	BaseDistribution "github.com/fotomxq/weeekj_core/v5/base/distribution"
 	BaseIPAddr "github.com/fotomxq/weeekj_core/v5/base/ipaddr"
 	BaseTempFile "github.com/fotomxq/weeekj_core/v5/base/temp_file"
 	BaseVcode "github.com/fotomxq/weeekj_core/v5/base/vcode"
@@ -33,11 +32,6 @@ import (
 )
 
 func moduleInit() (err error) {
-	//分布式模块
-	if err = BaseDistribution.Init(); err != nil {
-		err = errors.New("base distribution, " + err.Error())
-		return
-	}
 	//配置模块
 	if err = BaseConfig.Init(); err != nil {
 		err = errors.New("base config, " + err.Error())

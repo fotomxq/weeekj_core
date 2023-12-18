@@ -12,7 +12,7 @@ func TestInit4(t *testing.T) {
 func TestCreateTo(t *testing.T) {
 	var err error
 	toData, err = CreateTo(&ArgsCreateTo{
-		UserID: 10, Name: "送达测试人", Des: "送达人描述", PhoneNationCode: "86", Phone: "17635705566", Email: "fotomxq@qq.com",
+		UserID: 10, Name: "送达测试人", Des: "送达人描述", PhoneNationCode: "86", Phone: "17000000001", Email: "fotomxq@gmail.com",
 	})
 	if err != nil {
 		if err.Error() != "user id have bind to data" {
@@ -50,7 +50,7 @@ func TestGetToByUserID(t *testing.T) {
 
 func TestUpdateTo(t *testing.T) {
 	if err := UpdateTo(&ArgsUpdateTo{
-		ID: toData.ID, UserID: toData.ID, Name: "送达人修改1", Des: "送达人描述修改1", PhoneNationCode: "86", Phone: "17635705567", Email: "fotomxq@qq.com",
+		ID: toData.ID, UserID: toData.ID, Name: "送达人修改1", Des: "送达人描述修改1", PhoneNationCode: "86", Phone: "17000000001", Email: "fotomxq@gmail.com",
 	}); err != nil {
 		t.Error(err)
 	} else {

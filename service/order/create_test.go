@@ -40,7 +40,7 @@ func TestCreate(t *testing.T) {
 			Latitude:   15,
 			Name:       "",
 			NationCode: "86",
-			Phone:      "17635705566",
+			Phone:      "17000000001",
 		},
 		AddressTo: CoreSQLAddress.FieldsAddress{
 			Country:    86,
@@ -52,7 +52,7 @@ func TestCreate(t *testing.T) {
 			Latitude:   15,
 			Name:       "",
 			NationCode: "86",
-			Phone:      "17635705566",
+			Phone:      "17000000001",
 		},
 		Goods: []ServiceOrderWaitFields.FieldsGood{
 			{
