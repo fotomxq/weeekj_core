@@ -187,9 +187,7 @@ func checkUserNotBan(c *Router2Mid.RouterURLHeaderC, userInfo *UserCore.FieldsUs
 	if err != nil {
 		SafetyUserON = true
 	}
-	if SafetyUserON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userInfo.ID},
-	}) {
+	if SafetyUserON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userInfo.ID}) {
 		Router2Mid.ReportWarnLog(c, "login user is ban", nil, "err_user_ban")
 		return false
 	}

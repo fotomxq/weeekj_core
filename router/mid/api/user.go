@@ -170,9 +170,7 @@ func CheckUserPermission(c *gin.Context, permissionMark string) bool {
 		Des:    fmt.Sprint("用户不具备权限[", permissionMark, "],但尝试访问API,URL:", c.Request.URL),
 	})
 	//安全事件
-	if _, err := BasePedometer.NextData(CoreSQLFrom.FieldsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userData.Info.ID},
-	}); err != nil {
+	if _, err := BasePedometer.NextData(CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userData.Info.ID}); err != nil {
 		CoreLog.Error("cannot add user by safe, ", err)
 	}
 	//反馈

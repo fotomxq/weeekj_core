@@ -377,9 +377,7 @@ func checkUserNotBan(c *gin.Context, userInfo *UserCore.FieldsUserType) bool {
 	if err != nil {
 		SafetyUserON = true
 	}
-	if SafetyUserON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userInfo.ID},
-	}) {
+	if SafetyUserON && BasePedometer.CheckData(CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userInfo.ID}) {
 		RouterReport.ErrorLog(c, "login user is ban", nil, "user_ban", "用户登陆异常，请稍后再试")
 		return false
 	}

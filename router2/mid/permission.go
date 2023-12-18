@@ -97,9 +97,7 @@ func checkPermissionUser(c *gin.Context, userID, orgID int64, permissionMarks []
 		return true
 	}
 	//安全事件
-	if _, err := BasePedometer.NextData(CoreSQLFrom.FieldsFrom{
-		From: CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userID},
-	}); err != nil {
+	if _, err := BasePedometer.NextData(CoreSQLFrom.FieldsFrom{System: "safe-user", ID: userID}); err != nil {
 		reportGin(c, true, 0, err, "add user by safe", false, "err_permission", 0, nil)
 		return false
 	}
