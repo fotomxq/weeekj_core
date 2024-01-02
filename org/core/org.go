@@ -279,6 +279,17 @@ func GetOrgNameByID(id int64) string {
 	return data.Name
 }
 
+func GetOrgKeyByID(id int64) string {
+	if id < 1 {
+		return ""
+	}
+	data := getOrgByID(id)
+	if data.ID < 1 {
+		return ""
+	}
+	return data.Key
+}
+
 // GetOrgByName 根据名称获取企业
 func GetOrgByName(name string, parentID int64) (orgData FieldsOrg) {
 	err := Router2SystemConfig.MainDB.Get(&orgData, "SELECT id FROM org_core WHERE name = $1 AND parent_id = $2 AND delete_at < to_timestamp(1000000)", name, parentID)
