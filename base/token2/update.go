@@ -48,6 +48,31 @@ func updateExpire(data *FieldsToken) {
 	})
 }
 
+// ArgsUpdateExpire 更新过期时间参数
+type ArgsUpdateExpire struct {
+	//ID
+	ID int64
+	//过期时间
+	// 请使用RFC3339Nano结构时间，eg: 2020-11-03T08:31:13.314Z
+	// JS中使用new Date().toISOString()
+	ExpireAt string
+}
+
+// UpdateExpire 更新过期时间
+func UpdateExpire(args *ArgsUpdateExpire) error {
+	_, err := CoreSQL.UpdateOne(Router2SystemConfig.MainDB.DB, "UPDATE core_token2 SET expire_at = :expire_at WHERE id = :id", map[string]interface{}{
+		"id":        args.ID,
+		"expire_at": args.ExpireAt,
+	})
+	if err != nil {
+		return err
+	}
+	//删除缓冲
+	deleteTokenCache(args.ID)
+	// 返回
+	return err
+}
+
 // 获取token过期时间
 func getTokenNewExpire(isRemember bool) time.Time {
 	var tokenDefaultExpire string
