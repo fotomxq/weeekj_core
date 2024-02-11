@@ -1,7 +1,6 @@
 package BaseEmail2
 
 import (
-	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 	"github.com/lib/pq"
 )
@@ -25,7 +24,6 @@ type ArgsCreateTemplate struct {
 
 // UpdateTemplate 修改模板
 func UpdateTemplate(args *ArgsCreateTemplate) (err error) {
-	CoreLog.Warn("args", args.Title)
 	//更新数据
 	err = baseEmail2SQL.Update().SetFields([]string{"server_ids", "title", "content", "params"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]interface{}{
 		"server_ids": args.ServerIDs,

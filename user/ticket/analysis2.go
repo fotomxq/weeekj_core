@@ -30,20 +30,18 @@ type DataAnalysisUse2 struct {
 func GetAnalysisUse2(args *ArgsGetAnalysisUse2) (dataList []DataAnalysisUse, err error) {
 	//获取所有配置
 	var configList []FieldsConfig
-	if err = Router2SystemConfig.MainDB.Select(&configList, "SELECT id, title FROM user_ticket_config WHERE org_id = $1 AND delete_at < to_timestamp(1000000)", args.OrgID); err != nil {
+	err = Router2SystemConfig.MainDB.Select(&configList, "SELECT id, title FROM user_ticket_config WHERE org_id = $1 AND delete_at < to_timestamp(1000000)", args.OrgID)
+	if err != nil {
 		return
 	}
 	if len(configList) < 1 {
 		err = errors.New("no any config")
 		return
 	}
-	if err != nil {
-		return
-	}
 	//遍历配置，生成统计数据集合
 	for _, vConfig := range configList {
 		var vData DataAnalysisUse
-		_ = Router2SystemConfig.MainDB.Get(&vData, "SELECT SUM(count) as count FROM user_ticket_log WHERE config_id = $1 AND create_at >= $2 AND create_at <= $3 AND mode = $4", vConfig.ID, args.TimeBetween.MinTime, args.TimeBetween.MaxTime, args.Mode)
+		_ = Router2SystemConfig.MainDB.Get(&vData, "SELECT SUM(count) as count FROM user_ticket_log WHERE config_id = $1 AND create_at >= $2 AND create_at <= $3 AND mode = $4 LIMIT 1", vConfig.ID, args.TimeBetween.MinTime, args.TimeBetween.MaxTime, args.Mode)
 		vData.ConfigID = vConfig.ID
 		vData.ConfigName = vConfig.Title
 		dataList = append(dataList, vData)
