@@ -8,10 +8,13 @@ import (
 
 // DeleteToken 清理token
 func DeleteToken(id int64) {
+	//删除会话
 	_, _ = CoreSQL.DeleteOne(Router2SystemConfig.MainDB.DB, "core_token2", "id", map[string]interface{}{
 		"id": id,
 	})
 	deleteTokenCache(id)
+	//删除短地址
+	_ = DeleteTokenSByTokenID(id)
 }
 
 // DeleteTokenByLoginFrom 剔除指定登录渠道的所有会话
