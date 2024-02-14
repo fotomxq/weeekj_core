@@ -1,6 +1,7 @@
 package BaseToken2
 
 import (
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
@@ -8,6 +9,8 @@ import (
 var (
 	//OpenSub 是否启动订阅
 	OpenSub = false
+	// baseToken 会话
+	baseToken CoreSQL2.Client
 	// baseTokenS 短会话
 	// 短会话用于浏览器内嵌、跳转跨系统或前端时使用，生成一个新的字符串用于配对token，而不是通过传统验证形式
 	// 非下列情况请勿使用：
@@ -18,9 +21,13 @@ var (
 
 func Init() {
 	//初始化数据库
+	baseToken.Init(&Router2SystemConfig.MainSQL, "core_token2")
 	baseTokenS.Init(&Router2SystemConfig.MainSQL, "core_token2_s")
 	//初始化mqtt订阅
 	if OpenSub {
+		//订阅请求
 		subNats()
+		//推送请求
+		_ = CoreNats.Push("/base/expire_tip/expire_clear", nil)
 	}
 }
