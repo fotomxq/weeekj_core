@@ -76,7 +76,8 @@ func SetSub(args *ArgsSetSub) (err error) {
 			return
 		}
 		// 记录日志
-		err = appendLog(args.OrgID, args.ConfigID, args.UserID, args.UseFrom, fmt.Sprint("[", args.UseFromName, "]给与[", configData.Title, "]订阅新到期时间: ", args.ExpireAt))
+		expireAt := CoreFilter.GetTimeToDefaultTime(args.ExpireAt)
+		err = appendLog(args.OrgID, args.ConfigID, args.UserID, args.UseFrom, fmt.Sprint("[", args.UseFromName, "]给与[", configData.Title, "]订阅新到期时间: ", expireAt))
 		if err != nil {
 			err = errors.New(fmt.Sprint("insert log failed, ", err))
 			return
@@ -95,7 +96,8 @@ func SetSub(args *ArgsSetSub) (err error) {
 			return
 		}
 		// 记录日志
-		err = appendLog(args.OrgID, args.ConfigID, args.UserID, args.UseFrom, fmt.Sprint("[", args.UseFromName, "]新增[", configData.Title, "]订阅，到期时间: ", args.ExpireAt))
+		expireAt := CoreFilter.GetTimeToDefaultTime(args.ExpireAt)
+		err = appendLog(args.OrgID, args.ConfigID, args.UserID, args.UseFrom, fmt.Sprint("[", args.UseFromName, "]新增[", configData.Title, "]订阅，到期时间: ", expireAt))
 		if err != nil {
 			err = errors.New(fmt.Sprint("insert log failed, ", err))
 			return
