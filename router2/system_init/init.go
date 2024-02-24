@@ -9,6 +9,7 @@ import (
 	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
 	BaseFileSys2 "github.com/fotomxq/weeekj_core/v5/base/filesys2"
 	BaseIPAddr "github.com/fotomxq/weeekj_core/v5/base/ipaddr"
+	BaseLookup "github.com/fotomxq/weeekj_core/v5/base/lookup"
 	BaseMonitorGlob "github.com/fotomxq/weeekj_core/v5/base/monitor/glob"
 	BaseMonitorPostgresql "github.com/fotomxq/weeekj_core/v5/base/monitor/postgresql"
 	BasePython "github.com/fotomxq/weeekj_core/v5/base/python"
@@ -89,6 +90,8 @@ func Init() (err error) {
 	}
 	//管理单元
 	BaseUnit.Init()
+	//数据字典
+	BaseLookup.Init()
 	//临时文件
 	BaseTempFile.OpenSub = OpenSub
 	BaseTempFile.Init()
