@@ -14,6 +14,7 @@ import (
 	BasePython "github.com/fotomxq/weeekj_core/v5/base/python"
 	BaseTempFile "github.com/fotomxq/weeekj_core/v5/base/temp_file"
 	BaseToken2 "github.com/fotomxq/weeekj_core/v5/base/token2"
+	BaseUnit "github.com/fotomxq/weeekj_core/v5/base/unit"
 	BaseVcode "github.com/fotomxq/weeekj_core/v5/base/vcode"
 	BlogCore "github.com/fotomxq/weeekj_core/v5/blog/core"
 	BlogUserRead "github.com/fotomxq/weeekj_core/v5/blog/user_read"
@@ -86,6 +87,8 @@ func Init() (err error) {
 		err = errors.New("base vcode, " + err.Error())
 		return
 	}
+	//管理单元
+	BaseUnit.Init()
 	//临时文件
 	BaseTempFile.OpenSub = OpenSub
 	BaseTempFile.Init()

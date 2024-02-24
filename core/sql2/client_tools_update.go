@@ -21,6 +21,14 @@ type ClientUpdateCtx struct {
 	needUpdateAt bool
 	//是否已经追加了where
 	haveWhere bool
+	//是否为软删除
+	needSoftDelete bool
+}
+
+// NeedSoft 是否软删除
+func (t *ClientUpdateCtx) NeedSoft(b bool) *ClientUpdateCtx {
+	t.needSoftDelete = b
+	return t
 }
 
 func (t *ClientUpdateCtx) SetWhereAnd(name string, val interface{}) *ClientUpdateCtx {
@@ -96,8 +104,15 @@ func (t *ClientUpdateCtx) makeWhere() {
 		t.clientCtx.query = fmt.Sprint(t.clientCtx.query, " WHERE ")
 		t.haveWhere = true
 	}
+	if t.needSoftDelete {
+		t.clientCtx.query = fmt.Sprint(t.clientCtx.query, "delete_at < to_timestamp(1000000)")
+	}
 	if len(t.whereFields) > 0 {
-		t.clientCtx.query = fmt.Sprint(t.clientCtx.query, strings.Join(t.whereFields, " AND "))
+		if t.needSoftDelete {
+			t.clientCtx.query = fmt.Sprint(t.clientCtx.query, " AND ", strings.Join(t.whereFields, " AND "))
+		} else {
+			t.clientCtx.query = fmt.Sprint(t.clientCtx.query, strings.Join(t.whereFields, " AND "))
+		}
 	}
 }
 
