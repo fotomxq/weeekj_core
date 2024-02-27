@@ -10,7 +10,7 @@ import (
 	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
-	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	CoreSQLTime2 "github.com/fotomxq/weeekj_core/v5/core/sql/time2"
 	FinanceDeposit "github.com/fotomxq/weeekj_core/v5/finance/deposit"
 	FinanceLog "github.com/fotomxq/weeekj_core/v5/finance/log"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -58,7 +58,7 @@ type ArgsGetList struct {
 	// -1则跳过
 	MaxPrice int64
 	//查询时间范围
-	TimeBetween CoreSQLTime.FieldsCoreTime
+	TimeBetween CoreSQLTime2.FieldsCoreTime `db:"time_between" json:"timeBetween"`
 	//是否需要退款相关参数
 	//是否发起了退款
 	//退款发起的金额
@@ -118,7 +118,7 @@ func GetList(args *ArgsGetList) (dataList []FieldsPayType, dataCount int64, err 
 		where = where + " AND price <= :max_price"
 		maps["max_price"] = args.MaxPrice
 	}
-	where, maps = CoreSQLTime.GetBetweenByTimeAnd("create_at", args.TimeBetween, where, maps)
+	where, maps = args.TimeBetween.GetBetweenByTimeAnd("create_at", where, maps)
 	if args.Params.Mark != "" {
 		var paramsJSON []byte
 		paramsJSON, err = json.Marshal([]CoreSQLConfig.FieldsConfigType{

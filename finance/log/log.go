@@ -7,7 +7,7 @@ import (
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
-	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	CoreSQLTime2 "github.com/fotomxq/weeekj_core/v5/core/sql/time2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 )
@@ -69,7 +69,7 @@ type ArgsGetList struct {
 	//操作人
 	CreateInfo CoreSQLFrom.FieldsFrom `json:"createInfo"`
 	//时间段
-	TimeBetween CoreSQLTime.FieldsCoreTime `json:"time_between"`
+	TimeBetween CoreSQLTime2.FieldsCoreTime `json:"time_between"`
 	//是否为历史
 	IsHistory bool `json:"is_history"`
 	//搜索
@@ -118,7 +118,7 @@ func GetList(args *ArgsGetList) (dataList []FieldsLogType, dataCount int64, err 
 		return
 	}
 	var newWhere string
-	newWhere, maps = CoreSQLTime.GetBetweenByTime("create_at", args.TimeBetween, maps)
+	newWhere, maps = args.TimeBetween.GetBetweenByTime("create_at", maps)
 	if newWhere != "" {
 		where = where + " AND " + newWhere
 	}

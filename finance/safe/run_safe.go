@@ -7,7 +7,7 @@ import (
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
-	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	CoreSQLTime2 "github.com/fotomxq/weeekj_core/v5/core/sql/time2"
 	FinanceLog "github.com/fotomxq/weeekj_core/v5/finance/log"
 	FinancePay "github.com/fotomxq/weeekj_core/v5/finance/pay"
 	"time"
@@ -71,7 +71,7 @@ func runSafe() {
 			TakeChannel:    CoreSQLFrom.FieldsFrom{},
 			TakeFrom:       CoreSQLFrom.FieldsFrom{},
 			CreateInfo:     CoreSQLFrom.FieldsFrom{},
-			TimeBetween:    CoreSQLTime.FieldsCoreTime{},
+			TimeBetween:    CoreSQLTime2.FieldsCoreTime{},
 			IsHistory:      false,
 			Search:         "",
 		})
@@ -286,7 +286,7 @@ func runSafeFrequency(financeSafeFrequencyOneFrom, financeSafeFrequencyOneTo, fi
 			TakeChannel:    CoreSQLFrom.FieldsFrom{},
 			TakeFrom:       CoreSQLFrom.FieldsFrom{},
 			CreateInfo:     CoreSQLFrom.FieldsFrom{},
-			TimeBetween:    CoreSQLTime.FieldsCoreTime{},
+			TimeBetween:    CoreSQLTime2.FieldsCoreTime{},
 			IsHistory:      false,
 			Search:         "",
 		})
@@ -322,7 +322,7 @@ func runSafeFrequency(financeSafeFrequencyOneFrom, financeSafeFrequencyOneTo, fi
 			TakeChannel:    CoreSQLFrom.FieldsFrom{},
 			TakeFrom:       CoreSQLFrom.FieldsFrom{},
 			CreateInfo:     CoreSQLFrom.FieldsFrom{},
-			TimeBetween:    CoreSQLTime.FieldsCoreTime{},
+			TimeBetween:    CoreSQLTime2.FieldsCoreTime{},
 			IsHistory:      false,
 			Search:         "",
 		})
