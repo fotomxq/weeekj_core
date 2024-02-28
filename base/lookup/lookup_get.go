@@ -22,7 +22,7 @@ type ArgsGetLookupList struct {
 }
 
 func GetLookupList(args *ArgsGetLookupList) (dataList []FieldsLookup, dataCount int64, err error) {
-	dataCount, err = lookupDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SelectList("((is_sys = $1 AND $2 = true) OR $2 = false) AND (domain_id = $3 OR $3 < 0) AND (unit_id = $4 OR $4 < 0) AND ((delete_at < to_timestamp(1000000) AND $5 = false) OR (delete_at >= to_timestamp(1000000) AND $5 = true)) AND (name LIKE $6 OR $6 = '')", args.IsRemove, "%"+args.Search+"%").ResultAndCount(&dataList)
+	dataCount, err = lookupDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SelectList("((is_sys = $1) AND (domain_id = $2 OR $2 < 0) AND (unit_id = $3 OR $3 < 0) AND ((delete_at < to_timestamp(1000000) AND $4 = false) OR (delete_at >= to_timestamp(1000000) AND $4 = true)) AND (name LIKE $5 OR $5 = ''))", args.IsSys, args.DomainID, args.UnitID, args.IsRemove, "%"+args.Search+"%").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
