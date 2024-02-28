@@ -38,6 +38,14 @@ func GetDomainID(id int64) (data FieldsDomain) {
 	return
 }
 
+func GetDomainNameByID(id int64) (name string) {
+	data := getDomainID(id)
+	if data.ID < 1 {
+		return
+	}
+	return data.Name
+}
+
 func getDomainID(id int64) (data FieldsDomain) {
 	cacheMark := getDomainCacheMark(id)
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {

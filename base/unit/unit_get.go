@@ -39,6 +39,14 @@ func GetUnitByID(id int64) (data FieldsUnit) {
 	return
 }
 
+func GetUnitNameByID(id int64) (name string) {
+	data := GetUnitByID(id)
+	if data.ID < 1 {
+		return
+	}
+	return data.Name
+}
+
 func GetUnitByCode(code string) (data FieldsUnit) {
 	cacheMark := getUnitCodeCacheMark(code)
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
