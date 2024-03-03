@@ -16,6 +16,11 @@ type FieldsEvent struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
 	//描述
 	Description string `db:"description" json:"description" check:"des" min:"1" max:"500" empty:"true"`
+	//所属主题分类
+	ThemeCategoryID int64 `db:"theme_category_id" json:"themeCategoryId" check:"id"`
+	//所属主题
+	// 插槽可用于的主题域
+	ThemeID int64 `db:"theme_id" json:"themeId" check:"id"`
 	//事件编码
 	Code string `db:"code" json:"code" check:"des" min:"1" max:"300"`
 	//事件类型

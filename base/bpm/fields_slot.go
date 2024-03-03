@@ -29,6 +29,6 @@ type FieldsSlot struct {
 	// 插槽的默认值
 	DefaultValue string `db:"default_value" json:"defaultValue" check:"des" min:"1" max:"3000"`
 	//参数
-	// 英文逗号分割的快码列
+	// 根据组件需求，自定义参数内容
 	Params string `db:"params" json:"params"`
 }
