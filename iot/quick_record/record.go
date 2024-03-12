@@ -2,6 +2,7 @@ package IOTQuickRecord
 
 import (
 	"errors"
+	"fmt"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
@@ -102,7 +103,7 @@ func GetResult(args *ArgsGetResult) (data DataGetResult, err error) {
 	var recordData FieldsRecord
 	err = Router2SystemConfig.MainDB.Get(&recordData, "SELECT id, create_at, device_code, device_id, params FROM iot_quick_record WHERE id = $1 AND device_id > 0", args.ID)
 	if err != nil || recordData.ID < 1 {
-		err = errors.New("no data")
+		err = errors.New(fmt.Sprint("no data, arg id: ", args.ID, ", err: ", err))
 		return
 	}
 	//获取数据并反馈
@@ -112,6 +113,7 @@ func GetResult(args *ArgsGetResult) (data DataGetResult, err error) {
 		OrgID: -1,
 	})
 	if err != nil {
+		err = errors.New(fmt.Sprint("get device data error, ", err))
 		return
 	}
 	var groupData IOTDevice.FieldsGroup
@@ -119,6 +121,7 @@ func GetResult(args *ArgsGetResult) (data DataGetResult, err error) {
 		ID: deviceData.GroupID,
 	})
 	if err != nil {
+		err = errors.New(fmt.Sprint("get group data error, ", err))
 		return
 	}
 	var deviceKey string
@@ -126,6 +129,7 @@ func GetResult(args *ArgsGetResult) (data DataGetResult, err error) {
 		ID: recordData.DeviceID,
 	})
 	if err != nil {
+		err = errors.New(fmt.Sprint("get device key error, ", err))
 		return
 	}
 	data.GroupMark = groupData.Mark
