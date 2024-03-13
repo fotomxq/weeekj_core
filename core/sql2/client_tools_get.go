@@ -42,7 +42,7 @@ func (t *ClientGetCtx) getFieldsOne() string {
 	return t.clientCtx.GetFields(t.fieldOne)
 }
 
-//getSQLGet 组合sql命令
+// getSQLGet 组合sql命令
 func (t *ClientGetCtx) getSQLGet(where string) string {
 	query := t.clientCtx.getSQLWhere(fmt.Sprint("SELECT ", t.getFieldsOne(), " FROM ", t.clientCtx.client.TableName), where)
 	if t.needSort {
@@ -73,6 +73,13 @@ func (t *ClientGetCtx) GetByIDAndOrgID(id int64, orgID int64) *ClientGetCtx {
 func (t *ClientGetCtx) GetByMarkAndOrgID(mark string, orgID int64) *ClientGetCtx {
 	t.clientCtx.query = t.getSQLGet("mark = $1 AND ($2 < 0 OR org_id = $2)")
 	t.clientCtx.appendArgs = append(t.clientCtx.appendArgs, mark)
+	t.clientCtx.appendArgs = append(t.clientCtx.appendArgs, orgID)
+	return t
+}
+
+func (t *ClientGetCtx) GetByCodeAndOrgID(code string, orgID int64) *ClientGetCtx {
+	t.clientCtx.query = t.getSQLGet("code = $1 AND ($2 < 0 OR org_id = $2)")
+	t.clientCtx.appendArgs = append(t.clientCtx.appendArgs, code)
 	t.clientCtx.appendArgs = append(t.clientCtx.appendArgs, orgID)
 	return t
 }

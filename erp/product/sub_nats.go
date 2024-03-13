@@ -4,6 +4,7 @@ import (
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 	"github.com/nats-io/nats.go"
@@ -17,24 +18,70 @@ func subNats() {
 }
 
 // 删除公司处理
-func subNatsDeleteCompany(_ *nats.Msg, action string, id int64, _ string, _ []byte) {
+func subNatsDeleteCompany(_ *nats.Msg, _ string, companyID int64, _ string, _ []byte) {
+	//删除所有公司关联的产品信息
+	subNatsDeleteCompanyStep1(companyID)
+	//删除公司关联的品牌设置
+	subNatsDeleteCompanyStep2(companyID)
+}
+
+func subNatsDeleteCompanyStep1(companyID int64) {
+	logAppend := "erp product sub nats delete company, step 1, "
 	//找到所有数据
 	var dataList []FieldsProductCompany
-	err := Router2SystemConfig.MainDB.Select(&dataList, "SELECT id FROM erp_product_company WHERE company_id = $1 AND delete_at < to_timestamp(1000000)", id)
+	err := Router2SystemConfig.MainDB.Select(&dataList, "SELECT id FROM erp_product_company WHERE company_id = $1 AND delete_at < to_timestamp(1000000)", companyID)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
 	//删除数据
 	_, err = CoreSQL.DeleteAllSoft(Router2SystemConfig.MainDB.DB, "erp_product_company", "company_id = :company_id", map[string]interface{}{
-		"company_id": id,
+		"company_id": companyID,
 	})
 	if err != nil {
-		CoreLog.Error("erp product sub nats delete company, ", err)
+		CoreLog.Error(logAppend, err)
 		return
 	}
 	//遍历删除缓冲
 	for _, v := range dataList {
 		deleteProductCompanyCache(v.ID)
+	}
+}
+
+func subNatsDeleteCompanyStep2(companyID int64) {
+	logAppend := "erp product sub nats delete company, step 2, "
+	var page int64 = 1
+	for {
+		dataList, _, err := GetBrandBindList(&ArgsGetBrandBindList{
+			Pages: CoreSQL2.ArgsPages{
+				Page: page,
+				Max:  100,
+				Sort: "id",
+				Desc: false,
+			},
+			OrgID:     -1,
+			BrandID:   -1,
+			CompanyID: companyID,
+			ProductID: -1,
+			IsRemove:  false,
+		})
+		if err != nil {
+			break
+		}
+		if len(dataList) < 1 {
+			break
+		}
+		for _, v := range dataList {
+			err = DeleteBrandBind(&ArgsDeleteBrandBind{
+				OrgID:     v.OrgID,
+				BrandID:   v.BrandID,
+				CompanyID: v.CompanyID,
+				ProductID: v.ProductID,
+			})
+			if err != nil {
+				CoreLog.Error(logAppend, "delete brand bind, id: ", v.ID, ", ", err)
+			}
+		}
+		page += 1
 	}
 }
 
