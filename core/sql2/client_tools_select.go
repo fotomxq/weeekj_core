@@ -1,6 +1,9 @@
 package CoreSQL2
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type ClientListCtx struct {
 	//对象
@@ -16,6 +19,19 @@ type ClientListCtx struct {
 	limitMax int
 	//获取总数query
 	queryCount string
+	//预占位参数序号
+	preemptionNum int
+	//预占位数据结构列
+	preemptionData []clientListCtxPreemption
+}
+
+type clientListCtxPreemption struct {
+	//sql条件语句，注意必须用()包裹
+	Query string
+	//参数值
+	Param any
+	//参数序号
+	Num int
 }
 
 func (t *ClientListCtx) SetFieldsList(fields []string) *ClientListCtx {
@@ -40,14 +56,52 @@ func (t *ClientListCtx) SetPages(pages ArgsPages) *ClientListCtx {
 	return t
 }
 
+// SetDeleteQuery 设置删除查询
+// 如果启动此设定，请注意基于查询条件的$顺序，叠加后使用，否则讲造成条件和参数不匹配
+func (t *ClientListCtx) SetDeleteQuery(field string, param bool) *ClientListCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("((", field, " < to_timestamp(1000000) AND $", t.preemptionNum, " = false) OR (", field, " >= to_timestamp(1000000) AND $", t.preemptionNum, " = true))"), param)
+	return t
+}
+
+// SetSearchQuery 设置搜索查询
+// 如果启动此设定，请注意基于查询条件的$顺序，叠加后使用，否则讲造成条件和参数不匹配
+func (t *ClientListCtx) SetSearchQuery(fields []string, search string) *ClientListCtx {
+	t.addPreemptionNum()
+	var newQuerys []string
+	for _, v := range fields {
+		newQuerys = append(newQuerys, fmt.Sprint(v, " ILIKE $", t.preemptionNum))
+	}
+	newQuery := fmt.Sprint("((", strings.Join(newQuerys, " OR "), ") OR $", t.preemptionNum, " = '')")
+	t.addPreemption(newQuery, "%"+search+"%")
+	return t
+}
+
+// SetIDQuery 常规ID判断查询
+func (t *ClientListCtx) SetIDQuery(field string, param int64) *ClientListCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, " OR $", t.preemptionNum, " < 0)"), param)
+	return t
+}
+
 func (t *ClientListCtx) SelectList(where string, args ...interface{}) *ClientListCtx {
 	step := 0
 	if t.pages.Page > 0 {
 		step = int((t.pages.Page - 1) * t.pages.Max)
 	}
+	var newArgs []any
+	for k := 0; k < len(t.preemptionData); k++ {
+		where = fmt.Sprint(t.preemptionData[k].Query, " AND ", where)
+		newArgs = append(newArgs, t.preemptionData[k].Param)
+	}
 	t.clientCtx.query = t.getSQLSelect(where, step, int(t.pages.Max), t.pages.Sort, t.pages.Desc)
 	t.queryCount = t.getSQLSelectCount(where)
-	t.clientCtx.appendArgs = args
+	if len(args) > 0 {
+		newArgs = append(newArgs, args...)
+		t.clientCtx.appendArgs = newArgs
+	} else {
+		t.clientCtx.appendArgs = args
+	}
 	return t
 }
 
@@ -71,6 +125,21 @@ func (t *ClientListCtx) ResultAndCount(data interface{}) (count int64, err error
 	}
 	appendLog("select", t.clientCtx.query, false, t.clientCtx.client.startAt, data, err)
 	return
+}
+
+func (t *ClientListCtx) addPreemptionNum() {
+	if t.preemptionNum < 1 {
+		t.preemptionNum = 0
+	}
+	t.preemptionNum += 1
+}
+
+func (t *ClientListCtx) addPreemption(query string, param any) {
+	t.preemptionData = append(t.preemptionData, clientListCtxPreemption{
+		Query: query,
+		Param: param,
+		Num:   t.preemptionNum,
+	})
 }
 
 func (t *ClientListCtx) getSQLSelect(where string, step int, limit int, sort string, desc bool) string {

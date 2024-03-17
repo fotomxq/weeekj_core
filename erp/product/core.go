@@ -23,11 +23,15 @@ var (
 	cacheProductCompanyTime = 1800
 	cacheBrandTime          = 1800
 	cacheBrandBindTime      = 1800
+	cacheTemplateTime       = 1800
+	cacheTemplateBindTime   = 1800
 	//OpenSub 订阅
 	OpenSub = false
 	//数据表
-	brandDB     CoreSQL2.Client
-	brandBindDB CoreSQL2.Client
+	brandDB        CoreSQL2.Client
+	brandBindDB    CoreSQL2.Client
+	templateDB     CoreSQL2.Client
+	templateBindDB CoreSQL2.Client
 )
 
 // Init 初始化

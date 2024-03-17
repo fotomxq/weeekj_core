@@ -16,4 +16,7 @@ type FieldsTemplate struct {
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
+	//插槽主题ID
+	// BPM模块插槽主题ID，用于关联插槽主题，产品会自动使用相关的插槽用于表单实现
+	BPMThemeID int64 `db:"bpm_theme_id" json:"bpmThemeID" check:"id" empty:"true"`
 }

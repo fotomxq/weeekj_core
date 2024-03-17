@@ -1,8 +1,11 @@
 package ERPProduct
 
 import (
+	"errors"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	"time"
 )
 
 // ArgsGetBrandBindList 获取绑定关系列表参数
@@ -119,6 +122,25 @@ type ArgsCreateBrandBind struct {
 
 // CreateBrandBind 添加新品牌绑定关系
 func CreateBrandBind(args *ArgsCreateBrandBind) (id int64, err error) {
+	//检查数据
+	data := GetBrandBindData(&ArgsGetBrandBindData{
+		OrgID:     args.OrgID,
+		BrandID:   args.BrandID,
+		CompanyID: args.CompanyID,
+		ProductID: args.ProductID,
+	})
+	if data.ID > 0 {
+		if CoreFilter.CheckHaveTime(data.DeleteAt) {
+			id = data.ID
+			err = brandDB.Update().NeedSoft(false).NeedUpdateTime().AddWhereID(data.ID).SetFields([]string{"delete_at"}).NamedExec(map[string]any{
+				"delete_at": time.Time{},
+			})
+			return
+		} else {
+			err = errors.New("have replace")
+			return
+		}
+	}
 	//创建数据
 	id, err = brandDB.Insert().SetFields([]string{"org_id", "brand_id", "company_id", "product_id"}).Add(map[string]any{
 		"org_id":     args.OrgID,
