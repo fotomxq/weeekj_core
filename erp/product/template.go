@@ -10,6 +10,8 @@ import (
 type ArgsGetTemplateList struct {
 	//分页参数
 	Pages CoreSQL2.ArgsPages `json:"pages"`
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//插槽主题ID
 	// BPM模块插槽主题ID，用于关联插槽主题，产品会自动使用相关的插槽用于表单实现
 	BPMThemeID int64 `db:"bpm_theme_id" json:"bpmThemeID" check:"id" empty:"true"`
@@ -21,7 +23,7 @@ type ArgsGetTemplateList struct {
 
 // GetTemplateList 获取品牌列表
 func GetTemplateList(args *ArgsGetTemplateList) (dataList []FieldsTemplate, dataCount int64, err error) {
-	dataCount, err = templateDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetSearchQuery([]string{"name"}, args.Search).SetIDQuery("bpm_theme_id", args.BPMThemeID).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = templateDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetSearchQuery([]string{"name"}, args.Search).SetIDQuery("bpm_theme_id", args.BPMThemeID).SetIDQuery("org_id", args.OrgID).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}

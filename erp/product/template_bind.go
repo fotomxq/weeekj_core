@@ -14,7 +14,7 @@ type ArgsGetTemplateBindList struct {
 	Pages CoreSQL2.ArgsPages `json:"pages"`
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
-	//品牌ID
+	//模板ID
 	TemplateID int64 `db:"template_id" json:"TemplateID" check:"id" empty:"true"`
 	//分类ID
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
@@ -108,7 +108,7 @@ func CheckTemplateBind(args *ArgsCheckTemplateBind) (b bool) {
 type ArgsCreateTemplateBind struct {
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
-	//品牌ID
+	//模板ID
 	TemplateID int64 `db:"template_id" json:"TemplateID" check:"id"`
 	//分类ID
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
@@ -155,7 +155,7 @@ func CreateTemplateBind(args *ArgsCreateTemplateBind) (id int64, err error) {
 type ArgsDeleteTemplateBind struct {
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
-	//品牌ID
+	//模板ID
 	TemplateID int64 `db:"template_id" json:"TemplateID" check:"id"`
 	//分类ID
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`

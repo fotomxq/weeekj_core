@@ -32,6 +32,7 @@ var (
 	brandBindDB    CoreSQL2.Client
 	templateDB     CoreSQL2.Client
 	templateBindDB CoreSQL2.Client
+	productValsDB  CoreSQL2.Client
 )
 
 // Init 初始化
@@ -39,6 +40,9 @@ func Init() {
 	//初始化数据表
 	brandDB.Init(&Router2SystemConfig.MainSQL, "erp_product_brand")
 	brandBindDB.Init(&Router2SystemConfig.MainSQL, "erp_product_brand_bind")
+	templateDB.Init(&Router2SystemConfig.MainSQL, "erp_product_template")
+	templateBindDB.Init(&Router2SystemConfig.MainSQL, "erp_product_template_bind")
+	productValsDB.Init(&Router2SystemConfig.MainSQL, "erp_product_product_vals")
 	//nats
 	if OpenSub {
 		subNats()
