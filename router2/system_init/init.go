@@ -5,6 +5,7 @@ import (
 	"fmt"
 	AnalysisAny "github.com/fotomxq/weeekj_core/v5/analysis/any"
 	AnalysisBindVisit "github.com/fotomxq/weeekj_core/v5/analysis/bind_visit"
+	BaseBPM "github.com/fotomxq/weeekj_core/v5/base/bpm"
 	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
 	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
 	BaseFileSys2 "github.com/fotomxq/weeekj_core/v5/base/filesys2"
@@ -110,6 +111,9 @@ func Init() (err error) {
 	//文件系统
 	BaseFileSys2.OpenSub = OpenSub
 	BaseFileSys2.Init()
+	//BPM
+	BaseBPM.OpenSub = OpenSub
+	BaseBPM.Init()
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//统计
