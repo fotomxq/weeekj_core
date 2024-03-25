@@ -11,6 +11,8 @@ import (
 type ArgsGetBrandList struct {
 	//分页参数
 	Pages CoreSQL2.ArgsPages `json:"pages"`
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//是否删除
 	IsRemove bool `json:"isRemove" check:"bool"`
 	//搜索
@@ -19,7 +21,7 @@ type ArgsGetBrandList struct {
 
 // GetBrandList 获取品牌列表
 func GetBrandList(args *ArgsGetBrandList) (dataList []FieldsBrand, dataCount int64, err error) {
-	dataCount, err = brandDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SelectList("((delete_at < to_timestamp(1000000) AND $1 = false) OR (delete_at >= to_timestamp(1000000) AND $1 = true)) AND (name LIKE $2 OR $2 = '')", args.IsRemove, "%"+args.Search+"%").ResultAndCount(&dataList)
+	dataCount, err = brandDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
