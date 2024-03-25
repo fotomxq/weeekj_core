@@ -243,6 +243,24 @@ func SetProductVals(args *ArgsSetProductVals) (errCode string, err error) {
 			return
 		}
 	}
+	//清理丢失的数据
+	for _, v := range rawList {
+		isFind := false
+		for _, v2 := range newProductVals {
+			if v.SlotID == v2.SlotID {
+				isFind = true
+				break
+			}
+		}
+		if !isFind {
+			err = productValsDB.Delete().NeedSoft(true).AddWhereID(v.ID).ExecNamed(nil)
+			if err != nil {
+				errCode = "err_delete"
+				err = errors.New(fmt.Sprint("delete product vals error: ", err))
+				return
+			}
+		}
+	}
 	//清空缓存
 	deleteProductValsCache(args.OrgID, args.ProductID)
 	//反馈
