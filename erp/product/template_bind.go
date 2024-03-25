@@ -45,6 +45,31 @@ func GetTemplateBindList(args *ArgsGetTemplateBindList) (dataList []FieldsTempla
 	return
 }
 
+// getTemplateBindRecursionByCategoryID 查询分类对应的绑定关系
+// 给与产品最初的分类ID，从最底层到最高层追溯到绑定模板关系
+func getTemplateBindRecursionByCategoryID(orgID int64, categoryID int64) (data FieldsTemplateBind) {
+	var dataList []FieldsTemplateBind
+	_ = templateBindDB.Select().SetFieldsList([]string{"id", "category_id"}).SetFieldsSort([]string{"id"}).SetPages(CoreSQL2.ArgsPages{
+		Page: 1,
+		Max:  1,
+		Sort: "id",
+		Desc: false,
+	}).SetDeleteQuery("delete_at", false).SetIDQuery("org_id", orgID).SetIDQuery("category_id", categoryID).Result(&dataList)
+	if len(dataList) < 1 {
+		categoryData := Sort.GetByIDNoErr(categoryID, orgID)
+		if categoryData.ID < 1 {
+			return
+		} else {
+			if categoryData.ParentID < 1 {
+				return
+			} else {
+				return getTemplateBindRecursionByCategoryID(orgID, categoryData.ParentID)
+			}
+		}
+	}
+	return dataList[0]
+}
+
 // ArgsGetTemplateBindData 获取品牌绑定关系参数
 type ArgsGetTemplateBindData struct {
 	//组织ID

@@ -25,6 +25,7 @@ var (
 	cacheBrandBindTime      = 1800
 	cacheTemplateTime       = 1800
 	cacheTemplateBindTime   = 1800
+	cacheProductValsTime    = 1800
 	//OpenSub 订阅
 	OpenSub = false
 	//数据表

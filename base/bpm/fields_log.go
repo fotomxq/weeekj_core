@@ -2,13 +2,21 @@ package BaseBPM
 
 import "time"
 
+// FieldsLog 流程节点日志
+// 每个日志不可变更，只能创建迭代
 type FieldsLog struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
 	//创建时间
 	CreatedAt time.Time `db:"created_at" json:"createdAt"`
-	//更新时间
-	UpdatedAt time.Time `db:"updated_at" json:"updatedAt"`
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID"`
+	//管理单元
+	UnitID int64 `db:"unit_id" json:"unitID"`
+	//操作用户
+	UserID int64 `db:"user_id" json:"userID"`
+	//操作组织成员ID
+	OrgBindID int64 `db:"org_bind_id" json:"orgBindID"`
 	//BPM ID
 	BPMID int64 `db:"bpm_id" json:"bpmId" check:"id"`
 	//当前节点ID

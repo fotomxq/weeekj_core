@@ -84,6 +84,13 @@ func (t *ClientListCtx) SetIDQuery(field string, param int64) *ClientListCtx {
 	return t
 }
 
+// SetStringQuery 常规字符串判断查询
+func (t *ClientListCtx) SetStringQuery(field string, param string) *ClientListCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, " OR $", t.preemptionNum, " = '')"), param)
+	return t
+}
+
 func (t *ClientListCtx) SelectList(where string, args ...interface{}) *ClientListCtx {
 	step := 0
 	if t.pages.Page > 0 {
