@@ -56,7 +56,7 @@ type ArgsGetBrandBindData struct {
 	CompanyID int64 `db:"company_id" json:"companyID" check:"id"`
 	//产品ID
 	// 可选，如果给与值，则认为本数据为直接绑定到对应产品
-	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	ProductID int64 `db:"product_id" json:"productID" check:"id" empty:"true"`
 }
 
 // GetBrandBindData 获取品牌绑定关系
@@ -87,7 +87,7 @@ type ArgsCheckBrandBind struct {
 	CompanyID int64 `db:"company_id" json:"companyID" check:"id"`
 	//产品ID
 	// 可选，如果给与值，则认为本数据为直接绑定到对应产品
-	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	ProductID int64 `db:"product_id" json:"productID" check:"id" empty:"true"`
 }
 
 // CheckBrandBind 检查品牌绑定关系
@@ -117,7 +117,7 @@ type ArgsCreateBrandBind struct {
 	CompanyID int64 `db:"company_id" json:"companyID" check:"id"`
 	//产品ID
 	// 可选，如果给与值，则认为本数据为直接绑定到对应产品
-	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	ProductID int64 `db:"product_id" json:"productID" check:"id" empty:"true"`
 }
 
 // CreateBrandBind 添加新品牌绑定关系
@@ -165,7 +165,7 @@ type ArgsDeleteBrandBind struct {
 	CompanyID int64 `db:"company_id" json:"companyID" check:"id"`
 	//产品ID
 	// 可选，如果给与值，则认为本数据为直接绑定到对应产品
-	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	ProductID int64 `db:"product_id" json:"productID" check:"id" empty:"true"`
 }
 
 // DeleteBrandBind 删除产品绑定关系
