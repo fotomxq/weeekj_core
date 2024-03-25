@@ -113,6 +113,19 @@ type ArgsDeleteTheme struct {
 
 // DeleteTheme 删除Theme
 func DeleteTheme(args *ArgsDeleteTheme) (err error) {
+	//检查主题下是否有插槽/事件/流程
+	if GetSlotCountByThemeID(args.ID) > 0 {
+		err = errors.New("slot exists")
+		return
+	}
+	if GetEventCountByThemeID(args.ID) > 0 {
+		err = errors.New("event exists")
+		return
+	}
+	if GetBPMCountByThemeID(args.ID) > 0 {
+		err = errors.New("bpm exists")
+		return
+	}
 	//删除数据
 	err = themeDB.Delete().NeedSoft(true).AddWhereID(args.ID).ExecNamed(nil)
 	if err != nil {
@@ -121,6 +134,17 @@ func DeleteTheme(args *ArgsDeleteTheme) (err error) {
 	//删除缓冲
 	deleteThemeCache(args.ID)
 	//反馈
+	return
+}
+
+// GetThemeCountByCategoryID 获取分类下的主题数量
+func GetThemeCountByCategoryID(categoryID int64) (count int64) {
+	count, _ = themeDB.Select().SetFieldsList([]string{"id"}).SetIDQuery("category_id", categoryID).SetPages(CoreSQL2.ArgsPages{
+		Page: 1,
+		Max:  1,
+		Sort: "id",
+		Desc: false,
+	}).SelectList("").ResultCount()
 	return
 }
 

@@ -162,6 +162,28 @@ func DeleteSlot(args *ArgsDeleteSlot) (err error) {
 	return
 }
 
+// GetSlotCountByCategoryID 获取分类下的插槽数量
+func GetSlotCountByCategoryID(categoryID int64) (count int64) {
+	count, _ = slotDB.Select().SetFieldsList([]string{"id"}).SetIDQuery("theme_category_id", categoryID).SetPages(CoreSQL2.ArgsPages{
+		Page: 1,
+		Max:  1,
+		Sort: "id",
+		Desc: false,
+	}).SelectList("").ResultCount()
+	return
+}
+
+// GetSlotCountByThemeID 获取主题下的插槽数量
+func GetSlotCountByThemeID(themeID int64) (count int64) {
+	count, _ = slotDB.Select().SetFieldsList([]string{"id"}).SetIDQuery("theme_id", themeID).SetPages(CoreSQL2.ArgsPages{
+		Page: 1,
+		Max:  1,
+		Sort: "id",
+		Desc: false,
+	}).SelectList("").ResultCount()
+	return
+}
+
 // getSlotByID 通过ID获取Slot数据包
 func getSlotByID(id int64) (data FieldsSlot) {
 	cacheMark := getSlotCacheMark(id)

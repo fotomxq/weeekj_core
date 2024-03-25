@@ -134,6 +134,16 @@ func (t *ClientListCtx) ResultAndCount(data interface{}) (count int64, err error
 	return
 }
 
+func (t *ClientListCtx) ResultCount() (count int64, err error) {
+	err = t.clientCtx.Get(&count, t.queryCount, t.clientCtx.appendArgs...)
+	if err != nil {
+		appendLog("analysis", t.clientCtx.query, false, t.clientCtx.client.startAt, 1, err)
+		return
+	}
+	appendLog("analysis", t.clientCtx.query, false, t.clientCtx.client.startAt, 1, err)
+	return
+}
+
 func (t *ClientListCtx) addPreemptionNum() {
 	if t.preemptionNum < 1 {
 		t.preemptionNum = 0

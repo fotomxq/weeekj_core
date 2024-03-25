@@ -105,6 +105,22 @@ type ArgsDeleteThemeCategory struct {
 
 // DeleteThemeCategory 删除ThemeCategory
 func DeleteThemeCategory(args *ArgsDeleteThemeCategory) (err error) {
+	//检查是否有使用的主题/插槽/事件
+	themeCount := GetThemeCountByCategoryID(args.ID)
+	if themeCount > 0 {
+		err = errors.New("theme is used")
+		return
+	}
+	slotCount := GetSlotCountByCategoryID(args.ID)
+	if slotCount > 0 {
+		err = errors.New("slot is used")
+		return
+	}
+	eventCount := GetEventCountByCategoryID(args.ID)
+	if eventCount > 0 {
+		err = errors.New("event is used")
+		return
+	}
 	//删除数据
 	err = themeCategoryDB.Delete().NeedSoft(true).AddWhereID(args.ID).ExecNamed(nil)
 	if err != nil {

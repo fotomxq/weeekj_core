@@ -136,6 +136,17 @@ func DeleteBPM(args *ArgsDeleteBPM) (err error) {
 	return
 }
 
+// GetBPMCountByThemeID 获取主题下的bpm数量
+func GetBPMCountByThemeID(themeID int64) (count int64) {
+	count, _ = bpmDB.Select().SetFieldsList([]string{"id"}).SetIDQuery("theme_id", themeID).SetPages(CoreSQL2.ArgsPages{
+		Page: 1,
+		Max:  1,
+		Sort: "id",
+		Desc: false,
+	}).SelectList("").ResultCount()
+	return
+}
+
 // getBPMByID 通过ID获取bpm数据包
 func getBPMByID(id int64) (data FieldsBPM) {
 	cacheMark := getBPMCacheMark(id)
