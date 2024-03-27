@@ -39,7 +39,7 @@ func CheckJSON(context any, params interface{}) (b bool) {
 	var errCode string
 	errField, errCode, b = filterParams(routerCtx, params)
 	if !b {
-		Router2Report.ReportErrorBadRequestLog(context, fmt.Sprint("field:", errField, ",errCode:", errCode), nil, "report_params_error")
+		Router2Report.ReportErrorBadRequestLogToParams(context, fmt.Sprint("field:", errField, ",errCode:", errCode), nil, "report_params_error", fmt.Sprint("[", errField, "]_[", errCode, "]"))
 		return
 	}
 	return

@@ -28,6 +28,8 @@ type reportContext struct {
 	Err error
 	//消息
 	Msg string
+	//覆盖消息
+	ReplaceMsg string
 	//数量集合
 	Count int64
 	//数据集合
@@ -59,6 +61,14 @@ func ReportErrorBadRequest(context any, code string) {
 func ReportErrorBadRequestLog(context any, message string, err error, code string) {
 	//实现实例
 	ctx := reportGetCtx(context, http.StatusBadRequest, err, message, false, code, 0, nil)
+	//反馈数据
+	reportLogWarn(&ctx)
+}
+
+func ReportErrorBadRequestLogToParams(context any, message string, err error, code string, newMsg string) {
+	//实现实例
+	ctx := reportGetCtx(context, http.StatusBadRequest, err, message, false, code, 0, nil)
+	ctx.ReplaceMsg = newMsg
 	//反馈数据
 	reportLogWarn(&ctx)
 }
@@ -220,7 +230,7 @@ func BaseData(context any, data interface{}) {
 	reportAuto(&ctx)
 }
 
-// 反馈数量类数据
+// BaseDataCount 反馈数量类数据
 func BaseDataCount(context any, count int64) {
 	//实现实例
 	ctx := reportGetCtx(context, 0, nil, "", true, "", count, nil)
@@ -248,7 +258,7 @@ func ReportBaseError(context any, code string) {
 	reportAuto(&ctx)
 }
 
-// 日志内部附加处理
+// reportGetLogMsg 日志内部附加处理
 func reportGetLogMsg(c *gin.Context, cData DataGetContextData, msg string) string {
 	//捕捉异常
 	defer func() {
@@ -281,7 +291,7 @@ func reportGetLogMsg(c *gin.Context, cData DataGetContextData, msg string) strin
 	return msg
 }
 
-// 反馈警告错误
+// reportLogWarn 反馈警告错误
 func reportLogWarn(ctx *reportContext) {
 	//输出日志
 	if ctx.Err != nil {
@@ -293,7 +303,7 @@ func reportLogWarn(ctx *reportContext) {
 	reportBaseReport(ctx)
 }
 
-// 反馈错误
+// reportLogErr 反馈错误
 func reportLogErr(ctx *reportContext) {
 	//输出日志
 	if ctx.Err != nil {
@@ -305,7 +315,7 @@ func reportLogErr(ctx *reportContext) {
 	reportBaseReport(ctx)
 }
 
-// 自动失败是否失败并反馈
+// reportAuto 自动失败是否失败并反馈
 func reportAuto(ctx *reportContext) {
 	if ctx.Err != nil {
 		reportLogWarn(ctx)
@@ -314,12 +324,16 @@ func reportAuto(ctx *reportContext) {
 	reportBaseReport(ctx)
 }
 
-// 通过反馈结构
+// reportBaseReport 通过反馈结构
 func reportBaseReport(ctx *reportContext) {
 	//反馈数据
 	msg := ""
-	if ctx.Code != "" {
-		msg = CoreLanguage.GetLanguageText(ctx.RouterContext, ctx.Code)
+	if ctx.ReplaceMsg != "" {
+		msg = ctx.ReplaceMsg
+	} else {
+		if ctx.Code != "" {
+			msg = CoreLanguage.GetLanguageText(ctx.RouterContext, ctx.Code)
+		}
 	}
 	res := reportDataType{
 		Status: ctx.Status,
@@ -332,7 +346,7 @@ func reportBaseReport(ctx *reportContext) {
 	ctx.RouterContext.Abort()
 }
 
-// gin直接反馈头
+// reportGin gin直接反馈头
 func reportGin(ctxGin *gin.Context, haveLog bool, httpCode int, err error, msg string, status bool, code string, count int64, data interface{}) {
 	//实现实例
 	ctx := reportGetCtx(&RouterURLPublicC{
@@ -348,7 +362,7 @@ func reportGin(ctxGin *gin.Context, haveLog bool, httpCode int, err error, msg s
 	reportBaseReport(&ctx)
 }
 
-// 组装上下文
+// reportGetCtx 组装上下文
 func reportGetCtx(context any, httpCode int, err error, msg string, status bool, code string, count int64, data interface{}) reportContext {
 	//修正http状态
 	if httpCode < 1 {
