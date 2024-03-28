@@ -84,6 +84,13 @@ func (t *ClientListCtx) SetIDQuery(field string, param int64) *ClientListCtx {
 	return t
 }
 
+// SetIntQuery 常规Int判断查询
+func (t *ClientListCtx) SetIntQuery(field string, param int) *ClientListCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, " OR $", t.preemptionNum, " < 0)"), param)
+	return t
+}
+
 // SetStringQuery 常规字符串判断查询
 func (t *ClientListCtx) SetStringQuery(field string, param string) *ClientListCtx {
 	t.addPreemptionNum()
