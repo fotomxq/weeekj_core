@@ -81,8 +81,9 @@ type ArgsCreateSlot struct {
 // CreateSlot 创建Slot
 func CreateSlot(args *ArgsCreateSlot) (id int64, err error) {
 	//创建数据
-	id, err = slotDB.Insert().SetFields([]string{"name", "theme_category_id", "theme_id", "value_type", "default_value", "params"}).Add(map[string]any{
+	id, err = slotDB.Insert().SetFields([]string{"name", "description", "theme_category_id", "theme_id", "value_type", "default_value", "params"}).Add(map[string]any{
 		"name":              args.Name,
+		"description":       "",
 		"theme_category_id": args.ThemeCategoryID,
 		"theme_id":          args.ThemeID,
 		"value_type":        args.ValueType,
@@ -126,8 +127,9 @@ type ArgsUpdateSlot struct {
 // UpdateSlot 修改Slot
 func UpdateSlot(args *ArgsUpdateSlot) (err error) {
 	//更新数据
-	err = slotDB.Update().SetFields([]string{"name", "theme_category_id", "theme_id", "value_type", "default_value", "params"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+	err = slotDB.Update().SetFields([]string{"description", "name", "theme_category_id", "theme_id", "value_type", "default_value", "params"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"name":              args.Name,
+		"description":       "",
 		"theme_category_id": args.ThemeCategoryID,
 		"theme_id":          args.ThemeID,
 		"value_type":        args.ValueType,
@@ -190,7 +192,7 @@ func getSlotByID(id int64) (data FieldsSlot) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := slotDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "name", "theme_category_id", "theme_id", "value_type", "default_value", "params"}).GetByID(id).NeedLimit().Result(&data)
+	err := slotDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "description", "name", "theme_category_id", "theme_id", "value_type", "default_value", "params"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}
