@@ -16,10 +16,16 @@ type ArgsGetWeeklyRecipeList struct {
 	Pages CoreSQL2.ArgsPages `json:"pages"`
 	//组织ID
 	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id" empty:"true"`
+	//组织ID列
+	RawOrgIDs []int64 `db:"raw_org_ids" json:"rawOrgIDs" check:"ids" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//分公司ID组
+	OrgIDs []int64 `db:"org_ids" json:"orgIDs" check:"ids" empty:"true"`
 	//门店ID
 	StoreID int64 `db:"store_id" json:"storeID" check:"id" empty:"true"`
+	//门店ID列
+	StoreIDs []int64 `db:"store_ids" json:"storeIDs" check:"ids" empty:"true"`
 	//提交组织成员ID
 	SubmitOrgBindID int64 `db:"submit_org_bind_id" json:"submitOrgBindID" check:"id" empty:"true"`
 	//提交用户ID
@@ -41,7 +47,7 @@ type ArgsGetWeeklyRecipeList struct {
 
 // GetWeeklyRecipeList 获取WeeklyRecipe列表
 func GetWeeklyRecipeList(args *ArgsGetWeeklyRecipeList) (dataList []FieldsWeeklyRecipe, dataCount int64, err error) {
-	dataCount, err = weeklyRecipeDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("raw_org_id", args.RawOrgID).SetIDQuery("org_id", args.OrgID).SetIDQuery("store_id", args.StoreID).SetIDQuery("submit_org_bind_id", args.SubmitOrgBindID).SetIDQuery("submit_user_id", args.SubmitUserID).SetIntQuery("audit_status", args.AuditStatus).SetIDQuery("audit_org_bind_id", args.AuditOrgBindID).SetIDQuery("audit_user_id", args.AuditUserID).SetSearchQuery([]string{"name", "remark"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = weeklyRecipeDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("raw_org_id", args.RawOrgID).SetIDsQuery("raw_org_id", args.RawOrgIDs).SetIDQuery("org_id", args.OrgID).SetIDsQuery("org_ids", args.OrgIDs).SetIDQuery("store_id", args.StoreID).SetIDsQuery("store_id", args.StoreIDs).SetIDQuery("submit_org_bind_id", args.SubmitOrgBindID).SetIDQuery("submit_user_id", args.SubmitUserID).SetIntQuery("audit_status", args.AuditStatus).SetIDQuery("audit_org_bind_id", args.AuditOrgBindID).SetIDQuery("audit_user_id", args.AuditUserID).SetSearchQuery([]string{"name", "remark"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -241,6 +247,9 @@ func UpdateWeeklyRecipe(args *ArgsUpdateWeeklyRecipe) (err error) {
 type ArgsAuditWeeklyRecipe struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
+	//当前组织ID
+	// 用于验证数据是否属于当前组织
+	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id"`
 	//审核状态
 	// 0 未审核; 1 审核通过; 2 审核不通过
 	AuditStatus int `db:"audit_status" json:"auditStatus" check:"intThan0" empty:"true"`
@@ -262,7 +271,9 @@ func AuditWeeklyRecipe(args *ArgsAuditWeeklyRecipe) (err error) {
 	if args.AuditStatus == 2 {
 		auditAt = time.Time{}
 	}
-	err = weeklyRecipeDB.Update().SetFields([]string{"audit_at", "audit_status", "audit_org_bind_id", "audit_user_id", "audit_user_name"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+	err = weeklyRecipeDB.Update().SetFields([]string{"audit_at", "audit_status", "audit_org_bind_id", "audit_user_id", "audit_user_name"}).NeedUpdateTime().AddWhereID(args.ID).SetWhereAnd("(raw_org_id = :raw_org_id OR :raw_org_id < 0)", map[string]any{
+		"raw_org_id": args.RawOrgID,
+	}).NamedExec(map[string]any{
 		"audit_at":          auditAt,
 		"audit_status":      args.AuditStatus,
 		"audit_org_bind_id": args.AuditOrgBindID,
