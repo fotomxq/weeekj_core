@@ -68,6 +68,9 @@ func (t *ClientListCtx) SetDeleteQuery(field string, param bool) *ClientListCtx 
 // SetSearchQuery 设置搜索查询
 // 如果启动此设定，请注意基于查询条件的$顺序，叠加后使用，否则讲造成条件和参数不匹配
 func (t *ClientListCtx) SetSearchQuery(fields []string, search string) *ClientListCtx {
+	if search == "" {
+		return t
+	}
 	t.addPreemptionNum()
 	var newQuerys []string
 	for _, v := range fields {
@@ -108,14 +111,21 @@ func (t *ClientListCtx) SetStringQuery(field string, param string) *ClientListCt
 	return t
 }
 
+// SelectList
+// 如果启用了自动组合方法，请尽可能不要使用本方法where和args，否则请在where条件中明确一共注入了几个参数，并从对应参数为起点计算，避免$x顺序不匹配
 func (t *ClientListCtx) SelectList(where string, args ...interface{}) *ClientListCtx {
 	step := 0
 	if t.pages.Page > 0 {
 		step = int((t.pages.Page - 1) * t.pages.Max)
 	}
+	haveNewWhere := where != ""
 	var newArgs []any
 	for k := 0; k < len(t.preemptionData); k++ {
-		where = fmt.Sprint(t.preemptionData[k].Query, " AND ", where)
+		if !haveNewWhere && k == 0 {
+			where = fmt.Sprint(t.preemptionData[k].Query)
+		} else {
+			where = fmt.Sprint(t.preemptionData[k].Query, " AND ", where)
+		}
 		newArgs = append(newArgs, t.preemptionData[k].Param)
 	}
 	t.clientCtx.query = t.getSQLSelect(where, step, int(t.pages.Max), t.pages.Sort, t.pages.Desc)
@@ -124,7 +134,7 @@ func (t *ClientListCtx) SelectList(where string, args ...interface{}) *ClientLis
 		newArgs = append(newArgs, args...)
 		t.clientCtx.appendArgs = newArgs
 	} else {
-		t.clientCtx.appendArgs = args
+		t.clientCtx.appendArgs = newArgs
 	}
 	return t
 }

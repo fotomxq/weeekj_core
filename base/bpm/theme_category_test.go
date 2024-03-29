@@ -1,6 +1,8 @@
 package BaseBPM
 
 import (
+	"fmt"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 )
@@ -27,14 +29,32 @@ func TestGetThemeCategory(t *testing.T) {
 		ID: newThemeCategory.ID,
 	})
 	ToolsTest.ReportData(t, err, data)
+	if err != nil {
+		t.Error("get theme category failed, id: ", newThemeCategory.ID)
+	}
 	newThemeCategory = data
+}
+
+func TestGetThemeCategoryList(t *testing.T) {
+	dataList, dataCount, err := GetThemeCategoryList(&ArgsGetThemeCategoryList{
+		Pages: CoreSQL2.ArgsPages{
+			Page: 1,
+			Max:  10,
+			Sort: "id",
+			Desc: false,
+		},
+		IsRemove: false,
+		Search:   "",
+	})
+	ToolsTest.ReportDataList(t, err, dataList, dataCount)
+
 }
 
 func TestUpdateThemeCategory(t *testing.T) {
 	err := UpdateThemeCategory(&ArgsUpdateThemeCategory{
 		ID:          newThemeCategory.ID,
-		Name:        newThemeCategory.Name,
-		Description: newThemeCategory.Description,
+		Name:        fmt.Sprint(newThemeCategory.Name, "_Update"),
+		Description: fmt.Sprint(newThemeCategory.Description, "_Update"),
 	})
 	ToolsTest.ReportError(t, err)
 }
