@@ -8,7 +8,7 @@ type FieldsLog struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
 	//创建时间
-	CreatedAt time.Time `db:"create_at" json:"createdAt"`
+	CreateAt time.Time `db:"create_at" json:"createAt"`
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID"`
 	//管理单元
