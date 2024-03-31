@@ -14,8 +14,6 @@ type FieldsWeeklyRecipe struct {
 	UpdateAt time.Time `db:"update_at" json:"updateAt"`
 	//删除时间
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
