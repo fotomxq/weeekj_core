@@ -11,8 +11,6 @@ import (
 type ArgsGetRestaurantPurchaseItemList struct {
 	//分页参数
 	Pages CoreSQL2.ArgsPages `json:"pages"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//门店ID
@@ -27,7 +25,7 @@ type ArgsGetRestaurantPurchaseItemList struct {
 
 // GetRestaurantPurchaseItemList 获取RestaurantPurchaseItem列表
 func GetRestaurantPurchaseItemList(args *ArgsGetRestaurantPurchaseItemList) (dataList []FieldsPurchaseAnalysisItem, dataCount int64, err error) {
-	dataCount, err = restaurantPurchaseItemDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("raw_org_id", args.RawOrgID).SetIDQuery("org_id", args.OrgID).SetIDQuery("store_id", args.StoreID).SetIDQuery("purchase_analysis_id", args.PurchaseAnalysisID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = restaurantPurchaseItemDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIDQuery("store_id", args.StoreID).SetIDQuery("purchase_analysis_id", args.PurchaseAnalysisID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -68,8 +66,6 @@ func GetRestaurantPurchaseItemNameByID(id int64) (name string) {
 
 // ArgsCreateRestaurantPurchaseItem 创建RestaurantPurchaseItem参数
 type ArgsCreateRestaurantPurchaseItem struct {
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
@@ -89,7 +85,7 @@ type ArgsCreateRestaurantPurchaseItem struct {
 // CreateRestaurantPurchaseItem 创建RestaurantPurchaseItem
 func CreateRestaurantPurchaseItem(args *ArgsCreateRestaurantPurchaseItem) (id int64, err error) {
 	//创建数据
-	id, err = restaurantPurchaseItemDB.Insert().SetFields([]string{"raw_org_id", "org_id", "store_id", "purchase_analysis_id", "name", "weight", "price", "total_price"}).Add(map[string]any{
+	id, err = restaurantPurchaseItemDB.Insert().SetFields([]string{"org_id", "store_id", "purchase_analysis_id", "name", "weight", "price", "total_price"}).Add(map[string]any{
 		"purchase_analysis_id": args.PurchaseAnalysisID,
 		"name":                 args.Name,
 		"weight":               args.Weight,
@@ -163,7 +159,7 @@ func getRestaurantPurchaseItemByID(id int64) (data FieldsPurchaseAnalysisItem) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := restaurantPurchaseItemDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "raw_org_id", "org_id", "store_id", "purchase_analysis_id", "name", "weight", "price", "total_price"}).GetByID(id).NeedLimit().Result(&data)
+	err := restaurantPurchaseItemDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "store_id", "purchase_analysis_id", "name", "weight", "price", "total_price"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}
