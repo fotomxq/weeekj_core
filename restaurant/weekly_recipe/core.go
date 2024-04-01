@@ -1,4 +1,4 @@
-package RestaurantWeeklyRecipe
+package RestaurantWeeklyRecipeMarge
 
 import (
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
@@ -12,16 +12,13 @@ import (
 
 var (
 	//缓冲时间
-	cacheWeeklyRecipeTime     = 1800
-	cacheWeeklyRecipeItemTime = 1800
+	cacheWeeklyRecipeTime = 1800
 	//数据表
-	weeklyRecipeDB     CoreSQL2.Client
-	weeklyRecipeItemDB CoreSQL2.Client
+	weeklyRecipeMargeDB CoreSQL2.Client
 )
 
 // Init 初始化
 func Init() {
 	//初始化数据表
-	weeklyRecipeDB.Init(&Router2SystemConfig.MainSQL, "restaurant_weekly_recipe")
-	weeklyRecipeItemDB.Init(&Router2SystemConfig.MainSQL, "restaurant_weekly_recipe_item")
+	weeklyRecipeMargeDB.Init(&Router2SystemConfig.MainSQL, "restaurant_weekly_recipe_marge")
 }

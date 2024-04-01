@@ -50,7 +50,7 @@ import (
 	OrgWorkTip "github.com/fotomxq/weeekj_core/v5/org/work_tip"
 	RestaurantPurchase "github.com/fotomxq/weeekj_core/v5/restaurant/purchase_analysis"
 	RestaurantRecipe "github.com/fotomxq/weeekj_core/v5/restaurant/recipe"
-	RestaurantWeeklyRecipe "github.com/fotomxq/weeekj_core/v5/restaurant/weekly_recipe"
+	RestaurantWeeklyRecipeMarge "github.com/fotomxq/weeekj_core/v5/restaurant/weekly_recipe"
 	RouterAPIRunBase "github.com/fotomxq/weeekj_core/v5/router/api/run_base"
 	ServiceAD2 "github.com/fotomxq/weeekj_core/v5/service/ad2"
 	ServiceCompany "github.com/fotomxq/weeekj_core/v5/service/company"
@@ -343,10 +343,10 @@ func Init() (err error) {
 	///////////////////////////////////////////////////////////////////////////////////
 	//电子餐厅
 	///////////////////////////////////////////////////////////////////////////////////
-	////电子菜品
+	//电子菜品
 	RestaurantRecipe.Init()
 	//周食谱
-	RestaurantWeeklyRecipe.Init()
+	RestaurantWeeklyRecipeMarge.Init()
 	//原材料采购台账
 	RestaurantPurchase.Init()
 

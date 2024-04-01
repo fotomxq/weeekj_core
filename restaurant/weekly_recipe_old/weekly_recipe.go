@@ -43,7 +43,7 @@ type ArgsGetWeeklyRecipeList struct {
 
 // GetWeeklyRecipeList 获取WeeklyRecipe列表
 func GetWeeklyRecipeList(args *ArgsGetWeeklyRecipeList) (dataList []FieldsWeeklyRecipe, dataCount int64, err error) {
-	dataCount, err = weeklyRecipeDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIDsQuery("org_ids", args.OrgIDs).SetIDQuery("store_id", args.StoreID).SetIDsQuery("store_id", args.StoreIDs).SetIDQuery("submit_org_bind_id", args.SubmitOrgBindID).SetIDQuery("submit_user_id", args.SubmitUserID).SetIntQuery("audit_status", args.AuditStatus).SetIDQuery("audit_org_bind_id", args.AuditOrgBindID).SetIDQuery("audit_user_id", args.AuditUserID).SetSearchQuery([]string{"name", "remark"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = weeklyRecipeDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "dining_date", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIDsQuery("org_ids", args.OrgIDs).SetIDQuery("store_id", args.StoreID).SetIDsQuery("store_id", args.StoreIDs).SetIDQuery("submit_org_bind_id", args.SubmitOrgBindID).SetIDQuery("submit_user_id", args.SubmitUserID).SetIntQuery("audit_status", args.AuditStatus).SetIDQuery("audit_org_bind_id", args.AuditOrgBindID).SetIDQuery("audit_user_id", args.AuditUserID).SetSearchQuery([]string{"name", "remark"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -74,29 +74,6 @@ func GetWeeklyRecipeByID(args *ArgsGetWeeklyRecipeByID) (data FieldsWeeklyRecipe
 		err = errors.New("no data")
 		return
 	}
-	return
-}
-
-// GetWeeklyRecipeMargeByID 获取打包数据
-func GetWeeklyRecipeMargeByID(args *ArgsGetWeeklyRecipeByID) (headData FieldsWeeklyRecipe, itemList []FieldsWeeklyRecipeItem, err error) {
-	headData, err = GetWeeklyRecipeByID(args)
-	if err != nil {
-		return
-	}
-	itemList, _, _ = GetWeeklyRecipeItemList(&ArgsGetWeeklyRecipeItemList{
-		Pages: CoreSQL2.ArgsPages{
-			Page: 1,
-			Max:  999,
-			Sort: "id",
-			Desc: false,
-		},
-		OrgID:          -1,
-		StoreID:        -1,
-		WeeklyRecipeID: headData.ID,
-		RecipeID:       -1,
-		IsRemove:       false,
-		Search:         "",
-	})
 	return
 }
 
@@ -135,6 +112,16 @@ type ArgsCreateWeeklyRecipe struct {
 
 // CreateWeeklyRecipe 创建WeeklyRecipe
 func CreateWeeklyRecipe(args *ArgsCreateWeeklyRecipe) (id int64, err error) {
+	//检查当前是否存在数据
+	checkDataList, _ := getWeeklyRecipeBetweenDate(args.OrgID, args.StoreID, CoreFilter.GetTimeToDefaultDate(CoreFilter.GetCarbonByTime(args.DiningDate).Time))
+	if len(checkDataList) > 0 {
+		for _, v := range checkDataList {
+			if v.DiningTime == args.DiningTime {
+				err = errors.New("data already exists")
+				return
+			}
+		}
+	}
 	//创建数据
 	id, err = weeklyRecipeDB.Insert().SetFields([]string{"org_id", "store_id", "submit_org_bind_id", "submit_user_id", "submit_user_name", "audit_at", "audit_status", "audit_org_bind_id", "audit_user_id", "audit_user_name", "name", "remark", "dining_time", "dining_date"}).Add(map[string]any{
 		"org_id":             args.OrgID,
@@ -293,6 +280,32 @@ func DeleteWeeklyRecipe(args *ArgsDeleteWeeklyRecipe) (err error) {
 	}
 	//删除缓冲
 	deleteWeeklyRecipeCache(args.ID)
+	//反馈
+	return
+}
+
+// getWeeklyRecipeBetweenDate 获取指定时间段内的菜谱主表
+// checkDate 为要检查的日期，格式为 2021-01-01
+func getWeeklyRecipeBetweenDate(orgID int64, storeID int64, checkDate string) (dataList []FieldsWeeklyRecipe, err error) {
+	//识别日期
+	checkDateCarbon := CoreFilter.GetNowTimeCarbon().Parse(fmt.Sprint(checkDate, " 00:00:00"))
+	startAt := checkDateCarbon.StartOfDay()
+	endAt := checkDateCarbon.EndOfDay()
+	//获取数据
+	var rawList []FieldsWeeklyRecipe
+	_, err = weeklyRecipeDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "dining_date"}).SetPages(CoreSQL2.ArgsPages{
+		Page: 1,
+		Max:  10,
+		Sort: "id",
+		Desc: false,
+	}).SetDeleteQuery("delete_at", false).SetTimeBetweenQuery("dining_date", startAt.Time, endAt.Time).SetIDQuery("org_id", orgID).SetIDQuery("store_id", storeID).SelectList("").ResultAndCount(&rawList)
+	if err != nil {
+		err = errors.New("no data")
+		return
+	}
+	for _, v := range rawList {
+		dataList = append(dataList, getWeeklyRecipeByID(v.ID))
+	}
 	//反馈
 	return
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/lib/pq"
 	"strings"
+	"time"
 )
 
 type ClientListCtx struct {
@@ -62,6 +63,15 @@ func (t *ClientListCtx) SetPages(pages ArgsPages) *ClientListCtx {
 func (t *ClientListCtx) SetDeleteQuery(field string, param bool) *ClientListCtx {
 	t.addPreemptionNum()
 	t.addPreemption(fmt.Sprint("((", field, " < to_timestamp(1000000) AND $", t.preemptionNum, " = false) OR (", field, " >= to_timestamp(1000000) AND $", t.preemptionNum, " = true))"), param)
+	return t
+}
+
+// SetTimeBetweenQuery 设置时间范围
+func (t *ClientListCtx) SetTimeBetweenQuery(field string, startAt time.Time, endAt time.Time) *ClientListCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " >= $", t.preemptionNum), startAt)
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " <= $", t.preemptionNum), endAt)
 	return t
 }
 
