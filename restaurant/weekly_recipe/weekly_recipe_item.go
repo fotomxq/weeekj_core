@@ -12,8 +12,6 @@ import (
 type ArgsGetWeeklyRecipeItemList struct {
 	//分页参数
 	Pages CoreSQL2.ArgsPages `json:"pages"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//门店ID
@@ -30,7 +28,7 @@ type ArgsGetWeeklyRecipeItemList struct {
 
 // GetWeeklyRecipeItemList 获取WeeklyRecipeItem列表
 func GetWeeklyRecipeItemList(args *ArgsGetWeeklyRecipeItemList) (dataList []FieldsWeeklyRecipeItem, dataCount int64, err error) {
-	dataCount, err = weeklyRecipeItemDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("raw_org_id", args.RawOrgID).SetIDQuery("org_id", args.OrgID).SetIDQuery("store_id", args.StoreID).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetIDQuery("recipe_id", args.RecipeID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = weeklyRecipeItemDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIDQuery("store_id", args.StoreID).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetIDQuery("recipe_id", args.RecipeID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -48,8 +46,6 @@ func GetWeeklyRecipeItemList(args *ArgsGetWeeklyRecipeItemList) (dataList []Fiel
 type ArgsGetWeeklyRecipeItemByID struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//门店ID
@@ -59,7 +55,7 @@ type ArgsGetWeeklyRecipeItemByID struct {
 // GetWeeklyRecipeItemByID 获取WeeklyRecipeItem数
 func GetWeeklyRecipeItemByID(args *ArgsGetWeeklyRecipeItemByID) (data FieldsWeeklyRecipeItem, err error) {
 	data = getWeeklyRecipeItemByID(args.ID)
-	if data.ID < 1 || !CoreFilter.EqID2(args.RawOrgID, data.RawOrgID) || !CoreFilter.EqID2(args.OrgID, data.OrgID) || !CoreFilter.EqID2(args.StoreID, data.StoreID) {
+	if data.ID < 1 || !CoreFilter.EqID2(args.OrgID, data.OrgID) || !CoreFilter.EqID2(args.StoreID, data.StoreID) {
 		err = errors.New("no data")
 		return
 	}
@@ -77,8 +73,6 @@ func GetWeeklyRecipeItemNameByID(id int64) (name string) {
 
 // ArgsCreateWeeklyRecipeItem 创建WeeklyRecipeItem参数
 type ArgsCreateWeeklyRecipeItem struct {
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
@@ -96,8 +90,7 @@ type ArgsCreateWeeklyRecipeItem struct {
 // CreateWeeklyRecipeItem 创建WeeklyRecipeItem
 func CreateWeeklyRecipeItem(args *ArgsCreateWeeklyRecipeItem) (id int64, err error) {
 	//创建数据
-	id, err = weeklyRecipeItemDB.Insert().SetFields([]string{"raw_org_id", "org_id", "store_id", "weekly_recipe_id", "recipe_id", "name", "price"}).Add(map[string]any{
-		"raw_org_id":       args.RawOrgID,
+	id, err = weeklyRecipeItemDB.Insert().SetFields([]string{"org_id", "store_id", "weekly_recipe_id", "recipe_id", "name", "price"}).Add(map[string]any{
 		"org_id":           args.OrgID,
 		"store_id":         args.StoreID,
 		"weekly_recipe_id": args.WeeklyRecipeID,
@@ -116,8 +109,6 @@ func CreateWeeklyRecipeItem(args *ArgsCreateWeeklyRecipeItem) (id int64, err err
 type ArgsUpdateWeeklyRecipeItem struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
@@ -135,8 +126,7 @@ type ArgsUpdateWeeklyRecipeItem struct {
 // UpdateWeeklyRecipeItem 修改WeeklyRecipeItem
 func UpdateWeeklyRecipeItem(args *ArgsUpdateWeeklyRecipeItem) (err error) {
 	//更新数据
-	err = weeklyRecipeItemDB.Update().SetFields([]string{"raw_org_id", "org_id", "store_id", "weekly_recipe_id", "recipe_id", "name", "price"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
-		"raw_org_id":       args.RawOrgID,
+	err = weeklyRecipeItemDB.Update().SetFields([]string{"org_id", "store_id", "weekly_recipe_id", "recipe_id", "name", "price"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"org_id":           args.OrgID,
 		"store_id":         args.StoreID,
 		"weekly_recipe_id": args.WeeklyRecipeID,
@@ -178,7 +168,7 @@ func getWeeklyRecipeItemByID(id int64) (data FieldsWeeklyRecipeItem) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := weeklyRecipeItemDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "raw_org_id", "org_id", "store_id", "weekly_recipe_id", "recipe_id", "name", "price"}).GetByID(id).NeedLimit().Result(&data)
+	err := weeklyRecipeItemDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "store_id", "weekly_recipe_id", "recipe_id", "name", "price"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}

@@ -13,8 +13,6 @@ import (
 type ArgsGetRestaurantPurchaseList struct {
 	//分页参数
 	Pages CoreSQL2.ArgsPages `json:"pages"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//门店ID
@@ -27,7 +25,7 @@ type ArgsGetRestaurantPurchaseList struct {
 
 // GetRestaurantPurchaseList 获取RestaurantPurchase列表
 func GetRestaurantPurchaseList(args *ArgsGetRestaurantPurchaseList) (dataList []FieldsPurchaseAnalysis, dataCount int64, err error) {
-	dataCount, err = restaurantPurchaseDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("raw_org_id", args.RawOrgID).SetIDQuery("org_id", args.OrgID).SetIDQuery("store_id", args.StoreID).SetSearchQuery([]string{"name", "remark"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = restaurantPurchaseDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIDQuery("store_id", args.StoreID).SetSearchQuery([]string{"name", "remark"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -45,8 +43,6 @@ func GetRestaurantPurchaseList(args *ArgsGetRestaurantPurchaseList) (dataList []
 type ArgsGetRestaurantPurchaseByID struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//门店ID
@@ -56,7 +52,7 @@ type ArgsGetRestaurantPurchaseByID struct {
 // GetRestaurantPurchaseByID 获取RestaurantPurchase数
 func GetRestaurantPurchaseByID(args *ArgsGetRestaurantPurchaseByID) (data FieldsPurchaseAnalysis, err error) {
 	data = getRestaurantPurchaseByID(args.ID)
-	if data.ID < 1 || !CoreFilter.EqID2(args.RawOrgID, data.RawOrgID) || !CoreFilter.EqID2(args.OrgID, data.OrgID) || !CoreFilter.EqID2(args.StoreID, data.StoreID) {
+	if data.ID < 1 || !CoreFilter.EqID2(args.OrgID, data.OrgID) || !CoreFilter.EqID2(args.StoreID, data.StoreID) {
 		err = errors.New("no data")
 		return
 	}
@@ -76,7 +72,6 @@ func GetRestaurantPurchaseMargeByID(args *ArgsGetRestaurantPurchaseByID) (headDa
 			Sort: "id",
 			Desc: false,
 		},
-		RawOrgID:           -1,
 		OrgID:              -1,
 		StoreID:            -1,
 		PurchaseAnalysisID: headData.ID,
@@ -99,8 +94,6 @@ func GetRestaurantPurchaseNameByID(id int64) (name string) {
 type ArgsCreateRestaurantPurchase struct {
 	//发生采购时间
 	PurchaseAt time.Time `db:"purchase_at" json:"purchaseAt"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
@@ -112,9 +105,8 @@ type ArgsCreateRestaurantPurchase struct {
 // CreateRestaurantPurchase 创建RestaurantPurchase
 func CreateRestaurantPurchase(args *ArgsCreateRestaurantPurchase) (id int64, err error) {
 	//创建数据
-	id, err = restaurantPurchaseDB.Insert().SetFields([]string{"purchase_at", "raw_org_id", "org_id", "store_id", "name"}).Add(map[string]any{
+	id, err = restaurantPurchaseDB.Insert().SetFields([]string{"purchase_at", "org_id", "store_id", "name"}).Add(map[string]any{
 		"purchase_at": args.PurchaseAt,
-		"raw_org_id":  args.RawOrgID,
 		"org_id":      args.OrgID,
 		"store_id":    args.StoreID,
 		"name":        args.Name,
@@ -157,7 +149,6 @@ func CreateRestaurantPurchaseMargeByDay(args *ArgsCreateRestaurantPurchaseMargeB
 	//批量创建行
 	for _, v := range args.RowData {
 		_, err = CreateRestaurantPurchaseItem(&ArgsCreateRestaurantPurchaseItem{
-			RawOrgID:           args.HeaderData.RawOrgID,
 			OrgID:              args.HeaderData.OrgID,
 			StoreID:            args.HeaderData.StoreID,
 			PurchaseAnalysisID: id,
@@ -180,8 +171,6 @@ type ArgsUpdateRestaurantPurchase struct {
 	ID int64 `db:"id" json:"id" check:"id"`
 	//发生采购时间
 	PurchaseAt time.Time `db:"purchase_at" json:"purchaseAt"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
@@ -193,9 +182,8 @@ type ArgsUpdateRestaurantPurchase struct {
 // UpdateRestaurantPurchase 修改RestaurantPurchase
 func UpdateRestaurantPurchase(args *ArgsUpdateRestaurantPurchase) (err error) {
 	//更新数据
-	err = restaurantPurchaseDB.Update().SetFields([]string{"purchase_at", "raw_org_id", "org_id", "store_id", "name"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+	err = restaurantPurchaseDB.Update().SetFields([]string{"purchase_at", "org_id", "store_id", "name"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"purchase_at": args.PurchaseAt,
-		"raw_org_id":  args.RawOrgID,
 		"org_id":      args.OrgID,
 		"store_id":    args.StoreID,
 		"name":        args.Name,
@@ -234,7 +222,7 @@ func getRestaurantPurchaseByID(id int64) (data FieldsPurchaseAnalysis) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := restaurantPurchaseDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "purchase_at", "raw_org_id", "org_id", "store_id", "name"}).GetByID(id).NeedLimit().Result(&data)
+	err := restaurantPurchaseDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "purchase_at", "org_id", "store_id", "name"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}

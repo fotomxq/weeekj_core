@@ -16,8 +16,6 @@ type FieldsRecipe struct {
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt"`
 	//菜品名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID

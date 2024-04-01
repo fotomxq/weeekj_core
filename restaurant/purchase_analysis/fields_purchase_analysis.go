@@ -14,8 +14,6 @@ type FieldsPurchaseAnalysis struct {
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt"`
 	//发生采购时间
 	PurchaseAt time.Time `db:"purchase_at" json:"purchaseAt"`
-	//组织ID
-	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
