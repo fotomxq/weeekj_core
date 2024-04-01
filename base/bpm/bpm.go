@@ -76,6 +76,7 @@ func CreateBPM(args *ArgsCreateBPM) (id int64, err error) {
 		"json_node":   args.JSONNode,
 	}).ExecAndResultID()
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	//反馈
@@ -138,7 +139,7 @@ func DeleteBPM(args *ArgsDeleteBPM) (err error) {
 
 // GetBPMCountByThemeID 获取主题下的bpm数量
 func GetBPMCountByThemeID(themeID int64) (count int64) {
-	count, _ = bpmDB.Select().SetFieldsList([]string{"id"}).SetIDQuery("theme_id", themeID).SetPages(CoreSQL2.ArgsPages{
+	count, _ = bpmDB.Select().SetFieldsList([]string{"id"}).SetDeleteQuery("delete_at", false).SetIDQuery("theme_id", themeID).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  1,
 		Sort: "id",

@@ -22,7 +22,7 @@ type FieldsLog struct {
 	//当前节点ID
 	NodeID string `db:"node_id" json:"nodeId" check:"des" min:"1" max:"300"`
 	//当前节点序号
-	NodeNum int `db:"node_num" json:"nodeNum" check:"int64Than0"`
+	NodeNumber int `db:"node_number" json:"nodeNumber" check:"int64Than0"`
 	//节点存储内容
 	NodeContent string `db:"node_content" json:"nodeContent"`
 }

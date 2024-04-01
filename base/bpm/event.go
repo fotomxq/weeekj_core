@@ -168,7 +168,7 @@ func DeleteEvent(args *ArgsDeleteEvent) (err error) {
 
 // GetEventCountByCategoryID 获取分类下的事件数量
 func GetEventCountByCategoryID(categoryID int64) (count int64) {
-	count, _ = eventDB.Select().SetFieldsList([]string{"id"}).SetIDQuery("theme_category_id", categoryID).SetPages(CoreSQL2.ArgsPages{
+	count, _ = eventDB.Select().SetFieldsList([]string{"id"}).SetDeleteQuery("delete_at", false).SetIDQuery("theme_category_id", categoryID).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  1,
 		Sort: "id",
@@ -179,7 +179,7 @@ func GetEventCountByCategoryID(categoryID int64) (count int64) {
 
 // GetEventCountByThemeID 获取主题下的事件数量
 func GetEventCountByThemeID(themeID int64) (count int64) {
-	count, _ = eventDB.Select().SetFieldsList([]string{"id"}).SetIDQuery("theme_id", themeID).SetPages(CoreSQL2.ArgsPages{
+	count, _ = eventDB.Select().SetFieldsList([]string{"id"}).SetDeleteQuery("delete_at", false).SetIDQuery("theme_id", themeID).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  1,
 		Sort: "id",

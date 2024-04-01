@@ -61,7 +61,7 @@ func getLogByID(id int64) (data FieldsLog) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := logDB.Get().SetFieldsOne([]string{"id", "create_at", "org_id", "unit_id", "user_id", "org_bind_id", "bpm_id", "node_id", "node_num", "node_content"}).GetByID(id).NeedLimit().Result(&data)
+	err := logDB.Get().SetFieldsOne([]string{"id", "create_at", "org_id", "unit_id", "user_id", "org_bind_id", "bpm_id", "node_id", "node_number", "node_content"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}

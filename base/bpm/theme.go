@@ -139,7 +139,7 @@ func DeleteTheme(args *ArgsDeleteTheme) (err error) {
 
 // GetThemeCountByCategoryID 获取分类下的主题数量
 func GetThemeCountByCategoryID(categoryID int64) (count int64) {
-	count, _ = themeDB.Select().SetFieldsList([]string{"id"}).SetIDQuery("category_id", categoryID).SetPages(CoreSQL2.ArgsPages{
+	count, _ = themeDB.Select().SetFieldsList([]string{"id"}).SetDeleteQuery("delete_at", false).SetIDQuery("category_id", categoryID).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  1,
 		Sort: "id",

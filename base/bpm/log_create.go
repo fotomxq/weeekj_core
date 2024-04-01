@@ -14,21 +14,21 @@ type ArgsCreateLog struct {
 	//当前节点ID
 	NodeID string `db:"node_id" json:"nodeId" check:"des" min:"1" max:"300"`
 	//当前节点序号
-	NodeNum int `db:"node_num" json:"nodeNum" check:"int64Than0"`
+	NodeNumber int `db:"node_number" json:"nodeNumber" check:"int64Than0"`
 	//节点存储内容
 	NodeContent string `db:"node_content" json:"nodeContent"`
 }
 
 func CreateLog(args *ArgsCreateLog) (id int64, err error) {
 	//创建数据
-	id, err = logDB.Insert().SetFields([]string{"org_id", "unit_id", "user_id", "org_bind_id", "bpm_id", "node_id", "node_num", "node_content"}).Add(map[string]any{
+	id, err = logDB.Insert().SetFields([]string{"org_id", "unit_id", "user_id", "org_bind_id", "bpm_id", "node_id", "node_number", "node_content"}).Add(map[string]any{
 		"org_id":       args.OrgID,
 		"unit_id":      args.UnitID,
 		"user_id":      args.UserID,
 		"org_bind_id":  args.OrgBindID,
 		"bpm_id":       args.BPMID,
 		"node_id":      args.NodeID,
-		"node_num":     args.NodeNum,
+		"node_number":  args.NodeNumber,
 		"node_content": args.NodeContent,
 	}).ExecAndResultID()
 	if err != nil {

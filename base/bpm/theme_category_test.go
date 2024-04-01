@@ -24,7 +24,7 @@ func TestCreateThemeCategory(t *testing.T) {
 	newThemeCategory.ID = newDataID
 }
 
-func TestGetThemeCategory(t *testing.T) {
+func TestGetThemeCategoryByID(t *testing.T) {
 	data, err := GetThemeCategoryByID(&ArgsGetThemeCategoryByID{
 		ID: newThemeCategory.ID,
 	})
@@ -47,7 +47,6 @@ func TestGetThemeCategoryList(t *testing.T) {
 		Search:   "",
 	})
 	ToolsTest.ReportDataList(t, err, dataList, dataCount)
-
 }
 
 func TestUpdateThemeCategory(t *testing.T) {

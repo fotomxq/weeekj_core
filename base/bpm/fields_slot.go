@@ -16,6 +16,8 @@ type FieldsSlot struct {
 	DeletedAt time.Time `db:"delete_at" json:"deletedAt"`
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
+	//描述
+	Description string `db:"description" json:"description" check:"des" min:"1" max:"500" empty:"true"`
 	//所属主题分类
 	ThemeCategoryID int64 `db:"theme_category_id" json:"themeCategoryId" check:"id"`
 	//所属主题

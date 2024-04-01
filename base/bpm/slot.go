@@ -166,7 +166,7 @@ func DeleteSlot(args *ArgsDeleteSlot) (err error) {
 
 // GetSlotCountByCategoryID 获取分类下的插槽数量
 func GetSlotCountByCategoryID(categoryID int64) (count int64) {
-	count, _ = slotDB.Select().SetFieldsList([]string{"id"}).SetIDQuery("theme_category_id", categoryID).SetPages(CoreSQL2.ArgsPages{
+	count, _ = slotDB.Select().SetFieldsList([]string{"id"}).SetDeleteQuery("delete_at", false).SetIDQuery("theme_category_id", categoryID).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  1,
 		Sort: "id",
@@ -177,7 +177,7 @@ func GetSlotCountByCategoryID(categoryID int64) (count int64) {
 
 // GetSlotCountByThemeID 获取主题下的插槽数量
 func GetSlotCountByThemeID(themeID int64) (count int64) {
-	count, _ = slotDB.Select().SetFieldsList([]string{"id"}).SetIDQuery("theme_id", themeID).SetPages(CoreSQL2.ArgsPages{
+	count, _ = slotDB.Select().SetFieldsList([]string{"id"}).SetDeleteQuery("delete_at", false).SetIDQuery("theme_id", themeID).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  1,
 		Sort: "id",
@@ -192,7 +192,7 @@ func getSlotByID(id int64) (data FieldsSlot) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := slotDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "description", "name", "theme_category_id", "theme_id", "value_type", "default_value", "params"}).GetByID(id).NeedLimit().Result(&data)
+	err := slotDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "name", "description", "theme_category_id", "theme_id", "value_type", "default_value", "params"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}
