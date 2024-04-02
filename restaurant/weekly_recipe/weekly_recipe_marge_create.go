@@ -33,6 +33,7 @@ func CreateWeeklyRecipe(args *ArgsCreateWeeklyRecipe) (id int64, err error) {
 	if len(args.RawData) > 0 {
 		for _, v := range args.RawData {
 			var newV FieldsWeeklyRecipeHeader
+			newV.DiningDate = v.DiningDate
 			for _, v2 := range v.Breakfast {
 				if v2.RecipeID > 0 {
 					v2.Name = RestaurantRecipe.GetRecipeNameByID(v2.RecipeID)

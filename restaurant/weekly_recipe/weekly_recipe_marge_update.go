@@ -29,6 +29,7 @@ func UpdateWeeklyRecipe(args *ArgsUpdateWeeklyRecipe) (err error) {
 	if len(args.RawData) > 0 {
 		for _, v := range args.RawData {
 			var newV FieldsWeeklyRecipeHeader
+			newV.DiningDate = v.DiningDate
 			for _, v2 := range v.Breakfast {
 				if v2.RecipeID > 0 {
 					v2.Name = RestaurantRecipe.GetRecipeNameByID(v2.RecipeID)
@@ -93,9 +94,7 @@ func AuditWeeklyRecipe(args *ArgsAuditWeeklyRecipe) (err error) {
 	if args.AuditStatus == 2 {
 		auditAt = time.Time{}
 	}
-	err = weeklyRecipeMargeDB.Update().SetFields([]string{"audit_at", "audit_status", "audit_org_bind_id", "audit_user_id", "audit_user_name"}).NeedUpdateTime().AddWhereID(args.ID).SetWhereAnd("(raw_org_id = :raw_org_id OR :raw_org_id < 0)", map[string]any{
-		"raw_org_id": args.RawOrgID,
-	}).NamedExec(map[string]any{
+	err = weeklyRecipeMargeDB.Update().SetFields([]string{"audit_at", "audit_status", "audit_org_bind_id", "audit_user_id", "audit_user_name"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"audit_at":          auditAt,
 		"audit_status":      args.AuditStatus,
 		"audit_org_bind_id": args.AuditOrgBindID,
