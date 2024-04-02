@@ -99,7 +99,7 @@ func getWeeklyRecipeByID(id int64) (data FieldsWeeklyRecipe) {
 
 // getWeeklyRecipeSimpleByID 通过ID获取WeeklyRecipe数据包
 func getWeeklyRecipeSimpleByID(id int64) (data FieldsWeeklyRecipe) {
-	cacheMark := getWeeklyRecipeCacheMark(id)
+	cacheMark := getWeeklyRecipeListCacheMark(id)
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
