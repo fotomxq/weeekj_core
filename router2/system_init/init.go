@@ -49,6 +49,7 @@ import (
 	OrgUser "github.com/fotomxq/weeekj_core/v5/org/user"
 	OrgWorkTip "github.com/fotomxq/weeekj_core/v5/org/work_tip"
 	RestaurantPurchase "github.com/fotomxq/weeekj_core/v5/restaurant/purchase_analysis"
+	RestaurantRawMaterials "github.com/fotomxq/weeekj_core/v5/restaurant/raw_materials"
 	RestaurantRecipe "github.com/fotomxq/weeekj_core/v5/restaurant/recipe"
 	RestaurantWeeklyRecipeMarge "github.com/fotomxq/weeekj_core/v5/restaurant/weekly_recipe"
 	RouterAPIRunBase "github.com/fotomxq/weeekj_core/v5/router/api/run_base"
@@ -349,6 +350,8 @@ func Init() (err error) {
 	RestaurantWeeklyRecipeMarge.Init()
 	//原材料采购台账
 	RestaurantPurchase.Init()
+	//原材料库
+	RestaurantRawMaterials.Init()
 
 	//启动完成提示
 	fmt.Println("main router init success.")
