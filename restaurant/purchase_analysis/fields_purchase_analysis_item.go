@@ -18,7 +18,9 @@ type FieldsPurchaseAnalysisItem struct {
 	StoreID int64 `db:"store_id" json:"storeID" check:"id"`
 	//原材料采购台账ID
 	PurchaseAnalysisID int64 `db:"purchase_analysis_id" json:"purchaseAnalysisID" check:"id"`
-	//菜品名称
+	//原材料ID
+	MaterialID int64 `db:"material_id" json:"materialID" check:"id"`
+	//原材料名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
 	//原材料重量 默认kg
 	Weight int64 `db:"weight" json:"weight" check:"int64Than0" empty:"true"`
