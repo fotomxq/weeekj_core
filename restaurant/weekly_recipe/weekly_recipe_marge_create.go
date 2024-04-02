@@ -1,6 +1,9 @@
 package RestaurantWeeklyRecipeMarge
 
-import "time"
+import (
+	RestaurantRecipe "github.com/fotomxq/weeekj_core/v5/restaurant/recipe"
+	"time"
+)
 
 // ArgsCreateWeeklyRecipe 创建WeeklyRecipe参数
 type ArgsCreateWeeklyRecipe struct {
@@ -25,6 +28,32 @@ type ArgsCreateWeeklyRecipe struct {
 
 // CreateWeeklyRecipe 创建WeeklyRecipe
 func CreateWeeklyRecipe(args *ArgsCreateWeeklyRecipe) (id int64, err error) {
+	//添加菜品名称
+	var newRawData FieldsWeeklyRecipeHeaders
+	if len(args.RawData) > 0 {
+		for _, v := range args.RawData {
+			var newV FieldsWeeklyRecipeHeader
+			for _, v2 := range v.Breakfast {
+				if v2.RecipeID > 0 {
+					v2.Name = RestaurantRecipe.GetRecipeNameByID(v2.RecipeID)
+				}
+				newV.Breakfast = append(newV.Breakfast, v2)
+			}
+			for _, v2 := range v.Lunch {
+				if v2.RecipeID > 0 {
+					v2.Name = RestaurantRecipe.GetRecipeNameByID(v2.RecipeID)
+				}
+				newV.Lunch = append(newV.Lunch, v2)
+			}
+			for _, v2 := range v.Dinner {
+				if v2.RecipeID > 0 {
+					v2.Name = RestaurantRecipe.GetRecipeNameByID(v2.RecipeID)
+				}
+				newV.Dinner = append(newV.Dinner, v2)
+			}
+			newRawData = append(newRawData, newV)
+		}
+	}
 	//创建数据
 	id, err = weeklyRecipeMargeDB.Insert().SetFields([]string{"org_id", "store_id", "submit_org_bind_id", "submit_user_id", "submit_user_name", "audit_at", "audit_status", "audit_org_bind_id", "audit_user_id", "audit_user_name", "name", "remark", "raw_data"}).Add(map[string]any{
 		"org_id":             args.OrgID,
@@ -39,7 +68,7 @@ func CreateWeeklyRecipe(args *ArgsCreateWeeklyRecipe) (id int64, err error) {
 		"audit_user_name":    "",
 		"name":               args.Name,
 		"remark":             args.Remark,
-		"raw_data":           args.RawData,
+		"raw_data":           newRawData,
 	}).ExecAndResultID()
 	if err != nil {
 		return

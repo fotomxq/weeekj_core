@@ -2,6 +2,7 @@ package RestaurantWeeklyRecipeMarge
 
 import (
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	RestaurantRecipe "github.com/fotomxq/weeekj_core/v5/restaurant/recipe"
 	"time"
 )
 
@@ -23,11 +24,37 @@ type ArgsUpdateWeeklyRecipe struct {
 
 // UpdateWeeklyRecipe 修改WeeklyRecipe
 func UpdateWeeklyRecipe(args *ArgsUpdateWeeklyRecipe) (err error) {
+	//添加菜品名称
+	var newRawData FieldsWeeklyRecipeHeaders
+	if len(args.RawData) > 0 {
+		for _, v := range args.RawData {
+			var newV FieldsWeeklyRecipeHeader
+			for _, v2 := range v.Breakfast {
+				if v2.RecipeID > 0 {
+					v2.Name = RestaurantRecipe.GetRecipeNameByID(v2.RecipeID)
+				}
+				newV.Breakfast = append(newV.Breakfast, v2)
+			}
+			for _, v2 := range v.Lunch {
+				if v2.RecipeID > 0 {
+					v2.Name = RestaurantRecipe.GetRecipeNameByID(v2.RecipeID)
+				}
+				newV.Lunch = append(newV.Lunch, v2)
+			}
+			for _, v2 := range v.Dinner {
+				if v2.RecipeID > 0 {
+					v2.Name = RestaurantRecipe.GetRecipeNameByID(v2.RecipeID)
+				}
+				newV.Dinner = append(newV.Dinner, v2)
+			}
+			newRawData = append(newRawData, newV)
+		}
+	}
 	//更新数据
 	err = weeklyRecipeMargeDB.Update().SetFields([]string{"name", "remark", "raw_data"}).NeedUpdateTime().AddWhereID(args.ID).AddWhereOrgID(args.OrgID).SetWhereOrThan("store_id", args.StoreID).NamedExec(map[string]any{
 		"name":     args.Name,
 		"remark":   args.Remark,
-		"raw_data": args.RawData,
+		"raw_data": newRawData,
 	})
 	if err != nil {
 		return
