@@ -232,7 +232,7 @@ func getRestaurantPurchaseByID(id int64) (data FieldsPurchaseAnalysis) {
 
 // 缓冲
 func getRestaurantPurchaseCacheMark(id int64) string {
-	return fmt.Sprint("restaurant:weekly_recipe:id.", id)
+	return fmt.Sprint("restaurant:purchase_analysis:id.", id)
 }
 
 func deleteRestaurantPurchaseCache(id int64) {
