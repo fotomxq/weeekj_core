@@ -287,7 +287,7 @@ func GetPermissionByBindID(bindID int64) (permissionList []string) {
 		permissionList = newPermissionList
 	}
 	//保存缓冲
-	Router2SystemConfig.MainCache.SetStruct(cacheMark, permissionList, CoreCache.CacheTime1Day)
+	Router2SystemConfig.MainCache.SetStruct(cacheMark, permissionList, CoreCache.CacheTime1Hour)
 	//反馈
 	return
 }
