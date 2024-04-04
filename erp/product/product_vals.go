@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	BaseBPM "github.com/fotomxq/weeekj_core/v5/base/bpm"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
@@ -54,8 +55,8 @@ func GetProductVals(args *ArgsGetProductVals) (data []DataProductVal, err error)
 	return
 }
 
-// ArgsSetProductVals 设置产品数据参数
-type ArgsSetProductVals struct {
+// ArgsGetProductValsAndDefault 获取产品预设模板值和默认值参数
+type ArgsGetProductValsAndDefault struct {
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//产品ID
@@ -63,15 +64,102 @@ type ArgsSetProductVals struct {
 	//产品关联的公司ID
 	// 可选，可留空
 	CompanyID int64 `db:"company_id" json:"companyID" check:"id" empty:"true"`
-	//数据结构
-	Vals []DataProductVal `db:"vals" json:"vals"`
 	//是否可以突破模板数据
 	// 支持超出模板定义范畴的自定义数据包
 	HaveMoreData bool `json:"haveMoreData"`
 }
 
-// SetProductVals 设置产品数据
-func SetProductVals(args *ArgsSetProductVals) (errCode string, err error) {
+// GetProductValsAndDefault 获取产品预设模板值和默认值
+// 如果存在数据，则反馈数据；否则反馈预设值
+func GetProductValsAndDefault(args *ArgsGetProductValsAndDefault) (dataList []DataProductVal, errCode string, err error) {
+	//获取已经存在的数据包
+	rawList, _ := GetProductVals(&ArgsGetProductVals{
+		OrgID:     args.OrgID,
+		ProductID: args.ProductID,
+	})
+	//获取产品绑定的模板关系
+	var templateBindData FieldsTemplateBind
+	templateBindData, errCode, err = GetProductValsTemplateID(&ArgsGetProductValsTemplateID{
+		OrgID:     args.OrgID,
+		ProductID: args.ProductID,
+		CompanyID: args.CompanyID,
+	})
+	if err != nil {
+		return
+	}
+	//获取当前插槽数据包
+	var bpmSlotList []BaseBPM.FieldsSlot
+	bpmSlotList, errCode, err = GetTemplateBPMThemeSlotData(args.OrgID, templateBindData.TemplateID)
+	if err != nil {
+		return
+	}
+	//交叉匹配数据
+	if args.HaveMoreData {
+		step := len(rawList)
+		for _, v := range rawList {
+			dataList = append(dataList, v)
+		}
+		for _, v := range bpmSlotList {
+			isFind := false
+			for _, v2 := range rawList {
+				if v.ID == v2.SlotID {
+					isFind = true
+					break
+				}
+			}
+			if isFind {
+				continue
+			}
+			dataList = append(dataList, DataProductVal{
+				OrderNum:     int64(step),
+				SlotID:       v.ID,
+				DataValue:    v.DefaultValue,
+				DataValueNum: CoreFilter.GetFloat64ByStringNoErr(v.DefaultValue),
+				DataValueInt: CoreFilter.GetInt64ByStringNoErr(v.DefaultValue),
+				Params:       v.Params,
+			})
+			step += 1
+		}
+	} else {
+		for _, v := range bpmSlotList {
+			isFind := false
+			for _, v2 := range rawList {
+				if v.ID == v2.SlotID {
+					dataList = append(dataList, v2)
+					isFind = true
+					break
+				}
+			}
+			if isFind {
+				continue
+			}
+			dataList = append(dataList, DataProductVal{
+				OrderNum:     int64(len(dataList)),
+				SlotID:       v.ID,
+				DataValue:    v.DefaultValue,
+				DataValueNum: CoreFilter.GetFloat64ByStringNoErr(v.DefaultValue),
+				DataValueInt: CoreFilter.GetInt64ByStringNoErr(v.DefaultValue),
+				Params:       v.Params,
+			})
+		}
+	}
+	//反馈
+	return
+}
+
+// ArgsGetProductValsTemplateID 获取产品模板ID参数
+type ArgsGetProductValsTemplateID struct {
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//产品ID
+	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	//产品关联的公司ID
+	// 可选，可留空
+	CompanyID int64 `db:"company_id" json:"companyID" check:"id" empty:"true"`
+}
+
+// GetProductValsTemplateID 获取产品模板ID
+func GetProductValsTemplateID(args *ArgsGetProductValsTemplateID) (templateBindData FieldsTemplateBind, errCode string, err error) {
 	//找到产品对应的模板体系
 	productData := getProductByID(args.ProductID)
 	if productData.ID < 1 {
@@ -107,7 +195,6 @@ func SetProductVals(args *ArgsSetProductVals) (errCode string, err error) {
 		brandBindData = brandBindList[0]
 	}
 	//检查品牌和模板的绑定关系
-	var templateBindData FieldsTemplateBind
 	if brandBindData.ID > 0 {
 		templateBindList, _, _ := GetTemplateBindList(&ArgsGetTemplateBindList{
 			Pages: CoreSQL2.ArgsPages{
@@ -136,35 +223,41 @@ func SetProductVals(args *ArgsSetProductVals) (errCode string, err error) {
 		err = errors.New("product not bind template")
 		return
 	}
-	//通过绑定关系获取模板数据包
-	templateData := GetTemplate(templateBindData.TemplateID, args.OrgID)
-	if templateData.ID < 1 {
-		errCode = "err_erp_product_no_exist_template"
-		err = errors.New("product bind template not exist")
+	//反馈
+	return
+}
+
+// ArgsSetProductVals 设置产品数据参数
+type ArgsSetProductVals struct {
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//产品ID
+	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	//产品关联的公司ID
+	// 可选，可留空
+	CompanyID int64 `db:"company_id" json:"companyID" check:"id" empty:"true"`
+	//数据结构
+	Vals []DataProductVal `db:"vals" json:"vals"`
+	//是否可以突破模板数据
+	// 支持超出模板定义范畴的自定义数据包
+	HaveMoreData bool `json:"haveMoreData"`
+}
+
+// SetProductVals 设置产品数据
+func SetProductVals(args *ArgsSetProductVals) (errCode string, err error) {
+	//检查产品绑定的模板
+	var templateBindData FieldsTemplateBind
+	templateBindData, errCode, err = GetProductValsTemplateID(&ArgsGetProductValsTemplateID{
+		OrgID:     args.OrgID,
+		ProductID: args.ProductID,
+		CompanyID: args.CompanyID,
+	})
+	//获取当前插槽数据包
+	var bpmSlotList []BaseBPM.FieldsSlot
+	bpmSlotList, errCode, err = GetTemplateBPMThemeSlotData(args.OrgID, templateBindData.TemplateID)
+	if err != nil {
 		return
 	}
-	//如果模板拿到关联主题
-	bmpThemeData, _ := BaseBPM.GetThemeByID(&BaseBPM.ArgsGetThemeByID{
-		ID: templateData.BPMThemeID,
-	})
-	if bmpThemeData.ID < 1 {
-		errCode = "err_erp_product_no_exist_bpm_theme"
-		err = errors.New("product bind template not exist bpm theme")
-		return
-	}
-	//通过BPM主题，查询关联的插槽
-	bpmSlotList, _, _ := BaseBPM.GetSlotList(&BaseBPM.ArgsGetSlotList{
-		Pages: CoreSQL2.ArgsPages{
-			Page: 1,
-			Max:  999,
-			Sort: "id",
-			Desc: false,
-		},
-		ThemeCategoryID: -1,
-		ThemeID:         bmpThemeData.ID,
-		IsRemove:        false,
-		Search:          "",
-	})
 	//重构数据包
 	var newProductVals []DataProductVal
 	if !args.HaveMoreData {
@@ -190,14 +283,14 @@ func SetProductVals(args *ArgsSetProductVals) (errCode string, err error) {
 	})
 	//如果存在数据，则匹配修改
 	if err == nil {
-		for _, v := range rawList {
+		for k, v := range rawList {
 			for _, v2 := range newProductVals {
 				if v.SlotID == v2.SlotID {
-					v.OrderNum = v2.OrderNum
-					v.DataValue = v2.DataValue
-					v.DataValueNum = v2.DataValueNum
-					v.DataValueInt = v2.DataValueInt
-					v.Params = v2.Params
+					rawList[k].OrderNum = v2.OrderNum
+					rawList[k].DataValue = v2.DataValue
+					rawList[k].DataValueNum = v2.DataValueNum
+					rawList[k].DataValueInt = v2.DataValueInt
+					rawList[k].Params = v2.Params
 					break
 				}
 			}
@@ -230,7 +323,7 @@ func SetProductVals(args *ArgsSetProductVals) (errCode string, err error) {
 			err = productValsDB.Insert().SetFields([]string{"org_id", "product_id", "template_id", "order_num", "slot_id", "data_value", "data_value_num", "data_value_int", "params"}).Add(map[string]any{
 				"org_id":         args.OrgID,
 				"product_id":     args.ProductID,
-				"template_id":    templateData.ID,
+				"template_id":    templateBindData.TemplateID,
 				"order_num":      v.OrderNum,
 				"slot_id":        v.SlotID,
 				"data_value":     v.DataValue,
@@ -238,9 +331,11 @@ func SetProductVals(args *ArgsSetProductVals) (errCode string, err error) {
 				"data_value_int": v.DataValueInt,
 				"params":         v.Params,
 			}).ExecAndCheckID()
-			errCode = "err_insert"
-			err = errors.New(fmt.Sprint("insert product vals error: ", err))
-			return
+			if err != nil {
+				errCode = "err_insert"
+				err = errors.New(fmt.Sprint("insert product vals error: ", err))
+				return
+			}
 		}
 	}
 	//清理丢失的数据

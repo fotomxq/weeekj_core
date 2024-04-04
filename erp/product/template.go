@@ -1,6 +1,8 @@
 package ERPProduct
 
 import (
+	"errors"
+	BaseBPM "github.com/fotomxq/weeekj_core/v5/base/bpm"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -47,6 +49,45 @@ func GetTemplate(id int64, orgID int64) (data FieldsTemplate) {
 		data = FieldsTemplate{}
 		return
 	}
+	return
+}
+
+// GetTemplateBPMThemeSlotData 获取模板的插槽数据包
+func GetTemplateBPMThemeSlotData(orgID int64, templateID int64) (bpmSlotList []BaseBPM.FieldsSlot, errCode string, err error) {
+	//通过绑定关系获取模板数据包
+	templateData := GetTemplate(templateID, orgID)
+	if templateData.ID < 1 {
+		errCode = "err_erp_product_no_exist_template"
+		err = errors.New("product bind template not exist")
+		return
+	}
+	//如果模板拿到关联主题
+	bmpThemeData, _ := BaseBPM.GetThemeByID(&BaseBPM.ArgsGetThemeByID{
+		ID: templateData.BPMThemeID,
+	})
+	if bmpThemeData.ID < 1 {
+		errCode = "err_erp_product_no_exist_bpm_theme"
+		err = errors.New("product bind template not exist bpm theme")
+		return
+	}
+	//通过BPM主题，查询关联的插槽
+	bpmSlotList, _, err = BaseBPM.GetSlotList(&BaseBPM.ArgsGetSlotList{
+		Pages: CoreSQL2.ArgsPages{
+			Page: 1,
+			Max:  999,
+			Sort: "id",
+			Desc: false,
+		},
+		ThemeCategoryID: -1,
+		ThemeID:         bmpThemeData.ID,
+		IsRemove:        false,
+		Search:          "",
+	})
+	if err != nil {
+		errCode = "err_erp_product_bpm_slot_data"
+		return
+	}
+	//反馈
 	return
 }
 
