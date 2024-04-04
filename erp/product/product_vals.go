@@ -227,6 +227,59 @@ func GetProductValsTemplateID(args *ArgsGetProductValsTemplateID) (templateBindD
 	return
 }
 
+// ArgsGetValsByBrandOrCategoryID 通过分类或品牌获取数据包参数
+type ArgsGetValsByBrandOrCategoryID struct {
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//品牌ID
+	BrandID int64 `db:"brand_id" json:"brandID" check:"id" empty:"true"`
+	//分类ID
+	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
+}
+
+// GetValsByBrandOrCategoryID 通过分类或品牌获取数据包
+func GetValsByBrandOrCategoryID(args *ArgsGetValsByBrandOrCategoryID) (templateID int64, themeID int64, bpmSlotList []BaseBPM.FieldsSlot, errCode string, err error) {
+	var templateBindData FieldsTemplateBind
+	templateBindList, _, _ := GetTemplateBindList(&ArgsGetTemplateBindList{
+		Pages: CoreSQL2.ArgsPages{
+			Page: 1,
+			Max:  1,
+			Sort: "id",
+			Desc: false,
+		},
+		OrgID:      args.OrgID,
+		TemplateID: -1,
+		CategoryID: -1,
+		BrandID:    args.BrandID,
+		IsRemove:   false,
+	})
+	if len(templateBindList) > 0 {
+		templateBindData = templateBindList[0]
+	}
+	if templateBindData.ID < 1 {
+		templateBindData = getTemplateBindRecursionByCategoryID(args.OrgID, args.CategoryID)
+	}
+	if templateBindData.ID < 1 {
+		errCode = "err_erp_product_no_template"
+		err = errors.New("product not bind template")
+		return
+	}
+	templateData := GetTemplate(templateID, args.OrgID)
+	if templateData.ID < 1 {
+		errCode = "err_erp_product_no_exist_template"
+		err = errors.New("product bind template not exist")
+		return
+	}
+	templateID = templateBindData.TemplateID
+	themeID = templateData.BPMThemeID
+	//如果模板拿到关联主题
+	bpmSlotList, errCode, err = GetTemplateBPMThemeSlotData(args.OrgID, themeID)
+	if err != nil {
+		return
+	}
+	return
+}
+
 // ArgsSetProductVals 设置产品数据参数
 type ArgsSetProductVals struct {
 	//组织ID
