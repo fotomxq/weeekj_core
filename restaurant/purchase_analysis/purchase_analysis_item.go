@@ -74,6 +74,8 @@ type ArgsCreateRestaurantPurchaseItem struct {
 	StoreID int64 `db:"store_id" json:"storeID" check:"id"`
 	//原材料采购台账ID
 	PurchaseAnalysisID int64 `db:"purchase_analysis_id" json:"purchaseAnalysisID" check:"id"`
+	//原材料ID
+	MaterialID int64 `db:"material_id" json:"materialID" check:"id"`
 	//菜品名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
 	//原材料重量 默认kg
@@ -88,8 +90,10 @@ type ArgsCreateRestaurantPurchaseItem struct {
 func CreateRestaurantPurchaseItem(args *ArgsCreateRestaurantPurchaseItem) (id int64, err error) {
 	//创建数据
 	id, err = restaurantPurchaseItemDB.Insert().SetFields([]string{"org_id", "store_id", "purchase_analysis_id", "material_id", "name", "weight", "price", "total_price"}).Add(map[string]any{
+		"org_id":               args.OrgID,
+		"store_id":             args.StoreID,
 		"purchase_analysis_id": args.PurchaseAnalysisID,
-		"material_id":          0,
+		"material_id":          args.MaterialID,
 		"name":                 args.Name,
 		"weight":               args.Weight,
 		"price":                args.Price,
