@@ -20,20 +20,20 @@ type ClientDeleteCtx struct {
 	haveWhere bool
 }
 
-//NeedSoft 是否软删除
+// NeedSoft 是否软删除
 func (t *ClientDeleteCtx) NeedSoft(b bool) *ClientDeleteCtx {
 	t.needSoftDelete = b
 	return t
 }
 
-//SetWhereAnd 添加等于关系判断
+// SetWhereAnd 添加等于关系判断
 func (t *ClientDeleteCtx) SetWhereAnd(name string, val interface{}) *ClientDeleteCtx {
 	t.whereFields = append(t.whereFields, fmt.Sprint(name, " = :", name))
 	t.whereArgs[name] = val
 	return t
 }
 
-//SetWhereOrThan 设置条件或查询关系
+// SetWhereOrThan 设置条件或查询关系
 // 可用于负数跳过、0以上等于的判断机制
 func (t *ClientDeleteCtx) SetWhereOrThan(name string, val interface{}) *ClientDeleteCtx {
 	t.whereFields = append(t.whereFields, fmt.Sprint("(", ":", name, " < 0 OR ", name, " = :", name, ")"))
@@ -41,19 +41,19 @@ func (t *ClientDeleteCtx) SetWhereOrThan(name string, val interface{}) *ClientDe
 	return t
 }
 
-//AddWhereID 添加ID条件
+// AddWhereID 添加ID条件
 func (t *ClientDeleteCtx) AddWhereID(id int64) *ClientDeleteCtx {
 	t.SetWhereAnd("id", id)
 	return t
 }
 
-//AddWhereOrgID 添加组织ID条件
+// AddWhereOrgID 添加组织ID条件
 func (t *ClientDeleteCtx) AddWhereOrgID(orgID int64) *ClientDeleteCtx {
 	t.SetWhereOrThan("org_id", orgID)
 	return t
 }
 
-//AddWhereUserID 添加用户ID条件
+// AddWhereUserID 添加用户ID条件
 func (t *ClientDeleteCtx) AddWhereUserID(userID int64) *ClientDeleteCtx {
 	t.SetWhereOrThan("user_id", userID)
 	return t
@@ -92,7 +92,7 @@ func (t *ClientDeleteCtx) makeArgs(arg map[string]interface{}) map[string]interf
 	return arg
 }
 
-//Exec 执行删除
+// Exec 执行删除
 func (t *ClientDeleteCtx) Exec(where string, args ...any) error {
 	if t.needSoftDelete {
 		t.clientCtx.query = fmt.Sprint("UPDATE ", t.clientCtx.client.TableName, " SET delete_at = NOW() WHERE ", where)
@@ -105,7 +105,7 @@ func (t *ClientDeleteCtx) Exec(where string, args ...any) error {
 	return err
 }
 
-//ExecAny 执行删除
+// ExecAny 执行删除
 func (t *ClientDeleteCtx) ExecAny(arg interface{}) error {
 	if t.needSoftDelete {
 		t.clientCtx.query = fmt.Sprint("UPDATE ", t.clientCtx.client.TableName, " SET delete_at = NOW() ", t.clientCtx.query)
@@ -118,7 +118,7 @@ func (t *ClientDeleteCtx) ExecAny(arg interface{}) error {
 	return err
 }
 
-//ExecNamed 执行删除
+// ExecNamed 执行删除
 // 需要给与map[string]interface{}的参数
 // 如果没有，则可以给与nil，程序会自动跳过
 func (t *ClientDeleteCtx) ExecNamed(arg map[string]interface{}) error {

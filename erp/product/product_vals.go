@@ -424,9 +424,7 @@ type ArgsClearProductVals struct {
 
 // ClearProductVals 清空产品数据
 func ClearProductVals(args *ArgsClearProductVals) (err error) {
-	err = productValsDB.Delete().NeedSoft(true).AddWhereOrgID(args.OrgID).SetWhereStr(" AND product_id = :product_id", map[string]any{
-		"product_id": args.ProductID,
-	}).ExecNamed(nil)
+	err = productValsDB.Delete().NeedSoft(true).AddWhereOrgID(args.OrgID).SetWhereAnd("product_id", args.ProductID).ExecNamed(nil)
 	if err != nil {
 		return
 	}
@@ -440,7 +438,7 @@ func getProductValsRaw(args *ArgsGetProductVals) (dataList []FieldsProductVals, 
 	if err = Router2SystemConfig.MainCache.GetStruct(cacheMark, &dataList); err == nil && len(dataList) > 0 {
 		return
 	}
-	err = templateDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "org_id", "product_id", "template_id", "order_num", "slot_id", "data_value", "data_value_num", "data_value_int", "params"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(CoreSQL2.ArgsPages{
+	err = productValsDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "org_id", "product_id", "template_id", "order_num", "slot_id", "data_value", "data_value_num", "data_value_int", "params"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  100,
 		Sort: "id",

@@ -43,7 +43,7 @@ func Init() {
 	brandBindDB.Init(&Router2SystemConfig.MainSQL, "erp_product_brand_bind")
 	templateDB.Init(&Router2SystemConfig.MainSQL, "erp_product_template")
 	templateBindDB.Init(&Router2SystemConfig.MainSQL, "erp_product_template_bind")
-	productValsDB.Init(&Router2SystemConfig.MainSQL, "erp_product_product_vals")
+	productValsDB.Init(&Router2SystemConfig.MainSQL, "erp_product_vals")
 	//nats
 	if OpenSub {
 		subNats()
