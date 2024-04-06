@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -19,7 +20,7 @@ import (
 // 1\使用SendConfigType初始化请求方法
 // 2\使用Do请求数据即可
 
-// 请求结构体
+// DataSendConfigType 请求结构体
 type DataSendConfigType struct {
 	//请求方法 http.Method*
 	Method string
@@ -37,38 +38,38 @@ type DataSendConfigType struct {
 	SignatureMethod string
 }
 
-// 发送get请求
+// SendGet 发送get请求
 // 不需要指定http.method动作类别
 func SendGet(config DataSendConfigType) ([]byte, error) {
 	config.Method = http.MethodGet
 	return SendDo(config)
 }
 
-// 发起post请求
+// SendPost 发起post请求
 func SendPost(config DataSendConfigType) ([]byte, error) {
 	config.Method = http.MethodPost
 	return SendDo(config)
 }
 
-// 发起put全量更新
+// SendPut 发起put全量更新
 func SendPut(config DataSendConfigType) ([]byte, error) {
 	config.Method = http.MethodPut
 	return SendDo(config)
 }
 
-// 发起局部更新
+// SendPATCH 发起局部更新
 func SendPATCH(config DataSendConfigType) ([]byte, error) {
 	config.Method = http.MethodPatch
 	return SendDo(config)
 }
 
-// 发起删除动作
+// SendDelete 发起删除动作
 func SendDelete(config DataSendConfigType) ([]byte, error) {
 	config.Method = http.MethodDelete
 	return SendDo(config)
 }
 
-// 发送请求封装
+// SendDo 发送请求封装
 // param config SendConfigType
 // return []byte 反馈数据
 // return error 错误

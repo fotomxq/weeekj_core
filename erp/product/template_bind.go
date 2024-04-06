@@ -2,6 +2,7 @@ package ERPProduct
 
 import (
 	"errors"
+	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -90,8 +91,9 @@ func GetTemplateBindData(args *ArgsGetTemplateBindData) (data FieldsTemplateBind
 		return
 	}
 	//获取数据
-	err := templateBindDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "template_id", "company_id", "product_id"}).AppendWhere("(org_id = $1 OR $1 < 0) AND template_id = $2 AND (category_id = $3 OR $3 < 0) AND (brand_id = $4 OR $4 < 0)", args.OrgID, args.TemplateID, args.CategoryID, args.BrandID).NeedLimit().Result(&data)
+	err := templateBindDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "template_id", "brand_id"}).AppendWhere("(org_id = $1 OR $1 < 0) AND template_id = $2 AND (category_id = $3 OR $3 < 0) AND (brand_id = $4 OR $4 < 0)", args.OrgID, args.TemplateID, args.CategoryID, args.BrandID).NeedLimit().Result(&data)
 	if err != nil {
+		fmt.Print(err)
 		return
 	}
 	//保存缓冲
@@ -153,7 +155,7 @@ func CreateTemplateBind(args *ArgsCreateTemplateBind) (id int64, err error) {
 	if data.ID > 0 {
 		if CoreFilter.CheckHaveTime(data.DeleteAt) {
 			id = data.ID
-			err = brandDB.Update().NeedSoft(false).NeedUpdateTime().AddWhereID(data.ID).SetFields([]string{"delete_at"}).NamedExec(map[string]any{
+			err = templateBindDB.Update().NeedSoft(false).NeedUpdateTime().AddWhereID(data.ID).SetFields([]string{"delete_at"}).NamedExec(map[string]any{
 				"delete_at": time.Time{},
 			})
 			return
@@ -161,16 +163,17 @@ func CreateTemplateBind(args *ArgsCreateTemplateBind) (id int64, err error) {
 			err = errors.New("have replace")
 			return
 		}
-	}
-	//创建数据
-	id, err = templateBindDB.Insert().SetFields([]string{"org_id", "template_id", "category_id", "brand_id"}).Add(map[string]any{
-		"org_id":      args.OrgID,
-		"template_id": args.TemplateID,
-		"category_id": args.CategoryID,
-		"brand_id":    args.BrandID,
-	}).ExecAndResultID()
-	if err != nil {
-		return
+	} else {
+		//创建数据
+		id, err = templateBindDB.Insert().SetFields([]string{"org_id", "template_id", "category_id", "brand_id"}).Add(map[string]any{
+			"org_id":      args.OrgID,
+			"template_id": args.TemplateID,
+			"category_id": args.CategoryID,
+			"brand_id":    args.BrandID,
+		}).ExecAndResultID()
+		if err != nil {
+			return
+		}
 	}
 	//反馈
 	return
