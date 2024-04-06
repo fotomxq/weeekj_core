@@ -107,6 +107,51 @@ func CheckBrandBind(args *ArgsCheckBrandBind) (b bool) {
 	return
 }
 
+// GetProductBrandID 获取产品的所属品牌
+func GetProductBrandID(orgID int64, productID int64) (brandData FieldsBrand, brandDataBind FieldsBrandBind) {
+	//获取产品直接关联的品牌
+	dataList, _, _ := GetBrandBindList(&ArgsGetBrandBindList{
+		Pages: CoreSQL2.ArgsPages{
+			Page: 1,
+			Max:  1,
+			Sort: "id",
+			Desc: false,
+		},
+		OrgID:     orgID,
+		BrandID:   -1,
+		CompanyID: -1,
+		ProductID: productID,
+		IsRemove:  false,
+	})
+	if len(dataList) < 1 {
+		productData := getProductByID(productID)
+		if productData.CompanyID < 1 {
+			return
+		}
+		dataList, _, _ = GetBrandBindList(&ArgsGetBrandBindList{
+			Pages: CoreSQL2.ArgsPages{
+				Page: 1,
+				Max:  1,
+				Sort: "id",
+				Desc: false,
+			},
+			OrgID:     orgID,
+			BrandID:   -1,
+			CompanyID: productData.CompanyID,
+			ProductID: -1,
+			IsRemove:  false,
+		})
+	}
+	brandDataBind = GetBrandBindData(&ArgsGetBrandBindData{
+		OrgID:     dataList[0].OrgID,
+		BrandID:   dataList[0].BrandID,
+		CompanyID: dataList[0].CompanyID,
+		ProductID: dataList[0].ProductID,
+	})
+	brandData = getBrand(brandDataBind.BrandID)
+	return
+}
+
 // ArgsCreateBrandBind 添加新品牌绑定关系参数
 type ArgsCreateBrandBind struct {
 	//组织ID
@@ -137,8 +182,26 @@ func CreateBrandBind(args *ArgsCreateBrandBind) (id int64, err error) {
 			})
 			return
 		} else {
+			//禁止重复绑定
 			err = errors.New("have replace")
 			return
+		}
+	}
+	//检查产品是否存在绑定关系
+	_, oldBindData := GetProductBrandID(args.OrgID, args.ProductID)
+	if args.ProductID > 0 {
+		if oldBindData.CompanyID < 1 {
+			//产品已经绑定了品牌关系
+			err = errors.New("product not bind brand")
+			return
+		}
+	} else {
+		if args.CompanyID > 0 {
+			if args.CompanyID == oldBindData.CompanyID {
+				//产品所属公司已经绑定了品牌关系
+				err = errors.New("company not bind brand")
+				return
+			}
 		}
 	}
 	//创建数据
