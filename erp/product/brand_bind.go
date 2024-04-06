@@ -27,7 +27,7 @@ type ArgsGetBrandBindList struct {
 
 // GetBrandBindList 获取绑定关系列表
 func GetBrandBindList(args *ArgsGetBrandBindList) (dataList []FieldsBrandBind, dataCount int64, err error) {
-	dataCount, err = brandBindDB.Select().SetFieldsList([]string{"id", "org_id", "brand_id", "company_id", "product_id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SelectList("((delete_at < to_timestamp(1000000) AND $1 = false) OR (delete_at >= to_timestamp(1000000) AND $1 = true)) AND (org_id = $2 OR $2 < 0) AND (brand_id = $3 OR $3 < 0) AND (company_id = $3 OR $3 < 0) AND (product_id = $4 OR $4 < 0)", args.IsRemove, args.OrgID, args.BrandID, args.CompanyID, args.ProductID).ResultAndCount(&dataList)
+	dataCount, err = brandBindDB.Select().SetFieldsList([]string{"id", "org_id", "brand_id", "company_id", "product_id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SelectList("((delete_at < to_timestamp(1000000) AND $1 = false) OR (delete_at >= to_timestamp(1000000) AND $1 = true)) AND (org_id = $2 OR $2 < 0) AND (brand_id = $3 OR $3 < 0) AND (company_id = $4 OR $4 < 0) AND (product_id = $5 OR $5 < 0)", args.IsRemove, args.OrgID, args.BrandID, args.CompanyID, args.ProductID).ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -132,7 +132,7 @@ func CreateBrandBind(args *ArgsCreateBrandBind) (id int64, err error) {
 	if data.ID > 0 {
 		if CoreFilter.CheckHaveTime(data.DeleteAt) {
 			id = data.ID
-			err = brandDB.Update().NeedSoft(false).NeedUpdateTime().AddWhereID(data.ID).SetFields([]string{"delete_at"}).NamedExec(map[string]any{
+			err = brandBindDB.Update().NeedSoft(false).NeedUpdateTime().AddWhereID(data.ID).SetFields([]string{"delete_at"}).NamedExec(map[string]any{
 				"delete_at": time.Time{},
 			})
 			return
@@ -142,7 +142,7 @@ func CreateBrandBind(args *ArgsCreateBrandBind) (id int64, err error) {
 		}
 	}
 	//创建数据
-	id, err = brandDB.Insert().SetFields([]string{"org_id", "brand_id", "company_id", "product_id"}).Add(map[string]any{
+	id, err = brandBindDB.Insert().SetFields([]string{"org_id", "brand_id", "company_id", "product_id"}).Add(map[string]any{
 		"org_id":     args.OrgID,
 		"brand_id":   args.BrandID,
 		"company_id": args.CompanyID,
@@ -179,7 +179,7 @@ func DeleteBrandBind(args *ArgsDeleteBrandBind) (err error) {
 	if data.ID < 1 {
 		return
 	}
-	err = brandDB.Delete().NeedSoft(true).AddWhereID(data.ID).ExecNamed(nil)
+	err = brandBindDB.Delete().NeedSoft(true).AddWhereID(data.ID).ExecNamed(nil)
 	if err != nil {
 		return
 	}
