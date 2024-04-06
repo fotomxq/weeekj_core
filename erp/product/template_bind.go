@@ -15,7 +15,7 @@ type ArgsGetTemplateBindList struct {
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//模板ID
-	TemplateID int64 `db:"template_id" json:"TemplateID" check:"id" empty:"true"`
+	TemplateID int64 `db:"template_id" json:"templateID" check:"id" empty:"true"`
 	//分类ID
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//品牌ID
@@ -26,7 +26,7 @@ type ArgsGetTemplateBindList struct {
 
 // GetTemplateBindList 获取绑定关系列表
 func GetTemplateBindList(args *ArgsGetTemplateBindList) (dataList []FieldsTemplateBind, dataCount int64, err error) {
-	dataCount, err = templateBindDB.Select().SetFieldsList([]string{"id", "org_id", "template_id", "category_id", "brand_id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SelectList("((delete_at < to_timestamp(1000000) AND $1 = false) OR (delete_at >= to_timestamp(1000000) AND $1 = true)) AND (org_id = $2 OR $2 < 0) AND (template_id = $3 OR $3 < 0) AND (category_id = $3 OR $3 < 0) AND (brand_id = $4 OR $4 < 0)", args.IsRemove, args.OrgID, args.TemplateID, args.CategoryID, args.BrandID).ResultAndCount(&dataList)
+	dataCount, err = templateBindDB.Select().SetFieldsList([]string{"id", "org_id", "template_id", "category_id", "brand_id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SelectList("((delete_at < to_timestamp(1000000) AND $1 = false) OR (delete_at >= to_timestamp(1000000) AND $1 = true)) AND (org_id = $2 OR $2 < 0) AND (template_id = $3 OR $3 < 0) AND (category_id = $4 OR $4 < 0) AND (brand_id = $5 OR $5 < 0)", args.IsRemove, args.OrgID, args.TemplateID, args.CategoryID, args.BrandID).ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -134,7 +134,7 @@ type ArgsCreateTemplateBind struct {
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//模板ID
-	TemplateID int64 `db:"template_id" json:"TemplateID" check:"id"`
+	TemplateID int64 `db:"template_id" json:"templateID" check:"id"`
 	//分类ID
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//品牌ID
@@ -181,7 +181,7 @@ type ArgsDeleteTemplateBind struct {
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//模板ID
-	TemplateID int64 `db:"template_id" json:"TemplateID" check:"id"`
+	TemplateID int64 `db:"template_id" json:"templateID" check:"id"`
 	//分类ID
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//品牌ID

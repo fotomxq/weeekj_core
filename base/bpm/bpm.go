@@ -51,6 +51,15 @@ func GetBPMByID(args *ArgsGetBPMByID) (data FieldsBPM, err error) {
 	return
 }
 
+// GetBPMBNameByID 获取BPM名称
+func GetBPMBNameByID(id int64) (name string) {
+	data := getBPMByID(id)
+	if data.ID < 1 {
+		return
+	}
+	return data.Name
+}
+
 // ArgsCreateBPM 创建BPM参数
 type ArgsCreateBPM struct {
 	//名称

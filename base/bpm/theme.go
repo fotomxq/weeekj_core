@@ -51,6 +51,15 @@ func GetThemeByID(args *ArgsGetThemeByID) (data FieldsTheme, err error) {
 	return
 }
 
+// GetThemeNameByID 获取Theme数
+func GetThemeNameByID(id int64) (name string) {
+	data := getThemeByID(id)
+	if data.ID < 1 {
+		return
+	}
+	return data.Name
+}
+
 // ArgsCreateTheme 创建Theme参数
 type ArgsCreateTheme struct {
 	//所属主题分类
