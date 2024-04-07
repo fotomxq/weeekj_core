@@ -143,6 +143,9 @@ func GetProductBrandID(orgID int64, productID int64) (brandData FieldsBrand, bra
 			IsRemove:  false,
 		})
 	}
+	if len(dataList) < 1 {
+		return
+	}
 	brandDataBind = GetBrandBindData(&ArgsGetBrandBindData{
 		OrgID:     dataList[0].OrgID,
 		BrandID:   dataList[0].BrandID,
