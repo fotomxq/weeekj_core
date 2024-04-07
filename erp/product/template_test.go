@@ -18,9 +18,9 @@ var (
 )
 
 func TestTemplateInit(t *testing.T) {
-	TestBrandInit(t)
-	TestCreateBrand(t)
-	TestGetBrand(t)
+	TestBrandBindInit(t)
+	TestCreateBrandBind(t)
+	TestGetBrandBindData(t)
 }
 func TestCreateBPMThemeSlotData(t *testing.T) {
 	newBPMThemeCategoryDataID, err := BaseBPM.CreateThemeCategory(&BaseBPM.ArgsCreateThemeCategory{
@@ -93,7 +93,7 @@ func TestCreateTemplate(t *testing.T) {
 		BPMThemeID: newBPMThemeData.ID,
 	})
 	if err != nil {
-		t.Fatal(err)
+		t.Fatal("TestCreateTemplate: ", err)
 		return
 	}
 	newTemplateData.ID = newTemplateID

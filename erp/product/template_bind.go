@@ -2,7 +2,6 @@ package ERPProduct
 
 import (
 	"errors"
-	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -93,7 +92,6 @@ func GetTemplateBindData(args *ArgsGetTemplateBindData) (data FieldsTemplateBind
 	//获取数据
 	err := templateBindDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "template_id", "brand_id"}).AppendWhere("(org_id = $1 OR $1 < 0) AND template_id = $2 AND (category_id = $3 OR $3 < 0) AND (brand_id = $4 OR $4 < 0)", args.OrgID, args.TemplateID, args.CategoryID, args.BrandID).NeedLimit().Result(&data)
 	if err != nil {
-		fmt.Print(err)
 		return
 	}
 	//保存缓冲

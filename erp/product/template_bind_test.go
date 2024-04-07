@@ -15,6 +15,7 @@ func TestTemplateBindInit(t *testing.T) {
 	TestTemplateInit(t)
 	TestCreateBPMThemeSlotData(t)
 	TestCreateTemplate(t)
+	TestGetTemplate(t)
 }
 
 func TestCreateTemplateBind(t *testing.T) {
@@ -24,8 +25,13 @@ func TestCreateTemplateBind(t *testing.T) {
 		CategoryID: newSortData.ID,
 		BrandID:    newBrandData.ID,
 	})
+	if err != nil {
+		t.Fatal("create template bind fail: ", err)
+		return
+	}
 	ToolsTest.ReportData(t, err, newTemplateBindDataID)
 	newTemplateBindData.ID = newTemplateBindDataID
+	t.Log("template bind id: ", newTemplateBindData.ID)
 }
 
 func TestGetTemplateBindData(t *testing.T) {

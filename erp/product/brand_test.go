@@ -28,6 +28,7 @@ func TestCreateBrand(t *testing.T) {
 		return
 	}
 	newBrandData.ID = newBrandDataID
+	t.Log("new brand id: ", newBrandDataID)
 }
 
 func TestGetBrand(t *testing.T) {

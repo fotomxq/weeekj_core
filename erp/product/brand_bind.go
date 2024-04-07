@@ -2,6 +2,7 @@ package ERPProduct
 
 import (
 	"errors"
+	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -189,18 +190,20 @@ func CreateBrandBind(args *ArgsCreateBrandBind) (id int64, err error) {
 	}
 	//检查产品是否存在绑定关系
 	_, oldBindData := GetProductBrandID(args.OrgID, args.ProductID)
-	if args.ProductID > 0 {
-		if oldBindData.CompanyID < 1 {
-			//产品已经绑定了品牌关系
-			err = errors.New("product not bind brand")
-			return
-		}
-	} else {
-		if args.CompanyID > 0 {
-			if args.CompanyID == oldBindData.CompanyID {
-				//产品所属公司已经绑定了品牌关系
-				err = errors.New("company not bind brand")
+	if oldBindData.ID > 0 {
+		if args.ProductID > 0 {
+			if oldBindData.CompanyID < 1 {
+				//产品已经绑定了品牌关系
+				err = errors.New(fmt.Sprint("product have bind brand, arg product id: ", args.ProductID))
 				return
+			}
+		} else {
+			if args.CompanyID > 0 {
+				if args.CompanyID == oldBindData.CompanyID {
+					//产品所属公司已经绑定了品牌关系
+					err = errors.New("company have bind brand")
+					return
+				}
 			}
 		}
 	}

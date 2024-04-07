@@ -187,12 +187,31 @@ func GetProductValsTemplateID(args *ArgsGetProductValsTemplateID) (templateBindD
 		},
 		OrgID:     args.OrgID,
 		BrandID:   -1,
-		CompanyID: args.CompanyID,
+		CompanyID: -1,
 		ProductID: args.ProductID,
 		IsRemove:  false,
 	})
 	if len(brandBindList) > 0 {
 		brandBindData = brandBindList[0]
+	} else {
+		if args.CompanyID > 0 {
+			brandBindList, _, _ = GetBrandBindList(&ArgsGetBrandBindList{
+				Pages: CoreSQL2.ArgsPages{
+					Page: 1,
+					Max:  1,
+					Sort: "id",
+					Desc: false,
+				},
+				OrgID:     args.OrgID,
+				BrandID:   -1,
+				CompanyID: args.CompanyID,
+				ProductID: -1,
+				IsRemove:  false,
+			})
+			if len(brandBindList) > 0 {
+				brandBindData = brandBindList[0]
+			}
+		}
 	}
 	//检查品牌和模板的绑定关系
 	if brandBindData.ID > 0 {
@@ -206,7 +225,7 @@ func GetProductValsTemplateID(args *ArgsGetProductValsTemplateID) (templateBindD
 			OrgID:      args.OrgID,
 			TemplateID: -1,
 			CategoryID: -1,
-			BrandID:    templateBindData.BrandID,
+			BrandID:    brandBindData.BrandID,
 			IsRemove:   false,
 		})
 		if len(templateBindList) > 0 {
@@ -264,7 +283,7 @@ func GetValsByBrandOrCategoryID(args *ArgsGetValsByBrandOrCategoryID) (templateI
 		err = errors.New("product not bind template")
 		return
 	}
-	templateData := GetTemplate(templateID, args.OrgID)
+	templateData := GetTemplate(templateBindData.TemplateID, templateBindData.OrgID)
 	if templateData.ID < 1 {
 		errCode = "err_erp_product_no_exist_template"
 		err = errors.New("product bind template not exist")
@@ -273,7 +292,7 @@ func GetValsByBrandOrCategoryID(args *ArgsGetValsByBrandOrCategoryID) (templateI
 	templateID = templateBindData.TemplateID
 	themeID = templateData.BPMThemeID
 	//如果模板拿到关联主题
-	bpmSlotList, errCode, err = GetTemplateBPMThemeSlotData(args.OrgID, themeID)
+	bpmSlotList, errCode, err = GetTemplateBPMThemeSlotData(args.OrgID, templateID)
 	if err != nil {
 		return
 	}

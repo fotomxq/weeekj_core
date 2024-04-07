@@ -54,7 +54,7 @@ func TestGetProductValsTemplateID(t *testing.T) {
 		t.Error(err, "...", errCode)
 		return
 	}
-	t.Log(templateBindData)
+	t.Log("templateBindData: ", templateBindData)
 }
 
 func TestSetProductVals(t *testing.T) {

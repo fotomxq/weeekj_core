@@ -24,10 +24,11 @@ func TestCreateBrandBind(t *testing.T) {
 		ProductID: newERPProductData.ID,
 	})
 	if err != nil {
-		t.Fatal(err)
+		t.Fatal("TestCreateBrandBind: ", err)
 		return
 	}
 	newBrandBindData.ID = newBrandBindDataID
+	t.Log("new brand bind id: ", newBrandBindData.ID, ", newERPProductData id: ", newERPProductData.ID)
 }
 
 func TestGetBrandBindData(t *testing.T) {
