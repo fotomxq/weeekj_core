@@ -5,6 +5,7 @@ import (
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 	"strings"
@@ -84,6 +85,118 @@ func GetProductList(args *ArgsGetProductList) (dataList []FieldsProduct, dataCou
 			continue
 		}
 		dataList = append(dataList, vData)
+	}
+	return
+}
+
+// ArgsGetProductListV2 获取产品列表V2参数
+type ArgsGetProductListV2 struct {
+	//分页
+	Pages CoreSQL2.ArgsPages `json:"pages"`
+	//组织ID
+	// -1 跳过
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//分类ID
+	SortID int64 `db:"sort_id" json:"sortID" check:"id" empty:"true"`
+	//标签ID列
+	Tags pq.Int64Array `db:"tags" json:"tags" check:"ids" empty:"true"`
+	//规格类型
+	// -1 跳过; 0 盒装; 1 袋装; 3 散装; 4 瓶装
+	PackType int `db:"pack_type" json:"packType"`
+	//所属供应商ID
+	CompanyID int64 `db:"company_id" json:"companyID" check:"id" empty:"true"`
+	//所属品牌ID
+	BrandID int64 `db:"brand_id" json:"brandID" check:"id" empty:"true"`
+	//所使用模板ID
+	TemplateID int64 `db:"template_id" json:"templateID" check:"id" empty:"true"`
+	//是否删除
+	IsRemove bool `db:"is_remove" json:"isRemove" check:"bool"`
+	//搜索编码
+	SearchCode string `json:"searchCode" check:"search" empty:"true"`
+	//搜索
+	Search string `json:"search" check:"search" empty:"true"`
+}
+
+// GetProductListV2 获取产品列表V2
+func GetProductListV2(args *ArgsGetProductListV2) (dataList []FieldsProduct, dataCount int64, err error) {
+	templateBindList, _, _ := GetTemplateBindList(&ArgsGetTemplateBindList{
+		Pages: CoreSQL2.ArgsPages{
+			Page: 1,
+			Max:  30,
+			Sort: "id",
+			Desc: false,
+		},
+		OrgID:      args.OrgID,
+		TemplateID: args.TemplateID,
+		CategoryID: -1,
+		BrandID:    -1,
+		IsRemove:   false,
+	})
+	var brandIDList pq.Int64Array
+	var sortIDList pq.Int64Array
+	for _, v := range templateBindList {
+		if v.BrandID > 0 {
+			brandIDList = append(brandIDList, v.BrandID)
+		}
+		if v.CategoryID > 0 {
+			sortIDList = append(sortIDList, v.CategoryID)
+		}
+	}
+	brandBindList, _, _ := GetBrandBindList(&ArgsGetBrandBindList{
+		Pages: CoreSQL2.ArgsPages{
+			Page: 1,
+			Max:  30,
+			Sort: "id",
+			Desc: false,
+		},
+		OrgID:     args.OrgID,
+		BrandID:   args.BrandID,
+		CompanyID: -1,
+		ProductID: -1,
+		IsRemove:  false,
+	})
+	var companyIDList pq.Int64Array
+	var productIDList pq.Int64Array
+	for _, v := range brandBindList {
+		if v.CompanyID > 0 {
+			companyIDList = append(companyIDList, v.CompanyID)
+		}
+		if v.ProductID > 0 {
+			productIDList = append(productIDList, v.ProductID)
+		}
+	}
+	if len(brandIDList) > 0 {
+		for _, v := range brandIDList {
+			vBrandBindList, _, _ := GetBrandBindList(&ArgsGetBrandBindList{
+				Pages: CoreSQL2.ArgsPages{
+					Page: 1,
+					Max:  30,
+					Sort: "id",
+					Desc: false,
+				},
+				OrgID:     args.OrgID,
+				BrandID:   v,
+				CompanyID: -1,
+				ProductID: -1,
+				IsRemove:  false,
+			})
+			for _, v2 := range vBrandBindList {
+				if v2.CompanyID > 0 {
+					companyIDList = append(companyIDList, v2.CompanyID)
+				}
+				if v2.ProductID > 0 {
+					productIDList = append(productIDList, v2.ProductID)
+				}
+			}
+		}
+	}
+	var rawList []FieldsProduct
+	dataCount, err = productValsDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetIDQuery("org_id", args.OrgID).SetIDQuery("sort_id", args.SortID).SetIDsQuery("tags", args.Tags).SetIntQuery("pack_type", args.PackType).SetIDQuery("company_id", args.CompanyID).SetIDsQuery("sort_id", sortIDList).SetDeleteQuery("delete_at", args.IsRemove).SetSearchQuery([]string{"code"}, args.SearchCode).SetSearchQuery([]string{"title", "title_des", "des"}, args.Search).SetPages(args.Pages).SetIDsQuery("company_id", companyIDList).SetIDsQuery("id", productIDList).SelectList("").ResultAndCount(&rawList)
+	if err != nil {
+		return
+	}
+	for _, v := range rawList {
+		dataList = append(dataList, getProductByID(v.ID))
 	}
 	return
 }

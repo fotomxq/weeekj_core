@@ -29,6 +29,7 @@ var (
 	//OpenSub 订阅
 	OpenSub = false
 	//数据表
+	productDB      CoreSQL2.Client
 	brandDB        CoreSQL2.Client
 	brandBindDB    CoreSQL2.Client
 	templateDB     CoreSQL2.Client
@@ -39,6 +40,7 @@ var (
 // Init 初始化
 func Init() {
 	//初始化数据表
+	productDB.Init(&Router2SystemConfig.MainSQL, "erp_product")
 	brandDB.Init(&Router2SystemConfig.MainSQL, "erp_product_brand")
 	brandBindDB.Init(&Router2SystemConfig.MainSQL, "erp_product_brand_bind")
 	templateDB.Init(&Router2SystemConfig.MainSQL, "erp_product_template")
