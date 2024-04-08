@@ -14,6 +14,7 @@ import (
 	BaseMonitorGlob "github.com/fotomxq/weeekj_core/v5/base/monitor/glob"
 	BaseMonitorPostgresql "github.com/fotomxq/weeekj_core/v5/base/monitor/postgresql"
 	BasePython "github.com/fotomxq/weeekj_core/v5/base/python"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	BaseTempFile "github.com/fotomxq/weeekj_core/v5/base/temp_file"
 	BaseToken2 "github.com/fotomxq/weeekj_core/v5/base/token2"
 	BaseUnit "github.com/fotomxq/weeekj_core/v5/base/unit"
@@ -118,6 +119,8 @@ func Init() (err error) {
 	//BPM
 	BaseBPM.OpenSub = OpenSub
 	BaseBPM.Init()
+	//服务
+	BaseService.Init()
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//统计

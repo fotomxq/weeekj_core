@@ -1,6 +1,7 @@
 package CoreSQL2
 
 import (
+	"errors"
 	"fmt"
 	"github.com/lib/pq"
 	"strings"
@@ -25,6 +26,10 @@ type ClientListCtx struct {
 	preemptionNum int
 	//预占位数据结构列
 	preemptionData []clientListCtxPreemption
+	//预占err
+	globErr []error
+	//是否经过SelectList处理
+	haveSelectList bool
 }
 
 type clientListCtxPreemption struct {
@@ -66,12 +71,22 @@ func (t *ClientListCtx) SetDeleteQuery(field string, param bool) *ClientListCtx 
 	return t
 }
 
+// SetTimeBetweenByArgQuery 设置时间范围
+func (t *ClientListCtx) SetTimeBetweenByArgQuery(field string, betweenAt ArgsTimeBetween) *ClientListCtx {
+	betweenTimeAt, err := betweenAt.GetFields()
+	if err != nil {
+		t.globErr = append(t.globErr, err)
+		return t
+	}
+	return t.SetTimeBetweenQuery(field, betweenTimeAt.MinTime, betweenTimeAt.MaxTime)
+}
+
 // SetTimeBetweenQuery 设置时间范围
 func (t *ClientListCtx) SetTimeBetweenQuery(field string, startAt time.Time, endAt time.Time) *ClientListCtx {
 	t.addPreemptionNum()
-	t.addPreemption(fmt.Sprint("(", field, " >= $", t.preemptionNum), startAt)
+	t.addPreemption(fmt.Sprint("(", field, " >= $", t.preemptionNum, ")"), startAt)
 	t.addPreemptionNum()
-	t.addPreemption(fmt.Sprint("(", field, " <= $", t.preemptionNum), endAt)
+	t.addPreemption(fmt.Sprint("(", field, " <= $", t.preemptionNum, ")"), endAt)
 	return t
 }
 
@@ -124,6 +139,7 @@ func (t *ClientListCtx) SetStringQuery(field string, param string) *ClientListCt
 // SelectList
 // 如果启用了自动组合方法，请尽可能不要使用本方法where和args，否则请在where条件中明确一共注入了几个参数，并从对应参数为起点计算，避免$x顺序不匹配
 func (t *ClientListCtx) SelectList(where string, args ...interface{}) *ClientListCtx {
+	t.haveSelectList = true
 	step := 0
 	if t.pages.Page > 0 {
 		step = int((t.pages.Page - 1) * t.pages.Max)
@@ -150,6 +166,9 @@ func (t *ClientListCtx) SelectList(where string, args ...interface{}) *ClientLis
 }
 
 func (t *ClientListCtx) Result(data interface{}) error {
+	if !t.haveSelectList {
+		t.SelectList("")
+	}
 	err := t.clientCtx.Select(data, t.clientCtx.query, t.clientCtx.appendArgs...)
 	appendLog("select", t.clientCtx.query, false, t.clientCtx.client.startAt, data, err)
 	//fmt.Println("query: ", t.clientCtx.query)
@@ -157,6 +176,17 @@ func (t *ClientListCtx) Result(data interface{}) error {
 }
 
 func (t *ClientListCtx) ResultAndCount(data interface{}) (count int64, err error) {
+	if !t.haveSelectList {
+		t.SelectList("")
+	}
+	if len(t.globErr) > 0 {
+		var errStr string
+		for _, v := range t.globErr {
+			errStr = fmt.Sprint(errStr, ";", v.Error())
+		}
+		err = errors.New(errStr)
+		return
+	}
 	err = t.clientCtx.Select(data, t.clientCtx.query, t.clientCtx.appendArgs...)
 	if err != nil {
 		appendLog("select", t.clientCtx.query, false, t.clientCtx.client.startAt, data, err)
@@ -172,6 +202,9 @@ func (t *ClientListCtx) ResultAndCount(data interface{}) (count int64, err error
 }
 
 func (t *ClientListCtx) ResultCount() (count int64, err error) {
+	if !t.haveSelectList {
+		t.SelectList("")
+	}
 	err = t.clientCtx.Get(&count, t.queryCount, t.clientCtx.appendArgs...)
 	if err != nil {
 		appendLog("analysis", t.clientCtx.query, false, t.clientCtx.client.startAt, 1, err)

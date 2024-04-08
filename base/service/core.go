@@ -12,13 +12,16 @@ import (
 
 var (
 	//缓冲时间
-	cacheServiceTime = 1800
+	cacheServiceTime  = 1800
+	cacheAnalysisTime = 1800
 	//数据表
-	serviceDB CoreSQL2.Client
+	serviceDB  CoreSQL2.Client
+	analysisDB CoreSQL2.Client
 )
 
 // Init 初始化
 func Init() {
 	//初始化数据表
 	serviceDB.Init(&Router2SystemConfig.MainSQL, "base_service")
+	analysisDB.Init(&Router2SystemConfig.MainSQL, "base_service_analysis")
 }

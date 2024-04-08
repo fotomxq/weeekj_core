@@ -12,7 +12,7 @@ type FieldsAnalysis struct {
 	//服务ID
 	ServiceID int64 `db:"service_id" json:"serviceID" check:"id"`
 	//服务端发送消息次数
-	SendCount int `db:"send_count" json:"sendCount" check:"intThan0"`
+	SendCount int64 `db:"send_count" json:"sendCount" check:"intThan0"`
 	//服务端接收次数
-	ReceiveCount int `db:"receive_count" json:"receiveCount" check:"intThan0"`
+	ReceiveCount int64 `db:"receive_count" json:"receiveCount" check:"intThan0"`
 }

@@ -3,6 +3,7 @@ package BaseService
 import (
 	"errors"
 	"fmt"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
@@ -52,8 +53,23 @@ func GetServiceByID(args *ArgsGetServiceByID) (data FieldsService, err error) {
 	return
 }
 
-// ArgsCreateService 创建Service参数
-type ArgsCreateService struct {
+// getServiceByCode 通过编码查询服务
+func getServiceByCode(code string) (data FieldsService) {
+	err := serviceDB.Get().SetFieldsOne([]string{"id"}).SetStringQuery("code", code).SetDeleteQuery("delete_at", false).NeedLimit().Result(&data)
+	if err != nil {
+		return
+	}
+	data = getServiceByID(data.ID)
+	if data.ID < 1 {
+		err = errors.New("no data")
+		return
+	}
+	return
+
+}
+
+// argsSetService 设置Service参数
+type argsSetService struct {
 	//过期时间
 	ExpireAt time.Time `db:"expire_at" json:"expireAt"`
 	//名称
@@ -76,8 +92,89 @@ type ArgsCreateService struct {
 	EventParams string `db:"event_params" json:"eventParams" check:"des" min:"1" max:"1000" empty:"true"`
 }
 
-// CreateService 创建Service
-func CreateService(args *ArgsCreateService) (id int64, err error) {
+// setService 设置Service
+func setService(args *argsSetService) (err error) {
+	//检查订阅方式
+	switch args.EventSubType {
+	case "server":
+	case "client":
+	case "all":
+	default:
+		err = errors.New("event sub type error")
+		return
+	}
+	//检查事件类型
+	switch args.EventType {
+	case "nats":
+	default:
+		err = errors.New("event type error")
+		return
+	}
+	//检查过期时间
+	if args.ExpireAt.Unix() == 0 {
+		args.ExpireAt = CoreFilter.GetNowTimeCarbon().AddDay().Time
+	}
+	//尝试获取code服务
+	data := getServiceByCode(args.Code)
+	if data.ID > 0 {
+		err = updateService(&argsUpdateService{
+			ID:           data.ID,
+			ExpireAt:     args.ExpireAt,
+			Name:         args.Name,
+			Description:  args.Description,
+			EventSubType: args.EventSubType,
+			Code:         args.Code,
+			EventType:    args.EventType,
+			EventURL:     args.EventURL,
+			EventParams:  args.EventParams,
+		})
+		if err != nil {
+			return
+		}
+	} else {
+		_, err = createService(&argsCreateService{
+			ExpireAt:     args.ExpireAt,
+			Name:         args.Name,
+			Description:  args.Description,
+			EventSubType: args.EventSubType,
+			Code:         args.Code,
+			EventType:    args.EventType,
+			EventURL:     args.EventURL,
+			EventParams:  args.EventParams,
+		})
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
+// argsCreateService 创建Service参数
+type argsCreateService struct {
+	//过期时间
+	ExpireAt time.Time `db:"expire_at" json:"expireAt"`
+	//名称
+	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
+	//描述
+	Description string `db:"description" json:"description" check:"des" min:"1" max:"500" empty:"true"`
+	//事件订阅方式
+	// server 服务器订阅; client 客户端订阅; all 服务器和客户端都订阅
+	EventSubType string `db:"event_sub_type" json:"eventSubType" check:"intThan0"`
+	//事件编码
+	Code string `db:"code" json:"code" check:"des" min:"1" max:"300"`
+	//事件类型
+	// nats - NATS事件
+	EventType string `db:"event_type" json:"eventType" check:"intThan0"`
+	//事件地址
+	// nats - 触发的地址
+	EventURL string `db:"event_url" json:"eventURL" check:"des" min:"1" max:"600"`
+	//事件固定参数
+	// nats - 事件附带的固定参数，如果为空则根据流程阶段事件触发填入
+	EventParams string `db:"event_params" json:"eventParams" check:"des" min:"1" max:"1000" empty:"true"`
+}
+
+// createService 创建Service
+func createService(args *argsCreateService) (id int64, err error) {
 	//创建数据
 	id, err = serviceDB.Insert().SetFields([]string{"expire_at", "name", "description", "event_sub_type", "code", "event_type", "event_url", "event_params"}).Add(map[string]any{
 		"expire_at":      args.ExpireAt,
@@ -96,8 +193,8 @@ func CreateService(args *ArgsCreateService) (id int64, err error) {
 	return
 }
 
-// ArgsUpdateService 修改Service参数
-type ArgsUpdateService struct {
+// argsUpdateService 修改Service参数
+type argsUpdateService struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
 	//过期时间
@@ -122,8 +219,8 @@ type ArgsUpdateService struct {
 	EventParams string `db:"event_params" json:"eventParams" check:"des" min:"1" max:"1000" empty:"true"`
 }
 
-// UpdateService 修改Service
-func UpdateService(args *ArgsUpdateService) (err error) {
+// updateService 修改Service
+func updateService(args *argsUpdateService) (err error) {
 	//更新数据
 	err = serviceDB.Update().SetFields([]string{"expire_at", "name", "description", "event_sub_type", "code", "event_type", "event_url", "event_params"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"expire_at":      args.ExpireAt,
@@ -144,14 +241,14 @@ func UpdateService(args *ArgsUpdateService) (err error) {
 	return
 }
 
-// ArgsDeleteService 删除Service参数
-type ArgsDeleteService struct {
+// argsDeleteService 删除Service参数
+type argsDeleteService struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
 }
 
-// DeleteService 删除Service
-func DeleteService(args *ArgsDeleteService) (err error) {
+// deleteService 删除Service
+func deleteService(args *argsDeleteService) (err error) {
 	//删除数据
 	err = serviceDB.Delete().NeedSoft(true).AddWhereID(args.ID).ExecNamed(nil)
 	if err != nil {
