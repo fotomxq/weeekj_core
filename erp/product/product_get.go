@@ -191,7 +191,7 @@ func GetProductListV2(args *ArgsGetProductListV2) (dataList []FieldsProduct, dat
 		}
 	}
 	var rawList []FieldsProduct
-	dataCount, err = productValsDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetIDQuery("org_id", args.OrgID).SetIDQuery("sort_id", args.SortID).SetIDsQuery("tags", args.Tags).SetIntQuery("pack_type", args.PackType).SetIDQuery("company_id", args.CompanyID).SetIDsQuery("sort_id", sortIDList).SetDeleteQuery("delete_at", args.IsRemove).SetSearchQuery([]string{"code"}, args.SearchCode).SetSearchQuery([]string{"title", "title_des", "des"}, args.Search).SetPages(args.Pages).SetIDsQuery("company_id", companyIDList).SetIDsQuery("id", productIDList).SelectList("").ResultAndCount(&rawList)
+	dataCount, err = productDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetSearchQuery([]string{"code"}, args.SearchCode).SetSearchQuery([]string{"title", "title_des", "des"}, args.Search).SetIDQuery("org_id", args.OrgID).SetIDQuery("sort_id", args.SortID).SetIDsQuery("tags", args.Tags).SetIntQuery("pack_type", args.PackType).SetIDQuery("company_id", args.CompanyID).SetIDsQuery("sort_id", sortIDList).SelectList("").ResultAndCount(&rawList)
 	if err != nil {
 		return
 	}
