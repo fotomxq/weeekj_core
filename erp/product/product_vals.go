@@ -249,6 +249,7 @@ func GetProductValsTemplateID(args *ArgsGetProductValsTemplateID) (templateBindD
 // ArgsGetValsByBrandOrCategoryID 通过分类或品牌获取数据包参数
 type ArgsGetValsByBrandOrCategoryID struct {
 	//组织ID
+	// 请勿给-1，否则无法清理缓冲
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//品牌ID
 	BrandID int64 `db:"brand_id" json:"brandID" check:"id" empty:"true"`
@@ -302,6 +303,7 @@ func GetValsByBrandOrCategoryID(args *ArgsGetValsByBrandOrCategoryID) (templateI
 // ArgsSetProductVals 设置产品数据参数
 type ArgsSetProductVals struct {
 	//组织ID
+	// 请勿给-1，否则无法清理缓冲
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//产品ID
 	ProductID int64 `db:"product_id" json:"productID" check:"id"`
@@ -439,6 +441,7 @@ func SetProductVals(args *ArgsSetProductVals) (errCode string, err error) {
 
 type ArgsClearProductVals struct {
 	//组织ID
+	// 请勿给-1，否则无法清理缓冲
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//产品ID
 	ProductID int64 `db:"product_id" json:"productID" check:"id"`

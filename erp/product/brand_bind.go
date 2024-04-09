@@ -186,8 +186,12 @@ func CreateBrandBind(args *ArgsCreateBrandBind) (id int64, err error) {
 			})
 			return
 		} else {
-			//禁止重复绑定
-			err = errors.New("have replace")
+			if args.OrgID == data.OrgID && args.BrandID == data.BrandID && args.CompanyID == data.CompanyID && args.ProductID == data.ProductID {
+				return
+			} else {
+				//禁止重复绑定
+				err = errors.New("have replace")
+			}
 			return
 		}
 	}
