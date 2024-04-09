@@ -91,7 +91,7 @@ func GetTemplateBindData(args *ArgsGetTemplateBindData) (data FieldsTemplateBind
 		return
 	}
 	//获取数据
-	err := templateBindDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "template_id", "brand_id"}).AppendWhere("(org_id = $1 OR $1 < 0) AND template_id = $2 AND (category_id = $3 OR $3 < 0) AND (brand_id = $4 OR $4 < 0)", args.OrgID, args.TemplateID, args.CategoryID, args.BrandID).NeedLimit().Result(&data)
+	err := templateBindDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "template_id", "category_id", "brand_id"}).AppendWhere("(org_id = $1 OR $1 < 0) AND template_id = $2 AND (category_id = $3 OR $3 < 0) AND (brand_id = $4 OR $4 < 0)", args.OrgID, args.TemplateID, args.CategoryID, args.BrandID).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}
