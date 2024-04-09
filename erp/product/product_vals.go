@@ -324,6 +324,9 @@ func SetProductVals(args *ArgsSetProductVals) (errCode string, err error) {
 		ProductID: args.ProductID,
 		CompanyID: args.CompanyID,
 	})
+	if err != nil {
+		return
+	}
 	//获取当前插槽数据包
 	var bpmSlotList []BaseBPM.FieldsSlot
 	bpmSlotList, errCode, err = GetTemplateBPMThemeSlotData(args.OrgID, templateBindData.TemplateID)

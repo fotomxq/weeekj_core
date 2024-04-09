@@ -49,7 +49,7 @@ func GetTemplateBindList(args *ArgsGetTemplateBindList) (dataList []FieldsTempla
 // 给与产品最初的分类ID，从最底层到最高层追溯到绑定模板关系
 func getTemplateBindRecursionByCategoryID(orgID int64, categoryID int64) (data FieldsTemplateBind) {
 	var dataList []FieldsTemplateBind
-	_ = templateBindDB.Select().SetFieldsList([]string{"id", "category_id"}).SetFieldsSort([]string{"id"}).SetPages(CoreSQL2.ArgsPages{
+	_ = templateBindDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "org_id", "template_id", "brand_id"}).SetFieldsSort([]string{"id"}).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  1,
 		Sort: "id",
@@ -67,7 +67,8 @@ func getTemplateBindRecursionByCategoryID(orgID int64, categoryID int64) (data F
 			}
 		}
 	}
-	return dataList[0]
+	data = dataList[0]
+	return
 }
 
 // ArgsGetTemplateBindData 获取品牌绑定关系参数
@@ -158,8 +159,12 @@ func CreateTemplateBind(args *ArgsCreateTemplateBind) (id int64, err error) {
 			})
 			return
 		} else {
-			err = errors.New("have replace")
-			return
+			if args.TemplateID == data.TemplateID && args.CategoryID == data.CategoryID && args.BrandID == data.BrandID {
+				return
+			} else {
+				err = errors.New("have replace")
+				return
+			}
 		}
 	} else {
 		//创建数据
