@@ -36,7 +36,13 @@ func subNats() {
 
 // action 服务code
 // mark 订阅和推送类型: sub订阅; pub发布
-func subNatsRequest(_ *nats.Msg, action string, _ int64, mark string, _ []byte) {
+func subNatsRequest(msg *nats.Msg, action string, _ int64, mark string, _ []byte) {
+	//等待数据库连接
+	if !WaitDBConnect {
+		time.Sleep(time.Second * 60)
+		WaitDBConnect = true
+	}
+	//初始化
 	var sendCount, receiveCount int64
 	sendCount = 0
 	receiveCount = 0

@@ -20,6 +20,9 @@ var (
 	analysisDB CoreSQL2.Client
 	//OpenSub 订阅服务
 	OpenSub = false
+	//WaitDBConnect 临时拦截设计
+	// 刚启动服务，如没有及时连接到数据库，可能出现异常，所以需暂时性拦截请求，等待数据库连接成功后再处理
+	WaitDBConnect = false
 )
 
 // Init 初始化

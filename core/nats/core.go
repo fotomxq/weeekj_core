@@ -60,7 +60,9 @@ func Sub(serviceCode string, topic string, cb func(msg *nats.Msg)) (err error) {
 	}
 	CoreLog.Info("nats sub, ", topic)
 	//推送统计
-	pushRequest(serviceCode, "sub")
+	if serviceCode != "base_service_request" {
+		pushRequest(serviceCode, "sub")
+	}
 	return
 }
 
@@ -165,7 +167,9 @@ func Push(serviceCode string, topic string, data []byte) (err error) {
 		return
 	}
 	//推送统计
-	pushRequest(serviceCode, "push")
+	if serviceCode != "base_service_request" {
+		pushRequest(serviceCode, "push")
+	}
 	//反馈
 	return
 }
