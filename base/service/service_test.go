@@ -16,7 +16,7 @@ func TestServiceInit(t *testing.T) {
 }
 
 func TestCreateService(t *testing.T) {
-	err := setService(&argsSetService{
+	err := SetService(&ArgsSetService{
 		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
 		Name:         "测试服务",
 		Description:  "测试服务描述",

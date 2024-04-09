@@ -499,7 +499,7 @@ func payFinishByOrderID(orderID int64, orgBindID int64, payID int64, mark string
 // 通知nats支付完成
 func pushNatsOrderPay(orderID int64, payID int64, haveAudit bool) {
 	//通知完成支付
-	CoreNats.PushDataNoErr("/service/order/pay", "finish", orderID, "", map[string]interface{}{
+	CoreNats.PushDataNoErr("service_order_pay", "/service/order/pay", "finish", orderID, "", map[string]interface{}{
 		"payID": payID,
 	})
 	//尝试通知审核并完成支付

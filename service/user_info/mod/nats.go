@@ -8,14 +8,14 @@ import (
 
 // PushInfoOut 推送标记老人离开
 func PushInfoOut(infoID int64, outAt time.Time) {
-	CoreNats.PushDataNoErr("/service/user_info/post_update", "out", infoID, "", map[string]interface{}{
+	CoreNats.PushDataNoErr("service_user_info_post_update", "/service/user_info/post_update", "out", infoID, "", map[string]interface{}{
 		"atTime": CoreFilter.GetTimeToDefaultTime(outAt),
 	})
 }
 
 // PushInfoReturn 还原档案
 func PushInfoReturn(infoID int64) {
-	CoreNats.PushDataNoErr("/service/user_info/post_update", "return", infoID, "", nil)
+	CoreNats.PushDataNoErr("service_user_info_post_update", "/service/user_info/post_update", "return", infoID, "", nil)
 }
 
 // ArgsAppendLog 添加日志参数
@@ -40,5 +40,5 @@ type ArgsAppendLog struct {
 
 // AppendLog 添加日志
 func AppendLog(args ArgsAppendLog) {
-	CoreNats.PushDataNoErr("/service/user_info/append_log", "", 0, "", args)
+	CoreNats.PushDataNoErr("service_user_info_append_log", "/service/user_info/append_log", "", 0, "", args)
 }

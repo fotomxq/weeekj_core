@@ -1,6 +1,8 @@
 package ERPProduct
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
@@ -12,9 +14,20 @@ import (
 
 func subNats() {
 	//公司被删除
-	CoreNats.SubDataByteNoErr("/service/company", subNatsDeleteCompany)
+	CoreNats.SubDataByteNoErr("service_company", "/service/company", subNatsDeleteCompany)
 	//更新产品资料
-	CoreNats.SubDataByteNoErr("/erp/product/update", subNatsUpdateProduct)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "ERP产品更新通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "erp_product_update",
+		EventType:    "nats",
+		EventURL:     "/erp/product/update",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("erp_product_update", "/erp/product/update", subNatsUpdateProduct)
 }
 
 // 删除公司处理

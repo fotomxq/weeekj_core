@@ -6,7 +6,7 @@ import (
 
 // UpdateFinish 完成订单
 func UpdateFinish(orderID int64, des string) {
-	CoreNats.PushDataNoErr("/service/order/status", "finish", orderID, "", map[string]interface{}{
+	CoreNats.PushDataNoErr("service_order_status", "/service/order/status", "finish", orderID, "", map[string]interface{}{
 		"des": des,
 	})
 }

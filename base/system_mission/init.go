@@ -1,6 +1,7 @@
 package BaseSystemMission
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreHighf "github.com/fotomxq/weeekj_core/v5/core/highf"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
@@ -46,6 +47,8 @@ type Mission struct {
 }
 
 type MissionBind struct {
+	//消息标识码
+	NatsCode string
 	//触发消息地址
 	NatsMsg string
 	//下一轮执行时间
@@ -75,11 +78,34 @@ func (t *Mission) init() {
 	}
 	t.isStart = true
 	//订阅nats
-	CoreNats.SubDataByteNoErr("/base/system_mission/stop", func(_ *nats.Msg, _ string, id int64, _ string, _ []byte) {
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "基础服务任务管理器",
+		Description:  "定时任务管理器，用于管理系统内部定时任务。",
+		EventSubType: "sub",
+		Code:         "base_system_mission_stop",
+		EventType:    "nats",
+		EventURL:     "/base/system_mission/stop",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("base_system_mission_stop", "/base/system_mission/stop", func(_ *nats.Msg, _ string, id int64, _ string, _ []byte) {
 		if id != t.nowID {
 			return
 		}
 		t.updateData()
+	})
+	//推送服务注册
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "基础服务任务管理器",
+		Description:  "服务停止",
+		EventSubType: "push",
+		Code:         "base_system_mission_stop",
+		EventType:    "nats",
+		EventURL:     "/base/system_mission/stop",
+		//TODO:待补充
+		EventParams: "",
 	})
 	//拦截器初始化
 	if t.blockSec < 0 {
@@ -88,7 +114,7 @@ func (t *Mission) init() {
 	t.updateBlock.Init(t.blockSec)
 }
 
-// 修改拦截器时间
+// UpdateBlockTime 修改拦截器时间
 func (t *Mission) UpdateBlockTime(sec int) {
 	t.blockSec = sec
 	if sec < 1 {

@@ -10,7 +10,7 @@ import (
 
 func subNats() {
 	//节点过期处理
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsStepChildExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsStepChildExpire)
 }
 
 // subNatsStepChildExpire 节点过期处理

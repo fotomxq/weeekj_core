@@ -111,7 +111,7 @@ func Push(system string, bindID int64, mark string, param []byte, fileSrc string
 		ExpireAt:   CoreFilter.GetNowTimeCarbon().AddSeconds(timeout).Time,
 	})
 	//推送nats请求
-	CoreNats.PushDataNoErr("/base/python/new", system, newID, mark, map[string]interface{}{
+	CoreNats.PushDataNoErr("base_python_new", "/base/python/new", system, newID, mark, map[string]interface{}{
 		"bindID":     bindID,
 		"fileSrc":    fileSrc,
 		"newFileSrc": getResultSrc(newID),

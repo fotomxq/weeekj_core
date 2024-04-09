@@ -9,6 +9,7 @@ import (
 	BaseTempFile "github.com/fotomxq/weeekj_core/v5/base/temp_file"
 	BaseVcode "github.com/fotomxq/weeekj_core/v5/base/vcode"
 	BlogCore "github.com/fotomxq/weeekj_core/v5/blog/core"
+	BlogExam "github.com/fotomxq/weeekj_core/v5/blog/exam"
 	IOTDevice "github.com/fotomxq/weeekj_core/v5/iot/device"
 	IOTSensor "github.com/fotomxq/weeekj_core/v5/iot/sensor"
 	MallCore "github.com/fotomxq/weeekj_core/v5/mall/core"
@@ -135,6 +136,7 @@ func moduleInit() (err error) {
 	//博客
 	///////////////////////////////////////////////////////////////////////////////////
 	BlogCore.Init()
+	BlogExam.Init()
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//统计

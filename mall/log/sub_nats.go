@@ -1,6 +1,8 @@
 package MallLog
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	MallCore "github.com/fotomxq/weeekj_core/v5/mall/core"
 	"github.com/nats-io/nats.go"
@@ -9,7 +11,18 @@ import (
 
 func subNats() {
 	//添加一条日志
-	CoreNats.SubDataByteNoErr("/mall/log/new", func(_ *nats.Msg, _ string, _ int64, _ string, data []byte) {
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "商城日志新增",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "mall_log_new",
+		EventType:    "nats",
+		EventURL:     "/mall/log/new",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("mall_log_new", "/mall/log/new", func(_ *nats.Msg, _ string, _ int64, _ string, data []byte) {
 		//解析参数
 		userID := gjson.GetBytes(data, "userID").Int()
 		ip := gjson.GetBytes(data, "ip").String()
@@ -20,7 +33,7 @@ func subNats() {
 		AppendLog(userID, ip, orgID, productID, action)
 	})
 	//商品评论订阅
-	CoreNats.SubDataByteNoErr("/class/comment", subNatsNewComment)
+	CoreNats.SubDataByteNoErr("class_comment", "/class/comment", subNatsNewComment)
 }
 
 // 商品评论订阅

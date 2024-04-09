@@ -872,7 +872,7 @@ func RefundFinish(args *ArgsRefundFinish) (err error) {
 	//订单收尾工作
 	orderCancelLast(args.ID, args.OrgBindID)
 	//通知取消订单
-	CoreNats.PushDataNoErr("/service/order/update", "refund", args.ID, "", nil)
+	CoreNats.PushDataNoErr("service_order_update", "/service/order/update", "refund", args.ID, "", nil)
 	//反馈
 	return
 }

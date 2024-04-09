@@ -43,5 +43,5 @@ type ArgsCreateTransport struct {
 
 // CreateTransport 创建新配送单
 func CreateTransport(args ArgsCreateTransport) {
-	CoreNats.PushDataNoErr("/tms/transport/create", "", 0, "", args)
+	CoreNats.PushDataNoErr("tms_transport_create", "/tms/transport/create", "", 0, "", args)
 }

@@ -53,7 +53,7 @@ func CheckFinishByID(args *ArgsCheckFinishByID) (data DataCheckFinish, err error
 	if err != nil {
 		return
 	}
-	CoreNats.PushDataNoErr("/finance/pay/finish_check_result", "", data.ID, "", data)
+	CoreNats.PushDataNoErr("finance_pay_finish_check_result", "/finance/pay/finish_check_result", "", data.ID, "", data)
 	return
 }
 

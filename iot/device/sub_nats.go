@@ -1,6 +1,7 @@
 package IOTDevice
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
@@ -11,13 +12,35 @@ import (
 
 func subNats() {
 	//删除旧的日志数据
-	CoreNats.SubDataByteNoErr("/iot/device/auto_log", subNatsDeleteAutoLog)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "IOT设备自动创建日志",
+		Description:  "",
+		EventSubType: "push",
+		Code:         "iot_device_auto_log",
+		EventType:    "nats",
+		EventURL:     "/iot/device/auto_log",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("iot_device_auto_log", "/iot/device/auto_log", subNatsDeleteAutoLog)
 	//删除操作权限过期
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsOperateExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsOperateExpire)
 	//标记设备掉线处理
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsDeviceOnlineExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsDeviceOnlineExpire)
 	//删除自动化模板
-	CoreNats.SubDataByteNoErr("/iot/device/auto_info_template", subNatsAutoInfoTemplate)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "IOT设备自动更新模板信息",
+		Description:  "",
+		EventSubType: "push",
+		Code:         "iot_device_auto_info_template",
+		EventType:    "nats",
+		EventURL:     "/iot/device/auto_info_template",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("iot_device_auto_info_template", "/iot/device/auto_info_template", subNatsAutoInfoTemplate)
 }
 
 // 删除旧的日志数据

@@ -591,7 +591,7 @@ func DeleteOrg(args *ArgsDeleteOrg) (err error) {
 	})
 	deleteOrgCache(args.ID)
 	//推送NATS
-	CoreNats.PushDataNoErr("/org/core/org", "delete", args.ID, "", nil)
+	CoreNats.PushDataNoErr("org_core_org", "/org/core/org", "delete", args.ID, "", nil)
 	return
 }
 

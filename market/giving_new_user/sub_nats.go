@@ -1,6 +1,8 @@
 package MarketGivingNewUser
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
@@ -11,9 +13,20 @@ import (
 
 func subNats() {
 	//新注册用户
-	CoreNats.SubDataByteNoErr("/user/login2/new", subNatsUserLogin2New)
+	CoreNats.SubDataByteNoErr("user_login2_new", "/user/login2/new", subNatsUserLogin2New)
 	//新用户注册后购买行为
-	CoreNats.SubDataByteNoErr("/market_giving/new_user/buy", subNatsNewUserBuy)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "赠送服务新用户注册和发生购买行为",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "market_giving_new_user_buy",
+		EventType:    "nats",
+		EventURL:     "/market_giving/new_user/buy",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("market_giving_new_user_buy", "/market_giving/new_user/buy", subNatsNewUserBuy)
 }
 
 // 新注册用户

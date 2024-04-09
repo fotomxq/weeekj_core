@@ -32,7 +32,7 @@ func AppendData(orgID int64, orgBindID int64, userID int64, system string, modID
 		desStr = desStr + fmt.Sprint(v)
 	}
 	//通知写入数据
-	CoreNats.PushDataNoErr("/user/record2/append", "", 0, "", argsAppendData{
+	CoreNats.PushDataNoErr("user_record2_append", "/user/record2/append", "", 0, "", argsAppendData{
 		OrgID:     orgID,
 		OrgBindID: orgBindID,
 		UserID:    userID,

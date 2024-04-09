@@ -47,10 +47,10 @@ func filterParams(c *gin.Context, params interface{}) (errField string, errCode 
 			// 参数值的范围，可用于文本长度判断、数字大小范围判断
 			minStr := vField.Tag.Get("min")
 			maxStr := vField.Tag.Get("max")
-			var min, max int
+			var minVal, maxVal int
 			if minStr != "" {
 				var err error
-				min, err = CoreFilter.GetIntByString(minStr)
+				minVal, err = CoreFilter.GetIntByString(minStr)
 				if err != nil {
 					errField = vField.Name
 					errCode = "check_min"
@@ -59,7 +59,7 @@ func filterParams(c *gin.Context, params interface{}) (errField string, errCode 
 			}
 			if maxStr != "" {
 				var err error
-				max, err = CoreFilter.GetIntByString(maxStr)
+				maxVal, err = CoreFilter.GetIntByString(maxStr)
 				if err != nil {
 					errField = vField.Name
 					errCode = "check_max"
@@ -72,7 +72,7 @@ func filterParams(c *gin.Context, params interface{}) (errField string, errCode 
 				continue
 			}
 			//继续检查
-			errCode, b = filterParamChild(vValueType.Interface(), checkMark, filterMark, isEmpty, min, max)
+			errCode, b = filterParamChild(vValueType.Interface(), checkMark, filterMark, isEmpty, minVal, maxVal)
 			if !b {
 				errField = vField.Name
 				return

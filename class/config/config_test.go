@@ -13,7 +13,8 @@ var (
 
 func TestInitConfig(t *testing.T) {
 	ToolsTest.Init(t)
-	config.Init("test_config", "test_config_default")
+	//config.Init("test_config", "test_config_default")
+	config.TableName = "test_config"
 	TestSetConfigDefault(t)
 }
 

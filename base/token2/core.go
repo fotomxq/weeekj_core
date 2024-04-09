@@ -28,6 +28,6 @@ func Init() {
 		//订阅请求
 		subNats()
 		//推送请求
-		_ = CoreNats.Push("/base/expire_tip/expire_clear", nil)
+		_ = CoreNats.Push("base_expire_tip_expire_clear", "/base/expire_tip/expire_clear", nil)
 	}
 }

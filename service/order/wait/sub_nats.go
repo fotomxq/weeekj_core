@@ -9,7 +9,7 @@ import (
 
 func subNats() {
 	//等待订单过期处理
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsOrderExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsOrderExpire)
 }
 
 // 等待订单过期处理

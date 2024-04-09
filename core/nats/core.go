@@ -46,7 +46,7 @@ func checkNC() bool {
 }
 
 // Sub 订阅消息
-func Sub(topic string, cb func(msg *nats.Msg)) (err error) {
+func Sub(serviceCode string, topic string, cb func(msg *nats.Msg)) (err error) {
 	if !checkNC() {
 		return
 	}
@@ -59,18 +59,20 @@ func Sub(topic string, cb func(msg *nats.Msg)) (err error) {
 		return
 	}
 	CoreLog.Info("nats sub, ", topic)
+	//推送统计
+	pushRequest(serviceCode, "sub")
 	return
 }
 
 // SubData 订阅数据包
-func SubData(topic string, cb func(msg *nats.Msg, action string, id int64, mark string, data interface{})) (err error) {
+func SubData(serviceCode string, topic string, cb func(msg *nats.Msg, action string, id int64, mark string, data interface{})) (err error) {
 	if !checkNC() {
 		return
 	}
 	if subPrefix != "" {
 		topic = fmt.Sprint(subPrefix, topic)
 	}
-	if err = Sub(topic, func(msg *nats.Msg) {
+	if err = Sub(serviceCode, topic, func(msg *nats.Msg) {
 		var newData dataType
 		err = json.Unmarshal(msg.Data, &newData)
 		if err != nil {
@@ -88,14 +90,14 @@ func SubData(topic string, cb func(msg *nats.Msg, action string, id int64, mark 
 }
 
 // SubDataByte 订阅数据包
-func SubDataByte(topic string, cb func(msg *nats.Msg, action string, id int64, mark string, data []byte)) (err error) {
+func SubDataByte(serviceCode string, topic string, cb func(msg *nats.Msg, action string, id int64, mark string, data []byte)) (err error) {
 	if !checkNC() {
 		return
 	}
 	if subPrefix != "" {
 		topic = fmt.Sprint(subPrefix, topic)
 	}
-	if err = Sub(topic, func(msg *nats.Msg) {
+	if err = Sub(serviceCode, topic, func(msg *nats.Msg) {
 		var newData dataType
 		err = json.Unmarshal(msg.Data, &newData)
 		if err != nil {
@@ -119,8 +121,8 @@ func SubDataByte(topic string, cb func(msg *nats.Msg, action string, id int64, m
 }
 
 // SubDataByteNoErr 订阅数据包
-func SubDataByteNoErr(topic string, cb func(msg *nats.Msg, action string, id int64, mark string, data []byte)) {
-	if err := SubDataByte(topic, cb); err != nil {
+func SubDataByteNoErr(serviceCode string, topic string, cb func(msg *nats.Msg, action string, id int64, mark string, data []byte)) {
+	if err := SubDataByte(serviceCode, topic, cb); err != nil {
 		CoreLog.Error("nats sub failed, topic: ", topic)
 	}
 }
@@ -151,7 +153,7 @@ func ReflectData(mapData interface{}, rawData interface{}) (err error) {
 }
 
 // Push 发布消息
-func Push(topic string, data []byte) (err error) {
+func Push(serviceCode string, topic string, data []byte) (err error) {
 	if !checkNC() {
 		return
 	}
@@ -159,11 +161,17 @@ func Push(topic string, data []byte) (err error) {
 		topic = fmt.Sprint(subPrefix, topic)
 	}
 	err = nc.Publish(topic, data)
+	if err != nil {
+		return
+	}
+	//推送统计
+	pushRequest(serviceCode, "push")
+	//反馈
 	return
 }
 
 // PushJson 发送json数据包
-func PushJson(topic string, data interface{}) (err error) {
+func PushJson(serviceCode string, topic string, data interface{}) (err error) {
 	if !checkNC() {
 		return
 	}
@@ -173,20 +181,20 @@ func PushJson(topic string, data interface{}) (err error) {
 		err = errors.New("json error, " + err.Error())
 		return
 	}
-	return Push(topic, dataByte)
+	return Push(serviceCode, topic, dataByte)
 }
 
-func PushJsonNoErr(topic string, data interface{}) {
+func PushJsonNoErr(serviceCode string, topic string, data interface{}) {
 	if !checkNC() {
 		return
 	}
-	if err := PushJson(topic, data); err != nil {
+	if err := PushJson(serviceCode, topic, data); err != nil {
 		CoreLog.Error("nats push json topic: ", topic, ", data: ", data)
 	}
 }
 
 // PushData 发送数据包
-func PushData(topic string, action string, id int64, mark string, data interface{}) (err error) {
+func PushData(serviceCode string, topic string, action string, id int64, mark string, data interface{}) (err error) {
 	if !checkNC() {
 		return
 	}
@@ -201,15 +209,15 @@ func PushData(topic string, action string, id int64, mark string, data interface
 		err = errors.New("json error, " + err.Error())
 		return
 	}
-	return Push(topic, dataByte)
+	return Push(serviceCode, topic, dataByte)
 }
 
 // PushDataNoErr 发送数据包无错误
-func PushDataNoErr(topic string, action string, id int64, mark string, data interface{}) {
+func PushDataNoErr(serviceCode string, topic string, action string, id int64, mark string, data interface{}) {
 	if !checkNC() {
 		return
 	}
-	if err := PushData(topic, action, id, mark, data); err != nil {
+	if err := PushData(serviceCode, topic, action, id, mark, data); err != nil {
 		CoreLog.Error("nats push data topic: ", topic, ", action: ", action, ", id: ", id, ", mark: ", mark, ", data: ", data)
 	}
 }

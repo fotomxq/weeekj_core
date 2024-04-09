@@ -64,7 +64,7 @@ func AppendTip(args *ArgsAppendTip) (err error) {
 		}
 	}
 	//通知
-	CoreNats.PushDataNoErr("/base/expire_tip/new", "", newID, "", map[string]interface{}{
+	CoreNats.PushDataNoErr("analysis_expire_tip_new", "/base/expire_tip/new", "", newID, "", map[string]interface{}{
 		"expireAt": args.ExpireAt,
 	})
 	//反馈

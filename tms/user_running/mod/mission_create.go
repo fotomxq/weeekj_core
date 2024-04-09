@@ -43,5 +43,5 @@ type ArgsCreateMission struct {
 
 // CreateMission 创建新的任务
 func CreateMission(args ArgsCreateMission) {
-	CoreNats.PushDataNoErr("/tms/user_running/new", "", 0, "", args)
+	CoreNats.PushDataNoErr("tms_user_running_new", "/tms/user_running/new", "", 0, "", args)
 }

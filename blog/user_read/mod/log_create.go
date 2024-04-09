@@ -28,5 +28,5 @@ type ArgsCreateLog struct {
 
 // CreateLog 添加日志
 func CreateLog(args ArgsCreateLog) {
-	CoreNats.PushDataNoErr("/blog/user_read/new", "", 0, "", args)
+	CoreNats.PushDataNoErr("blog_user_read_new", "/blog/user_read/new", "", 0, "", args)
 }

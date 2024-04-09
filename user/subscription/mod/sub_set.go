@@ -26,7 +26,7 @@ type ArgsSetSub struct {
 // SetSub 设置订阅信息
 func SetSub(args ArgsSetSub) (err error) {
 	//通知修改
-	CoreNats.PushDataNoErr("/user/sub/set", "", 0, "", args)
+	CoreNats.PushDataNoErr("user_sub_set", "/user/sub/set", "", 0, "", args)
 	//反馈
 	return
 }
@@ -42,7 +42,7 @@ type ArgsSetSubAdd struct {
 // SetSubAdd 向后续约指定时间
 func SetSubAdd(args *ArgsSetSubAdd) (err error) {
 	//通知修改
-	CoreNats.PushDataNoErr("/user/sub/set_add", "", 0, "", args)
+	CoreNats.PushDataNoErr("user_sub_set_add", "/user/sub/set_add", "", 0, "", args)
 	//反馈
 	return
 }

@@ -1,6 +1,7 @@
 package OrgUser
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
@@ -11,9 +12,20 @@ import (
 
 func subNats() {
 	//请求更新用户数据
-	CoreNats.SubDataByteNoErr("/org/user/post_update", subNatsUpdateUserData)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "组织用户提交更新",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "org_user_post_update",
+		EventType:    "nats",
+		EventURL:     "/org/user/post_update",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("org_user_post_update", "/org/user/post_update", subNatsUpdateUserData)
 	//删除过期数据
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsDeleteExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsDeleteExpire)
 }
 
 // subNatsUpdateUserData 请求更新用户数据

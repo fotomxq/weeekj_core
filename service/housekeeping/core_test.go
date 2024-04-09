@@ -14,7 +14,8 @@ var (
 func TestInit(t *testing.T) {
 	if !isInit {
 		ToolsTest.Init(t)
-		OrgCore.Init(true, true)
+		//OrgCore.Init(true, true)
+		OrgCore.Init()
 	}
 	isInit = true
 	TestOrg.LocalCreateBind(t)

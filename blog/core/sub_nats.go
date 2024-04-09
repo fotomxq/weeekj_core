@@ -3,6 +3,7 @@ package BlogCore
 import (
 	"fmt"
 	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	BlogUserReadMod "github.com/fotomxq/weeekj_core/v5/blog/user_read/mod"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
@@ -17,11 +18,67 @@ import (
 
 func subNats() {
 	//请求文章审核
-	CoreNats.SubDataByteNoErr("/blog/core/audit", subNatsAudit)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "博客核心审核通知",
+		Description:  "",
+		EventSubType: "sub",
+		Code:         "blog_core_audit",
+		EventType:    "nats",
+		EventURL:     "/blog/core/audit",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("blog_core_audit", "/blog/core/audit", subNatsAudit)
 	//请求阅读文章
-	CoreNats.SubDataByteNoErr("/blog/core/read", subNatsRead)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "博客核心阅读通知",
+		Description:  "",
+		EventSubType: "sub",
+		Code:         "blog_core_read",
+		EventType:    "nats",
+		EventURL:     "/blog/core/audit",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("blog_core_read", "/blog/core/read", subNatsRead)
 	//商户地图创建后构建文章
-	CoreNats.SubDataByteNoErr("/org/map/audit", subNatsOrgMapAudit)
+	CoreNats.SubDataByteNoErr("org_map_audit", "/org/map/audit", subNatsOrgMapAudit)
+	//推送服务注册
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "博客核心创建通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "blog_core_create",
+		EventType:    "nats",
+		EventURL:     "/blog/core/create",
+		//TODO:待补充
+		EventParams: "",
+	})
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "博客核心审核通过通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "blog_core_audit_done",
+		EventType:    "nats",
+		EventURL:     "/blog/core/audit_done",
+		//TODO:待补充
+		EventParams: "",
+	})
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "博客核心删除通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "blog_core_delete",
+		EventType:    "nats",
+		EventURL:     "/blog/core/delete",
+		//TODO:待补充
+		EventParams: "",
+	})
 }
 
 // 请求审核文章

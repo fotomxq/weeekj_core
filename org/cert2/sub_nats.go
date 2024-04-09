@@ -2,6 +2,7 @@ package OrgCert2
 
 import (
 	"fmt"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
@@ -12,15 +13,26 @@ import (
 
 func subNats() {
 	//缴费成功
-	CoreNats.SubDataByteNoErr("/finance/pay/finish", subNatsPayFinish)
+	CoreNats.SubDataByteNoErr("finance_pay_finish", "/finance/pay/finish", subNatsPayFinish)
 	//请求审核证件
-	CoreNats.SubDataByteNoErr("/org/cert/audit", subNatsAutoAudit)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "组织证件审核",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "org_cert_audit",
+		EventType:    "nats",
+		EventURL:     "/org/cert/audit",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("org_cert_audit", "/org/cert/audit", subNatsAutoAudit)
 	//过期提醒
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsExpire)
 	//删除用户操作
-	CoreNats.SubDataByteNoErr("/user/core/delete", subNatsDeleteUser)
+	CoreNats.SubDataByteNoErr("user_core_delete", "/user/core/delete", subNatsDeleteUser)
 	//删除组织
-	CoreNats.SubDataByteNoErr("/org/core/org", subNatsDeleteOrg)
+	CoreNats.SubDataByteNoErr("org_core_org", "/org/core/org", subNatsDeleteOrg)
 }
 
 // 通知已经缴费

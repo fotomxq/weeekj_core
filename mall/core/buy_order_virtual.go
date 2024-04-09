@@ -210,7 +210,7 @@ func BuyOrderVirtual(args *ArgsBuyOrderVirtual) (errCode string, err error) {
 		}
 	}
 	//推送虚构订单情况
-	CoreNats.PushDataNoErr("/service/order/create_wait_virtual", "finish", orderWaitData.ID, "", map[string]any{
+	CoreNats.PushDataNoErr("service_order_create_wait_virtual", "/service/order/create_wait_virtual", "finish", orderWaitData.ID, "", map[string]any{
 		"products":  args.Products,
 		"companyID": args.BuyCompanyID,
 	})

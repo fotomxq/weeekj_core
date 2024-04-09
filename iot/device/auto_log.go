@@ -109,7 +109,7 @@ func createAutoLog(args *argsCreateAutoLog) (err error) {
 	if err != nil {
 		return
 	}
-	CoreNats.PushDataNoErr("/iot/device/auto_log", "", 0, "", nil)
+	CoreNats.PushDataNoErr("iot_device_auto_log", "/iot/device/auto_log", "", 0, "", nil)
 	return
 }
 

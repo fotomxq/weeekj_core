@@ -38,5 +38,5 @@ type ArgsAppendLog struct {
 
 // AppendLog 注入日志
 func AppendLog(args ArgsAppendLog) {
-	CoreNats.PushDataNoErr("/erp/warehouse/log_append", "", 0, "", args)
+	CoreNats.PushDataNoErr("erp_warehouse_log_append", "/erp/warehouse/log_append", "", 0, "", args)
 }

@@ -558,7 +558,7 @@ func Create(args *ArgsCreate) (data FieldsPayType, errCode string, err error) {
 		ExpireAt:   data.ExpireAt,
 	})
 	//请求归档
-	CoreNats.PushDataNoErr("/finance/pay/file", "", 0, "", nil)
+	CoreNats.PushDataNoErr("finance_pay_file", "/finance/pay/file", "", 0, "", nil)
 	//反馈
 	return
 }

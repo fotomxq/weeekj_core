@@ -1,6 +1,8 @@
 package AnalysisBindVisit
 
-import "sync"
+import (
+	"sync"
+)
 
 //模块访问查看和控制模块
 

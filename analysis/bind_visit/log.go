@@ -79,7 +79,7 @@ func CheckLog(userID int64, bindSystem string, bindID int64) bool {
 
 // AppendLog 添加新的访问
 func AppendLog(userID int64, bindSystem string, bindID int64) {
-	CoreNats.PushDataNoErr("/analysis/org/bind", "new", 0, "", map[string]interface{}{
+	CoreNats.PushDataNoErr("analysis_bind_visit", "/analysis/org/bind", "new", 0, "", map[string]interface{}{
 		"userID":     userID,
 		"bindSystem": bindSystem,
 		"bindID":     bindID,

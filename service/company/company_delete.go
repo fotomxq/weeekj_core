@@ -28,7 +28,7 @@ func DeleteCompany(args *ArgsDeleteCompany) (err error) {
 	//清理缓冲
 	deleteCompanyCache(data.ID)
 	//推送通知
-	CoreNats.PushDataNoErr("/service/company", "delete", data.ID, "", nil)
+	CoreNats.PushDataNoErr("service_company", "/service/company", "delete", data.ID, "", nil)
 	//反馈
 	return
 }

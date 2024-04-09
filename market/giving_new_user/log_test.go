@@ -12,12 +12,13 @@ func TestInitLog(t *testing.T) {
 }
 
 func TestCreateLog(t *testing.T) {
-	errCode, err := CreateLog(&ArgsCreateLog{
+	errCode, err := createLog(&argsCreateLog{
 		OrgID:          newConfigData.OrgID,
 		UserID:         TestOrg.UserInfo.ID,
 		ReferrerUserID: TestOrg.UserInfo.ID,
 		ReferrerBindID: 0,
 		PriceTotal:     500,
+		IsOrder:        false,
 	})
 	if err != nil {
 		t.Error(errCode, ", err: ", err)

@@ -60,7 +60,7 @@ func UpdateCancel(args *ArgsUpdateCancel) (err error) {
 	//收尾工作
 	orderCancelLast(args.ID, args.OrgBindID)
 	//通知取消订单
-	CoreNats.PushDataNoErr("/service/order/update", "cancel", args.ID, "", nil)
+	CoreNats.PushDataNoErr("service_order_update", "/service/order/update", "cancel", args.ID, "", nil)
 	//反馈
 	return
 }
@@ -116,7 +116,7 @@ func orderCancelLast(orderID int64, orgBindID int64) {
 				IDs: transportIDs,
 				Des: "订单取消，配送单自动关闭",
 			}
-			CoreNats.PushDataNoErr("/tms/transport/cancel", "cancel", 0, "", newData)
+			CoreNats.PushDataNoErr("tms_transport_cancel", "/tms/transport/cancel", "cancel", 0, "", newData)
 		}
 	case "housekeeping":
 		if orderData.TransportID > 0 {
@@ -133,7 +133,7 @@ func orderCancelLast(orderID int64, orgBindID int64) {
 				IDs: transportIDs,
 				Des: "订单取消，服务单自动关闭",
 			}
-			CoreNats.PushDataNoErr("/service/housekeeping/cancel", "", 0, "", newData)
+			CoreNats.PushDataNoErr("service_housekeeping_cancel", "/service/housekeeping/cancel", "", 0, "", newData)
 		}
 	}
 	//统计

@@ -18,7 +18,8 @@ var (
 		Mark:     "base.monitor.postgresql",
 		NextTime: fmt.Sprint(runSec, "s"),
 		Bind: BaseSystemMission.MissionBind{
-			NatsMsg: "/base/monitor/postgresql",
+			NatsCode: "base_monitor_postgresql",
+			NatsMsg:  "/base/monitor/postgresql",
 		},
 	}
 	//OpenSub 是否启动订阅

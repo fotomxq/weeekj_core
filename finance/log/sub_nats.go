@@ -1,6 +1,7 @@
 package FinanceLog
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
@@ -10,7 +11,18 @@ import (
 
 func subNats() {
 	//请求归档数据
-	CoreNats.SubDataByteNoErr("/finance/log/file", subNatsFile)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "财务日志归档",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "finance_log_file",
+		EventType:    "nats",
+		EventURL:     "/finance/log/file",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("finance_log_file", "/finance/log/file", subNatsFile)
 }
 
 // 请求归档数据

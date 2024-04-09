@@ -16,13 +16,13 @@ import (
 
 func subNats() {
 	//商户地图创建后构建帖子
-	CoreNats.SubDataByteNoErr("/org/map/audit", subNatsOrgMapAudit)
+	CoreNats.SubDataByteNoErr("org_map_audit", "/org/map/audit", subNatsOrgMapAudit)
 	//通知等待订单创建完成
-	CoreNats.SubDataByteNoErr("/service/order/create_wait_finish", subNatsOrderWaitFinish)
+	CoreNats.SubDataByteNoErr("service_order_create_wait_finish", "/service/order/create_wait_finish", subNatsOrderWaitFinish)
 	//通知订单审核并完成支付
-	CoreNats.SubDataByteNoErr("/service/order/next", subNatsOrderNext)
+	CoreNats.SubDataByteNoErr("service_order_next", "/service/order/next", subNatsOrderNext)
 	//发生评论行为
-	CoreNats.SubDataByteNoErr("/class/comment", subNatsComment)
+	CoreNats.SubDataByteNoErr("class_comment", "/class/comment", subNatsComment)
 }
 
 // 商户地图创建后构建帖子

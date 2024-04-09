@@ -19,7 +19,8 @@ var (
 		Mark:     "org_time.run.update",
 		NextTime: "每1秒",
 		Bind: BaseSystemMission.MissionBind{
-			NatsMsg: "/org/time/run_update",
+			NatsCode: "org_time_run_update",
+			NatsMsg:  "/org/time/run_update",
 		},
 	}
 	//OpenSub 是否启动订阅

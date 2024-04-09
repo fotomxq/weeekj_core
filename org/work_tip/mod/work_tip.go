@@ -17,5 +17,5 @@ type ArgsAppendTip struct {
 }
 
 func AppendTip(args *ArgsAppendTip) {
-	CoreNats.PushDataNoErr("/org/work_tip", "new", 0, "", args)
+	CoreNats.PushDataNoErr("org_work_tip", "/org/work_tip", "new", 0, "", args)
 }

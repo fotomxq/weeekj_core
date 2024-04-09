@@ -98,11 +98,8 @@ func TestGetOrgInfoMoreNames(t *testing.T) {
 }
 
 func TestCheckInfo(t *testing.T) {
-	err := CheckInfo(&ArgsCheckInfo{
-		ID:    newInfoData.ID,
-		OrgID: newInfoData.OrgID,
-	})
-	ToolsTest.ReportError(t, err)
+	CheckInfoArg(newInfoData.ID, newInfoData.OrgID)
+	//ToolsTest.ReportError(t, err)
 }
 
 func TestGetInfoList(t *testing.T) {

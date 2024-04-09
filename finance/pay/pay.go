@@ -473,13 +473,13 @@ func updateStatus(args *argsUpdateStatus) (errCode string, err error) {
 	switch args.Status {
 	case 2:
 		//推送nats
-		CoreNats.PushDataNoErr("/finance/pay/failed", "failed", data.ID, "", nil)
+		CoreNats.PushDataNoErr("finance_pay_failed", "/finance/pay/failed", "failed", data.ID, "", nil)
 	case 4:
 		//推送nats
-		CoreNats.PushDataNoErr("/finance/pay/failed", "remove", data.ID, "", nil)
+		CoreNats.PushDataNoErr("finance_pay_failed", "/finance/pay/failed", "remove", data.ID, "", nil)
 	case 5:
 		//推送nats
-		CoreNats.PushDataNoErr("/finance/pay/failed", "expire", data.ID, "", nil)
+		CoreNats.PushDataNoErr("finance_pay_failed", "/finance/pay/failed", "expire", data.ID, "", nil)
 	}
 	return
 }

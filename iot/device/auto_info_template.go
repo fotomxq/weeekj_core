@@ -171,7 +171,7 @@ func DeleteAutoInfoTemplate(args *ArgsDeleteAutoInfoTemplate) (err error) {
 		return
 	}
 	deleteAutoInfoTemplateCache(args.ID)
-	CoreNats.PushDataNoErr("/iot/device/auto_info_template", "delete", args.ID, "", nil)
+	CoreNats.PushDataNoErr("iot_device_auto_info_template", "/iot/device/auto_info_template", "delete", args.ID, "", nil)
 	return
 }
 

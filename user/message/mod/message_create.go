@@ -28,7 +28,7 @@ type ArgsCreate struct {
 
 // Create 创建新的消息
 func Create(args ArgsCreate) {
-	CoreNats.PushDataNoErr("/user/message/create", "user", 0, "", args)
+	CoreNats.PushDataNoErr("user_message_create", "/user/message/create", "user", 0, "", args)
 }
 
 // CreateSystemToUser 发送系统消息
@@ -42,7 +42,7 @@ func CreateSystemToUser(waitSendAt time.Time, receiveUserID int64, title, conten
 	if params == nil || len(params) < 1 {
 		params = CoreSQLConfig.FieldsConfigsType{}
 	}
-	CoreNats.PushDataNoErr("/user/message/create", "user", 0, "", ArgsCreate{
+	CoreNats.PushDataNoErr("user_message_create", "/user/message/create", "user", 0, "", ArgsCreate{
 		WaitSendAt:    waitSendAt,
 		SendUserID:    0,
 		ReceiveUserID: receiveUserID,
@@ -58,7 +58,7 @@ func CreateSystemToAllUser(waitSendAt time.Time, title, content string, fileID [
 	if waitSendAt.Unix() < 1000000 {
 		waitSendAt = CoreFilter.GetNowTime()
 	}
-	CoreNats.PushDataNoErr("/user/message/create", "all", 0, "", ArgsCreate{
+	CoreNats.PushDataNoErr("user_message_create", "/user/message/create", "all", 0, "", ArgsCreate{
 		WaitSendAt:    waitSendAt,
 		SendUserID:    0,
 		ReceiveUserID: 0,

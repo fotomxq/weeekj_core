@@ -2,6 +2,7 @@ package FinancePay
 
 import (
 	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
@@ -13,15 +14,93 @@ import (
 
 func subNats() {
 	//过期处理
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsExpire)
 	//请求归档数据
-	CoreNats.SubDataByteNoErr("/finance/pay/file", subNatsFile)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "财务支付归档通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "finance_pay_file",
+		EventType:    "nats",
+		EventURL:     "/finance/pay/file",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("finance_pay_file", "/finance/pay/file", subNatsFile)
 	//请求处理第三方退款
-	CoreNats.SubDataByteNoErr("/finance/pay/refund_other", subNatsRefundOther)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "财务支付其他形式退款",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "finance_pay_refund_other",
+		EventType:    "nats",
+		EventURL:     "/finance/pay/refund_other",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("finance_pay_refund_other", "/finance/pay/refund_other", subNatsRefundOther)
 	//请求处理客户端确认支付的储蓄转移操作
-	CoreNats.SubDataByteNoErr("/finance/pay/client_deposit", subNatsClientDeposit)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "财务支付客户端取消",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "finance_pay_client_deposit",
+		EventType:    "nats",
+		EventURL:     "/finance/pay/client_deposit",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("finance_pay_client_deposit", "/finance/pay/client_deposit", subNatsClientDeposit)
 	//通知支付完成
-	CoreNats.SubDataByteNoErr("/finance/pay/finish", subNatsFinish)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "财务支付完成",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "finance_pay_finish",
+		EventType:    "nats",
+		EventURL:     "/finance/pay/finish",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("finance_pay_finish", "/finance/pay/finish", subNatsFinish)
+	//服务注册
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "财务支付发起退款",
+		Description:  "",
+		EventSubType: "push",
+		Code:         "finance_pay_refund",
+		EventType:    "nats",
+		EventURL:     "/finance/pay/refund",
+		//TODO:待补充
+		EventParams: "",
+	})
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "财务支付检查支付请求完成结果",
+		Description:  "",
+		EventSubType: "push",
+		Code:         "finance_pay_finish_check_result",
+		EventType:    "nats",
+		EventURL:     "/finance/pay/finish_check_result",
+		//TODO:待补充
+		EventParams: "",
+	})
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "财务支付失败通知",
+		Description:  "",
+		EventSubType: "push",
+		Code:         "finance_pay_failed",
+		EventType:    "nats",
+		EventURL:     "/finance/pay/failed",
+		//TODO:待补充
+		EventParams: "",
+	})
 }
 
 // 过期处理

@@ -2,6 +2,7 @@ package MallCore
 
 import (
 	"fmt"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
@@ -16,9 +17,31 @@ import (
 
 func subNats() {
 	//请求赠送用户虚拟商品
-	CoreNats.SubDataByteNoErr("/mall/core/product_virtual", subNatsProductVirtual)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "商城核心请求赠送虚拟商品",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "mall_core_product_virtual",
+		EventType:    "nats",
+		EventURL:     "/mall/core/product_virtual",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("mall_core_product_virtual", "/mall/core/product_virtual", subNatsProductVirtual)
 	//请求同步修改商品信息
-	CoreNats.SubDataByteNoErr("/mall/core/product_update", subNatsUpdateProduct)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "商城核心请求修改商品信息",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "mall_core_product_update",
+		EventType:    "nats",
+		EventURL:     "/mall/core/product_update",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("mall_core_product_update", "/mall/core/product_update", subNatsUpdateProduct)
 }
 
 // 请求赠送用户虚拟商品

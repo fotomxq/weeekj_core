@@ -59,7 +59,7 @@ func GetLogList(args *ArgsGetLogList) (dataList []FieldsLog, dataCount int64, er
 		&rawList,
 		tableName,
 		"id",
-		"SELECT id FROM "+tableName+" WHERE "+where,
+		fmt.Sprint("SELECT id FROM ", tableName, " WHERE ", where),
 		where,
 		maps,
 		&args.Pages,
@@ -291,7 +291,7 @@ func AppendLog(args *ArgsAppendLog) (logID int64, allScore int, errCode string, 
 	//删除缓冲
 	deleteLogCache(logID)
 	//推送nats
-	CoreNats.PushDataNoErr("/blog/exam/log", "new", logID, "", logData)
+	CoreNats.PushDataNoErr("blog_exam_log", "/blog/exam/log", "new", logID, "", logData)
 	//反馈成功
 	return
 }

@@ -352,7 +352,7 @@ func UpdateStatusClient(args *ArgsUpdateStatusClient) (data FieldsPayType, resul
 	//如果是储蓄转移，则触发储蓄变更请求
 	//TODO: 如果失败该如何处理本支付请求？
 	if data.PaymentChannel.System == "deposit" && data.TakeChannel.System == "deposit" {
-		CoreNats.PushDataNoErr("/finance/pay/client_deposit", "", data.ID, "", nil)
+		CoreNats.PushDataNoErr("finance_pay_client_deposit", "/finance/pay/client_deposit", "", data.ID, "", nil)
 	}
 	//反馈
 	return

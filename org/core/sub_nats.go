@@ -1,6 +1,8 @@
 package OrgCoreCore
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	"github.com/nats-io/nats.go"
 	"github.com/tidwall/gjson"
@@ -8,7 +10,30 @@ import (
 
 func subNats() {
 	//用户绑定了手机号
-	CoreNats.SubDataByteNoErr("/user/core/new_phone", subNatsUserNewPhone)
+	CoreNats.SubDataByteNoErr("user_core_new_phone", "/user/core/new_phone", subNatsUserNewPhone)
+	//注册服务
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "创建新的组织",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "org_core_org",
+		EventType:    "nats",
+		EventURL:     "/org/core/org",
+		//TODO:待补充
+		EventParams: "",
+	})
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "组织成员变更",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "org_core_bind",
+		EventType:    "nats",
+		EventURL:     "/org/core/bind",
+		//TODO:待补充
+		EventParams: "",
+	})
 }
 
 // 用户绑定了手机号

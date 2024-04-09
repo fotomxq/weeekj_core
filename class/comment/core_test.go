@@ -18,7 +18,8 @@ func TestInit(t *testing.T) {
 }
 
 func TestComment_Init(t *testing.T) {
-	comment.Init("test_comment", "test_comment")
+	//comment.Init("test_comment", "test_comment")
+	comment.TableName = "test_comment"
 }
 
 func TestComment_Create(t *testing.T) {

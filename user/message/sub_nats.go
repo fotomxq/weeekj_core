@@ -1,6 +1,8 @@
 package UserMessage
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	UserCoreMod "github.com/fotomxq/weeekj_core/v5/user/core/mod"
@@ -9,11 +11,33 @@ import (
 
 func subNats() {
 	//通知发送消息
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsWaitSend)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsWaitSend)
 	//请求审核消息
-	CoreNats.SubDataByteNoErr("/user/message/audit", subNatsAudit)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "用户消息审核通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "user_message_audit",
+		EventType:    "nats",
+		EventURL:     "/user/message/audit",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("user_message_audit", "/user/message/audit", subNatsAudit)
 	//创建消息
-	CoreNats.SubDataByteNoErr("/user/message/create", subNatsCreate)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "用户消息创建通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "user_message_create",
+		EventType:    "nats",
+		EventURL:     "/user/message/create",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("user_message_create", "/user/message/create", subNatsCreate)
 }
 
 // 通知发送消息

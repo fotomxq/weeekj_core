@@ -1,6 +1,8 @@
 package FinanceReturnedMoney
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	"github.com/nats-io/nats.go"
@@ -9,7 +11,18 @@ import (
 
 func subNats() {
 	//新增回款记录
-	CoreNats.SubDataByteNoErr("/finance/return_money/log", subNatsNewLog)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "财务回款日志",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "finance_return_money_log",
+		EventType:    "nats",
+		EventURL:     "/finance/return_money/log",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("finance_return_money_log", "/finance/return_money/log", subNatsNewLog)
 }
 
 // 新增回款日志

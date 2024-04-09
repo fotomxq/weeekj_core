@@ -361,7 +361,7 @@ func UpdateTransportBind(args *ArgsUpdateTransportBind) (err error) {
 
 // 通知变更配送状态
 func pushNatsStatusUpdate(action string, id int64, des string) {
-	CoreNats.PushDataNoErr("/tms/transport/update", action, id, "", map[string]interface{}{
+	CoreNats.PushDataNoErr("tms_transport_update", "/tms/transport/update", action, id, "", map[string]interface{}{
 		"des": des,
 	})
 }

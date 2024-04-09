@@ -83,7 +83,7 @@ func AppendLog(args *ArgsAppendLog) (errCode string, err error) {
 		return
 	}
 	//触发消息列队，加入回款汇总表
-	CoreNats.PushDataNoErr("/finance/return_money/log", "new", newLogID, "", map[string]interface{}{
+	CoreNats.PushDataNoErr("finance_return_money_log", "/finance/return_money/log", "new", newLogID, "", map[string]interface{}{
 		"orgID":     companyData.OrgID,
 		"companyID": companyData.ID,
 		"isReturn":  args.IsReturn,

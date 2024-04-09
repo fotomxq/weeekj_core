@@ -76,7 +76,7 @@ func CreateAndFinal(orgID int64, userID int64, args *ArgsCreateUser) {
 	//处理邀请人机制
 	if args.ReferrerPhone != "" {
 		//TODO: 该设计可以撤销，后续将根据订阅/user/core/create_user来获取数据，内部的infos包含了邀请人信息
-		CoreNats.PushDataNoErr("/user/login2/new", "new", userID, "", map[string]interface{}{
+		CoreNats.PushDataNoErr("user_login2_new", "/user/login2/new", "new", userID, "", map[string]interface{}{
 			"orgID":              orgID,
 			"referrerNationCode": args.ReferrerNationCode,
 			"referrerPhone":      args.ReferrerPhone,

@@ -49,5 +49,5 @@ type ArgsAppendLog struct {
 
 // AppendLog 添加新的日志
 func AppendLog(args ArgsAppendLog) {
-	CoreNats.PushDataNoErr("/market2_log/create", "", 0, "", args)
+	CoreNats.PushDataNoErr("market2_log_create", "/market2_log/create", "", 0, "", args)
 }

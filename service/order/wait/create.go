@@ -201,7 +201,7 @@ func CreateOrder(args *ArgsCreateOrder) (data ServiceOrderWaitFields.FieldsWait,
 		return
 	}
 	//推送创建订单请求
-	CoreNats.PushDataNoErr("/service/order/create_wait", "", data.ID, "", nil)
+	CoreNats.PushDataNoErr("service_order_create_wait", "/service/order/create_wait", "", data.ID, "", nil)
 	//创建过期请求
 	if err = BaseExpireTip.AppendTip(&BaseExpireTip.ArgsAppendTip{
 		OrgID:      data.OrgID,

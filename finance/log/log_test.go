@@ -5,7 +5,7 @@ import (
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQLFrom "github.com/fotomxq/weeekj_core/v5/core/sql/from"
 	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
-	CoreSQLTime "github.com/fotomxq/weeekj_core/v5/core/sql/time"
+	CoreSQLTime2 "github.com/fotomxq/weeekj_core/v5/core/sql/time2"
 	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	"testing"
 )
@@ -108,7 +108,7 @@ func TestGetList(t *testing.T) {
 		TakeChannel:    CoreSQLFrom.FieldsFrom{},
 		TakeFrom:       CoreSQLFrom.FieldsFrom{},
 		CreateInfo:     CoreSQLFrom.FieldsFrom{},
-		TimeBetween:    CoreSQLTime.FieldsCoreTime{},
+		TimeBetween:    CoreSQLTime2.FieldsCoreTime{},
 		IsHistory:      false,
 		Search:         "",
 	})
@@ -134,7 +134,7 @@ func TestGetList(t *testing.T) {
 		TakeChannel:    CoreSQLFrom.FieldsFrom{},
 		TakeFrom:       CoreSQLFrom.FieldsFrom{},
 		CreateInfo:     CoreSQLFrom.FieldsFrom{},
-		TimeBetween:    CoreSQLTime.FieldsCoreTime{},
+		TimeBetween:    CoreSQLTime2.FieldsCoreTime{},
 		IsHistory:      false,
 		Search:         "",
 	})
@@ -160,7 +160,7 @@ func TestGetList(t *testing.T) {
 		TakeChannel:    CoreSQLFrom.FieldsFrom{},
 		TakeFrom:       CoreSQLFrom.FieldsFrom{},
 		CreateInfo:     CoreSQLFrom.FieldsFrom{},
-		TimeBetween:    CoreSQLTime.FieldsCoreTime{},
+		TimeBetween:    CoreSQLTime2.FieldsCoreTime{},
 		IsHistory:      false,
 		Search:         "",
 	})

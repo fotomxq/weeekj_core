@@ -13,7 +13,7 @@ type ArgsSetSubAdd struct {
 // SetSubAdd 向后续约指定时间
 func SetSubAdd(args *ArgsSetSubAdd) (err error) {
 	//通知修改
-	CoreNats.PushDataNoErr("/org/sub/set_add", "", 0, "", args)
+	CoreNats.PushDataNoErr("org_sub_set_add", "/org/sub/set_add", "", 0, "", args)
 	//反馈
 	return
 }

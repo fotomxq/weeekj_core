@@ -11,7 +11,7 @@ import (
 // 满足条件后反馈数据，如果数据不足的，将用销量倒叙投放数据
 func GetRecommendDefaultList(orgID int64, userID int64, noHaveProductID int64, limit int) (dataList []MallCore.FieldsCore, err error) {
 	//如果需要补全数据，则推送请求计算推荐数据包
-	CoreNats.PushDataNoErr("/mall/recommend/user", "", userID, "", nil)
+	CoreNats.PushDataNoErr("mall_recommend_user", "/mall/recommend/user", "", userID, "", nil)
 	//获取销量倒叙排名商品，补全数据
 	appendByCountList, _, _ := MallCore.GetProductList(&MallCore.ArgsGetProductList{
 		Pages: CoreSQLPages.ArgsDataList{

@@ -144,7 +144,7 @@ func stopMission(id int64) (err error) {
 		return
 	}
 	deleteMissionCache(id)
-	CoreNats.PushDataNoErr("/base/system_mission/stop", "", id, "", nil)
+	CoreNats.PushDataNoErr("base_system_mission_stop", "/base/system_mission/stop", "", id, "", nil)
 	return
 }
 

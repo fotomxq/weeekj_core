@@ -14,7 +14,7 @@ import (
 
 func subNats() {
 	//新注册用户
-	CoreNats.SubDataByteNoErr("/user/core/create_user", subNatsNewUser)
+	CoreNats.SubDataByteNoErr("user_core_create_user", "/user/core/create_user", subNatsNewUser)
 }
 
 // 新注册用户

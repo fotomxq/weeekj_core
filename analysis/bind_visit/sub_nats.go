@@ -1,6 +1,8 @@
 package AnalysisBindVisit
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
@@ -10,7 +12,17 @@ import (
 )
 
 func subNats() {
-	CoreNats.SubDataByteNoErr("/analysis/org/bind", subNatsNewBind)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "组织绑定访问统计",
+		Description:  "统计组织绑定访问情况",
+		EventSubType: "sub",
+		Code:         "analysis_bind_visit",
+		EventType:    "nats",
+		EventURL:     "/analysis/org/bind",
+		EventParams:  "<<action>>:[new]:预设添加动作;<<data>>:json:{'userID':{'val_default':0,'val_type':'int64','val_enum':[],'val_desc':'用户ID','val_mod':'user_id_select'},'bindSystem':{'val_default':'','val_type':'string','val_enum':[],'val_desc':'绑定模块标识码','val_mod':''},'bindID':{'val_default':0,'val_type':'int64','val_enum':[],'val_desc':'绑定模块ID','val_mod':''}}",
+	})
+	CoreNats.SubDataByteNoErr("analysis_bind_visit", "/analysis/org/bind", subNatsNewBind)
 }
 
 func subNatsNewBind(_ *nats.Msg, action string, _ int64, _ string, data []byte) {

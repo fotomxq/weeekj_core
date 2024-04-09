@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
@@ -299,7 +300,18 @@ func (t *Comment) Create(args *ArgsCreate) (data FieldsComment, err error) {
 		return
 	}
 	//通知新的评论
-	CoreNats.PushDataNoErr("/class/comment", "new", data.ID, t.System, map[string]interface{}{
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "通用评论通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "class_comment",
+		EventType:    "nats",
+		EventURL:     "/class/comment",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.PushDataNoErr("class_comment", "/class/comment", "new", data.ID, t.System, map[string]interface{}{
 		"parentID":  args.ParentID,
 		"orgID":     args.OrgID,
 		"userID":    args.UserID,

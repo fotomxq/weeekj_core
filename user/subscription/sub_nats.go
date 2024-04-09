@@ -2,6 +2,8 @@ package UserSubscription
 
 import (
 	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	OrgUserMod "github.com/fotomxq/weeekj_core/v5/org/user/mod"
@@ -10,13 +12,46 @@ import (
 
 func subNats() {
 	//标记会员续费
-	CoreNats.SubDataByteNoErr("/user/sub/set_add", subNatsSubSetAdd)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "用户订阅设置增加",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "user_sub_set_add",
+		EventType:    "nats",
+		EventURL:     "/user/sub/set_add",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("user_sub_set_add", "/user/sub/set_add", subNatsSubSetAdd)
 	//设置订阅
-	CoreNats.SubDataByteNoErr("/user/sub/set", subNatsSubSet)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "用户订阅设置",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "user_sub_set",
+		EventType:    "nats",
+		EventURL:     "/user/sub/set",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("user_sub_set", "/user/sub/set", subNatsSubSet)
 	//使用订阅
-	CoreNats.SubDataByteNoErr("/user/sub/use", subNatsSubUse)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "用户订阅使用",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "user_sub_use",
+		EventType:    "nats",
+		EventURL:     "/user/sub/use",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("user_sub_use", "/user/sub/use", subNatsSubUse)
 	//通知过期数据包
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsExpireTip)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsExpireTip)
 }
 
 // 标记会员续费

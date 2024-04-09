@@ -67,7 +67,7 @@ func AppendLog(args *ArgsAppendLog) (logData FieldsLog, errCode string, err erro
 	}
 	logData = getLog(logID)
 	//推送nats
-	CoreNats.PushDataNoErr("/blog/stu_read/log", "new", logData.UserID, "", logData)
+	CoreNats.PushDataNoErr("blog_stu_read_log", "/blog/stu_read/log", "new", logData.UserID, "", logData)
 	//反馈
 	return
 }

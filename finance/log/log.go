@@ -208,6 +208,6 @@ func Create(args *ArgsLogCreate) (err error) {
 	if err != nil {
 		return
 	}
-	CoreNats.PushDataNoErr("/finance/log/file", "", 0, "", nil)
+	CoreNats.PushDataNoErr("finance_log_file", "/finance/log/file", "", 0, "", nil)
 	return
 }

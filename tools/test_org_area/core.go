@@ -1,29 +1,30 @@
 package TestOrgArea
 
 import (
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	"testing"
 
 	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
 	CoreSQLGPS "github.com/fotomxq/weeekj_core/v5/core/sql/gps"
 	MapArea "github.com/fotomxq/weeekj_core/v5/map/area"
-	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	ToolsTest "github.com/fotomxq/weeekj_core/v5/tools/test"
 	TestOrg "github.com/fotomxq/weeekj_core/v5/tools/test_org"
 )
 
 var (
 	isInit = false
-	//行政分区
+	//ParentAreaData 行政分区
 	ParentAreaData MapArea.FieldsArea
-	//业务分区
+	//AreaData 业务分区
 	AreaData MapArea.FieldsArea
 )
 
-// mark: 业务分区的标识码
+// Init mark: 业务分区的标识码
 func Init(t *testing.T) {
 	if !isInit {
 		ToolsTest.Init(t)
-		OrgCore.Init(true, true)
+		//OrgCore.Init(true, true)
+		OrgCore.Init()
 	}
 	isInit = true
 	TestOrg.LocalCreateOrg(t)

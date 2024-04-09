@@ -1,6 +1,8 @@
 package ServiceCompany
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
@@ -11,7 +13,19 @@ import (
 
 func subNats() {
 	//用户绑定了手机号
-	CoreNats.SubDataByteNoErr("/user/core/new_phone", subNatsUserNewPhone)
+	CoreNats.SubDataByteNoErr("user_core_new_phone", "/user/core/new_phone", subNatsUserNewPhone)
+	//注册服务
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务公司变动通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_company",
+		EventType:    "nats",
+		EventURL:     "/service/company",
+		//TODO:待补充
+		EventParams: "",
+	})
 }
 
 // 用户绑定了手机号

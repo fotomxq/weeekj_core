@@ -33,7 +33,8 @@ var (
 		Mark:     "erp.run.permanent_assets",
 		NextTime: "每天05:00",
 		Bind: BaseSystemMission.MissionBind{
-			NatsMsg: "/erp/permanent_assets/run_auto_expire",
+			NatsCode: "erp_run_permanent_assets_run_auto_expire",
+			NatsMsg:  "/erp/permanent_assets/run_auto_expire",
 		},
 	}
 	//OpenSub 订阅

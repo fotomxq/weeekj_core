@@ -1,6 +1,7 @@
 package ServiceUserInfo
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
@@ -11,11 +12,56 @@ import (
 
 func subNats() {
 	//请求删除档案
-	CoreNats.SubDataByteNoErr("/service/user_info/post_update", subNatsDeleteInfo)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务用户信息档案提交",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_user_info_post_update",
+		EventType:    "nats",
+		EventURL:     "/service/user_info/post_update",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_user_info_post_update", "/service/user_info/post_update", subNatsDeleteInfo)
 	//请求统计数据
-	CoreNats.SubDataByteNoErr("/service/user_info/analysis", subNatsAnalysis)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务用户信息统计",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_user_info_analysis",
+		EventType:    "nats",
+		EventURL:     "/service/user_info/analysis",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_user_info_analysis", "/service/user_info/analysis", subNatsAnalysis)
 	//添加日志
-	CoreNats.SubDataByteNoErr("/service/user_info/append_log", subNatsAppendLog)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务用户信息统计",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_user_info_append_log",
+		EventType:    "nats",
+		EventURL:     "/service/user_info/append_log",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_user_info_append_log", "/service/user_info/append_log", subNatsAppendLog)
+	//注册服务
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务用户状态变更",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_user_info_status",
+		EventType:    "nats",
+		EventURL:     "/service/user_info/status",
+		//TODO:待补充
+		EventParams: "",
+	})
 }
 
 // 请求删除档案
@@ -92,10 +138,10 @@ func subNatsAppendLog(_ *nats.Msg, _ string, _ int64, _ string, data []byte) {
 
 // 推送请求统计数据
 func pushNatsAnalysis(orgID int64) {
-	CoreNats.PushDataNoErr("/service/user_info/analysis", "", orgID, "", nil)
+	CoreNats.PushDataNoErr("service_user_info_analysis", "/service/user_info/analysis", "", orgID, "", nil)
 }
 
 // 推送档案状态变更
 func pushNatsInfoStatus(action string, id int64) {
-	CoreNats.PushDataNoErr("/service/user_info/status", action, id, "", nil)
+	CoreNats.PushDataNoErr("service_user_info_status", "/service/user_info/status", action, id, "", nil)
 }

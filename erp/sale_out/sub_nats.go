@@ -12,11 +12,11 @@ import (
 
 func subNats() {
 	//订单完成
-	CoreNats.SubDataByteNoErr("/service/order/status", subNatsOrderFinish)
+	CoreNats.SubDataByteNoErr("service_order_status", "/service/order/status", subNatsOrderFinish)
 	//订单退货
-	CoreNats.SubDataByteNoErr("/service/order/update", subNatsOrderRefund)
+	CoreNats.SubDataByteNoErr("service_order_update", "/service/order/update", subNatsOrderRefund)
 	//创建虚拟订单
-	CoreNats.SubDataByteNoErr("/service/order/create_wait_virtual_finish", subNatsCreateWaitVirtualFinish)
+	CoreNats.SubDataByteNoErr("service_order_create_wait_virtual_finish", "/service/order/create_wait_virtual_finish", subNatsCreateWaitVirtualFinish)
 }
 
 // 订单完成

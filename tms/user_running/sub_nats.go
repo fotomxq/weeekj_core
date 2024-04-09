@@ -2,6 +2,8 @@ package TMSUserRunning
 
 import (
 	"fmt"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	ServiceOrderMod "github.com/fotomxq/weeekj_core/v5/service/order/mod"
@@ -10,13 +12,36 @@ import (
 
 func subNats() {
 	//缴费成功
-	CoreNats.SubDataByteNoErr("/finance/pay/finish", subNatsPayFinish)
+	CoreNats.SubDataByteNoErr("finance_pay_finish", "/finance/pay/finish", subNatsPayFinish)
 	//订单完成支付
-	CoreNats.SubDataByteNoErr("/service/order/pay", subNatsOrderPay)
+	CoreNats.SubDataByteNoErr("service_order_pay", "/service/order/pay", subNatsOrderPay)
 	//缴费失败
-	CoreNats.SubDataByteNoErr("/finance/pay/failed", subNatsPayFailed)
+	CoreNats.SubDataByteNoErr("finance_pay_failed", "/finance/pay/failed", subNatsPayFailed)
 	//创建跑腿但
-	CoreNats.SubDataByteNoErr("/tms/user_running/new", subNatsMissionNew)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "跑腿服务新增",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "tms_user_running_new",
+		EventType:    "nats",
+		EventURL:     "/tms/user_running/new",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("tms_user_running_new", "/tms/user_running/new", subNatsMissionNew)
+	//注册服务
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "跑腿服务更新",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "tms_user_running_update",
+		EventType:    "nats",
+		EventURL:     "/tms/user_running/update",
+		//TODO:待补充
+		EventParams: "",
+	})
 }
 
 // 通知已经缴费

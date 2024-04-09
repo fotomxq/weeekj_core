@@ -116,7 +116,7 @@ func SetBind(args *ArgsSetBind) (data FieldsBind, err error) {
 		//清理缓冲
 		deleteBindCache(data.ID)
 		//推送NATS
-		CoreNats.PushDataNoErr("/org/core/bind", "update", data.ID, "", nil)
+		CoreNats.PushDataNoErr("org_core_bind", "/org/core/bind", "update", data.ID, "", nil)
 	} else {
 		err = CoreSQL.CreateOneAndData(Router2SystemConfig.MainDB.DB, "org_core_bind", "INSERT INTO org_core_bind (user_id, avatar, name, org_id, group_ids, role_config_ids, manager, nation_code, phone, email, sync_system, sync_id, sync_hash, params) VALUES (:user_id, :avatar, :name, :org_id, :group_ids, :role_config_ids, :manager, :nation_code, :phone, :email, :sync_system, :sync_id, :sync_hash, :params)", map[string]interface{}{
 			"user_id":         args.UserID,
@@ -139,7 +139,7 @@ func SetBind(args *ArgsSetBind) (data FieldsBind, err error) {
 			return
 		}
 		//推送NATS
-		CoreNats.PushDataNoErr("/org/core/bind", "create", data.ID, "", nil)
+		CoreNats.PushDataNoErr("org_core_bind", "/org/core/bind", "create", data.ID, "", nil)
 	}
 	//更新扩展数据表内容
 	if args.NationCode != "" && args.Phone != "" {
@@ -194,7 +194,7 @@ func SetBindParams(args *ArgsSetBindParams) (err error) {
 		return
 	}
 	//推送NATS
-	CoreNats.PushDataNoErr("/org/core/bind", "update", data.ID, "", nil)
+	CoreNats.PushDataNoErr("org_core_bind", "/org/core/bind", "update", data.ID, "", nil)
 	//清理缓冲
 	deleteBindCache(data.ID)
 	//反馈
@@ -232,7 +232,7 @@ func deleteAllBindRoleConfigID(roleConfigID int64) {
 		//清理缓冲
 		deleteBindCache(vBind.ID)
 		//推送NATS
-		CoreNats.PushDataNoErr("/org/core/bind", "update", vBind.ID, "", nil)
+		CoreNats.PushDataNoErr("org_core_bind", "/org/core/bind", "update", vBind.ID, "", nil)
 	}
 }
 

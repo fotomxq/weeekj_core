@@ -20,6 +20,8 @@ import (
 	BaseUnit "github.com/fotomxq/weeekj_core/v5/base/unit"
 	BaseVcode "github.com/fotomxq/weeekj_core/v5/base/vcode"
 	BlogCore "github.com/fotomxq/weeekj_core/v5/blog/core"
+	BlogExam "github.com/fotomxq/weeekj_core/v5/blog/exam"
+	BlogStuRead "github.com/fotomxq/weeekj_core/v5/blog/stu_read"
 	BlogUserRead "github.com/fotomxq/weeekj_core/v5/blog/user_read"
 	ERPAudit "github.com/fotomxq/weeekj_core/v5/erp/audit"
 	ERPDocument "github.com/fotomxq/weeekj_core/v5/erp/document"
@@ -69,6 +71,7 @@ import (
 	UserChat "github.com/fotomxq/weeekj_core/v5/user/chat"
 	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 	UserLogin "github.com/fotomxq/weeekj_core/v5/user/login"
+	UserLogin2 "github.com/fotomxq/weeekj_core/v5/user/login2"
 	UserMessage "github.com/fotomxq/weeekj_core/v5/user/message"
 	UserRecord2 "github.com/fotomxq/weeekj_core/v5/user/record2"
 	UserSubscription "github.com/fotomxq/weeekj_core/v5/user/subscription"
@@ -120,6 +123,7 @@ func Init() (err error) {
 	BaseBPM.OpenSub = OpenSub
 	BaseBPM.Init()
 	//服务
+	BaseService.OpenSub = OpenSub
 	BaseService.Init()
 
 	///////////////////////////////////////////////////////////////////////////////////
@@ -174,6 +178,9 @@ func Init() (err error) {
 	//用户记录
 	UserRecord2.OpenSub = OpenSub
 	UserRecord2.Init()
+	//用户登录
+	UserLogin2.OpenSub = OpenSub
+	UserLogin2.Init()
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//行政
@@ -330,6 +337,12 @@ func Init() (err error) {
 	//博客文章
 	BlogCore.OpenSub = OpenSub
 	BlogCore.Init()
+	//博客考试
+	BlogExam.OpenSub = OpenSub
+	BlogExam.Init()
+	//博客学习
+	BlogStuRead.OpenSub = OpenSub
+	BlogStuRead.Init()
 	//博客文章阅读记录
 	BlogUserRead.OpenSub = OpenSub
 	BlogUserRead.Init()

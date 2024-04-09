@@ -26,7 +26,7 @@ func DeleteContent(args *ArgsDeleteContent) (err error) {
 		return
 	}
 	deleteContentCacheByID(args.ID)
-	CoreNats.PushDataNoErr("/blog/core/delete", "", args.ID, "", nil)
+	CoreNats.PushDataNoErr("blog_core_delete", "/blog/core/delete", "", args.ID, "", nil)
 	return
 }
 

@@ -17,7 +17,8 @@ func TestInit(t *testing.T) {
 }
 
 func TestTag_Init(t *testing.T) {
-	tag.Init("test_tag")
+	//tag.Init("test_tag")
+	tag.TagTableName = "test_tag"
 }
 
 func TestTag_Create(t *testing.T) {

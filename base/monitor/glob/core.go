@@ -22,7 +22,8 @@ var (
 		Mark:     "base.monitor.glob",
 		NextTime: fmt.Sprint(runSec, "s"),
 		Bind: BaseSystemMission.MissionBind{
-			NatsMsg: "/base/monitor/glob",
+			NatsCode: "base_monitor_glob",
+			NatsMsg:  "/base/monitor/glob",
 		},
 	}
 	//redis

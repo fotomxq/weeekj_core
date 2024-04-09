@@ -14,7 +14,8 @@ var (
 
 func TestInitConfig(t *testing.T) {
 	TestInit(t)
-	OrgCoreCore.Init(true, true)
+	//OrgCoreCore.Init(true, true)
+	OrgCoreCore.Init()
 }
 
 func TestSetConfig(t *testing.T) {

@@ -18,7 +18,7 @@ type ArgsUseSub struct {
 // UseSub 使用目标订阅
 func UseSub(args ArgsUseSub) (err error) {
 	//通知nats
-	CoreNats.PushDataNoErr("/user/sub/use", "", 0, "", args)
+	CoreNats.PushDataNoErr("user_sub_use", "/user/sub/use", "", 0, "", args)
 	//反馈
 	return
 }

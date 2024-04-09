@@ -150,7 +150,7 @@ func UpdateFinish(args *ArgsUpdateFinish) (err error) {
 		err = nil
 	}
 	//推送nats
-	CoreNats.PushDataNoErr("/service/order/update", "finish", orderData.ID, "", nil)
+	CoreNats.PushDataNoErr("service_order_update", "/service/order/update", "finish", orderData.ID, "", nil)
 	//更新组织用户数据
 	if orderData.OrgID > 0 && orderData.UserID > 0 {
 		OrgUserMod.PushUpdateUserData(orderData.OrgID, orderData.UserID)

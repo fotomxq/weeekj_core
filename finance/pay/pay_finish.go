@@ -166,7 +166,7 @@ func UpdateStatusFinish(args *ArgsUpdateStatusFinish) (errCode string, err error
 		err = nil
 	}
 	//推送nats
-	CoreNats.PushDataNoErr("/finance/pay/finish", "finish", data.ID, "", data)
+	CoreNats.PushDataNoErr("finance_pay_finish", "/finance/pay/finish", "finish", data.ID, "", data)
 	//反馈
 	return
 }

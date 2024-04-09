@@ -1,6 +1,7 @@
 package BaseService
 
 import (
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
@@ -17,6 +18,8 @@ var (
 	//数据表
 	serviceDB  CoreSQL2.Client
 	analysisDB CoreSQL2.Client
+	//OpenSub 订阅服务
+	OpenSub = false
 )
 
 // Init 初始化
@@ -24,4 +27,17 @@ func Init() {
 	//初始化数据表
 	serviceDB.Init(&Router2SystemConfig.MainSQL, "base_service")
 	analysisDB.Init(&Router2SystemConfig.MainSQL, "base_service_analysis")
+	if OpenSub {
+		_ = SetService(&ArgsSetService{
+			ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+			Name:         "基础服务管理",
+			Description:  "对服务进行统计",
+			EventSubType: "all",
+			Code:         "base_service_request",
+			EventType:    "nats",
+			EventURL:     "/base/service/request",
+			EventParams:  "<<action>>:string:基础服务code::;::<<mark>>:string:订阅服务类型(sub/push)",
+		})
+		subNats()
+	}
 }

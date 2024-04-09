@@ -254,7 +254,7 @@ func create(args *argsCreate) (data FieldsOrder, errCode, errMsg string, err err
 		}
 	}
 	//发出列队请求
-	CoreNats.PushDataNoErr("/service/order/create", data.SystemMark, data.ID, goodType, data)
+	CoreNats.PushDataNoErr("service_order_create", "/service/order/create", data.SystemMark, data.ID, goodType, data)
 	//发送过期提醒模块
 	if err = BaseExpireTip.AppendTip(&BaseExpireTip.ArgsAppendTip{
 		OrgID:      data.OrgID,
@@ -385,7 +385,7 @@ func createByWait(waitData *ServiceOrderWaitFields.FieldsWait) error {
 	//重新装在缓冲
 	_, _ = getCreateWait(waitData.ID)
 	//通知等待订单创建完成
-	CoreNats.PushDataNoErr("/service/order/create_wait_finish", "", waitData.ID, "", map[string]interface{}{
+	CoreNats.PushDataNoErr("service_order_create_wait_finish", "/service/order/create_wait_finish", "", waitData.ID, "", map[string]interface{}{
 		"orderID": newOrderData.ID,
 	})
 	//统计

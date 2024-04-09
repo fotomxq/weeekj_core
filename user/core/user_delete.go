@@ -22,6 +22,6 @@ func DeleteUserByID(args *ArgsDeleteUserByID) (err error) {
 		return
 	}
 	deleteUserCache(args.ID)
-	CoreNats.PushDataNoErr("/user/core/delete", "", args.ID, "", nil)
+	CoreNats.PushDataNoErr("user_core_delete", "/user/core/delete", "", args.ID, "", nil)
 	return
 }

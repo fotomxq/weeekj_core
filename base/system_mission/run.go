@@ -30,7 +30,7 @@ func ReginWait(mission *Mission, nextAt time.Time) {
 
 // ReginSub 快速订阅
 func ReginSub(mission *Mission, handle func()) {
-	CoreNats.SubDataByteNoErr(mission.Bind.NatsMsg, func(_ *nats.Msg, _ string, _ int64, _ string, _ []byte) {
+	CoreNats.SubDataByteNoErr(mission.Bind.NatsCode, mission.Bind.NatsMsg, func(_ *nats.Msg, _ string, _ int64, _ string, _ []byte) {
 		handle()
 	})
 }

@@ -437,7 +437,7 @@ func pushOrderAuditAndPay(id int64) {
 	if data.ID < 1 || data.Status < 2 || !data.PricePay {
 		return
 	}
-	CoreNats.PushDataNoErr("/service/order/next", "", id, "", nil)
+	CoreNats.PushDataNoErr("service_order_next", "/service/order/next", "", id, "", nil)
 }
 
 // 记录新的日志

@@ -43,5 +43,5 @@ type ArgsCreateLog struct {
 
 // CreateLog 创建新的请求
 func CreateLog(args ArgsCreateLog) {
-	CoreNats.PushDataNoErr("/service/housekeeping/create", "create", 0, "", args)
+	CoreNats.PushDataNoErr("service_housekeeping_create", "/service/housekeeping/create", "create", 0, "", args)
 }

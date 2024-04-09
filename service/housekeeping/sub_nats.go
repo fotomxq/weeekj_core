@@ -2,6 +2,8 @@ package ServiceHousekeeping
 
 import (
 	"fmt"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	ServiceOrderMod "github.com/fotomxq/weeekj_core/v5/service/order/mod"
@@ -19,13 +21,47 @@ var (
 // 消息列队
 func subNats() {
 	//取消订单
-	CoreNats.SubDataByteNoErr("/service/housekeeping/cancel", subNatsCancelLog)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务家政取消请求",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_housekeeping_cancel",
+		EventType:    "nats",
+		EventURL:     "/service/housekeeping/cancel",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_housekeeping_cancel", "/service/housekeeping/cancel", subNatsCancelLog)
 	//创建服务单
-	CoreNats.SubDataByteNoErr("/service/housekeeping/create", subNatsCreateLog)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务家政创建请求",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_housekeeping_create",
+		EventType:    "nats",
+		EventURL:     "/service/housekeeping/create",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_housekeeping_create", "/service/housekeeping/create", subNatsCreateLog)
 	//订单完成支付
-	CoreNats.SubDataByteNoErr("/service/order/pay", subNatsOrderPay)
+	CoreNats.SubDataByteNoErr("service_order_pay", "/service/order/pay", subNatsOrderPay)
 	//缴费成功
-	CoreNats.SubDataByteNoErr("/finance/pay/finish", subNatsPayFinish)
+	CoreNats.SubDataByteNoErr("finance_pay_finish", "/finance/pay/finish", subNatsPayFinish)
+	//注册服务
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务家政更新",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_housekeeping_update",
+		EventType:    "nats",
+		EventURL:     "/service/housekeeping/update",
+		//TODO:待补充
+		EventParams: "",
+	})
 }
 
 // 取消订单

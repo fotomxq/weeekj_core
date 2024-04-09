@@ -68,8 +68,8 @@ func getServiceByCode(code string) (data FieldsService) {
 
 }
 
-// argsSetService 设置Service参数
-type argsSetService struct {
+// ArgsSetService 设置Service参数
+type ArgsSetService struct {
 	//过期时间
 	ExpireAt time.Time `db:"expire_at" json:"expireAt"`
 	//名称
@@ -89,11 +89,24 @@ type argsSetService struct {
 	EventURL string `db:"event_url" json:"eventURL" check:"des" min:"1" max:"600"`
 	//事件固定参数
 	// nats - 事件附带的固定参数，如果为空则根据流程阶段事件触发填入
+	// <<action>>:[new]:预设添加动作 - 固定的参数结构体，0代表参数名称；1代表参数类型和可使用值；2代表参数描述
+	// 固定参数支持：<<action>>/<<id>>/<<mark>>/<<data>>
+	// 固定参数的值类型支持string/int64/float64/bool/[]，其中[]代表枚举值，用/分割
+	// data 较为特殊，默认为json结构体，也可以直接给与上述固定类型，将采用{}包裹，解析后与json完全一致
+	// data整体支持： json/[]/string/int64/float64/bool
+	// data描述结构1：<<data>>:值类型(非json):描述
+	// data描述结构2：<<data>>:值类型(json):{}采用json描述默认值结构体:{"a": {"val_default": "默认值", "val_enum": [枚举值], "val_type": "值类型", "val_desc: "描述", "val_mod": "指向模块标识码，可以用于前端解析，如用户ID指向到用户选择组件"}}采用json描述
+	// data的json内容可能采用单引号描述，如技术存在限制的端，请自行替换为双引号后解析
+	// 如果固定参数没有指定，代表该参数不存在
+	// 固定参数采用::;::分割
+	// eg1: <<action>>:string:基础服务code::;::<<mark>>:string:订阅服务类型(sub/push)
+	// eg2: <<action>>:string:基础服务code::;::<<mark>>:string:订阅服务类型(sub/push)::;::<<data>>:json:{"a": {"val_default": "new", "val_enum": ["new", "del"], "val_type": "[]", "val_desc: "描述"}, "c": {"val_default": 0", "val_enum": [], "val_type": "int", "val_desc: "描述"}}
+	// eg3: <<action>>:string:基础服务code::;::<<mark>>:string:订阅服务类型(sub/push)::;::<<data>>:string:字符串用于XXX目标
 	EventParams string `db:"event_params" json:"eventParams" check:"des" min:"1" max:"1000" empty:"true"`
 }
 
-// setService 设置Service
-func setService(args *argsSetService) (err error) {
+// SetService 设置Service
+func SetService(args *ArgsSetService) (err error) {
 	//检查订阅方式
 	switch args.EventSubType {
 	case "server":
@@ -146,6 +159,21 @@ func setService(args *argsSetService) (err error) {
 			return
 		}
 	}
+	return
+}
+
+// updateServiceExpire 更新过期时间
+func updateServiceExpire(serviceID int64) (err error) {
+	//更新数据
+	err = serviceDB.Update().SetFields([]string{"expire_at"}).NeedUpdateTime().AddWhereID(serviceID).NamedExec(map[string]any{
+		"expire_at": CoreFilter.GetNowTimeCarbon().AddDay().Time,
+	})
+	if err != nil {
+		return
+	}
+	//删除缓冲
+	deleteServiceCache(serviceID)
+	//反馈
 	return
 }
 

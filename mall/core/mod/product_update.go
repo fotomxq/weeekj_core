@@ -29,5 +29,5 @@ type ArgsUpdateProduct struct {
 
 // UpdateProduct 修改商品
 func UpdateProduct(args ArgsUpdateProduct) {
-	CoreNats.PushDataNoErr("/mall/core/product_update", "", 0, "", args)
+	CoreNats.PushDataNoErr("mall_core_product_update", "/mall/core/product_update", "", 0, "", args)
 }

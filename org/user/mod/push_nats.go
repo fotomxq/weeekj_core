@@ -7,5 +7,5 @@ import (
 
 // PushUpdateUserData 请求更新用户的聚合数据
 func PushUpdateUserData(orgID int64, userID int64) {
-	CoreNats.PushDataNoErr("/org/user/post_update", "", userID, fmt.Sprint(orgID), nil)
+	CoreNats.PushDataNoErr("org_user_post_update", "/org/user/post_update", "", userID, fmt.Sprint(orgID), nil)
 }

@@ -1,6 +1,8 @@
 package OrgSubscription
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
@@ -9,9 +11,20 @@ import (
 
 func subNats() {
 	//标记会员续费
-	CoreNats.SubDataByteNoErr("/org/sub/set_add", subNatsSubSetAdd)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "组织订阅续费",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "org_sub_set_add",
+		EventType:    "nats",
+		EventURL:     "/org/sub/set_add",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("org_sub_set_add", "/org/sub/set_add", subNatsSubSetAdd)
 	//通知过期数据包
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsExpireTip)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsExpireTip)
 }
 
 // 标记会员续费

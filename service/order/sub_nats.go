@@ -2,6 +2,8 @@ package ServiceOrder
 
 import (
 	"fmt"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
@@ -14,37 +16,181 @@ import (
 
 func subNats() {
 	//创建实际订单
-	CoreNats.SubDataByteNoErr("/service/order/create_wait", subNatsCreateWait)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单等待创建",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_create_wait",
+		EventType:    "nats",
+		EventURL:     "/service/order/create_wait",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_order_create_wait", "/service/order/create_wait", subNatsCreateWait)
 	//创建虚拟订单
-	CoreNats.SubDataByteNoErr("/service/order/create_wait_virtual", subNatsCreateWaitVirtual)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单创建等待虚拟支付订单",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_create_wait_virtual",
+		EventType:    "nats",
+		EventURL:     "/service/order/create_wait_virtual",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_order_create_wait_virtual", "/service/order/create_wait_virtual", subNatsCreateWaitVirtual)
 	//更新配送单ID
-	CoreNats.SubDataByteNoErr("/service/order/tms", subNatsUpdateTransport)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单配送单更新",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_tms",
+		EventType:    "nats",
+		EventURL:     "/service/order/tms",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_order_tms", "/service/order/tms", subNatsUpdateTransport)
 	//请求变更订单状态
-	CoreNats.SubDataByteNoErr("/service/order/status", subNatsUpdateStatus)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单状态变更",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_status",
+		EventType:    "nats",
+		EventURL:     "/service/order/status",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_order_status", "/service/order/status", subNatsUpdateStatus)
 	//缴费成功
-	CoreNats.SubDataByteNoErr("/finance/pay/finish", subNatsPayFinish)
+	CoreNats.SubDataByteNoErr("finance_pay_finish", "/finance/pay/finish", subNatsPayFinish)
 	//缴费失败
-	CoreNats.SubDataByteNoErr("/finance/pay/failed", subNatsPayFailed)
+	CoreNats.SubDataByteNoErr("finance_pay_failed", "/finance/pay/failed", subNatsPayFailed)
 	//请求修改订单价格
-	CoreNats.SubDataByteNoErr("/service/order/pay_price", subNatsPayPrice)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单支付价格变更",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_pay_price",
+		EventType:    "nats",
+		EventURL:     "/service/order/pay_price",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_order_pay_price", "/service/order/pay_price", subNatsPayPrice)
 	//请求修改订单支付ID
-	CoreNats.SubDataByteNoErr("/service/order/pay_id", subNatsPayID)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单支付ID生成",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_pay_id",
+		EventType:    "nats",
+		EventURL:     "/service/order/pay_id",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_order_pay_id", "/service/order/pay_id", subNatsPayID)
 	//配送单状态变更
-	CoreNats.SubDataByteNoErr("/tms/transport/update", subNatsTransportUpdate)
+	CoreNats.SubDataByteNoErr("tms_transport_update", "/tms/transport/update", subNatsTransportUpdate)
 	//服务单状态变更
-	CoreNats.SubDataByteNoErr("/service/housekeeping/update", subNatsHousekeepingUpdate)
+	CoreNats.SubDataByteNoErr("service_housekeeping_update", "/service/housekeeping/update", subNatsHousekeepingUpdate)
 	//跑腿单状态变更
-	CoreNats.SubDataByteNoErr("/tms/user_running/update", subNatsUserRunningUpdate)
+	CoreNats.SubDataByteNoErr("tms_user_running_update", "/tms/user_running/update", subNatsUserRunningUpdate)
 	//订单过期处理
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsOrderExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsOrderExpire)
 	//订单退货过期处理
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsOrderRefundExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsOrderRefundExpire)
 	//请求记录新的日志
-	CoreNats.SubDataByteNoErr("/service/order/log", subNatsOrderLog)
+	CoreNats.SubDataByteNoErr("service_order_log", "/service/order/log", subNatsOrderLog)
 	//请求更新订单的扩展参数
-	CoreNats.SubDataByteNoErr("/service/order/params", subNatsOrderParams)
+	CoreNats.SubDataByteNoErr("service_order_params", "/service/order/params", subNatsOrderParams)
 	//核算订单的收尾数据整合
-	CoreNats.SubDataByteNoErr("/service/order/update", subNatsOrderUpdate)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单更新",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_update",
+		EventType:    "nats",
+		EventURL:     "/service/order/update",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("service_order_update", "/service/order/update", subNatsOrderUpdate)
+	//服务注册
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单创建",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_create",
+		EventType:    "nats",
+		EventURL:     "/service/order/create",
+		//TODO:待补充
+		EventParams: "",
+	})
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单通知订单支付完成并审核通过",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_next",
+		EventType:    "nats",
+		EventURL:     "/service/order/next",
+		//TODO:待补充
+		EventParams: "",
+	})
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单等待创建完成",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_create_wait_finish",
+		EventType:    "nats",
+		EventURL:     "/service/order/create_wait_finish",
+		//TODO:待补充
+		EventParams: "",
+	})
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单虚拟支付完成",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_create_wait_virtual_finish",
+		EventType:    "nats",
+		EventURL:     "/service/order/create_wait_virtual_finish",
+		//TODO:待补充
+		EventParams: "",
+	})
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单日志",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_log",
+		EventType:    "nats",
+		EventURL:     "/service/order/log",
+		//TODO:待补充
+		EventParams: "",
+	})
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "服务订单更新扩展参数",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "service_order_params",
+		EventType:    "nats",
+		EventURL:     "/service/order/params",
+		//TODO:待补充
+		EventParams: "",
+	})
 }
 
 func subNatsCreateWait(_ *nats.Msg, _ string, id int64, _ string, _ []byte) {
@@ -180,7 +326,7 @@ func subNatsCreateWaitVirtual(_ *nats.Msg, _ string, waitOrderID int64, _ string
 			TransportStatus: 3,
 		})
 		//通知
-		CoreNats.PushDataNoErr("/service/order/create_wait_virtual_finish", "", orderData.ID, "", paramsRaw)
+		CoreNats.PushDataNoErr("service_order_create_wait_virtual_finish", "/service/order/create_wait_virtual_finish", "", orderData.ID, "", paramsRaw)
 		//反馈
 		break
 	}

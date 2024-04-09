@@ -1,6 +1,8 @@
 package OrgShareSpace
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	"github.com/nats-io/nats.go"
@@ -10,7 +12,18 @@ import (
 
 func subNats() {
 	//变更文件大小
-	CoreNats.SubDataByteNoErr("/org/share_space/file", subNatsFileUpdate)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "组织空间文件更新",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "org_share_space_file",
+		EventType:    "nats",
+		EventURL:     "/org/share_space/file",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("org_share_space_file", "/org/share_space/file", subNatsFileUpdate)
 }
 
 func subNatsFileUpdate(_ *nats.Msg, action string, fileID int64, system string, data []byte) {

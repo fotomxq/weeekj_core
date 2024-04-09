@@ -1,6 +1,8 @@
 package Market2Log
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	"github.com/nats-io/nats.go"
@@ -8,7 +10,18 @@ import (
 
 func subNats() {
 	//创建新的日志
-	CoreNats.SubDataByteNoErr("/market2_log/create", subNatsCreateLog)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "赠送服务日志创建",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "market2_log_create",
+		EventType:    "nats",
+		EventURL:     "/market2_log/create",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("market2_log_create", "/market2_log/create", subNatsCreateLog)
 }
 
 func subNatsCreateLog(_ *nats.Msg, _ string, _ int64, _ string, data []byte) {

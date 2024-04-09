@@ -21,7 +21,7 @@ type ArgsUpdateTransportID struct {
 
 // UpdateTransportID 修改配送ID
 func UpdateTransportID(args ArgsUpdateTransportID) {
-	CoreNats.PushDataNoErr("/service/order/tms", "new", args.ID, "", map[string]interface{}{
+	CoreNats.PushDataNoErr("service_order_tms", "/service/order/tms", "new", args.ID, "", map[string]interface{}{
 		"tmsID":   args.TransportID,
 		"sn":      args.SN,
 		"snDay":   args.SNDay,

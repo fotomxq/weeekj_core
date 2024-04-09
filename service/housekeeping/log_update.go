@@ -184,7 +184,7 @@ func UpdateLogFinish(args *ArgsUpdateLogFinish) (err error) {
 
 // 通知nats更新服务单
 func pushNatsUpdateStatus(action string, id int64, des string) {
-	CoreNats.PushDataNoErr("/service/housekeeping/update", action, id, "", map[string]interface{}{
+	CoreNats.PushDataNoErr("service_housekeeping_update", "/service/housekeeping/update", action, id, "", map[string]interface{}{
 		"des": des,
 	})
 }

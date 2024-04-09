@@ -2,7 +2,9 @@ package OrgTime
 
 import (
 	"fmt"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	BaseSystemMission "github.com/fotomxq/weeekj_core/v5/base/system_mission"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -11,6 +13,18 @@ import (
 func subNats() {
 	//任务调度，更新考勤情况
 	BaseSystemMission.ReginSub(&runUpdateSysM, subNatsRunUpdate)
+	//注册服务
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "组织考勤变更",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "org_time_update",
+		EventType:    "nats",
+		EventURL:     "/org/time/update",
+		//TODO:待补充
+		EventParams: "",
+	})
 }
 
 func subNatsRunUpdate() {

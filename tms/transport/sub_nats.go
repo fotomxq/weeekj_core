@@ -2,6 +2,7 @@ package TMSTransport
 
 import (
 	"fmt"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
@@ -16,17 +17,73 @@ import (
 
 func subNats() {
 	//请求取消配送单
-	CoreNats.SubDataByteNoErr("/tms/transport/cancel", subNatsCancelIDs)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "配送服务取消通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "tms_transport_cancel",
+		EventType:    "nats",
+		EventURL:     "/tms/transport/cancel",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("tms_transport_cancel", "/tms/transport/cancel", subNatsCancelIDs)
 	//创建配送单
-	CoreNats.SubDataByteNoErr("/tms/transport/create", subNatsCreate)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "配送服务创建通知",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "tms_transport_create",
+		EventType:    "nats",
+		EventURL:     "/tms/transport/create",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("tms_transport_create", "/tms/transport/create", subNatsCreate)
 	//缴费成功
-	CoreNats.SubDataByteNoErr("/finance/pay/finish", subNatsPayFinish)
+	CoreNats.SubDataByteNoErr("finance_pay_finish", "/finance/pay/finish", subNatsPayFinish)
 	//订单完成支付
-	CoreNats.SubDataByteNoErr("/service/order/pay", subNatsOrderPay)
+	CoreNats.SubDataByteNoErr("service_order_pay", "/service/order/pay", subNatsOrderPay)
 	//请求归档配送数据
-	CoreNats.SubDataByteNoErr("/tms/transport/file", subNatsFile)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "配送服务归档",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "tms_transport_file",
+		EventType:    "nats",
+		EventURL:     "/tms/transport/file",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("tms_transport_file", "/tms/transport/file", subNatsFile)
 	//请求统计配送员数据
-	CoreNats.SubDataByteNoErr("/tms/transport/analysis_bind", subNatsAnalysisBind)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "配送服务统计绑定",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "tms_transport_analysis_bind",
+		EventType:    "nats",
+		EventURL:     "/tms/transport/analysis_bind",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("tms_transport_analysis_bind", "/tms/transport/analysis_bind", subNatsAnalysisBind)
+	//注册服务
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "配送服务更新",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "tms_transport_update",
+		EventType:    "nats",
+		EventURL:     "/tms/transport/update",
+		//TODO:待补充
+		EventParams: "",
+	})
 }
 
 // subNatsCancelIDs 通知取消配送单

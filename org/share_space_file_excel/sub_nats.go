@@ -8,7 +8,7 @@ import (
 
 func subNats() {
 	//接收文件系统变更
-	CoreNats.SubDataByteNoErr("/org/share_space/file", subNatsFileUpdate)
+	CoreNats.SubDataByteNoErr("org_share_space_file", "/org/share_space/file", subNatsFileUpdate)
 }
 
 // 接收文件系统变更

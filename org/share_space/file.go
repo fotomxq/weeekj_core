@@ -297,7 +297,7 @@ func DeleteFile(args *ArgsDeleteFile) (err error) {
 	//删除缓冲
 	deleteFileCache(data.ID)
 	//发出通知
-	CoreNats.PushDataNoErr("/org/share_space/file", "delete", data.FileID, data.System, nil)
+	CoreNats.PushDataNoErr("org_share_space_file", "/org/share_space/file", "delete", data.FileID, data.System, nil)
 	//反馈
 	return
 }

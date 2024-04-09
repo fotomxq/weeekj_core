@@ -17,7 +17,8 @@ func TestInit(t *testing.T) {
 }
 
 func TestTag_Init(t *testing.T) {
-	sort.Init("test_sort")
+	//sort.Init("test_sort")
+	sort.SortTableName = "test_sort"
 }
 func TestTag_Create(t *testing.T) {
 	data, err := sort.Create(&ArgsCreate{

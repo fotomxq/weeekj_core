@@ -1,6 +1,7 @@
 package BaseSystemMission
 
 import (
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
@@ -14,8 +15,21 @@ func (t *MissionBind) IsStart() bool {
 
 // Start 开始执行
 func (t *MissionBind) Start() {
+	if !t.isRun {
+		_ = BaseService.SetService(&BaseService.ArgsSetService{
+			ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+			Name:         "基础服务任务管理器",
+			Description:  "服务启动，任务的code和url由其他模块指定",
+			EventSubType: "push",
+			Code:         t.NatsCode,
+			EventType:    "nats",
+			EventURL:     t.NatsMsg,
+			//TODO:待补充
+			EventParams: "",
+		})
+	}
 	t.isRun = true
-	CoreNats.PushDataNoErr(t.NatsMsg, "", 0, "", nil)
+	CoreNats.PushDataNoErr(t.NatsCode, t.NatsMsg, "", 0, "", nil)
 }
 
 // NeedStart 是否需要开始执行

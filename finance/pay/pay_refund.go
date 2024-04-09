@@ -265,7 +265,7 @@ func UpdateStatusRefundAudit(args *ArgsUpdateStatusRefundAudit) (errCode string,
 		err = nil
 	}
 	//通知退款第三方处理
-	CoreNats.PushDataNoErr("/finance/pay/refund_other", "", data.ID, "", nil)
+	CoreNats.PushDataNoErr("finance_pay_refund_other", "/finance/pay/refund_other", "", data.ID, "", nil)
 	//反馈
 	return
 }
@@ -451,7 +451,7 @@ func UpdateStatusRefundFinish(args *ArgsUpdateStatusRefundFinish) (errCode strin
 		err = nil
 	}
 	//推送nats
-	CoreNats.PushDataNoErr("/finance/pay/refund", "finish", data.ID, "", nil)
+	CoreNats.PushDataNoErr("finance_pay_refund", "/finance/pay/refund", "finish", data.ID, "", nil)
 	//反馈
 	return
 }

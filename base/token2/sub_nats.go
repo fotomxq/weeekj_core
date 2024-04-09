@@ -8,9 +8,9 @@ import (
 
 func subNats() {
 	//会话过期处理
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire", subNatsExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire", "/base/expire_tip/expire", subNatsExpire)
 	//清理所有过期数据
-	CoreNats.SubDataByteNoErr("/base/expire_tip/expire_clear", subNatsClearExpire)
+	CoreNats.SubDataByteNoErr("base_expire_tip_expire_clear", "/base/expire_tip/expire_clear", subNatsClearExpire)
 }
 
 // 会话过期处理

@@ -21,7 +21,7 @@ type ArgsUpdatePayID struct {
 
 // UpdatePayID 更新payID
 func UpdatePayID(args ArgsUpdatePayID) {
-	CoreNats.PushDataNoErr("/service/order/pay_id", "", args.ID, "", args)
+	CoreNats.PushDataNoErr("service_order_pay_id", "/service/order/pay_id", "", args.ID, "", args)
 }
 
 // ArgsUpdatePrice 修改订单金额参数
@@ -42,5 +42,5 @@ type ArgsUpdatePrice struct {
 // UpdatePrice 修改订单金额参数
 // 必须在付款之前修改
 func UpdatePrice(args ArgsUpdatePrice) {
-	CoreNats.PushDataNoErr("/service/order/pay_price", "", args.ID, "", args)
+	CoreNats.PushDataNoErr("service_order_pay_price", "/service/order/pay_price", "", args.ID, "", args)
 }

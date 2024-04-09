@@ -2,6 +2,8 @@ package OrgWorkTip
 
 import (
 	"encoding/json"
+	BaseService "github.com/fotomxq/weeekj_core/v5/base/service"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	"github.com/nats-io/nats.go"
@@ -9,7 +11,18 @@ import (
 
 func subNats() {
 	//处理新增通知
-	CoreNats.SubDataByteNoErr("/org/work_tip", subNatsNew)
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "组织工作区提示",
+		Description:  "",
+		EventSubType: "all",
+		Code:         "org_work_tip",
+		EventType:    "nats",
+		EventURL:     "/org/work_tip",
+		//TODO:待补充
+		EventParams: "",
+	})
+	CoreNats.SubDataByteNoErr("org_work_tip", "/org/work_tip", subNatsNew)
 }
 
 func subNatsNew(_ *nats.Msg, action string, _ int64, _ string, data []byte) {

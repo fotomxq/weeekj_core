@@ -24,5 +24,5 @@ type ArgsUpdateProduct struct {
 }
 
 func UpdateProduct(args ArgsUpdateProduct) {
-	CoreNats.PushDataNoErr("/erp/product/update", "", 0, "", args)
+	CoreNats.PushDataNoErr("erp_product_update", "/erp/product/update", "", 0, "", args)
 }

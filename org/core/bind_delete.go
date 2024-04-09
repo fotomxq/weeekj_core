@@ -25,7 +25,7 @@ func DeleteBind(args *ArgsDeleteBind) (err error) {
 	//更新统计
 	updateOrgBindAnalysis(args.OrgID)
 	//推送NATS
-	CoreNats.PushDataNoErr("/org/core/bind", "delete", args.ID, "bind", nil)
+	CoreNats.PushDataNoErr("org_core_bind", "/org/core/bind", "delete", args.ID, "bind", nil)
 	//清理缓冲
 	deleteBindCache(args.ID)
 	return
@@ -55,7 +55,7 @@ func DeleteBindByUser(args *ArgsDeleteBindByUser) (err error) {
 	//更新统计
 	updateOrgBindAnalysis(args.OrgID)
 	//推送NATS
-	CoreNats.PushDataNoErr("/org/core/bind", "delete", args.OrgID, "user", map[string]int64{
+	CoreNats.PushDataNoErr("org_core_bind", "/org/core/bind", "delete", args.OrgID, "user", map[string]int64{
 		"userID": args.UserID,
 	})
 	//清理缓冲
@@ -85,7 +85,7 @@ func DeleteBindByOrg(args *ArgsDeleteBindByOrg) (err error) {
 	//更新统计
 	updateOrgBindAnalysis(args.OrgID)
 	//推送NATS
-	CoreNats.PushDataNoErr("/org/core/bind", "delete", args.OrgID, "all", nil)
+	CoreNats.PushDataNoErr("org_core_bind", "/org/core/bind", "delete", args.OrgID, "all", nil)
 	//清理缓冲
 	for _, v := range bindIDs {
 		deleteBindCache(v)
