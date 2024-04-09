@@ -119,50 +119,54 @@ type ArgsGetProductListV2 struct {
 
 // GetProductListV2 获取产品列表V2
 func GetProductListV2(args *ArgsGetProductListV2) (dataList []FieldsProduct, dataCount int64, err error) {
-	templateBindList, _, _ := GetTemplateBindList(&ArgsGetTemplateBindList{
-		Pages: CoreSQL2.ArgsPages{
-			Page: 1,
-			Max:  30,
-			Sort: "id",
-			Desc: false,
-		},
-		OrgID:      args.OrgID,
-		TemplateID: args.TemplateID,
-		CategoryID: -1,
-		BrandID:    -1,
-		IsRemove:   false,
-	})
 	var brandIDList pq.Int64Array
 	var sortIDList pq.Int64Array
-	for _, v := range templateBindList {
-		if v.BrandID > 0 {
-			brandIDList = append(brandIDList, v.BrandID)
-		}
-		if v.CategoryID > 0 {
-			sortIDList = append(sortIDList, v.CategoryID)
+	if args.TemplateID > 0 {
+		templateBindList, _, _ := GetTemplateBindList(&ArgsGetTemplateBindList{
+			Pages: CoreSQL2.ArgsPages{
+				Page: 1,
+				Max:  30,
+				Sort: "id",
+				Desc: false,
+			},
+			OrgID:      args.OrgID,
+			TemplateID: args.TemplateID,
+			CategoryID: -1,
+			BrandID:    -1,
+			IsRemove:   false,
+		})
+		for _, v := range templateBindList {
+			if v.BrandID > 0 {
+				brandIDList = append(brandIDList, v.BrandID)
+			}
+			if v.CategoryID > 0 {
+				sortIDList = append(sortIDList, v.CategoryID)
+			}
 		}
 	}
-	brandBindList, _, _ := GetBrandBindList(&ArgsGetBrandBindList{
-		Pages: CoreSQL2.ArgsPages{
-			Page: 1,
-			Max:  30,
-			Sort: "id",
-			Desc: false,
-		},
-		OrgID:     args.OrgID,
-		BrandID:   args.BrandID,
-		CompanyID: -1,
-		ProductID: -1,
-		IsRemove:  false,
-	})
 	var companyIDList pq.Int64Array
 	var productIDList pq.Int64Array
-	for _, v := range brandBindList {
-		if v.CompanyID > 0 {
-			companyIDList = append(companyIDList, v.CompanyID)
-		}
-		if v.ProductID > 0 {
-			productIDList = append(productIDList, v.ProductID)
+	if args.BrandID > 0 {
+		brandBindList, _, _ := GetBrandBindList(&ArgsGetBrandBindList{
+			Pages: CoreSQL2.ArgsPages{
+				Page: 1,
+				Max:  30,
+				Sort: "id",
+				Desc: false,
+			},
+			OrgID:     args.OrgID,
+			BrandID:   args.BrandID,
+			CompanyID: -1,
+			ProductID: -1,
+			IsRemove:  false,
+		})
+		for _, v := range brandBindList {
+			if v.CompanyID > 0 {
+				companyIDList = append(companyIDList, v.CompanyID)
+			}
+			if v.ProductID > 0 {
+				productIDList = append(productIDList, v.ProductID)
+			}
 		}
 	}
 	if len(brandIDList) > 0 {
