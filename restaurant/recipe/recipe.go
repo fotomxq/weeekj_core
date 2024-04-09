@@ -12,6 +12,8 @@ import (
 type ArgsGetRecipeList struct {
 	//分页参数
 	Pages CoreSQL2.ArgsPages `json:"pages"`
+	//分类ID
+	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//门店ID
@@ -24,7 +26,7 @@ type ArgsGetRecipeList struct {
 
 // GetRecipeList 获取Recipe列表
 func GetRecipeList(args *ArgsGetRecipeList) (dataList []FieldsRecipe, dataCount int64, err error) {
-	dataCount, err = recipeDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIDQuery("store_id", args.StoreID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = recipeDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("category_id", args.CategoryID).SetIDQuery("org_id", args.OrgID).SetIDQuery("store_id", args.StoreID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -69,6 +71,8 @@ func GetRecipeNameByID(id int64) (name string) {
 
 // ArgsCreateRecipe 创建Recipe参数
 type ArgsCreateRecipe struct {
+	//分类ID
+	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//菜品名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//分公司ID
@@ -82,11 +86,12 @@ type ArgsCreateRecipe struct {
 // CreateRecipe 创建Recipe
 func CreateRecipe(args *ArgsCreateRecipe) (id int64, err error) {
 	//创建数据
-	id, err = recipeDB.Insert().SetFields([]string{"name", "org_id", "store_id", "price"}).Add(map[string]any{
-		"name":     args.Name,
-		"org_id":   args.OrgID,
-		"store_id": args.StoreID,
-		"price":    args.Price,
+	id, err = recipeDB.Insert().SetFields([]string{"category_id", "name", "org_id", "store_id", "price"}).Add(map[string]any{
+		"category_id": args.CategoryID,
+		"name":        args.Name,
+		"org_id":      args.OrgID,
+		"store_id":    args.StoreID,
+		"price":       args.Price,
 	}).ExecAndResultID()
 	if err != nil {
 		return
@@ -99,6 +104,8 @@ func CreateRecipe(args *ArgsCreateRecipe) (id int64, err error) {
 type ArgsUpdateRecipe struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
+	//分类ID
+	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//菜品名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//分公司ID
@@ -112,11 +119,12 @@ type ArgsUpdateRecipe struct {
 // UpdateRecipe 修改Recipe
 func UpdateRecipe(args *ArgsUpdateRecipe) (err error) {
 	//更新数据
-	err = recipeDB.Update().SetFields([]string{"name", "org_id", "store_id", "price"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
-		"name":     args.Name,
-		"org_id":   args.OrgID,
-		"store_id": args.StoreID,
-		"price":    args.Price,
+	err = recipeDB.Update().SetFields([]string{"category_id", "name", "org_id", "store_id", "price"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+		"category_id": args.CategoryID,
+		"name":        args.Name,
+		"org_id":      args.OrgID,
+		"store_id":    args.StoreID,
+		"price":       args.Price,
 	})
 	if err != nil {
 		return
@@ -152,7 +160,7 @@ func getRecipeByID(id int64) (data FieldsRecipe) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := recipeDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "name", "org_id", "store_id", "price"}).GetByID(id).NeedLimit().Result(&data)
+	err := recipeDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "category_id", "name", "org_id", "store_id", "price"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}

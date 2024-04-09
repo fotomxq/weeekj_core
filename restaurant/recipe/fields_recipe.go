@@ -14,6 +14,8 @@ type FieldsRecipe struct {
 	UpdateAt time.Time `db:"update_at" json:"updateAt"`
 	//删除时间
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt"`
+	//分类ID
+	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//菜品名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//分公司ID

@@ -1,6 +1,7 @@
 package RestaurantRecipe
 
 import (
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
@@ -15,6 +16,10 @@ var (
 	cacheRecipeTime = 1800
 	//数据表
 	recipeDB CoreSQL2.Client
+	//Sort 菜品分类
+	Sort = ClassSort.Sort{
+		SortTableName: "restaurant_recipe_sort",
+	}
 )
 
 // Init 初始化
