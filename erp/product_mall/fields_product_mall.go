@@ -16,8 +16,10 @@ type FieldsProductMall struct {
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//产品ID
 	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	//产品名称
+	ProductName string `db:"product_name" json:"productName" check:"des" min:"1" max:"300"`
 	//挂出价格
-	Price float64 `db:"price" json:"price" check:"float64Than0"`
+	Price int64 `db:"price" json:"price" check:"float64Than0"`
 	//所属分类ID
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id"`
 }

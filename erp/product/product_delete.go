@@ -1,6 +1,7 @@
 package ERPProduct
 
 import (
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
@@ -24,6 +25,8 @@ func DeleteProduct(args *ArgsDeleteProduct) (err error) {
 	deleteProductCache(args.ID)
 	//删除关联的供应商关系
 	_ = deleteProductCompanyByProductID(args.ID)
+	//发出删除通知
+	CoreNats.PushDataNoErr("erp_product_delete", "/erp/product/delete", "", args.ID, "", nil)
 	//反馈
 	return
 }

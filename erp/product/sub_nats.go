@@ -28,6 +28,17 @@ func subNats() {
 		EventParams: "",
 	})
 	CoreNats.SubDataByteNoErr("erp_product_update", "/erp/product/update", subNatsUpdateProduct)
+	//注册服务
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "ERP产品删除通知",
+		Description:  "ERP产品删除通知",
+		EventSubType: "push",
+		Code:         "erp_product_delete",
+		EventType:    "nats",
+		EventURL:     "/erp/product/delete",
+		EventParams:  "<<id>>:int64:产品ID",
+	})
 }
 
 // 删除公司处理
