@@ -97,6 +97,11 @@ func TestGetProductMallList(t *testing.T) {
 	ToolsTest.ReportDataList(t, err, dataList, dataCount)
 }
 
+func TestGetProductMallByProductID(t *testing.T) {
+	data := GetProductMallByProductID(newERPProductData.ID)
+	ToolsTest.ReportData(t, nil, data)
+}
+
 func TestUpdateProductMall(t *testing.T) {
 	err := UpdateProductMall(&ArgsUpdateProductMall{
 		ID:          newProductMallData.ID,

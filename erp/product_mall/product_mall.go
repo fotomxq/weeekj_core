@@ -52,6 +52,18 @@ func GetProductMall(id int64, orgID int64) (data FieldsProductMall) {
 	return
 }
 
+// GetProductMallByProductID 通过ERP产品ID查询产品商品
+func GetProductMallByProductID(productID int64) (data FieldsProductMall) {
+	err := productMallDB.Get().SetFieldsOne([]string{"id"}).SetIDQuery("product_id", productID).NeedLimit().Result(&data)
+	if err != nil {
+		return
+	}
+	if data.ID < 1 {
+		return
+	}
+	return getProductMallData(data.ID)
+}
+
 // ArgsCreateProductMall 创建模板参数
 type ArgsCreateProductMall struct {
 	//组织ID
