@@ -12,13 +12,16 @@ import (
 
 var (
 	//缓冲时间
-	cacheBudgetTime = 1800
+	cacheBudgetTime     = 1800
+	cacheBudgetFlowTime = 1800
 	//数据表
-	budgetDB CoreSQL2.Client
+	budgetDB     CoreSQL2.Client
+	budgetFlowDB CoreSQL2.Client
 )
 
 // Init 初始化
 func Init() {
 	//初始化数据表
 	budgetDB.Init(&Router2SystemConfig.MainSQL, "erp_budget")
+	budgetFlowDB.Init(&Router2SystemConfig.MainSQL, "erp_budget_flow")
 }

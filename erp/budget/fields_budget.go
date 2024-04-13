@@ -22,10 +22,10 @@ type FieldsBudget struct {
 	//描述
 	Desc string `db:"desc" json:"desc" check:"des" min:"1" max:"300" empty:"true"`
 	//预算总金额
-	Total float64 `db:"total" json:"total" check:"float64Than0"`
+	Total int64 `db:"total" json:"total" check:"int64Than0"`
 	//已使用金额
-	Used float64 `db:"used" json:"used" check:"float64Than0"`
+	Used int64 `db:"used" json:"used" check:"int64Than0"`
 	//占用金额
 	// 正在使用中，但尚未归档
-	Occupied float64 `db:"occupied" json:"occupied" check:"float64Than0"`
+	Occupied int64 `db:"occupied" json:"occupied" check:"int64Than0"`
 }

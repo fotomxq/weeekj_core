@@ -18,8 +18,14 @@ type FieldsRequisition struct {
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//提交组织成员ID
 	OrgBindID int64 `db:"org_bind_id" json:"orgBindID" check:"id"`
+	//审批人ID
+	ApproverID int64 `db:"approver_id" json:"approverID" check:"id"`
+	//审批人姓名
+	ApproverName string `db:"approver_name" json:"approverName" check:"des" min:"1" max:"300"`
 	//备注
 	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"300" empty:"true"`
 	//关联的项目ID
 	ProjectID int64 `db:"project_id" json:"projectID" check:"id" empty:"true"`
+	//关联项目名称
+	ProjectName string `db:"project_name" json:"projectName" check:"des" min:"1" max:"300" empty:"true"`
 }

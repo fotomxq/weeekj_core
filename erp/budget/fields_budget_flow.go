@@ -19,7 +19,17 @@ type FieldsBudgetFlow struct {
 	//备注
 	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"300" empty:"true"`
 	//提交人ID
-	Submitter int64 `db:"submitter" json:"submitter" check:"id"`
+	SubmitterID int64 `db:"submitter_id" json:"submitterID" check:"id"`
+	//提交人姓名
+	SubmitterName string `db:"submitter_name" json:"submitterName" check:"des" min:"1" max:"300"`
 	//审批人ID
-	Approver int64 `db:"approver" json:"approver" check:"id"`
+	ApproverID int64 `db:"approver_id" json:"approverID" check:"id"`
+	//审批人姓名
+	ApproverName string `db:"approver_name" json:"approverName" check:"des" min:"1" max:"300"`
+	//申请金额
+	Used int64 `db:"used" json:"used" check:"int64Than0"`
+	//所属项目ID
+	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	//所属项目名称
+	ProductName string `db:"product_name" json:"productName" check:"des" min:"1" max:"300"`
 }

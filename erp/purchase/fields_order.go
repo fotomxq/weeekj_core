@@ -16,12 +16,12 @@ type FieldsOrder struct {
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//提交组织成员ID
 	OrgBindID int64 `db:"org_bind_id" json:"orgBindID" check:"id"`
+	//提交用户ID
+	UserID int64 `db:"user_id" json:"userID" check:"id"`
 	//供应商公司ID
 	CompanyID int64 `db:"company_id" json:"companyID" check:"id" empty:"true"`
 	//供应商名称
 	CompanyName string `db:"company_name" json:"companyName" check:"des" min:"1" max:"300" empty:"true"`
 	//备注
 	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"300" empty:"true"`
-	//采购计划ID
-	PlanID int64 `db:"plan_id" json:"planID" check:"id"`
 }
