@@ -126,28 +126,97 @@ type ArgsGetLogByModuleAndID struct {
 	UserID int64 `db:"user_id" json:"userID" check:"id" empty:"true"`
 	//关联的模块标识码
 	// erp_project
-	ModuleCode string `db:"module_code" json:"moduleCode" check:"des" min:"1" max:"50" empty:"true"`
+	ModuleCode string `db:"module_code" json:"moduleCode" check:"des" min:"1" max:"50"`
 	//审批ID
-	ApproverID int64 `db:"approver_id" json:"approverID" check:"id" empty:"true"`
+	ApproverID int64 `db:"approver_id" json:"approverID" check:"id"`
 }
 
 // GetLogByModuleAndID 通过模块和ID获取审批
-func GetLogByModuleAndID(moduleCode string, orgBindID int64) (data FieldsLog) {
+func GetLogByModuleAndID(args *ArgsGetLogByModuleAndID) (data DataLog, err error) {
+	//获取日志数据
+	var rawLogData FieldsLog
+	err = logDB.Get().SetFieldsOne([]string{"id"}).SetDeleteQuery("delete_at", false).SetIDQuery("org_id", args.OrgID).SetIDQuery("org_bind_id", args.OrgBindID).SetIDQuery("user_id", args.UserID).SetStringQuery("module_code", args.ModuleCode).SetIDQuery("approver_id", args.ApproverID).Result(&rawLogData)
+	if err != nil {
+		return
+	}
+	if rawLogData.ID > 0 {
+		rawLogData = getLogByID(rawLogData.ID)
+	}
+	//通过ID获取数据包
+	data, err = GetLogByID(&ArgsGetLogByID{
+		ID:        rawLogData.ID,
+		OrgID:     -1,
+		OrgBindID: -1,
+		UserID:    -1,
+	})
+	if err != nil {
+		rawLogData = FieldsLog{}
+		return
+	}
 	//反馈
 	return
 }
 
 // ArgsCreateLog 发起新的审批参数
 type ArgsCreateLog struct {
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//提交组织成员ID
+	OrgBindID int64 `db:"org_bind_id" json:"orgBindID" check:"id" empty:"true"`
+	//用户ID
+	UserID int64 `db:"user_id" json:"userID" check:"id" empty:"true"`
 	//关联的模块标识码
 	// erp_project
 	ModuleCode string `db:"module_code" json:"moduleCode" check:"des" min:"1" max:"50"`
+	//审批分叉标识码
+	// 用于识别模块内，不同的审批流程
+	ForkCode string `db:"fork_code" json:"forkCode" check:"des" min:"1" max:"50"`
 	//审批ID
 	ApproverID int64 `db:"approver_id" json:"approverID" check:"id"`
+	//审批备注
+	ApproverRemark string `db:"approver_remark" json:"approverRemark" check:"des" min:"1" max:"300"`
 }
 
 // CreateLog 发起新的审批
 func CreateLog(args *ArgsCreateLog) (errCode string, err error) {
+	//检查是否存在审批的数据
+	rawData, _ := GetLogByModuleAndID(&ArgsGetLogByModuleAndID{
+		OrgID:      args.OrgID,
+		OrgBindID:  -1,
+		UserID:     -1,
+		ModuleCode: args.ModuleCode,
+		ApproverID: args.ApproverID,
+	})
+	if rawData.ID > 0 {
+		errCode = "err_approver_log_repeat"
+		err = errors.New("data exists")
+		return
+	}
+	//获取配置数据包
+	configData := getConfigByModule(args.OrgID, args.ModuleCode, args.ForkCode)
+	if configData.ID < 1 {
+		errCode = "err_config"
+		err = errors.New("no data")
+		return
+	}
+	//构建数据
+	var newLogID int64
+	newLogID, err = logDB.Insert().SetFields([]string{"org_id", "org_bind_id", "user_id", "submitter_name", "approver_remark", "status", "module_code", "approver_id", "config_id"}).Add(map[string]any{
+		"org_id":          args.OrgID,
+		"org_bind_id":     args.OrgBindID,
+		"user_id":         args.UserID,
+		"submitter_name":  getApproverName(args.OrgBindID, args.UserID),
+		"approver_remark": args.ApproverRemark,
+		"status":          0,
+		"module_code":     configData.ModuleCode,
+		"approver_id":     args.ApproverID,
+		"config_id":       configData.ID,
+	}).ExecAndResultID()
+	if err != nil {
+		errCode = "err_insert"
+		return
+	}
+	newLogID = newLogID
 	//反馈
 	return
 }

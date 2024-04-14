@@ -1,6 +1,7 @@
 package BaseService
 
 import (
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	"github.com/nats-io/nats.go"
@@ -31,12 +32,22 @@ type waitSyncBlock struct {
 
 func subNats() {
 	//发生新的请求
+	_ = SetService(&ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "基础服务管理",
+		Description:  "对服务进行统计",
+		EventSubType: "all",
+		Code:         "base_service_request",
+		EventType:    "nats",
+		EventURL:     "/base/service/request",
+		EventParams:  "<<action>>:string:基础服务code::;::<<mark>>:string:订阅服务类型(sub/push)",
+	})
 	CoreNats.SubDataByteNoErr("base_service_request", "/base/service/request", subNatsRequest)
 }
 
 // action 服务code
 // mark 订阅和推送类型: sub订阅; pub发布
-func subNatsRequest(msg *nats.Msg, action string, _ int64, mark string, _ []byte) {
+func subNatsRequest(_ *nats.Msg, action string, _ int64, mark string, _ []byte) {
 	//等待数据库连接
 	if !WaitDBConnect {
 		time.Sleep(time.Second * 60)

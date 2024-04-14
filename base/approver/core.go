@@ -2,7 +2,9 @@ package BaseApprover
 
 import (
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	UserCore "github.com/fotomxq/weeekj_core/v5/user/core"
 )
 
 //审批流
@@ -28,12 +30,24 @@ var (
 // Init 初始化
 func Init() {
 	//初始化数据表
-	configDB.Init(&Router2SystemConfig.MainSQL, "base_config")
-	configItemDB.Init(&Router2SystemConfig.MainSQL, "base_config_item")
-	logDB.Init(&Router2SystemConfig.MainSQL, "base_log")
-	logFlowDB.Init(&Router2SystemConfig.MainSQL, "base_log_flow")
+	configDB.Init(&Router2SystemConfig.MainSQL, "base_approver_config")
+	configItemDB.Init(&Router2SystemConfig.MainSQL, "base_approver_config_item")
+	logDB.Init(&Router2SystemConfig.MainSQL, "base_approver_log")
+	logFlowDB.Init(&Router2SystemConfig.MainSQL, "base_approver_log_flow")
 	//启动消息
 	if OpenSub {
 		subNats()
 	}
+}
+
+// getApproverName 通过组织成员ID或用户ID获取姓名
+func getApproverName(orgBindID int64, userID int64) (name string) {
+	var approverName string
+	if orgBindID > 0 {
+		approverName = OrgCore.GetBindName(orgBindID)
+	}
+	if approverName == "" && userID > 0 {
+		approverName = UserCore.GetUserNameByID(userID)
+	}
+	return
 }

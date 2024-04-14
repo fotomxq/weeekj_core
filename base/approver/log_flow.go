@@ -4,6 +4,7 @@ import (
 	"fmt"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	"time"
 )
 
 // ArgsGetLogFlows 获取日志行列表参数
@@ -52,10 +53,37 @@ func ApproveLogFlow(args *ArgsApproveLogFlow) (err error) {
 
 // argsCreateLogFlow 创建审批流参数
 type argsCreateLogFlow struct {
+	//日志ID
+	LogID int64 `db:"log_id" json:"logID" check:"id"`
+	//审批顺序
+	FlowOrder int `db:"flow_order" json:"flowOrder" check:"intThan0" empty:"true"`
+	//审批人ID
+	OrgBindID int64 `db:"org_bind_id" json:"orgBindID" check:"id"`
+	//用户ID
+	UserID int64 `db:"user_id" json:"userID" check:"id"`
+	//审批备注
+	ApproverRemark string `db:"approver_remark" json:"approverRemark" check:"des" min:"1" max:"300" empty:"true"`
+	//拒绝备注
+	RejectRemark string `db:"reject_remark" json:"rejectRemark" check:"des" min:"1" max:"300" empty:"true"`
 }
 
 // createLogFlow 创建审批流
 func createLogFlow(args *argsCreateLogFlow) (err error) {
+	//插入数据
+	_, err = logFlowDB.Insert().SetFields([]string{"log_id", "flow_order", "status", "approve_at", "org_bind_id", "user_id", "approver_name", "approver_remark", "reject_remark"}).Add(map[string]any{
+		"log_id":          args.LogID,
+		"flow_order":      args.FlowOrder,
+		"status":          0,
+		"approve_at":      time.Time{},
+		"org_bind_id":     args.OrgBindID,
+		"user_id":         args.UserID,
+		"approver_name":   getApproverName(args.OrgBindID, args.UserID),
+		"approver_remark": args.ApproverRemark,
+		"reject_remark":   args.RejectRemark,
+	}).ExecAndResultID()
+	if err != nil {
+		return
+	}
 	//反馈
 	return
 }

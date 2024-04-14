@@ -17,6 +17,9 @@ type ArgsGetConfigList struct {
 	//关联的模块标识码
 	// erp_project
 	ModuleCode string `db:"module_code" json:"moduleCode" check:"des" min:"1" max:"50" empty:"true"`
+	//审批分叉标识码
+	// 用于识别模块内，不同的审批流程
+	ForkCode string `db:"fork_code" json:"forkCode" check:"des" min:"1" max:"50"`
 	//是否删除
 	IsRemove bool `json:"isRemove" check:"bool"`
 	//搜索
@@ -25,7 +28,7 @@ type ArgsGetConfigList struct {
 
 // GetConfigList 获取配置列表
 func GetConfigList(args *ArgsGetConfigList) (dataList []DataConfig, dataCount int64, err error) {
-	dataCount, err = configItemDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "flow_order"}).SetPages(args.Pages).SetDeleteQuery("delete_at", false).SetIDQuery("org_id", args.OrgID).SetStringQuery("module_code", args.ModuleCode).SetSearchQuery([]string{"name", "desc"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = configItemDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "flow_order"}).SetPages(args.Pages).SetDeleteQuery("delete_at", false).SetIDQuery("org_id", args.OrgID).SetStringQuery("module_code", args.ModuleCode).SetStringQuery("fork_code", args.ForkCode).SetSearchQuery([]string{"name", "description"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -63,9 +66,9 @@ func GetConfigByID(args *ArgsGetConfigByID) (data DataConfig, err error) {
 	}
 	var rawItems []FieldsConfigItem
 	rawItems, _, err = getConfigItems(&argsGetConfigItems{
-		ConfigID:  0,
-		OrgBindID: 0,
-		UserID:    0,
+		ConfigID:  rawData.ID,
+		OrgBindID: -1,
+		UserID:    -1,
 	})
 	var items DataConfigItems
 	if err == nil {
@@ -84,6 +87,7 @@ func GetConfigByID(args *ArgsGetConfigByID) (data DataConfig, err error) {
 		DeleteAt:   rawData.DeleteAt,
 		OrgID:      rawData.OrgID,
 		ModuleCode: rawData.ModuleCode,
+		ForkCode:   rawData.ForkCode,
 		Items:      items,
 	}
 	return
@@ -100,6 +104,9 @@ type ArgsCreateConfig struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
 	//描述
 	Desc string `db:"desc" json:"desc" check:"des" min:"1" max:"300" empty:"true"`
+	//审批分叉标识码
+	// 用于识别模块内，不同的审批流程
+	ForkCode string `db:"fork_code" json:"forkCode" check:"des" min:"1" max:"50"`
 	//审批流配置
 	Items DataConfigItems `json:"items"`
 }
@@ -107,31 +114,21 @@ type ArgsCreateConfig struct {
 // CreateConfig 创建配置
 func CreateConfig(args *ArgsCreateConfig) (configID int64, errCode string, err error) {
 	//检查是否已经存在相同的配置？
-	checkConfigList, _, _ := GetConfigList(&ArgsGetConfigList{
-		Pages: CoreSQL2.ArgsPages{
-			Page: 1,
-			Max:  1,
-			Sort: "id",
-			Desc: false,
-		},
-		OrgID:      args.OrgID,
-		ModuleCode: args.ModuleCode,
-		IsRemove:   false,
-		Search:     "",
-	})
-	if len(checkConfigList) > 0 {
-		errCode = "err_exist"
+	checkConfigData := getConfigByModule(args.OrgID, args.ModuleCode, args.ForkCode)
+	if checkConfigData.ID > 0 {
+		errCode = "err_have_replace"
 		return
 	}
 	//创建数据
-	configID, err = configDB.Insert().SetFields([]string{"org_id", "module_code", "name", "desc"}).Add(map[string]any{
+	configID, err = configDB.Insert().SetFields([]string{"org_id", "module_code", "name", "desc", "fork_code"}).Add(map[string]any{
 		"org_id":      args.OrgID,
 		"module_code": args.ModuleCode,
 		"name":        args.Name,
 		"desc":        args.Desc,
+		"fork_code":   args.ForkCode,
 	}).ExecAndResultID()
 	if err != nil {
-		errCode = "err_have_replace"
+		errCode = "err_insert"
 		return
 	}
 	//更新配置行
@@ -209,13 +206,42 @@ func DeleteConfig(args *ArgsDeleteConfig) (err error) {
 	return
 }
 
+// getConfigByModule 通过模块获取配置
+func getConfigByModule(orgID int64, moduleCode string, forkCode string) (data DataConfig) {
+	configList, _, _ := GetConfigList(&ArgsGetConfigList{
+		Pages: CoreSQL2.ArgsPages{
+			Page: 1,
+			Max:  1,
+			Sort: "id",
+			Desc: false,
+		},
+		OrgID:      orgID,
+		ModuleCode: moduleCode,
+		ForkCode:   forkCode,
+		IsRemove:   false,
+		Search:     "",
+	})
+	if len(configList) < 1 {
+		return
+	}
+	var err error
+	data, err = GetConfigByID(&ArgsGetConfigByID{
+		ID:    configList[0].ID,
+		OrgID: -1,
+	})
+	if err != nil {
+		return
+	}
+	return
+}
+
 // getConfigByID 通过ID查询配置
 func getConfigByID(id int64) (data FieldsConfig) {
 	cacheMark := getConfigCacheMark(id)
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := configDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "module_code", "name", "desc"}).GetByID(id).NeedLimit().Result(&data)
+	err := configDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "module_code", "name", "desc", "fork_code"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}
