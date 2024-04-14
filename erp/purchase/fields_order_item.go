@@ -14,8 +14,8 @@ type FieldsOrderItem struct {
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt"`
 	//关联订单
 	OrderID int64 `db:"order_id" json:"orderID" check:"id"`
-	//采购子项ID
-	PlanItemID int64 `db:"plan_item_id" json:"planItemID" check:"id"`
+	//采购需求行ID
+	PurchaseItemID int64 `db:"purchase_item_id" json:"purchaseItemID" check:"id"`
 	//产品ID
 	ProductID int64 `db:"product_id" json:"productID" check:"id"`
 	//数量

@@ -18,10 +18,8 @@ type FieldsRequisitionItem struct {
 	ProductID int64 `db:"product_id" json:"productID" check:"id"`
 	//数量
 	Count int64 `db:"count" json:"count" check:"int64Than0"`
-	//采购计划ID
-	// 创建时为0，计划生成后为计划ID
-	PlanID int64 `db:"plan_id" json:"planID" check:"id" empty:"true"`
-	//采购计划子项ID
-	// 创建时为0，计划生成后为计划子项ID
-	PlanItemID int64 `db:"plan_item_id" json:"planItemID" check:"id" empty:"true"`
+	//供应商公司ID
+	CompanyID int64 `db:"company_id" json:"companyID" check:"id" empty:"true"`
+	//供应商名称
+	CompanyName string `db:"company_name" json:"companyName" check:"des" min:"1" max:"300" empty:"true"`
 }

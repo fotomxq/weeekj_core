@@ -1,6 +1,7 @@
 package ERPProject
 
 import (
+	"errors"
 	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"

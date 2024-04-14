@@ -12,6 +12,9 @@ type FieldsOrder struct {
 	UpdateAt time.Time `db:"update_at" json:"updateAt"`
 	//删除时间
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt"`
+	//审批状态
+	// 0: 未审批; 1: 审批中; 2: 审批通过; 3: 审批拒绝
+	Status int `db:"status" json:"status"`
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//提交组织成员ID

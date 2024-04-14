@@ -223,10 +223,42 @@ func CreateLog(args *ArgsCreateLog) (errCode string, err error) {
 
 // ArgsDeleteLog 删除审批流参数
 type ArgsDeleteLog struct {
+	//ID
+	ID int64 `db:"id" json:"id" check:"id"`
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 }
 
 // DeleteLog 删除审批流
 func DeleteLog(args *ArgsDeleteLog) (err error) {
+	//获取日志行数据
+	flows, _, _ := GetLogFlows(&ArgsGetLogFlows{
+		Pages: CoreSQL2.ArgsPages{
+			Page: 1,
+			Max:  999,
+			Sort: "flow_order",
+			Desc: false,
+		},
+		LogID:     args.ID,
+		Status:    -1,
+		OrgBindID: -1,
+		UserID:    -1,
+		Search:    "",
+	})
+	//删除数据
+	err = logDB.Delete().NeedSoft(true).AddWhereID(args.ID).AddWhereOrgID(args.OrgID).ExecNamed(nil)
+	if err != nil {
+		return
+	}
+	//删除缓冲
+	deleteLogCache(args.ID)
+	//删除行数据
+	if len(flows) > 0 {
+		for _, v := range flows {
+			deleteLogFlowCache(v.ID)
+		}
+	}
+	_ = clearLogFlow(args.ID)
 	//反馈
 	return
 }

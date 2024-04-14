@@ -1,7 +1,9 @@
 package BaseApprover
 
 import (
+	"errors"
 	"fmt"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"time"
@@ -43,10 +45,117 @@ func GetLogFlows(args *ArgsGetLogFlows) (dataList []FieldsLogFlow, dataCount int
 
 // ArgsApproveLogFlow 审核某个节点参数
 type ArgsApproveLogFlow struct {
+	//ID
+	ID int64 `db:"id" json:"id" check:"id"`
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//提交组织成员ID
+	OrgBindID int64 `db:"org_bind_id" json:"orgBindID" check:"id" empty:"true"`
+	//用户ID
+	UserID int64 `db:"user_id" json:"userID" check:"id" empty:"true"`
+	//是否审批通过
+	IsApprove bool `db:"is_approve" json:"isApprove" check:"bool"`
+	//审批备注
+	ApproverRemark string `db:"approver_remark" json:"approverRemark" check:"des" min:"1" max:"300" empty:"true"`
+	//拒绝备注
+	RejectRemark string `db:"reject_remark" json:"rejectRemark" check:"des" min:"1" max:"300" empty:"true"`
 }
 
 // ApproveLogFlow 审核某个节点
-func ApproveLogFlow(args *ArgsApproveLogFlow) (err error) {
+func ApproveLogFlow(args *ArgsApproveLogFlow) (errCode string, err error) {
+	//获取审批节点数据
+	nowFlowData := getLogFlowByID(args.ID)
+	if nowFlowData.ID < 1 {
+		errCode = "err_no_data"
+		err = errors.New("no data")
+		return
+	}
+	if !CoreFilter.EqID2(args.OrgBindID, nowFlowData.OrgBindID) || !CoreFilter.EqID2(args.UserID, nowFlowData.UserID) {
+		errCode = "err_no_data"
+		err = errors.New("no data")
+		return
+	}
+	if nowFlowData.Status != 1 {
+		errCode = "err_approver_log_status"
+		err = errors.New("status error")
+		return
+	}
+	//获取审批头
+	logData := getLogByID(nowFlowData.LogID)
+	if logData.ID < 1 {
+		errCode = "err_no_data"
+		err = errors.New("no data")
+		return
+	}
+	if logData.Status == 2 || logData.Status == 3 {
+		errCode = "err_approver_log_end"
+		err = errors.New("log approver end")
+		return
+	}
+	//获取所有审批节点
+	flowList, _, _ := GetLogFlows(&ArgsGetLogFlows{
+		Pages: CoreSQL2.ArgsPages{
+			Page: 1,
+			Max:  999,
+			Sort: "flow_order",
+			Desc: false,
+		},
+		LogID:     logData.ID,
+		Status:    -1,
+		OrgBindID: -1,
+		UserID:    -1,
+		Search:    "",
+	})
+	if len(flowList) < 1 {
+		errCode = "err_no_data"
+		err = errors.New("no data")
+		return
+	}
+	//按照顺序检查节点
+	haveFlowOrder := 0
+	for k := 0; k < len(flowList); k++ {
+		v := flowList[k]
+		if CoreFilter.CheckHaveTime(v.ApproveAt) && haveFlowOrder < v.FlowOrder {
+			haveFlowOrder = v.FlowOrder
+		}
+	}
+	if haveFlowOrder > nowFlowData.FlowOrder {
+		errCode = "err_approver_log_end"
+		err = errors.New("approver flow order")
+		return
+	}
+	//更新审批节点状态
+	if args.IsApprove {
+		err = logFlowDB.Update().SetFields([]string{"status", "approve_at", "approver_remark"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+			"status":          2,
+			"approve_at":      time.Now(),
+			"approver_remark": args.ApproverRemark,
+		})
+	} else {
+		err = logFlowDB.Update().SetFields([]string{"status", "approve_at", "reject_remark"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+			"status":        3,
+			"approve_at":    time.Now(),
+			"reject_remark": args.RejectRemark,
+		})
+	}
+	if err != nil {
+		errCode = "err_update"
+		return
+	}
+	//找到下一个节点
+	// 更新状态为1等待审批
+	for _, v := range flowList {
+		if v.FlowOrder == nowFlowData.FlowOrder+1 {
+			err = logFlowDB.Update().SetFields([]string{"status"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+				"status": 1,
+			})
+			if err != nil {
+				errCode = "err_update"
+				return
+			}
+			break
+		}
+	}
 	//反馈
 	return
 }
@@ -88,8 +197,8 @@ func createLogFlow(args *argsCreateLogFlow) (err error) {
 	return
 }
 
-// clearLogItem 清理日志行
-func clearLogItem(logID int64) (err error) {
+// clearLogFlow 清理日志行
+func clearLogFlow(logID int64) (err error) {
 	//获取配置列表
 	dataList, _, _ := GetLogFlows(&ArgsGetLogFlows{
 		Pages: CoreSQL2.ArgsPages{

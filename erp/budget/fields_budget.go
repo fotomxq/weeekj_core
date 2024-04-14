@@ -21,6 +21,8 @@ type FieldsBudget struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"50"`
 	//描述
 	Desc string `db:"desc" json:"desc" check:"des" min:"1" max:"300" empty:"true"`
+	//项目ID
+	ProjectID int64 `db:"project_id" json:"projectID" check:"id" empty:"true"`
 	//预算总金额
 	Total int64 `db:"total" json:"total" check:"int64Than0"`
 	//已使用金额
