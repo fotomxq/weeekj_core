@@ -3,6 +3,7 @@ package ERPBudget
 import (
 	"errors"
 	"fmt"
+	BaseApproverMod "github.com/fotomxq/weeekj_core/v5/base/approver/mod"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -66,6 +67,10 @@ func GetBudgetByID(args *ArgsGetBudgetByID) (data FieldsBudget, err error) {
 type ArgsCreateBudget struct {
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
+	//提交组织成员ID
+	OrgBindID int64 `db:"org_bind_id" json:"orgBindID" check:"id" empty:"true"`
+	//用户ID
+	UserID int64 `db:"user_id" json:"userID" check:"id" empty:"true"`
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"50"`
 	//描述
@@ -77,6 +82,8 @@ type ArgsCreateBudget struct {
 	//占用金额
 	// 正在使用中，但尚未归档
 	Occupied int64 `db:"occupied" json:"occupied" check:"int64Than0"`
+	//审批备注
+	ApproverRemark string `db:"approver_remark" json:"approverRemark" check:"des" min:"1" max:"300"`
 }
 
 // CreateBudget 创建Budget
@@ -94,6 +101,13 @@ func CreateBudget(args *ArgsCreateBudget) (id int64, err error) {
 	if err != nil {
 		return
 	}
+	BaseApproverMod.PushRequest("erp_budget", id, BaseApproverMod.ParamsPushRequest{
+		OrgID:          args.OrgID,
+		OrgBindID:      args.OrgBindID,
+		UserID:         args.UserID,
+		ForkCode:       "default",
+		ApproverRemark: args.ApproverRemark,
+	})
 	//反馈
 	return
 }
