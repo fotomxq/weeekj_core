@@ -14,13 +14,12 @@ type ArgsGetProjectList struct {
 	Pages CoreSQL2.ArgsPages `json:"pages"`
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
-	//提交组织成员ID
-	OrgBindID int64 `db:"org_bind_id" json:"orgBindID" check:"id" empty:"true"`
-	//用户ID
-	UserID int64 `db:"user_id" json:"userID" check:"id" empty:"true"`
 	//审批状态
 	// 0: 未审批; 1: 审批中; 2: 审批通过; 3: 审批拒绝
 	Status int `db:"status" json:"status"`
+	//验收状态
+	// 0: 未验收; 1: 验收中; 2: 验收通过; 3: 验收拒绝
+	AcceptanceStatus int `db:"acceptance_status" json:"acceptanceStatus"`
 	//是否删除
 	IsRemove bool `json:"isRemove" check:"bool"`
 	//搜索
@@ -29,7 +28,7 @@ type ArgsGetProjectList struct {
 
 // GetProjectList 获取Project列表
 func GetProjectList(args *ArgsGetProjectList) (dataList []FieldsProject, dataCount int64, err error) {
-	dataCount, err = projectDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIntQuery("status", args.Status).SetSearchQuery([]string{"name", "desc"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = projectDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIntQuery("status", args.Status).SetIntQuery("acceptance_status", args.AcceptanceStatus).SetSearchQuery([]string{"name", "des"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -70,16 +69,14 @@ func GetProjectByID(args *ArgsGetProjectByID) (data FieldsProject, err error) {
 type ArgsCreateProject struct {
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
-	//提交组织成员ID
-	OrgBindID int64 `db:"org_bind_id" json:"orgBindID" check:"id"`
-	//用户ID
-	UserID int64 `db:"user_id" json:"userID" check:"id"`
-	//提交人姓名
-	SubmitterName string `db:"submitter_name" json:"submitterName" check:"des" min:"1" max:"300"`
+	//计划验证人ID
+	PlanVerifierID int64 `db:"plan_verifier_id" json:"planVerifierID" check:"id" empty:"true"`
+	//计划验收人姓名
+	PlanVerifierName string `db:"plan_verifier_name" json:"planVerifierName" check:"des" min:"1" max:"300" empty:"true"`
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
 	//描述
-	Desc string `db:"desc" json:"desc" check:"des" min:"1" max:"3000" empty:"true"`
+	Des string `db:"des" json:"des" check:"des" min:"1" max:"3000" empty:"true"`
 	//预估预算总金额
 	Total int64 `db:"total" json:"total" check:"int64Than0"`
 }
@@ -87,17 +84,15 @@ type ArgsCreateProject struct {
 // CreateProject 创建Project
 func CreateProject(args *ArgsCreateProject) (id int64, err error) {
 	//创建数据
-	id, err = projectDB.Insert().SetFields([]string{"status", "org_id", "org_bind_id", "user_id", "submitter_name", "approver_id", "approver_name", "name", "desc", "total"}).Add(map[string]any{
-		"status":         0,
-		"org_id":         args.OrgID,
-		"org_bind_id":    args.OrgBindID,
-		"user_id":        args.UserID,
-		"submitter_name": args.SubmitterName,
-		"approver_id":    0,
-		"approver_name":  "",
-		"name":           args.Name,
-		"desc":           args.Desc,
-		"total":          args.Total,
+	id, err = projectDB.Insert().SetFields([]string{"status", "acceptance_status", "org_id", "plan_verifier_id", "plan_verifier_name", "name", "des", "total"}).Add(map[string]any{
+		"status":             0,
+		"acceptance_status":  0,
+		"org_id":             args.OrgID,
+		"plan_verifier_id":   args.PlanVerifierID,
+		"plan_verifier_name": args.PlanVerifierName,
+		"name":               args.Name,
+		"des":                args.Des,
+		"total":              args.Total,
 	}).ExecAndResultID()
 	if err != nil {
 		return
@@ -112,14 +107,14 @@ type ArgsUpdateProject struct {
 	ID int64 `db:"id" json:"id" check:"id"`
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
-	//提交组织成员ID
-	OrgBindID int64 `db:"org_bind_id" json:"orgBindID" check:"id" empty:"true"`
-	//用户ID
-	UserID int64 `db:"user_id" json:"userID" check:"id" empty:"true"`
+	//计划验证人ID
+	PlanVerifierID int64 `db:"plan_verifier_id" json:"planVerifierID" check:"id" empty:"true"`
+	//计划验收人姓名
+	PlanVerifierName string `db:"plan_verifier_name" json:"planVerifierName" check:"des" min:"1" max:"300" empty:"true"`
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
 	//描述
-	Desc string `db:"desc" json:"desc" check:"des" min:"1" max:"3000" empty:"true"`
+	Des string `db:"des" json:"des" check:"des" min:"1" max:"3000" empty:"true"`
 	//预估预算总金额
 	Total int64 `db:"total" json:"total" check:"int64Than0"`
 }
@@ -127,10 +122,12 @@ type ArgsUpdateProject struct {
 // UpdateProject 修改Project
 func UpdateProject(args *ArgsUpdateProject) (err error) {
 	//更新数据
-	err = projectDB.Update().SetFields([]string{"name", "desc", "total"}).NeedUpdateTime().AddWhereID(args.ID).AddWhereOrgID(args.OrgID).AddWhereUserID(args.UserID).NamedExec(map[string]any{
-		"name":  args.Name,
-		"desc":  args.Desc,
-		"total": args.Total,
+	err = projectDB.Update().SetFields([]string{"plan_verifier_id", "plan_verifier_name", "name", "des", "total"}).NeedUpdateTime().AddWhereID(args.ID).AddWhereOrgID(args.OrgID).NamedExec(map[string]any{
+		"plan_verifier_id":   args.PlanVerifierID,
+		"plan_verifier_name": args.PlanVerifierName,
+		"name":               args.Name,
+		"des":                args.Des,
+		"total":              args.Total,
 	})
 	if err != nil {
 		return
@@ -155,6 +152,30 @@ func AuditProject(args *ArgsAuditProject) (err error) {
 	//更新数据
 	err = projectDB.Update().SetFields([]string{"status"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"status": args.Status,
+	})
+	if err != nil {
+		return
+	}
+	//删除缓冲
+	deleteProjectCache(args.ID)
+	//反馈
+	return
+}
+
+// ArgsAcceptanceProject 验收Project参数
+type ArgsAcceptanceProject struct {
+	//ID
+	ID int64 `db:"id" json:"id" check:"id"`
+	//验收状态
+	// 0: 未验收; 1: 验收中; 2: 验收通过; 3: 验收拒绝
+	AcceptanceStatus int `db:"acceptance_status" json:"acceptanceStatus"`
+}
+
+// AcceptanceProject 验收Project
+func AcceptanceProject(args *ArgsAcceptanceProject) (err error) {
+	//更新数据
+	err = projectDB.Update().SetFields([]string{"acceptance_status"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+		"acceptance_status": args.AcceptanceStatus,
 	})
 	if err != nil {
 		return
@@ -190,7 +211,7 @@ func getProjectByID(id int64) (data FieldsProject) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := projectDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "status", "org_id", "org_bind_id", "user_id", "submitter_name", "approver_id", "approver_name", "plan_verifier_id", "plan_verifier_name", "name", "desc", "total"}).GetByID(id).NeedLimit().Result(&data)
+	err := projectDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "status", "acceptance_status", "org_id", "plan_verifier_id", "plan_verifier_name", "name", "des", "total"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}
@@ -200,7 +221,7 @@ func getProjectByID(id int64) (data FieldsProject) {
 
 // 缓冲
 func getProjectCacheMark(id int64) string {
-	return fmt.Sprint("erp:Project:id.", id)
+	return fmt.Sprint("erp:project:id.", id)
 }
 
 func deleteProjectCache(id int64) {

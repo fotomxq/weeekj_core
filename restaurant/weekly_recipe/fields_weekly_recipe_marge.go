@@ -110,6 +110,10 @@ type FieldsWeeklyRecipeItem struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//售价
 	Price int64 `db:"price" json:"price" check:"int64Than0"`
+	//数量
+	Count int `db:"count" json:"count" check:"intThan0"`
+	//单位
+	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"300" empty:"true"`
 }
 
 // Value sql底层处理器

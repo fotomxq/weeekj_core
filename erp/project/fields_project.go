@@ -17,6 +17,9 @@ type FieldsProject struct {
 	//审批状态
 	// 0: 未审批; 1: 审批中; 2: 审批通过; 3: 审批拒绝
 	Status int `db:"status" json:"status"`
+	//验收状态
+	// 0: 未验收; 1: 验收中; 2: 验收通过; 3: 验收拒绝
+	AcceptanceStatus int `db:"acceptance_status" json:"acceptanceStatus"`
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//计划验证人ID
@@ -26,7 +29,7 @@ type FieldsProject struct {
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
 	//描述
-	Desc string `db:"desc" json:"desc" check:"des" min:"1" max:"3000" empty:"true"`
+	Des string `db:"des" json:"des" check:"des" min:"1" max:"3000" empty:"true"`
 	//预估预算总金额
 	Total int64 `db:"total" json:"total" check:"int64Than0"`
 }

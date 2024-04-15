@@ -28,6 +28,7 @@ import (
 	ERPPermanentAssets "github.com/fotomxq/weeekj_core/v5/erp/permanent_assets"
 	ERPProduct "github.com/fotomxq/weeekj_core/v5/erp/product"
 	ERPProductMall "github.com/fotomxq/weeekj_core/v5/erp/product_mall"
+	ERPProject "github.com/fotomxq/weeekj_core/v5/erp/project"
 	ERPSaleOut "github.com/fotomxq/weeekj_core/v5/erp/sale_out"
 	ERPWarehouse "github.com/fotomxq/weeekj_core/v5/erp/warehouse"
 	FinanceDeposit2 "github.com/fotomxq/weeekj_core/v5/finance/deposit2"
@@ -312,6 +313,8 @@ func Init() (err error) {
 	//固定资产
 	ERPPermanentAssets.OpenSub = OpenSub
 	ERPPermanentAssets.Init()
+	//项目管理
+	ERPProject.Init()
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//商城
