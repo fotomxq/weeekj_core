@@ -26,7 +26,7 @@ type ArgsGetBudgetList struct {
 
 // GetBudgetList 获取Budget列表
 func GetBudgetList(args *ArgsGetBudgetList) (dataList []FieldsBudget, dataCount int64, err error) {
-	dataCount, err = budgetDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIntQuery("status", args.Status).SetSearchQuery([]string{"name", "desc"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = budgetDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIntQuery("status", args.Status).SetSearchQuery([]string{"name", "des"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -74,7 +74,7 @@ type ArgsCreateBudget struct {
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"50"`
 	//描述
-	Desc string `db:"desc" json:"desc" check:"des" min:"1" max:"300" empty:"true"`
+	Des string `db:"des" json:"des" check:"des" min:"1" max:"300" empty:"true"`
 	//预算总金额
 	Total int64 `db:"total" json:"total" check:"int64Than0"`
 	//已使用金额
@@ -89,11 +89,11 @@ type ArgsCreateBudget struct {
 // CreateBudget 创建Budget
 func CreateBudget(args *ArgsCreateBudget) (id int64, err error) {
 	//创建数据
-	id, err = budgetDB.Insert().SetFields([]string{"status", "org_id", "name", "desc", "total", "used", "occupied"}).Add(map[string]any{
+	id, err = budgetDB.Insert().SetFields([]string{"status", "org_id", "name", "des", "total", "used", "occupied"}).Add(map[string]any{
 		"status":   0,
 		"org_id":   args.OrgID,
 		"name":     args.Name,
-		"desc":     args.Desc,
+		"des":      args.Des,
 		"total":    args.Total,
 		"used":     args.Used,
 		"occupied": args.Occupied,
@@ -121,7 +121,7 @@ type ArgsUpdateBudget struct {
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"50"`
 	//描述
-	Desc string `db:"desc" json:"desc" check:"des" min:"1" max:"300" empty:"true"`
+	Des string `db:"des" json:"des" check:"des" min:"1" max:"300" empty:"true"`
 	//预算总金额
 	Total int64 `db:"total" json:"total" check:"int64Than0"`
 	//已使用金额
@@ -134,9 +134,9 @@ type ArgsUpdateBudget struct {
 // UpdateBudget 修改Budget
 func UpdateBudget(args *ArgsUpdateBudget) (err error) {
 	//更新数据
-	err = budgetDB.Update().SetFields([]string{"name", "desc", "total", "used", "occupied"}).NeedUpdateTime().AddWhereID(args.ID).AddWhereOrgID(args.OrgID).NamedExec(map[string]any{
+	err = budgetDB.Update().SetFields([]string{"name", "des", "total", "used", "occupied"}).NeedUpdateTime().AddWhereID(args.ID).AddWhereOrgID(args.OrgID).NamedExec(map[string]any{
 		"name":     args.Name,
-		"desc":     args.Desc,
+		"des":      args.Des,
 		"total":    args.Total,
 		"used":     args.Used,
 		"occupied": args.Occupied,
@@ -199,7 +199,7 @@ func getBudgetByID(id int64) (data FieldsBudget) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := budgetDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "status", "org_id", "name", "desc", "total", "used", "occupied"}).GetByID(id).NeedLimit().Result(&data)
+	err := budgetDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "status", "org_id", "name", "des", "total", "used", "occupied"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}

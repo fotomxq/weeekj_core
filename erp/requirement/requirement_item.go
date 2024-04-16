@@ -63,6 +63,8 @@ type ArgsCreateRequirementItem struct {
 	RequisitionID int64 `db:"requisition_id" json:"requisitionID" check:"id"`
 	//产品ID
 	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	//产品价格
+	Price int64 `db:"price" json:"price" check:"price"`
 	//数量
 	Count int64 `db:"count" json:"count" check:"int64Than0"`
 	//供应商公司ID
@@ -74,9 +76,10 @@ type ArgsCreateRequirementItem struct {
 // CreateRequirementItem 创建RequirementItem
 func CreateRequirementItem(args *ArgsCreateRequirementItem) (id int64, err error) {
 	//创建数据
-	id, err = requirementItemDB.Insert().SetFields([]string{"requisition_id", "product_id", "count", "company_id", "company_name"}).Add(map[string]any{
+	id, err = requirementItemDB.Insert().SetFields([]string{"requisition_id", "product_id", "price", "count", "company_id", "company_name"}).Add(map[string]any{
 		"requisition_id": args.RequisitionID,
 		"product_id":     args.ProductID,
+		"price":          args.Price,
 		"count":          args.Count,
 		"company_id":     args.CompanyID,
 		"company_name":   args.CompanyName,
@@ -96,6 +99,8 @@ type ArgsUpdateRequirementItem struct {
 	RequisitionID int64 `db:"requisition_id" json:"requisitionID" check:"id"`
 	//产品ID
 	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	//产品价格
+	Price int64 `db:"price" json:"price" check:"price"`
 	//数量
 	Count int64 `db:"count" json:"count" check:"int64Than0"`
 	//供应商公司ID
@@ -107,9 +112,10 @@ type ArgsUpdateRequirementItem struct {
 // UpdateRequirementItem 修改RequirementItem
 func UpdateRequirementItem(args *ArgsUpdateRequirementItem) (err error) {
 	//更新数据
-	err = requirementItemDB.Update().SetFields([]string{"requisition_id", "product_id", "count", "remark", "company_id", "company_name"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+	err = requirementItemDB.Update().SetFields([]string{"requisition_id", "product_id", "price", "count", "remark", "company_id", "company_name"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"requisition_id": args.RequisitionID,
 		"product_id":     args.ProductID,
+		"price":          args.Price,
 		"count":          args.Count,
 		"company_id":     args.CompanyID,
 		"company_name":   args.CompanyName,
@@ -148,7 +154,7 @@ func getRequirementItemByID(id int64) (data FieldsRequisitionItem) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := requirementItemDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "requisition_id", "product_id", "count", "company_id", "company_name"}).GetByID(id).NeedLimit().Result(&data)
+	err := requirementItemDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "requisition_id", "product_id", "price", "count", "company_id", "company_name"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}

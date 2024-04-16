@@ -16,6 +16,8 @@ type FieldsRequisitionItem struct {
 	RequisitionID int64 `db:"requisition_id" json:"requisitionID" check:"id"`
 	//产品ID
 	ProductID int64 `db:"product_id" json:"productID" check:"id"`
+	//产品价格
+	Price int64 `db:"price" json:"price" check:"price"`
 	//数量
 	Count int64 `db:"count" json:"count" check:"int64Than0"`
 	//供应商公司ID

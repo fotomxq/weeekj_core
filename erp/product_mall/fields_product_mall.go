@@ -19,7 +19,7 @@ type FieldsProductMall struct {
 	//产品名称
 	ProductName string `db:"product_name" json:"productName" check:"des" min:"1" max:"300"`
 	//挂出价格
-	Price int64 `db:"price" json:"price" check:"float64Than0"`
+	Price int64 `db:"price" json:"price" check:"price"`
 	//所属分类ID
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id"`
 }
