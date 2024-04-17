@@ -65,6 +65,15 @@ func GetProjectByID(args *ArgsGetProjectByID) (data FieldsProject, err error) {
 	return
 }
 
+// GetProjectNameByID 获取项目名称
+func GetProjectNameByID(id int64) string {
+	data := getProjectByID(id)
+	if data.ID < 1 {
+		return ""
+	}
+	return data.Name
+}
+
 // ArgsCreateProject 创建Project参数
 type ArgsCreateProject struct {
 	//组织ID

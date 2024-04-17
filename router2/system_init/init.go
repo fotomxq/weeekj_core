@@ -24,6 +24,7 @@ import (
 	BlogStuRead "github.com/fotomxq/weeekj_core/v5/blog/stu_read"
 	BlogUserRead "github.com/fotomxq/weeekj_core/v5/blog/user_read"
 	ERPAudit "github.com/fotomxq/weeekj_core/v5/erp/audit"
+	ERPBudget "github.com/fotomxq/weeekj_core/v5/erp/budget"
 	ERPDocument "github.com/fotomxq/weeekj_core/v5/erp/document"
 	ERPPermanentAssets "github.com/fotomxq/weeekj_core/v5/erp/permanent_assets"
 	ERPProduct "github.com/fotomxq/weeekj_core/v5/erp/product"
@@ -318,6 +319,8 @@ func Init() (err error) {
 	ERPProject.Init()
 	//采购申请
 	ERPRequirement.Init()
+	//预算管理
+	ERPBudget.Init()
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//商城
