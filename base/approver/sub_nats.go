@@ -52,4 +52,18 @@ func subNatsRequest(_ *nats.Msg, _ string, approverID int64, moduleCode string, 
 		CoreLog.Error(appendLog, ", data parse error: ", err)
 		return
 	}
+	//创建新的审批
+	errCode, err := CreateLog(&ArgsCreateLog{
+		OrgID:          params.OrgID,
+		OrgBindID:      params.OrgBindID,
+		UserID:         params.UserID,
+		ModuleCode:     moduleCode,
+		ForkCode:       params.ForkCode,
+		ApproverID:     approverID,
+		ApproverRemark: params.ApproverRemark,
+	})
+	if err != nil {
+		CoreLog.Error(appendLog, ", create log error: ", err, ", err code: ", errCode)
+		return
+	}
 }
