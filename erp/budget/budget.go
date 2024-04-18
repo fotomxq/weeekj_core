@@ -106,6 +106,7 @@ func CreateBudget(args *ArgsCreateBudget) (id int64, err error) {
 	if err != nil {
 		return
 	}
+	//nats 通知审批
 	BaseApproverMod.PushRequest("erp_budget", id, BaseApproverMod.ParamsPushRequest{
 		OrgID:          args.OrgID,
 		OrgBindID:      args.OrgBindID,
