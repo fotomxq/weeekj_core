@@ -216,7 +216,42 @@ func CreateLog(args *ArgsCreateLog) (errCode string, err error) {
 		errCode = "err_insert"
 		return
 	}
-	newLogID = newLogID
+	//记录最开始的审批流
+	startFlow := -1
+	var flowID int64 = -1
+	//遍历配置行数据
+	for _, v := range configData.Items {
+		var vFlowID int64
+		vFlowID, err = createLogFlow(&argsCreateLogFlow{
+			LogID:     newLogID,
+			FlowOrder: v.FlowOrder,
+			OrgBindID: args.OrgBindID,
+			UserID:    args.UserID,
+		})
+		if err != nil {
+			errCode = "err_insert"
+			return
+		}
+		if startFlow < 0 {
+			startFlow = v.FlowOrder
+			flowID = vFlowID
+		} else {
+			if startFlow > v.FlowOrder {
+				startFlow = v.FlowOrder
+				flowID = vFlowID
+			}
+		}
+	}
+	//修改flowID状态为1
+	if flowID > 0 {
+		err = logFlowDB.Update().SetFields([]string{"status"}).NeedUpdateTime().AddWhereID(flowID).NamedExec(map[string]any{
+			"status": 1,
+		})
+		if err != nil {
+			errCode = "err_update"
+			return
+		}
+	}
 	//反馈
 	return
 }

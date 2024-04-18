@@ -146,13 +146,6 @@ func ApproveLogFlow(args *ArgsApproveLogFlow) (errCode string, err error) {
 	// 更新状态为1等待审批
 	for _, v := range flowList {
 		if v.FlowOrder == nowFlowData.FlowOrder+1 {
-			err = logFlowDB.Update().SetFields([]string{"status"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
-				"status": 1,
-			})
-			if err != nil {
-				errCode = "err_update"
-				return
-			}
 			break
 		}
 	}
@@ -170,16 +163,12 @@ type argsCreateLogFlow struct {
 	OrgBindID int64 `db:"org_bind_id" json:"orgBindID" check:"id"`
 	//用户ID
 	UserID int64 `db:"user_id" json:"userID" check:"id"`
-	//审批备注
-	ApproverRemark string `db:"approver_remark" json:"approverRemark" check:"des" min:"1" max:"300" empty:"true"`
-	//拒绝备注
-	RejectRemark string `db:"reject_remark" json:"rejectRemark" check:"des" min:"1" max:"300" empty:"true"`
 }
 
 // createLogFlow 创建审批流
-func createLogFlow(args *argsCreateLogFlow) (err error) {
+func createLogFlow(args *argsCreateLogFlow) (newID int64, err error) {
 	//插入数据
-	_, err = logFlowDB.Insert().SetFields([]string{"log_id", "flow_order", "status", "approve_at", "org_bind_id", "user_id", "approver_name", "approver_remark", "reject_remark"}).Add(map[string]any{
+	newID, err = logFlowDB.Insert().SetFields([]string{"log_id", "flow_order", "status", "approve_at", "org_bind_id", "user_id", "approver_name", "approver_remark", "reject_remark"}).Add(map[string]any{
 		"log_id":          args.LogID,
 		"flow_order":      args.FlowOrder,
 		"status":          0,
@@ -187,8 +176,8 @@ func createLogFlow(args *argsCreateLogFlow) (err error) {
 		"org_bind_id":     args.OrgBindID,
 		"user_id":         args.UserID,
 		"approver_name":   getApproverName(args.OrgBindID, args.UserID),
-		"approver_remark": args.ApproverRemark,
-		"reject_remark":   args.RejectRemark,
+		"approver_remark": "",
+		"reject_remark":   "",
 	}).ExecAndResultID()
 	if err != nil {
 		return

@@ -119,6 +119,30 @@ func CreateConfig(args *ArgsCreateConfig) (configID int64, errCode string, err e
 		errCode = "err_have_replace"
 		return
 	}
+	//审批流过长
+	if len(args.Items) > 999 {
+		errCode = "err_approver_flow_order_max"
+		return
+	}
+	//审批流节点必须顺序连续
+	checkItemFlow := 0
+	for {
+		isFind := false
+		for _, v := range args.Items {
+			if checkItemFlow == v.FlowOrder {
+				isFind = true
+				break
+			}
+		}
+		if !isFind {
+			errCode = "err_approver_flow_order"
+			return
+		}
+		if checkItemFlow >= len(args.Items)-1 {
+			break
+		}
+		checkItemFlow += 1
+	}
 	//创建数据
 	configID, err = configDB.Insert().SetFields([]string{"org_id", "module_code", "name", "desc", "fork_code"}).Add(map[string]any{
 		"org_id":      args.OrgID,
