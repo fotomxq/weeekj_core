@@ -3,6 +3,7 @@ package ERPProject
 import (
 	"errors"
 	"fmt"
+	BaseApproverMod "github.com/fotomxq/weeekj_core/v5/base/approver/mod"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -106,6 +107,14 @@ func CreateProject(args *ArgsCreateProject) (id int64, err error) {
 	if err != nil {
 		return
 	}
+	//nats 通知审批
+	BaseApproverMod.PushRequest("erp_project", id, BaseApproverMod.ParamsPushRequest{
+		OrgID:          args.OrgID,
+		OrgBindID:      0,
+		UserID:         0,
+		ForkCode:       "default",
+		ApproverRemark: args.Des,
+	})
 	//反馈
 	return
 }

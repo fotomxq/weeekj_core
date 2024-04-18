@@ -30,6 +30,7 @@ import (
 	ERPProduct "github.com/fotomxq/weeekj_core/v5/erp/product"
 	ERPProductMall "github.com/fotomxq/weeekj_core/v5/erp/product_mall"
 	ERPProject "github.com/fotomxq/weeekj_core/v5/erp/project"
+	ERPPurchase "github.com/fotomxq/weeekj_core/v5/erp/purchase"
 	ERPRequirement "github.com/fotomxq/weeekj_core/v5/erp/requirement"
 	ERPSaleOut "github.com/fotomxq/weeekj_core/v5/erp/sale_out"
 	ERPWarehouse "github.com/fotomxq/weeekj_core/v5/erp/warehouse"
@@ -321,7 +322,8 @@ func Init() (err error) {
 	ERPRequirement.Init()
 	//预算管理
 	ERPBudget.Init()
-
+	//ERP采购订单
+	ERPPurchase.Init()
 	///////////////////////////////////////////////////////////////////////////////////
 	//商城
 	///////////////////////////////////////////////////////////////////////////////////

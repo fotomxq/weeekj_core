@@ -3,6 +3,7 @@ package ERPRequirement
 import (
 	"errors"
 	"fmt"
+	BaseApproverMod "github.com/fotomxq/weeekj_core/v5/base/approver/mod"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -92,6 +93,14 @@ func CreateRequirement(args *ArgsCreateRequirement) (id int64, err error) {
 	if err != nil {
 		return
 	}
+	//nats 通知审批
+	BaseApproverMod.PushRequest("erp_requirement", id, BaseApproverMod.ParamsPushRequest{
+		OrgID:          args.OrgID,
+		OrgBindID:      args.OrgBindID,
+		UserID:         0,
+		ForkCode:       "default",
+		ApproverRemark: args.Remark,
+	})
 	//反馈
 	return
 }
@@ -115,7 +124,7 @@ type ArgsUpdateRequirement struct {
 // UpdateRequirement 修改Requirement
 func UpdateRequirement(args *ArgsUpdateRequirement) (err error) {
 	//更新数据
-	err = requirementDB.Update().SetFields([]string{"org_id", "org_bind_id", "remark", "project_id", "project_name"}).NeedUpdateTime().AddWhereID(args.ID).AddWhereOrgID(args.OrgID).NamedExec(map[string]any{
+	err = requirementDB.Update().SetFields([]string{"org_bind_id", "remark", "project_id", "project_name"}).NeedUpdateTime().AddWhereID(args.ID).AddWhereOrgID(args.OrgID).NamedExec(map[string]any{
 		"org_bind_id":  args.OrgBindID,
 		"remark":       args.Remark,
 		"project_id":   args.ProjectID,
