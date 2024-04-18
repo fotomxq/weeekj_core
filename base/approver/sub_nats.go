@@ -22,6 +22,17 @@ func subNats() {
 		EventParams:  "",
 	})
 	CoreNats.SubDataByteNoErr("base_approver_request", "/base/approver/request", subNatsRequest)
+	//广播审批结果
+	_ = BaseService.SetService(&BaseService.ArgsSetService{
+		ExpireAt:     CoreFilter.GetNowTimeCarbon().AddDay().Time,
+		Name:         "基础审批服务审批结束通知",
+		Description:  "广播审批结果，外部模块可订阅审批结果更新数据",
+		EventSubType: "push",
+		Code:         "base_approver_result",
+		EventType:    "nats",
+		EventURL:     "/base/approver/result",
+		EventParams:  "",
+	})
 }
 
 // dataSubNatsRequest 请求数据包

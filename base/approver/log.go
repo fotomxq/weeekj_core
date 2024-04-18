@@ -251,6 +251,7 @@ func CreateLog(args *ArgsCreateLog) (errCode string, err error) {
 			errCode = "err_update"
 			return
 		}
+		deleteLogFlowCache(flowID)
 	}
 	//反馈
 	return
@@ -295,6 +296,18 @@ func DeleteLog(args *ArgsDeleteLog) (err error) {
 	}
 	_ = clearLogFlow(args.ID)
 	//反馈
+	return
+}
+
+// 更新审批日志状态
+func updateLogStatus(id int64, status int) (err error) {
+	err = logDB.Update().SetFields([]string{"status"}).NeedUpdateTime().AddWhereID(id).NamedExec(map[string]any{
+		"status": status,
+	})
+	if err != nil {
+		return
+	}
+	deleteLogCache(id)
 	return
 }
 

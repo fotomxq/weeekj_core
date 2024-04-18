@@ -142,11 +142,46 @@ func ApproveLogFlow(args *ArgsApproveLogFlow) (errCode string, err error) {
 		errCode = "err_update"
 		return
 	}
+	deleteLogFlowCache(args.ID)
 	//找到下一个节点
 	// 更新状态为1等待审批
+	isFindNext := false
+	nextFlowOrder := nowFlowData.FlowOrder + 1
 	for _, v := range flowList {
-		if v.FlowOrder == nowFlowData.FlowOrder+1 {
+		if nextFlowOrder == v.FlowOrder {
+			err = logFlowDB.Update().SetFields([]string{"status"}).NeedUpdateTime().AddWhereID(v.ID).NamedExec(map[string]any{
+				"status": 1,
+			})
+			if err != nil {
+				errCode = "err_update"
+				return
+			}
+			deleteLogFlowCache(v.ID)
+			isFindNext = true
 			break
+		}
+	}
+	//已经达到审批结束位置，更新主体状态
+	if !isFindNext {
+		logStatus := 1
+		if args.IsApprove {
+			logStatus = 2
+		} else {
+			logStatus = 3
+		}
+		err = updateLogStatus(nowFlowData.LogID, logStatus)
+		if err != nil {
+			errCode = "err_update"
+			return
+		}
+	} else {
+		//检查日志是否为审批中
+		if logData.Status == 0 {
+			err = updateLogStatus(nowFlowData.LogID, 1)
+			if err != nil {
+				errCode = "err_update"
+				return
+			}
 		}
 	}
 	//反馈
