@@ -107,6 +107,7 @@ func GetLogByID(args *ArgsGetLogByID) (data DataLog, err error) {
 		OrgBindID:     rawData.OrgBindID,
 		UserID:        rawData.UserID,
 		SubmitterName: rawData.SubmitterName,
+		Status:        rawData.Status,
 		ModuleCode:    rawData.ModuleCode,
 		ApproverID:    rawData.ApproverID,
 		ConfigID:      rawData.ConfigID,

@@ -25,6 +25,9 @@ type DataLog struct {
 	UserID int64 `db:"user_id" json:"userID" check:"id"`
 	//提交人姓名
 	SubmitterName string `db:"submitter_name" json:"submitterName" check:"des" min:"1" max:"300"`
+	//审批状态
+	// 0: 未审批; 1: 审批中; 2: 审批通过; 3: 审批拒绝
+	Status int `db:"status" json:"status"`
 	//关联的模块标识码
 	// erp_project
 	ModuleCode string `db:"module_code" json:"moduleCode" check:"des" min:"1" max:"50"`
