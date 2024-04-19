@@ -5,6 +5,7 @@ import (
 	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	OrgCore "github.com/fotomxq/weeekj_core/v5/org/core"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
@@ -142,6 +143,19 @@ func CreateConfig(args *ArgsCreateConfig) (configID int64, errCode string, err e
 			break
 		}
 		checkItemFlow += 1
+	}
+	//遍历配置行，自动补全信息
+	for k, v := range args.Items {
+		if v.OrgBindID > 0 && v.UserID < 1 {
+			vOrgBindData, _ := OrgCore.GetBind(&OrgCore.ArgsGetBind{
+				ID:     v.OrgBindID,
+				OrgID:  -1,
+				UserID: -1,
+			})
+			if vOrgBindData.ID > 0 && vOrgBindData.UserID > 0 {
+				args.Items[k].UserID = vOrgBindData.UserID
+			}
+		}
 	}
 	//创建数据
 	configID, err = configDB.Insert().SetFields([]string{"org_id", "module_code", "name", "desc", "fork_code"}).Add(map[string]any{
