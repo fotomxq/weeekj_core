@@ -23,7 +23,7 @@ type FieldsRecipe struct {
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
-	StoreID int64 `db:"store_id" json:"storeID" check:"id"`
+	StoreID int64 `db:"store_id" json:"storeID" check:"id" empty:"true"`
 	// 建议售价
 	Price int64 `db:"price" json:"price" check:"int64Than0"`
 	//备注

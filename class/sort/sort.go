@@ -95,6 +95,24 @@ func (t *Sort) GetList(args *ArgsGetList) (dataList []FieldsSort, dataCount int6
 	return
 }
 
+// GetByName 通过名称获取分类
+func (t *Sort) GetByName(bindID int64, name string) (data FieldsSort, err error) {
+	err = Router2SystemConfig.MainDB.Get(&data, "SELECT id "+"FROM"+" "+t.SortTableName+" WHERE bind_id = $1 AND name = $2", bindID, name)
+	if err != nil {
+		return
+	}
+	if data.ID < 1 {
+		err = errors.New("no data")
+		return
+	}
+	data = t.getByID(data.ID)
+	if data.ID < 1 {
+		err = errors.New("no data")
+		return
+	}
+	return
+}
+
 // GetAll 获取组织下所有分类
 func (t *Sort) GetAll(bindID int64, parentID int64) (dataList []FieldsSort, err error) {
 	var rawList []FieldsSort
