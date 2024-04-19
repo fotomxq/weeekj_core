@@ -18,10 +18,14 @@ type FieldsRecipe struct {
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//菜品名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
+	//单位
+	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"60" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
 	StoreID int64 `db:"store_id" json:"storeID" check:"id"`
 	// 建议售价
 	Price int64 `db:"price" json:"price" check:"int64Than0"`
+	//备注
+	Remark string `db:"remark" json:"remark" check:"des" min:"0" max:"3000" empty:"true"`
 }

@@ -75,23 +75,29 @@ type ArgsCreateRecipe struct {
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//菜品名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
+	//单位
+	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"60" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
 	StoreID int64 `db:"store_id" json:"storeID" check:"id"`
 	// 建议售价
 	Price int64 `db:"price" json:"price" check:"int64Than0"`
+	//备注
+	Remark string `db:"remark" json:"remark" check:"des" min:"0" max:"3000" empty:"true"`
 }
 
 // CreateRecipe 创建Recipe
 func CreateRecipe(args *ArgsCreateRecipe) (id int64, err error) {
 	//创建数据
-	id, err = recipeDB.Insert().SetFields([]string{"category_id", "name", "org_id", "store_id", "price"}).Add(map[string]any{
+	id, err = recipeDB.Insert().SetFields([]string{"category_id", "name", "unit", "org_id", "store_id", "price", "remark"}).Add(map[string]any{
 		"category_id": args.CategoryID,
 		"name":        args.Name,
+		"unit":        args.Unit,
 		"org_id":      args.OrgID,
 		"store_id":    args.StoreID,
 		"price":       args.Price,
+		"remark":      args.Remark,
 	}).ExecAndResultID()
 	if err != nil {
 		return
@@ -108,23 +114,29 @@ type ArgsUpdateRecipe struct {
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//菜品名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
+	//单位
+	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"60" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
 	StoreID int64 `db:"store_id" json:"storeID" check:"id"`
 	// 建议售价
 	Price int64 `db:"price" json:"price" check:"int64Than0"`
+	//备注
+	Remark string `db:"remark" json:"remark" check:"des" min:"0" max:"3000" empty:"true"`
 }
 
 // UpdateRecipe 修改Recipe
 func UpdateRecipe(args *ArgsUpdateRecipe) (err error) {
 	//更新数据
-	err = recipeDB.Update().SetFields([]string{"category_id", "name", "org_id", "store_id", "price"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+	err = recipeDB.Update().SetFields([]string{"category_id", "name", "unit", "org_id", "store_id", "price", "remark"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"category_id": args.CategoryID,
 		"name":        args.Name,
+		"unit":        args.Unit,
 		"org_id":      args.OrgID,
 		"store_id":    args.StoreID,
 		"price":       args.Price,
+		"remark":      args.Remark,
 	})
 	if err != nil {
 		return
@@ -160,7 +172,7 @@ func getRecipeByID(id int64) (data FieldsRecipe) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := recipeDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "category_id", "name", "org_id", "store_id", "price"}).GetByID(id).NeedLimit().Result(&data)
+	err := recipeDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "category_id", "name", "unit", "org_id", "store_id", "price", "remark"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}
