@@ -81,18 +81,24 @@ type argsSetWarehouse struct {
 // setWarehouse 修改库存台帐
 // 默认允许负数库存台帐出现，这说明业务操作的问题，系统不做限制。未来可能做开关处理。
 func setWarehouse(args *argsSetWarehouse) (err error) {
-	//更新库存台帐数据
-	err = warehouseDB.Update().SetFields([]string{"product_id", "count", "total", "price"}).NeedUpdateTime().SetWhereAnd("product_id", args.ProductID).NamedExec(map[string]any{
-		"product_id": args.ProductID,
-		"count":      args.Count,
-		"total":      args.Total,
-		"price":      args.Price,
-	})
-	if err != nil {
-		return
+	//检查是否存在数据
+	data := getWarehouseData(args.ProductID)
+	if data.ID < 1 {
+		//warehouseDB.
+	} else {
+		//更新库存台帐数据
+		err = warehouseDB.Update().SetFields([]string{"product_id", "count", "total", "price"}).NeedUpdateTime().SetWhereAnd("product_id", args.ProductID).NamedExec(map[string]any{
+			"product_id": args.ProductID,
+			"count":      args.Count,
+			"total":      args.Total,
+			"price":      args.Price,
+		})
+		if err != nil {
+			return
+		}
+		//删除缓冲
+		deleteWarehouseCache(args.ProductID)
 	}
-	//删除缓冲
-	deleteWarehouseCache(args.ProductID)
 	//反馈
 	return
 }
