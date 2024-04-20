@@ -10,10 +10,15 @@ var (
 	cacheCoreTime = 1800
 	//数据表
 	coreDB CoreSQL2.Client
+	//OpenSub 订阅
+	OpenSub = false
 )
 
 // Init 初始化
 func Init() {
 	//初始化数据表
 	coreDB.Init(&Router2SystemConfig.MainSQL, "eam_core")
+	if OpenSub {
+		subNats()
+	}
 }

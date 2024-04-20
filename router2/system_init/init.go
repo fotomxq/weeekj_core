@@ -24,6 +24,7 @@ import (
 	BlogExam "github.com/fotomxq/weeekj_core/v5/blog/exam"
 	BlogStuRead "github.com/fotomxq/weeekj_core/v5/blog/stu_read"
 	BlogUserRead "github.com/fotomxq/weeekj_core/v5/blog/user_read"
+	EAMCore "github.com/fotomxq/weeekj_core/v5/eam/core"
 	ERPAudit "github.com/fotomxq/weeekj_core/v5/erp/audit"
 	ERPBudget "github.com/fotomxq/weeekj_core/v5/erp/budget"
 	ERPDocument "github.com/fotomxq/weeekj_core/v5/erp/document"
@@ -327,6 +328,9 @@ func Init() (err error) {
 	ERPBudget.Init()
 	//ERP采购订单
 	ERPPurchase.Init()
+	//EAM
+	EAMCore.OpenSub = OpenSub
+	EAMCore.Init()
 	///////////////////////////////////////////////////////////////////////////////////
 	//商城
 	///////////////////////////////////////////////////////////////////////////////////
