@@ -176,63 +176,89 @@ func GetProductValsTemplateID(args *ArgsGetProductValsTemplateID) (templateBindD
 			return
 		}
 	}
-	//获取产品品牌绑定关系（优先级最高）
-	var brandBindData FieldsBrandBind
-	brandBindList, _, _ := GetBrandBindList(&ArgsGetBrandBindList{
-		Pages: CoreSQL2.ArgsPages{
-			Page: 1,
-			Max:  1,
-			Sort: "id",
-			Desc: false,
-		},
-		OrgID:     args.OrgID,
-		BrandID:   -1,
-		CompanyID: -1,
-		ProductID: args.ProductID,
-		IsRemove:  false,
-	})
-	if len(brandBindList) > 0 {
-		brandBindData = brandBindList[0]
-	} else {
-		if args.CompanyID > 0 {
-			brandBindList, _, _ = GetBrandBindList(&ArgsGetBrandBindList{
+	//获取产品与型号绑定关系（优先级最高）
+	if productData.ModelTypeID > 0 {
+		modelTypeData := GetModelType(productData.ModelTypeID, args.OrgID)
+		if modelTypeData.ID > 0 {
+			templateBindList, _, _ := GetTemplateBindList(&ArgsGetTemplateBindList{
 				Pages: CoreSQL2.ArgsPages{
 					Page: 1,
 					Max:  1,
 					Sort: "id",
 					Desc: false,
 				},
-				OrgID:     args.OrgID,
-				BrandID:   -1,
-				CompanyID: args.CompanyID,
-				ProductID: -1,
-				IsRemove:  false,
+				OrgID:       args.OrgID,
+				TemplateID:  -1,
+				CategoryID:  -1,
+				BrandID:     -1,
+				ModelTypeID: modelTypeData.ID,
+				IsRemove:    false,
 			})
-			if len(brandBindList) > 0 {
-				brandBindData = brandBindList[0]
+			if len(templateBindList) > 0 {
+				templateBindData = templateBindList[0]
 			}
 		}
 	}
-	//检查品牌和模板的绑定关系
-	if brandBindData.ID > 0 {
-		templateBindList, _, _ := GetTemplateBindList(&ArgsGetTemplateBindList{
+	//获取产品品牌绑定关系（优先级中等）
+	if templateBindData.ID < 1 {
+		var brandBindData FieldsBrandBind
+		brandBindList, _, _ := GetBrandBindList(&ArgsGetBrandBindList{
 			Pages: CoreSQL2.ArgsPages{
 				Page: 1,
 				Max:  1,
 				Sort: "id",
 				Desc: false,
 			},
-			OrgID:      args.OrgID,
-			TemplateID: -1,
-			CategoryID: -1,
-			BrandID:    brandBindData.BrandID,
-			IsRemove:   false,
+			OrgID:     args.OrgID,
+			BrandID:   -1,
+			CompanyID: -1,
+			ProductID: args.ProductID,
+			IsRemove:  false,
 		})
-		if len(templateBindList) > 0 {
-			templateBindData = templateBindList[0]
+		if len(brandBindList) > 0 {
+			brandBindData = brandBindList[0]
+		} else {
+			if args.CompanyID > 0 {
+				brandBindList, _, _ = GetBrandBindList(&ArgsGetBrandBindList{
+					Pages: CoreSQL2.ArgsPages{
+						Page: 1,
+						Max:  1,
+						Sort: "id",
+						Desc: false,
+					},
+					OrgID:     args.OrgID,
+					BrandID:   -1,
+					CompanyID: args.CompanyID,
+					ProductID: -1,
+					IsRemove:  false,
+				})
+				if len(brandBindList) > 0 {
+					brandBindData = brandBindList[0]
+				}
+			}
+		}
+		//检查品牌和模板的绑定关系
+		if brandBindData.ID > 0 {
+			templateBindList, _, _ := GetTemplateBindList(&ArgsGetTemplateBindList{
+				Pages: CoreSQL2.ArgsPages{
+					Page: 1,
+					Max:  1,
+					Sort: "id",
+					Desc: false,
+				},
+				OrgID:       args.OrgID,
+				TemplateID:  -1,
+				CategoryID:  -1,
+				BrandID:     brandBindData.BrandID,
+				ModelTypeID: -1,
+				IsRemove:    false,
+			})
+			if len(templateBindList) > 0 {
+				templateBindData = templateBindList[0]
+			}
 		}
 	}
-	//如果不存在品牌绑定关系，则检查产品分类绑定关系
+	//获取产品分类绑定关系（优先级最低）
 	if templateBindData.ID < 1 {
 		templateBindData = getTemplateBindRecursionByCategoryID(args.OrgID, productData.SortID)
 	}

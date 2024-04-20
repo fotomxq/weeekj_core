@@ -39,6 +39,8 @@ type FieldsProduct struct {
 	PinYin string `db:"pin_yin" json:"pinYin" check:"des" min:"1" max:"300" empty:"true"`
 	//英文名称
 	EnName string `db:"en_name" json:"enName" check:"des" min:"1" max:"300" empty:"true"`
+	//规格型号
+	ModelTypeID int64 `db:"model_type_id" json:"modelTypeID" check:"id" empty:"true"`
 	//生产厂商名称
 	ManufacturerName string `db:"manufacturer_name" json:"manufacturerName" check:"des" min:"1" max:"300" empty:"true"`
 	//标题
@@ -56,7 +58,7 @@ type FieldsProduct struct {
 	SizeW int `db:"size_w" json:"sizeW" check:"intThan0" empty:"true"`
 	SizeH int `db:"size_h" json:"sizeH" check:"intThan0" empty:"true"`
 	SizeZ int `db:"size_z" json:"sizeZ" check:"intThan0" empty:"true"`
-	//规格类型
+	//包装类型
 	// 0 盒装; 1 袋装; 3 散装; 4 瓶装
 	PackType int `db:"pack_type" json:"packType"`
 	//包装单位名称

@@ -31,6 +31,8 @@ type ArgsSetProduct struct {
 	PinYin string `db:"pin_yin" json:"pinYin" check:"des" min:"1" max:"300" empty:"true"`
 	//英文名称
 	EnName string `db:"en_name" json:"enName" check:"des" min:"1" max:"300" empty:"true"`
+	//规格型号
+	ModelTypeID int64 `db:"model_type_id" json:"modelTypeID" check:"id" empty:"true"`
 	//生产厂商名称
 	ManufacturerName string `db:"manufacturer_name" json:"manufacturerName" check:"des" min:"1" max:"300" empty:"true"`
 	//标题
@@ -182,7 +184,7 @@ func SetProduct(args *ArgsSetProduct) (data FieldsProduct, errCode string, err e
 		deleteProductCache(data.ID)
 	} else {
 		//创建产品
-		err = CoreSQL.CreateOneAndData(Router2SystemConfig.MainDB.DB, "erp_product", "INSERT INTO erp_product (org_id, company_id, company_name, sort_id, tags, sn, code, pin_yin, en_name, manufacturer_name, title, title_des, des, cover_file_ids, expire_hour, weight, size_w, size_h, size_z, pack_type, pack_unit_name, pack_unit, tip_price, tip_tax_price, is_discount, currency, cost_price, tax, tax_cost_price, rebate_price, params) VALUES (:org_id, :company_id, :company_name, :sort_id, :tags, :sn, :code, :pin_yin, :en_name, :manufacturer_name, :title, :title_des, :des, :cover_file_ids, :expire_hour, :weight, :size_w, :size_h, :size_z, :pack_type, :pack_unit_name, :pack_unit, :tip_price, :tip_tax_price, :is_discount, :currency, :cost_price, :tax, :tax_cost_price, :rebate_price, :params)", map[string]interface{}{
+		err = CoreSQL.CreateOneAndData(Router2SystemConfig.MainDB.DB, "erp_product", "INSERT INTO erp_product (org_id, company_id, company_name, sort_id, tags, sn, code, pin_yin, en_name, model_type_id, manufacturer_name, title, title_des, des, cover_file_ids, expire_hour, weight, size_w, size_h, size_z, pack_type, pack_unit_name, pack_unit, tip_price, tip_tax_price, is_discount, currency, cost_price, tax, tax_cost_price, rebate_price, params) VALUES (:org_id, :company_id, :company_name, :sort_id, :tags, :sn, :code, :pin_yin, :en_name, :manufacturer_name, :title, :title_des, :des, :cover_file_ids, :expire_hour, :weight, :size_w, :size_h, :size_z, :pack_type, :pack_unit_name, :pack_unit, :tip_price, :tip_tax_price, :is_discount, :currency, :cost_price, :tax, :tax_cost_price, :rebate_price, :params)", map[string]interface{}{
 			"org_id":            args.OrgID,
 			"company_id":        args.CompanyID,
 			"company_name":      args.CompanyName,
@@ -191,6 +193,7 @@ func SetProduct(args *ArgsSetProduct) (data FieldsProduct, errCode string, err e
 			"code":              args.Code,
 			"pin_yin":           args.PinYin,
 			"en_name":           args.EnName,
+			"model_type_id":     args.ModelTypeID,
 			"manufacturer_name": args.ManufacturerName,
 			"sn":                args.SN,
 			"title":             args.Title,
@@ -359,7 +362,7 @@ func SetProduct2(args *ArgsSetProduct) (data FieldsProduct, errCode string, err 
 		deleteProductCache(data.ID)
 	} else {
 		//创建产品
-		err = CoreSQL.CreateOneAndData(Router2SystemConfig.MainDB.DB, "erp_product", "INSERT INTO erp_product (org_id, company_id, company_name, sort_id, tags, sn, code, pin_yin, en_name, manufacturer_name, title, title_des, des, cover_file_ids, expire_hour, weight, size_w, size_h, size_z, pack_type, pack_unit_name, pack_unit, tip_price, tip_tax_price, is_discount, currency, cost_price, tax, tax_cost_price, rebate_price, params) VALUES (:org_id, :company_id, :company_name, :sort_id, :tags, :sn, :code, :pin_yin, :en_name, :manufacturer_name, :title, :title_des, :des, :cover_file_ids, :expire_hour, :weight, :size_w, :size_h, :size_z, :pack_type, :pack_unit_name, :pack_unit, :tip_price, :tip_tax_price, :is_discount, :currency, :cost_price, :tax, :tax_cost_price, :rebate_price, :params)", map[string]interface{}{
+		err = CoreSQL.CreateOneAndData(Router2SystemConfig.MainDB.DB, "erp_product", "INSERT INTO erp_product (org_id, company_id, company_name, sort_id, tags, sn, code, pin_yin, en_name, model_type_id, manufacturer_name, title, title_des, des, cover_file_ids, expire_hour, weight, size_w, size_h, size_z, pack_type, pack_unit_name, pack_unit, tip_price, tip_tax_price, is_discount, currency, cost_price, tax, tax_cost_price, rebate_price, params) VALUES (:org_id, :company_id, :company_name, :sort_id, :tags, :sn, :code, :pin_yin, :en_name, :manufacturer_name, :title, :title_des, :des, :cover_file_ids, :expire_hour, :weight, :size_w, :size_h, :size_z, :pack_type, :pack_unit_name, :pack_unit, :tip_price, :tip_tax_price, :is_discount, :currency, :cost_price, :tax, :tax_cost_price, :rebate_price, :params)", map[string]interface{}{
 			"org_id":            args.OrgID,
 			"company_id":        args.CompanyID,
 			"company_name":      args.CompanyName,
@@ -368,6 +371,7 @@ func SetProduct2(args *ArgsSetProduct) (data FieldsProduct, errCode string, err 
 			"code":              args.Code,
 			"pin_yin":           args.PinYin,
 			"en_name":           args.EnName,
+			"model_type_id":     args.ModelTypeID,
 			"manufacturer_name": args.ManufacturerName,
 			"sn":                args.SN,
 			"title":             args.Title,

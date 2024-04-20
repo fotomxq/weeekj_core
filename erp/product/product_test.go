@@ -16,6 +16,8 @@ var (
 func TestProductInit(t *testing.T) {
 	TestInit(t)
 	TestSortCreate(t)
+	TestCreateModelType(t)
+	TestGetModelType(t)
 }
 
 func TestSetProduct(t *testing.T) {
@@ -31,6 +33,7 @@ func TestSetProduct(t *testing.T) {
 		Code:             CoreFilter.GetRandStr4(10),
 		PinYin:           "ceshigongyingshanga",
 		EnName:           "ceshigongyingshanga",
+		ModelTypeID:      newModelTypeData.ID,
 		ManufacturerName: "测试生产厂商A",
 		Title:            "产品测试名称",
 		TitleDes:         "产品测试描述",
@@ -73,6 +76,7 @@ func TestSetProduct2(t *testing.T) {
 		Code:             CoreFilter.GetRandStr4(10),
 		PinYin:           "ceshigongyingshanga",
 		EnName:           "ceshigongyingshanga",
+		ModelTypeID:      newModelTypeData.ID,
 		ManufacturerName: "测试生产厂商A",
 		Title:            "产品测试名称",
 		TitleDes:         "产品测试描述",
@@ -189,5 +193,6 @@ func TestDeleteProduct(t *testing.T) {
 
 func TestProductClear(t *testing.T) {
 	TestSortDelete(t)
+	TestDeleteModelType(t)
 	TestClear(t)
 }

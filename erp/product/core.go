@@ -26,6 +26,7 @@ var (
 	cacheTemplateTime       = 1800
 	cacheTemplateBindTime   = 1800
 	cacheProductValsTime    = 1800
+	cacheModelTypeTime      = 1800
 	//OpenSub 订阅
 	OpenSub = false
 	//数据表
@@ -35,6 +36,7 @@ var (
 	templateDB     CoreSQL2.Client
 	templateBindDB CoreSQL2.Client
 	productValsDB  CoreSQL2.Client
+	modelTypeDB    CoreSQL2.Client
 )
 
 // Init 初始化
@@ -46,6 +48,7 @@ func Init() {
 	templateDB.Init(&Router2SystemConfig.MainSQL, "erp_product_template")
 	templateBindDB.Init(&Router2SystemConfig.MainSQL, "erp_product_template_bind")
 	productValsDB.Init(&Router2SystemConfig.MainSQL, "erp_product_vals")
+	modelTypeDB.Init(&Router2SystemConfig.MainSQL, "erp_product_model_type")
 	//nats
 	if OpenSub {
 		subNats()

@@ -109,6 +109,8 @@ type ArgsGetProductListV2 struct {
 	BrandID int64 `db:"brand_id" json:"brandID" check:"id" empty:"true"`
 	//所使用模板ID
 	TemplateID int64 `db:"template_id" json:"templateID" check:"id" empty:"true"`
+	//规格型号
+	ModelTypeID int64 `db:"model_type_id" json:"modelTypeID" check:"id" empty:"true"`
 	//是否删除
 	IsRemove bool `db:"is_remove" json:"isRemove" check:"bool"`
 	//搜索编码
@@ -129,11 +131,12 @@ func GetProductListV2(args *ArgsGetProductListV2) (dataList []FieldsProduct, dat
 				Sort: "id",
 				Desc: false,
 			},
-			OrgID:      args.OrgID,
-			TemplateID: args.TemplateID,
-			CategoryID: -1,
-			BrandID:    -1,
-			IsRemove:   false,
+			OrgID:       args.OrgID,
+			TemplateID:  args.TemplateID,
+			CategoryID:  -1,
+			BrandID:     -1,
+			ModelTypeID: -1,
+			IsRemove:    false,
 		})
 		for _, v := range templateBindList {
 			if v.BrandID > 0 {
@@ -195,7 +198,7 @@ func GetProductListV2(args *ArgsGetProductListV2) (dataList []FieldsProduct, dat
 		}
 	}
 	var rawList []FieldsProduct
-	dataCount, err = productDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetSearchQuery([]string{"code"}, args.SearchCode).SetSearchQuery([]string{"title", "title_des", "des"}, args.Search).SetIDQuery("org_id", args.OrgID).SetIDQuery("sort_id", args.SortID).SetIDsQuery("tags", args.Tags).SetIntQuery("pack_type", args.PackType).SetIDQuery("company_id", args.CompanyID).SetIDsQuery("sort_id", sortIDList).SelectList("").ResultAndCount(&rawList)
+	dataCount, err = productDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetSearchQuery([]string{"code"}, args.SearchCode).SetSearchQuery([]string{"title", "title_des", "des"}, args.Search).SetIDQuery("org_id", args.OrgID).SetIDQuery("sort_id", args.SortID).SetIDsQuery("tags", args.Tags).SetIntQuery("pack_type", args.PackType).SetIDQuery("company_id", args.CompanyID).SetIDsQuery("sort_id", sortIDList).SetIDQuery("model_type_id", args.ModelTypeID).SelectList("").ResultAndCount(&rawList)
 	if err != nil {
 		return
 	}
@@ -298,7 +301,7 @@ func getProductByID(id int64) (data FieldsProduct) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := Router2SystemConfig.MainDB.Get(&data, "SELECT id, create_at, update_at, delete_at, org_id, company_id, company_name, sort_id, tags, sn, code, pin_yin, en_name, manufacturer_name, title, title_des, des, cover_file_ids, expire_hour, weight, size_w, size_h, size_z, pack_type, pack_unit_name, pack_unit, tip_price, tip_tax_price, is_discount, currency, cost_price, tax, tax_cost_price, rebate_price, params FROM erp_product WHERE id = $1", id)
+	err := Router2SystemConfig.MainDB.Get(&data, "SELECT id, create_at, update_at, delete_at, org_id, company_id, company_name, sort_id, tags, sn, code, pin_yin, en_name, model_type_id, manufacturer_name, title, title_des, des, cover_file_ids, expire_hour, weight, size_w, size_h, size_z, pack_type, pack_unit_name, pack_unit, tip_price, tip_tax_price, is_discount, currency, cost_price, tax, tax_cost_price, rebate_price, params FROM erp_product WHERE id = $1", id)
 	if err != nil {
 		return
 	}
@@ -316,6 +319,9 @@ func getProductByCode(orgID int64, code string) (data FieldsProduct) {
 		return
 	}
 	data = getProductByID(data.ID)
+	if data.ID < 1 {
+		return
+	}
 	Router2SystemConfig.MainCache.SetStruct(cacheMark, data, cacheProductTime)
 	return
 }

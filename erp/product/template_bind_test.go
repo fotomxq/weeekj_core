@@ -15,6 +15,8 @@ func TestTemplateBindInit(t *testing.T) {
 	TestTemplateInit(t)
 	TestCreateBPMThemeSlotData(t)
 	TestCreateTemplate(t)
+	TestCreateModelType(t)
+	TestGetModelType(t)
 	TestGetTemplate(t)
 }
 
@@ -90,5 +92,6 @@ func TestDeleteTemplateBind(t *testing.T) {
 
 func TestTemplateBindClear(t *testing.T) {
 	TestDeleteTemplate(t)
+	TestDeleteModelType(t)
 	TestTemplateClear(t)
 }

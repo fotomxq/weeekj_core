@@ -18,7 +18,12 @@ type FieldsTemplateBind struct {
 	TemplateID int64 `db:"template_id" json:"templateID" check:"id"`
 	//分类ID
 	// 关联ERPProduct.Sort模块
+	// 三选一，分类ID、品牌ID、规格型号ID
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//品牌ID
+	// 三选一，分类ID、品牌ID、规格型号ID
 	BrandID int64 `db:"brand_id" json:"brandID" check:"id" empty:"true"`
+	//规格型号
+	// 三选一，分类ID、品牌ID、规格型号ID
+	ModelTypeID int64 `db:"model_type_id" json:"modelTypeID" check:"id" empty:"true"`
 }

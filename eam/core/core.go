@@ -1,6 +1,7 @@
 package EAMCore
 
 import (
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
@@ -12,6 +13,8 @@ var (
 	coreDB CoreSQL2.Client
 	//OpenSub 订阅
 	OpenSub = false
+	//Sort 存放分类
+	Sort ClassSort.Sort
 )
 
 // Init 初始化

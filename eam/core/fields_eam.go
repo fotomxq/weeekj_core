@@ -28,7 +28,7 @@ type FieldsEAM struct {
 	//采购订单来源
 	ERPPurchaseOrderID int64 `db:"erp_purchase_order_id" json:"erpPurchaseOrderID" check:"id" empty:"true"`
 	//使用状态
-	// 0: 未使用; 1: 已使用; 2: 已报废; 3: 已闲置; 4 维修中
+	// 0: 未使用; 1: 已使用; 2: 已报废; 3: 已闲置
 	Status int `db:"status" json:"status"`
 	//单价金额
 	Price int64 `db:"price" json:"price" check:"int64Than0" empty:"true"`
