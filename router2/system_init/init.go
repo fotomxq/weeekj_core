@@ -5,6 +5,7 @@ import (
 	"fmt"
 	AnalysisAny "github.com/fotomxq/weeekj_core/v5/analysis/any"
 	AnalysisBindVisit "github.com/fotomxq/weeekj_core/v5/analysis/bind_visit"
+	BaseApprover "github.com/fotomxq/weeekj_core/v5/base/approver"
 	BaseBPM "github.com/fotomxq/weeekj_core/v5/base/bpm"
 	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
 	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
@@ -130,6 +131,8 @@ func Init() (err error) {
 	//服务
 	BaseService.OpenSub = OpenSub
 	BaseService.Init()
+	//审批
+	BaseApprover.Init()
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//统计

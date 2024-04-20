@@ -29,7 +29,7 @@ type ArgsGetConfigList struct {
 
 // GetConfigList 获取配置列表
 func GetConfigList(args *ArgsGetConfigList) (dataList []DataConfig, dataCount int64, err error) {
-	dataCount, err = configItemDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "flow_order"}).SetPages(args.Pages).SetDeleteQuery("delete_at", false).SetIDQuery("org_id", args.OrgID).SetStringQuery("module_code", args.ModuleCode).SetStringQuery("fork_code", args.ForkCode).SetSearchQuery([]string{"name", "description"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = configDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "flow_order"}).SetPages(args.Pages).SetDeleteQuery("delete_at", false).SetIDQuery("org_id", args.OrgID).SetStringQuery("module_code", args.ModuleCode).SetStringQuery("fork_code", args.ForkCode).SetSearchQuery([]string{"name", "description"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -57,7 +57,7 @@ type ArgsGetConfigByID struct {
 // GetConfigByID 获取配置
 func GetConfigByID(args *ArgsGetConfigByID) (data DataConfig, err error) {
 	rawData := getConfigByID(args.ID)
-	if data.ID < 1 {
+	if rawData.ID < 1 {
 		err = errors.New("no data")
 		return
 	}
@@ -88,10 +88,21 @@ func GetConfigByID(args *ArgsGetConfigByID) (data DataConfig, err error) {
 		DeleteAt:   rawData.DeleteAt,
 		OrgID:      rawData.OrgID,
 		ModuleCode: rawData.ModuleCode,
+		Name:       rawData.Name,
+		Des:        rawData.Des,
 		ForkCode:   rawData.ForkCode,
 		Items:      items,
 	}
 	return
+}
+
+// GetConfigNameByID 获取配置名称
+func GetConfigNameByID(id int64) string {
+	data := getConfigByID(id)
+	if data.ID < 1 {
+		return ""
+	}
+	return data.Name
 }
 
 // ArgsCreateConfig 创建配置参数
@@ -104,7 +115,7 @@ type ArgsCreateConfig struct {
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
 	//描述
-	Desc string `db:"desc" json:"desc" check:"des" min:"1" max:"300" empty:"true"`
+	Des string `db:"des" json:"des" check:"des" min:"1" max:"300" empty:"true"`
 	//审批分叉标识码
 	// 用于识别模块内，不同的审批流程
 	ForkCode string `db:"fork_code" json:"forkCode" check:"des" min:"1" max:"50"`
@@ -158,11 +169,11 @@ func CreateConfig(args *ArgsCreateConfig) (configID int64, errCode string, err e
 		}
 	}
 	//创建数据
-	configID, err = configDB.Insert().SetFields([]string{"org_id", "module_code", "name", "desc", "fork_code"}).Add(map[string]any{
+	configID, err = configDB.Insert().SetFields([]string{"org_id", "module_code", "name", "des", "fork_code"}).Add(map[string]any{
 		"org_id":      args.OrgID,
 		"module_code": args.ModuleCode,
 		"name":        args.Name,
-		"desc":        args.Desc,
+		"des":         args.Des,
 		"fork_code":   args.ForkCode,
 	}).ExecAndResultID()
 	if err != nil {
@@ -190,7 +201,7 @@ type ArgsUpdateConfig struct {
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
 	//描述
-	Desc string `db:"desc" json:"desc" check:"des" min:"1" max:"300" empty:"true"`
+	Des string `db:"des" json:"des" check:"des" min:"1" max:"300" empty:"true"`
 	//审批流配置
 	Items DataConfigItems `json:"items"`
 }
@@ -198,9 +209,9 @@ type ArgsUpdateConfig struct {
 // UpdateConfig 修改配置
 func UpdateConfig(args *ArgsUpdateConfig) (errCode string, err error) {
 	//更新数据
-	err = configDB.Update().SetFields([]string{"name", "desc"}).NeedUpdateTime().AddWhereID(args.ID).AddWhereOrgID(args.OrgID).NamedExec(map[string]any{
+	err = configDB.Update().SetFields([]string{"name", "des"}).NeedUpdateTime().AddWhereID(args.ID).AddWhereOrgID(args.OrgID).NamedExec(map[string]any{
 		"name": args.Name,
-		"desc": args.Desc,
+		"des":  args.Des,
 	})
 	if err != nil {
 		errCode = "err_update"
@@ -279,7 +290,7 @@ func getConfigByID(id int64) (data FieldsConfig) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := configDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "module_code", "name", "desc", "fork_code"}).GetByID(id).NeedLimit().Result(&data)
+	err := configDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "module_code", "name", "des", "fork_code"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}

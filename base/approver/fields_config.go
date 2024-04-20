@@ -20,7 +20,7 @@ type FieldsConfig struct {
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
 	//描述
-	Desc string `db:"description" json:"desc" check:"des" min:"1" max:"300" empty:"true"`
+	Des string `db:"des" json:"des" check:"des" min:"1" max:"300" empty:"true"`
 	//审批分叉标识码
 	// 用于识别模块内，不同的审批流程
 	ForkCode string `db:"fork_code" json:"forkCode" check:"des" min:"1" max:"50"`
