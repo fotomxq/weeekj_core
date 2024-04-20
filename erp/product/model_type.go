@@ -14,6 +14,8 @@ type ArgsGetModelTypeList struct {
 	Pages CoreSQL2.ArgsPages `json:"pages"`
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//品牌ID
+	BrandID int64 `db:"brand_id" json:"brandID" check:"id" empty:"true"`
 	//是否删除
 	IsRemove bool `json:"isRemove" check:"bool"`
 	//搜索
@@ -22,7 +24,7 @@ type ArgsGetModelTypeList struct {
 
 // GetModelTypeList 获取品牌列表
 func GetModelTypeList(args *ArgsGetModelTypeList) (dataList []FieldsModelType, dataCount int64, err error) {
-	dataCount, err = modelTypeDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = modelTypeDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIDQuery("brand_id", args.BrandID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -70,6 +72,8 @@ type ArgsCreateModelType struct {
 	Code string `db:"code" json:"code" check:"des" min:"1" max:"300"`
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
+	//品牌ID
+	BrandID int64 `db:"brand_id" json:"brandID" check:"id"`
 }
 
 // CreateModelType 创建品牌
@@ -81,10 +85,11 @@ func CreateModelType(args *ArgsCreateModelType) (id int64, err error) {
 		return
 	}
 	//创建数据
-	id, err = modelTypeDB.Insert().SetFields([]string{"org_id", "code", "name"}).Add(map[string]any{
-		"org_id": args.OrgID,
-		"code":   args.Code,
-		"name":   args.Name,
+	id, err = modelTypeDB.Insert().SetFields([]string{"org_id", "code", "name", "brand_id"}).Add(map[string]any{
+		"org_id":   args.OrgID,
+		"code":     args.Code,
+		"name":     args.Name,
+		"brand_id": args.BrandID,
 	}).ExecAndResultID()
 	if err != nil {
 		return
@@ -140,7 +145,7 @@ func getModelType(id int64) (data FieldsModelType) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := modelTypeDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "code", "name"}).GetByID(id).NeedLimit().Result(&data)
+	err := modelTypeDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "code", "name", "brand_id"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}
