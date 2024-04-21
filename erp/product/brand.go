@@ -48,6 +48,15 @@ func GetBrand(id int64, orgID int64) (data FieldsBrand) {
 	return
 }
 
+// GetBrandNameByID 获取品牌名称
+func GetBrandNameByID(id int64) (name string) {
+	data := getBrand(id)
+	if data.ID < 1 {
+		return
+	}
+	return data.Name
+}
+
 // GetBrandByCode 通过编码获取品牌
 func GetBrandByCode(code string, orgID int64) (data FieldsBrand) {
 	_ = brandDB.Get().GetByCodeAndOrgID(code, orgID).Result(&data)
