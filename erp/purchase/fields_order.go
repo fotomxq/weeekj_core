@@ -22,9 +22,12 @@ type FieldsOrder struct {
 	//提交用户ID
 	UserID int64 `db:"user_id" json:"userID" check:"id"`
 	//供应商公司ID
+	// 如果该采购订单行所有均为同一个供应商，则本数据有值
 	CompanyID int64 `db:"company_id" json:"companyID" check:"id" empty:"true"`
 	//供应商名称
 	CompanyName string `db:"company_name" json:"companyName" check:"des" min:"1" max:"300" empty:"true"`
 	//备注
 	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"300" empty:"true"`
+	//采购总金额
+	TotalAmount int64 `db:"total_amount" json:"totalAmount" check:"int64Than0"`
 }

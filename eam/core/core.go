@@ -13,8 +13,10 @@ var (
 	coreDB CoreSQL2.Client
 	//OpenSub 订阅
 	OpenSub = false
-	//Sort 存放分类
-	Sort ClassSort.Sort
+	//LocationPartitionSort 存放分类
+	LocationPartitionSort = ClassSort.Sort{
+		SortTableName: "eam_core_sort",
+	}
 )
 
 // Init 初始化
