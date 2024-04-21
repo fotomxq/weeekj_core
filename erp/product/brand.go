@@ -13,6 +13,9 @@ type ArgsGetBrandList struct {
 	Pages CoreSQL2.ArgsPages `json:"pages"`
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//关联分类
+	// 可选，如果给予，则可用于检索所属的分类ID
+	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 	//是否删除
 	IsRemove bool `json:"isRemove" check:"bool"`
 	//搜索
@@ -21,7 +24,7 @@ type ArgsGetBrandList struct {
 
 // GetBrandList 获取品牌列表
 func GetBrandList(args *ArgsGetBrandList) (dataList []FieldsBrand, dataCount int64, err error) {
-	dataCount, err = brandDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
+	dataCount, err = brandDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at", "name"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIDQuery("category_id", args.CategoryID).SetSearchQuery([]string{"name"}, args.Search).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -78,6 +81,9 @@ type ArgsCreateBrand struct {
 	Code string `db:"code" json:"code" check:"des" min:"1" max:"300"`
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
+	//关联分类
+	// 可选，如果给予，则可用于检索所属的分类ID
+	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 }
 
 // CreateBrand 创建品牌
@@ -89,10 +95,11 @@ func CreateBrand(args *ArgsCreateBrand) (id int64, err error) {
 		return
 	}
 	//创建数据
-	id, err = brandDB.Insert().SetFields([]string{"org_id", "code", "name"}).Add(map[string]any{
-		"org_id": args.OrgID,
-		"code":   args.Code,
-		"name":   args.Name,
+	id, err = brandDB.Insert().SetFields([]string{"org_id", "code", "name", "category_id"}).Add(map[string]any{
+		"org_id":      args.OrgID,
+		"code":        args.Code,
+		"name":        args.Name,
+		"category_id": args.CategoryID,
 	}).ExecAndResultID()
 	if err != nil {
 		return
@@ -148,7 +155,7 @@ func getBrand(id int64) (data FieldsBrand) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := brandDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "code", "name"}).GetByID(id).NeedLimit().Result(&data)
+	err := brandDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "code", "name", "category_id"}).GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}

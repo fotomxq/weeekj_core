@@ -17,4 +17,7 @@ type FieldsBrand struct {
 	Code string `db:"code" json:"code" check:"des" min:"1" max:"300"`
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300"`
+	//关联分类
+	// 可选，如果给予，则可用于检索所属的分类ID
+	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
 }
