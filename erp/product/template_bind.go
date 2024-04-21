@@ -173,10 +173,14 @@ func CreateTemplateBind(args *ArgsCreateTemplateBind) (id int64, err error) {
 	})
 	if data.ID > 0 {
 		if CoreFilter.CheckHaveTime(data.DeleteAt) {
-			id = data.ID
-			err = templateBindDB.Update().NeedSoft(true).NeedUpdateTime().AddWhereID(data.ID).SetFields([]string{"delete_at"}).NamedExec(map[string]any{
+			err = templateBindDB.Update().NeedSoft(false).NeedUpdateTime().AddWhereID(data.ID).SetFields([]string{"delete_at"}).NamedExec(map[string]any{
 				"delete_at": time.Time{},
 			})
+			if err != nil {
+				return
+			}
+			deleteTemplateBindCache(data.OrgID, data.TemplateID, data.CategoryID, data.BrandID, data.ModelTypeID)
+			id = data.ID
 			return
 		} else {
 			if args.TemplateID == data.TemplateID && args.CategoryID == data.CategoryID && args.BrandID == data.BrandID && args.ModelTypeID == data.ModelTypeID {

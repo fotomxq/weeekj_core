@@ -77,7 +77,75 @@ func TestCreateTemplateBind2(t *testing.T) {
 		return
 	}
 	ToolsTest.ReportData(t, nil, data)
-	//t.Error("t1")
+	err = DeleteTemplateBind(&ArgsDeleteTemplateBind{
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: newModelTypeData.ID,
+	})
+	ToolsTest.ReportError(t, err)
+}
+
+func TestCreateTemplateBind3(t *testing.T) {
+	newDataID, err := CreateTemplateBind(&ArgsCreateTemplateBind{
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: newModelTypeData.ID,
+	})
+	if err != nil {
+		t.Fatal("create template bind fail: ", err)
+		return
+	}
+	ToolsTest.ReportData(t, err, newDataID)
+	data := GetTemplateBindData(&ArgsGetTemplateBindData{
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: newModelTypeData.ID,
+	})
+	if data.ID < 1 {
+		t.Fatal("get template bind data fail")
+		return
+	}
+	ToolsTest.ReportData(t, nil, data)
+	err = DeleteTemplateBind(&ArgsDeleteTemplateBind{
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: newModelTypeData.ID,
+	})
+	ToolsTest.ReportError(t, err)
+	//第二次创建，测试删除后恢复数据
+	newDataID, err = CreateTemplateBind(&ArgsCreateTemplateBind{
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: newModelTypeData.ID,
+	})
+	if err != nil {
+		t.Fatal("create template bind fail 2: ", err)
+		return
+	}
+	ToolsTest.ReportData(t, err, newDataID)
+	data = GetTemplateBindData(&ArgsGetTemplateBindData{
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: newModelTypeData.ID,
+	})
+	if data.ID < 1 {
+		t.Fatal("get template bind data fail 2")
+		return
+	}
+	ToolsTest.ReportData(t, nil, data)
+	t.Error("t1")
 }
 
 func TestGetTemplateBindList(t *testing.T) {
