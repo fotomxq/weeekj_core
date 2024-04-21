@@ -281,6 +281,9 @@ type ArgsGetValsByBrandOrCategoryID struct {
 	BrandID int64 `db:"brand_id" json:"brandID" check:"id" empty:"true"`
 	//分类ID
 	CategoryID int64 `db:"category_id" json:"categoryID" check:"id" empty:"true"`
+	//规格型号
+	// 三选一，分类ID、品牌ID、规格型号ID
+	ModelTypeID int64 `db:"model_type_id" json:"modelTypeID" check:"id" empty:"true"`
 }
 
 // GetValsByBrandOrCategoryID 通过分类或品牌获取数据包
@@ -293,11 +296,12 @@ func GetValsByBrandOrCategoryID(args *ArgsGetValsByBrandOrCategoryID) (templateI
 			Sort: "id",
 			Desc: false,
 		},
-		OrgID:      args.OrgID,
-		TemplateID: -1,
-		CategoryID: -1,
-		BrandID:    args.BrandID,
-		IsRemove:   false,
+		OrgID:       args.OrgID,
+		TemplateID:  -1,
+		CategoryID:  -1,
+		BrandID:     args.BrandID,
+		ModelTypeID: args.ModelTypeID,
+		IsRemove:    false,
 	})
 	if len(templateBindList) > 0 {
 		templateBindData = templateBindList[0]
