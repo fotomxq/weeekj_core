@@ -52,6 +52,34 @@ func TestGetTemplateBindData(t *testing.T) {
 	ToolsTest.ReportData(t, nil, newTemplateBindData)
 }
 
+func TestCreateTemplateBind2(t *testing.T) {
+	newDataID, err := CreateTemplateBind(&ArgsCreateTemplateBind{
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: newModelTypeData.ID,
+	})
+	if err != nil {
+		t.Fatal("create template bind fail: ", err)
+		return
+	}
+	ToolsTest.ReportData(t, err, newDataID)
+	data := GetTemplateBindData(&ArgsGetTemplateBindData{
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: newModelTypeData.ID,
+	})
+	if data.ID < 1 {
+		t.Fatal("get template bind data fail")
+		return
+	}
+	ToolsTest.ReportData(t, nil, data)
+	//t.Error("t1")
+}
+
 func TestGetTemplateBindList(t *testing.T) {
 	dataList, dataCount, err := GetTemplateBindList(&ArgsGetTemplateBindList{
 		Pages: CoreSQL2.ArgsPages{
