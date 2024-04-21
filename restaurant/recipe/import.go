@@ -76,6 +76,7 @@ func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile s
 			findSortData, _ = Sort.GetByName(args.OrgID, rows[0])
 		}
 		if findSortData.ID < 1 {
+			CoreLog.Error("restaurant recipe import data failed, sort not found: ", rows[0])
 			continue
 		}
 		//检查菜品是否存在
