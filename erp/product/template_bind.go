@@ -30,7 +30,7 @@ type ArgsGetTemplateBindList struct {
 
 // GetTemplateBindList 获取绑定关系列表
 func GetTemplateBindList(args *ArgsGetTemplateBindList) (dataList []FieldsTemplateBind, dataCount int64, err error) {
-	dataCount, err = templateBindDB.Select().SetFieldsList([]string{"id", "org_id", "template_id", "category_id", "brand_id", "model_type_id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SelectList("((delete_at < to_timestamp(1000000) AND $1 = false) OR (delete_at >= to_timestamp(1000000) AND $1 = true)) AND (org_id = $2 OR $2 < 0) AND (template_id = $3 OR $3 < 0) AND (category_id = $4 OR $4 < 0) AND (brand_id = $5 OR $5 < 0) AND (model_type_id = $6 OR $6 < 0)", args.IsRemove, args.OrgID, args.TemplateID, args.CategoryID, args.BrandID, args.ModelTypeID).ResultAndCount(&dataList)
+	dataCount, err = templateBindDB.Select().SetFieldsList([]string{"id", "org_id", "template_id", "category_id", "brand_id", "model_type_id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove).SetIDQuery("org_id", args.OrgID).SetIDQuery("template_id", args.TemplateID).SetIDQuery("category_id", args.CategoryID).SetIDQuery("brand_id", args.BrandID).SetIDQuery("model_type_id", args.ModelTypeID).SelectList("").ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -116,7 +116,7 @@ func GetTemplateBindData(args *ArgsGetTemplateBindData) (data FieldsTemplateBind
 		return
 	}
 	//获取数据
-	err := templateBindDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "template_id", "category_id", "brand_id", "model_type_id"}).AppendWhere("(org_id = $1 OR $1 < 0) AND template_id = $2 AND (category_id = $3 OR $3 < 0) AND (brand_id = $4 OR $4 < 0) AND (model_type_id = $5 OR $5 < 0)", args.OrgID, args.TemplateID, args.CategoryID, args.BrandID, args.ModelTypeID).NeedLimit().Result(&data)
+	err := templateBindDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "template_id", "category_id", "brand_id", "model_type_id"}).AppendWhere("org_id = $1 AND template_id = $2 AND category_id = $3 AND brand_id = $4 AND model_type_id = $5", args.OrgID, args.TemplateID, args.CategoryID, args.BrandID, args.ModelTypeID).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}
@@ -205,6 +205,19 @@ func CreateTemplateBind(args *ArgsCreateTemplateBind) (id int64, err error) {
 			}
 		}
 	} else {
+		//修正参数
+		if args.OrgID < 1 {
+			args.OrgID = 0
+		}
+		if args.CategoryID < 1 {
+			args.CategoryID = 0
+		}
+		if args.BrandID < 1 {
+			args.BrandID = 0
+		}
+		if args.ModelTypeID < 1 {
+			args.ModelTypeID = 0
+		}
 		//数据不存在，创建数据
 		id, err = templateBindDB.Insert().SetFields([]string{"org_id", "template_id", "category_id", "brand_id", "model_type_id"}).Add(map[string]any{
 			"org_id":        args.OrgID,
