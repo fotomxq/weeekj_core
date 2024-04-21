@@ -49,7 +49,7 @@ func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile s
 			break
 		}
 		rows := excelVals[step]
-		if len(rows) < 12 {
+		if len(rows) < 3 {
 			break
 		}
 		if rows[0] == "" || rows[1] == "" {
@@ -57,7 +57,7 @@ func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile s
 		}
 		//检查分类是否存在
 		findSortData, _ := Sort.GetByName(args.OrgID, rows[0])
-		if findSortData.ID < 1 {
+		if findSortData.ID < 1 && len(rows) > 2 {
 			//创建分类
 			_, err = Sort.Create(&ClassSort.ArgsCreate{
 				BindID:      args.OrgID,
@@ -65,7 +65,7 @@ func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile s
 				ParentID:    0,
 				CoverFileID: 0,
 				DesFiles:    nil,
-				Name:        "",
+				Name:        rows[0],
 				Des:         "",
 				Params:      nil,
 			})

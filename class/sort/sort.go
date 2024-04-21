@@ -360,6 +360,12 @@ type ArgsCreate struct {
 
 // Create 创建分组
 func (t *Sort) Create(args *ArgsCreate) (data FieldsSort, err error) {
+	if args.DesFiles == nil {
+		args.DesFiles = pq.Int64Array{}
+	}
+	if args.Params == nil {
+		args.Params = CoreSQLConfig.FieldsConfigsType{}
+	}
 	if args.ParentID > 0 {
 		data = t.getByID(args.ParentID)
 		if data.ID < 1 || !CoreFilter.EqID2(args.BindID, data.BindID) {
