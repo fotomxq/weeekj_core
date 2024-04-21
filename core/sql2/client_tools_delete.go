@@ -1,6 +1,7 @@
 package CoreSQL2
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -100,7 +101,19 @@ func (t *ClientDeleteCtx) Exec(where string, args ...any) error {
 		t.clientCtx.query = fmt.Sprint("DELETE ", "FROM ", t.clientCtx.client.TableName, " WHERE ", where)
 	}
 	t.makeWhere()
-	_, err := t.clientCtx.Exec(t.clientCtx.query, args...)
+	result, err := t.clientCtx.Exec(t.clientCtx.query, args...)
+	if err == nil {
+		var affected int64
+		affected, err = result.RowsAffected()
+		if err == nil {
+			if affected < 1 {
+				err = errors.New(fmt.Sprint("no affected rows"))
+			}
+		}
+	}
+	if err != nil {
+		err = errors.New(fmt.Sprint(err, ", ", t.clientCtx.getErrorQueryByArgs(args)))
+	}
 	appendLog("delete", t.clientCtx.query, false, t.clientCtx.client.startAt, nil, err)
 	return err
 }
@@ -113,7 +126,19 @@ func (t *ClientDeleteCtx) ExecAny(arg interface{}) error {
 		t.clientCtx.query = fmt.Sprint("DELETE ", "FROM ", t.clientCtx.client.TableName, t.clientCtx.query)
 	}
 	t.makeWhere()
-	_, err := t.clientCtx.NamedExec(t.clientCtx.query, arg)
+	result, err := t.clientCtx.NamedExec(t.clientCtx.query, arg)
+	if err == nil {
+		var affected int64
+		affected, err = result.RowsAffected()
+		if err == nil {
+			if affected < 1 {
+				err = errors.New(fmt.Sprint("no affected rows"))
+			}
+		}
+	}
+	if err != nil {
+		err = errors.New(fmt.Sprint(err, ", ", t.clientCtx.getErrorQueryByArgs(arg)))
+	}
 	appendLog("delete", t.clientCtx.query, false, t.clientCtx.client.startAt, nil, err)
 	return err
 }
@@ -128,7 +153,19 @@ func (t *ClientDeleteCtx) ExecNamed(arg map[string]interface{}) error {
 		t.clientCtx.query = fmt.Sprint("DELETE ", "FROM ", t.clientCtx.client.TableName, t.clientCtx.query)
 	}
 	t.makeWhere()
-	_, err := t.clientCtx.NamedExec(t.clientCtx.query, t.makeArgs(arg))
+	result, err := t.clientCtx.NamedExec(t.clientCtx.query, t.makeArgs(arg))
+	if err == nil {
+		var affected int64
+		affected, err = result.RowsAffected()
+		if err == nil {
+			if affected < 1 {
+				err = errors.New(fmt.Sprint("no affected rows"))
+			}
+		}
+	}
+	if err != nil {
+		err = errors.New(fmt.Sprint(err, ", ", t.clientCtx.getErrorQueryByArgs(arg)))
+	}
 	appendLog("delete", t.clientCtx.query, false, t.clientCtx.client.startAt, nil, err)
 	return err
 }

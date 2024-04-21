@@ -131,11 +131,20 @@ func (t *ClientUpdateCtx) NamedExec(arg map[string]interface{}) error {
 	t.makeWhere()
 	result, err := t.clientCtx.NamedExec(t.clientCtx.query, t.makeArgs(arg))
 	if err == nil {
-		rowLen, _ := result.RowsAffected()
-		if rowLen < 1 {
-			err = errors.New("rows affected is empty")
-			return err
+		var rowLen int64
+		rowLen, err = result.RowsAffected()
+		if err == nil {
+			if rowLen < 1 {
+				err = errors.New("rows affected is empty")
+			}
+		} else {
+			err = errors.New("rows affected error: " + err.Error())
 		}
+	} else {
+		err = errors.New("named exec error: " + err.Error())
+	}
+	if err != nil {
+		err = errors.New(fmt.Sprint(err, ", ", t.clientCtx.getErrorQueryByArgs(arg)))
 	}
 	appendLog("update", t.clientCtx.query, false, t.clientCtx.client.startAt, nil, err)
 	return err

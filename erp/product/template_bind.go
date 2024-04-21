@@ -97,6 +97,19 @@ func GetTemplateBindData(args *ArgsGetTemplateBindData) (data FieldsTemplateBind
 	if args.CategoryID < 1 && args.BrandID < 1 && args.ModelTypeID < 1 {
 		return
 	}
+	//修正参数
+	if args.OrgID < 1 {
+		args.OrgID = 0
+	}
+	if args.CategoryID < 1 {
+		args.CategoryID = 0
+	}
+	if args.BrandID < 1 {
+		args.BrandID = 0
+	}
+	if args.ModelTypeID < 1 {
+		args.ModelTypeID = 0
+	}
 	//获取缓冲
 	cacheMark := getTemplateBindCacheMark(args.OrgID, args.TemplateID, args.CategoryID, args.BrandID, args.ModelTypeID)
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
@@ -171,6 +184,7 @@ func CreateTemplateBind(args *ArgsCreateTemplateBind) (id int64, err error) {
 		BrandID:     args.BrandID,
 		ModelTypeID: args.ModelTypeID,
 	})
+	//如果数据存在，检查是否删除
 	if data.ID > 0 {
 		if CoreFilter.CheckHaveTime(data.DeleteAt) {
 			err = templateBindDB.Update().NeedSoft(false).NeedUpdateTime().AddWhereID(data.ID).SetFields([]string{"delete_at"}).NamedExec(map[string]any{
@@ -191,7 +205,7 @@ func CreateTemplateBind(args *ArgsCreateTemplateBind) (id int64, err error) {
 			}
 		}
 	} else {
-		//创建数据
+		//数据不存在，创建数据
 		id, err = templateBindDB.Insert().SetFields([]string{"org_id", "template_id", "category_id", "brand_id", "model_type_id"}).Add(map[string]any{
 			"org_id":        args.OrgID,
 			"template_id":   args.TemplateID,
@@ -238,7 +252,7 @@ func DeleteTemplateBind(args *ArgsDeleteTemplateBind) (err error) {
 	if err != nil {
 		return
 	}
-	deleteTemplateBindCache(args.OrgID, args.TemplateID, args.CategoryID, args.BrandID, args.ModelTypeID)
+	deleteTemplateBindCache(data.OrgID, data.TemplateID, data.CategoryID, data.BrandID, data.ModelTypeID)
 	return
 }
 

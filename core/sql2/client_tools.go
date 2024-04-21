@@ -56,3 +56,12 @@ func (t *ClientCtx) getSQLTimeLessNow() string {
 func (t *ClientCtx) getSQLTimeThanNow() string {
 	return " >= NOW()"
 }
+
+func (t *ClientCtx) getErrorQueryByArgs(args any) string {
+	//检查参数长度，自动裁剪
+	argsStr := fmt.Sprint(args)
+	if len(argsStr) > 100 {
+		argsStr = fmt.Sprint(argsStr[:100], "...")
+	}
+	return fmt.Sprint("query: ", t.query, ", args: ", argsStr)
+}
