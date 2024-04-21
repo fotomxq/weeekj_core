@@ -80,26 +80,43 @@ func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile s
 			continue
 		}
 		//检查菜品是否存在
-		findRecipeData := GetRecipeByName(args.OrgID, -1, rows[1])
-		if findRecipeData.ID < 1 {
-			//梳理价格
-			var vPrice int64 = 0
-			vPrice = CoreFilter.GetInt64ByStringNoErr(rows[2])
-			//创建菜品
-			_, err = CreateRecipe(&ArgsCreateRecipe{
-				CategoryID: findSortData.ID,
-				Name:       rows[1],
-				Unit:       "",
-				OrgID:      args.OrgID,
-				StoreID:    0,
-				Price:      vPrice,
-				Remark:     "",
-			})
-			if err != nil {
-				errCode = "err_insert"
-				return
+		if rows[2] != "" {
+			findRecipeData := GetRecipeByName(args.OrgID, -1, rows[1])
+			if findRecipeData.ID < 1 {
+				//梳理价格
+				var vPrice int64 = 0
+				vPrice = CoreFilter.GetInt64ByStringNoErr(rows[2])
+				//创建菜品
+				_, err = CreateRecipe(&ArgsCreateRecipe{
+					CategoryID: findSortData.ID,
+					Name:       rows[1],
+					Unit:       "",
+					OrgID:      args.OrgID,
+					StoreID:    0,
+					Price:      vPrice,
+					Remark:     "",
+				})
+				if err != nil {
+					errCode = "err_insert"
+					return
+				}
+			} else {
+				//更新菜品
+				err = UpdateRecipe(&ArgsUpdateRecipe{
+					ID:         findRecipeData.ID,
+					CategoryID: findSortData.ID,
+					Name:       rows[1],
+					Unit:       findRecipeData.Unit,
+					OrgID:      findRecipeData.OrgID,
+					StoreID:    findRecipeData.StoreID,
+					Price:      CoreFilter.GetInt64ByStringNoErr(rows[2]),
+					Remark:     findRecipeData.Remark,
+				})
+				if err != nil {
+					errCode = "err_update"
+					return
+				}
 			}
-
 		}
 	}
 	//删除临时文件
