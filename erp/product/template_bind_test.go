@@ -145,7 +145,79 @@ func TestCreateTemplateBind3(t *testing.T) {
 		return
 	}
 	ToolsTest.ReportData(t, nil, data)
-	t.Error("t1")
+}
+
+func TestCreateTemplateBind4(t *testing.T) {
+	newDataID, err := CreateTemplateBind(&ArgsCreateTemplateBind{
+		OrgID:       0,
+		TemplateID:  1,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: 2,
+	})
+	if err != nil {
+		t.Fatal("create template bind fail: ", err)
+		return
+	}
+	ToolsTest.ReportData(t, err, newDataID)
+	data := GetTemplateBindData(&ArgsGetTemplateBindData{
+		OrgID:       0,
+		TemplateID:  1,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: 2,
+	})
+	if data.ID < 1 {
+		t.Fatal("get template bind data fail")
+		return
+	}
+	ToolsTest.ReportData(t, nil, data)
+	err = DeleteTemplateBind(&ArgsDeleteTemplateBind{
+		OrgID:       0,
+		TemplateID:  1,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: 2,
+	})
+	ToolsTest.ReportError(t, err)
+	data = GetTemplateBindData(&ArgsGetTemplateBindData{
+		OrgID:       0,
+		TemplateID:  1,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: 2,
+	})
+	if data.ID < 1 {
+		t.Fatal("get template bind data fail")
+		return
+	} else {
+		t.Log("get template bind data success, delete data: ", data)
+	}
+	//第二次创建，测试删除后恢复数据
+	newDataID, err = CreateTemplateBind(&ArgsCreateTemplateBind{
+		OrgID:       0,
+		TemplateID:  1,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: 2,
+	})
+	if err != nil {
+		t.Fatal("create template bind fail 2: ", err)
+		return
+	}
+	ToolsTest.ReportData(t, err, newDataID)
+	data = GetTemplateBindData(&ArgsGetTemplateBindData{
+		OrgID:       0,
+		TemplateID:  1,
+		CategoryID:  0,
+		BrandID:     0,
+		ModelTypeID: 2,
+	})
+	if data.ID < 1 {
+		t.Fatal("get template bind data fail 2")
+		return
+	}
+	ToolsTest.ReportData(t, nil, data)
 }
 
 func TestGetTemplateBindList(t *testing.T) {

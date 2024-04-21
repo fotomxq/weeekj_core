@@ -1,6 +1,7 @@
 package CoreSQL2
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -128,7 +129,14 @@ func (t *ClientUpdateCtx) makeArgs(arg map[string]interface{}) map[string]interf
 
 func (t *ClientUpdateCtx) NamedExec(arg map[string]interface{}) error {
 	t.makeWhere()
-	_, err := t.clientCtx.NamedExec(t.clientCtx.query, t.makeArgs(arg))
+	result, err := t.clientCtx.NamedExec(t.clientCtx.query, t.makeArgs(arg))
+	if err == nil {
+		rowLen, _ := result.RowsAffected()
+		if rowLen < 1 {
+			err = errors.New("rows affected is empty")
+			return err
+		}
+	}
 	appendLog("update", t.clientCtx.query, false, t.clientCtx.client.startAt, nil, err)
 	return err
 }
