@@ -143,7 +143,7 @@ func SetProduct(args *ArgsSetProduct) (data FieldsProduct, errCode string, err e
 			args.CompanyID = productCompanyData.CompanyID
 		}
 		//更新数据
-		_, err = CoreSQL.UpdateOneSoft(Router2SystemConfig.MainDB.DB, "UPDATE erp_product SET update_at = NOW(), delete_at = to_timestamp(0), company_id = :company_id, company_name = :company_name, sort_id = :sort_id, tags = :tags, sn = :sn, code = :code, pin_yin = :pin_yin, en_name = :en_name, manufacturer_name = :manufacturer_name, title = :title, title_des = :title_des, des = :des, cover_file_ids = :cover_file_ids, expire_hour = :expire_hour, weight = :weight, size_w = :size_w, size_h = :size_h, size_z = :size_z, pack_type = :pack_type, pack_unit_name = :pack_unit_name, pack_unit = :pack_unit, tip_price = :tip_price, tip_tax_price = :tip_tax_price, is_discount = :is_discount, currency = :currency, cost_price = :cost_price, tax = :tax, tax_cost_price = :tax_cost_price, rebate_price = :rebate_price, params = :params WHERE id = :id", map[string]interface{}{
+		_, err = CoreSQL.UpdateOneSoft(Router2SystemConfig.MainDB.DB, "UPDATE erp_product SET update_at = NOW(), delete_at = to_timestamp(0), company_id = :company_id, company_name = :company_name, sort_id = :sort_id, tags = :tags, sn = :sn, code = :code, pin_yin = :pin_yin, en_name = :en_name, model_type_id = :model_type_id, manufacturer_name = :manufacturer_name, title = :title, title_des = :title_des, des = :des, cover_file_ids = :cover_file_ids, expire_hour = :expire_hour, weight = :weight, size_w = :size_w, size_h = :size_h, size_z = :size_z, pack_type = :pack_type, pack_unit_name = :pack_unit_name, pack_unit = :pack_unit, tip_price = :tip_price, tip_tax_price = :tip_tax_price, is_discount = :is_discount, currency = :currency, cost_price = :cost_price, tax = :tax, tax_cost_price = :tax_cost_price, rebate_price = :rebate_price, params = :params WHERE id = :id", map[string]interface{}{
 			"id":                data.ID,
 			"company_id":        args.CompanyID,
 			"company_name":      args.CompanyName,
@@ -153,6 +153,7 @@ func SetProduct(args *ArgsSetProduct) (data FieldsProduct, errCode string, err e
 			"code":              args.Code,
 			"pin_yin":           args.PinYin,
 			"en_name":           args.EnName,
+			"model_type_id":     args.ModelTypeID,
 			"manufacturer_name": args.ManufacturerName,
 			"title":             args.Title,
 			"title_des":         args.TitleDes,
@@ -321,7 +322,7 @@ func SetProduct2(args *ArgsSetProduct) (data FieldsProduct, errCode string, err 
 	//编辑或创建产品
 	if data.ID > 0 && CoreFilter.EqID2(args.OrgID, data.OrgID) {
 		//更新数据
-		_, err = CoreSQL.UpdateOneSoft(Router2SystemConfig.MainDB.DB, "UPDATE erp_product SET update_at = NOW(), delete_at = to_timestamp(0), company_id = :company_id, company_name = :company_name, sort_id = :sort_id, tags = :tags, sn = :sn, code = :code, pin_yin = :pin_yin, en_name = :en_name, manufacturer_name = :manufacturer_name, title = :title, title_des = :title_des, des = :des, cover_file_ids = :cover_file_ids, expire_hour = :expire_hour, weight = :weight, size_w = :size_w, size_h = :size_h, size_z = :size_z, pack_type = :pack_type, pack_unit_name = :pack_unit_name, pack_unit = :pack_unit, tip_price = :tip_price, tip_tax_price = :tip_tax_price, is_discount = :is_discount, currency = :currency, cost_price = :cost_price, tax = :tax, tax_cost_price = :tax_cost_price, rebate_price = :rebate_price, params = :params WHERE id = :id", map[string]interface{}{
+		_, err = CoreSQL.UpdateOneSoft(Router2SystemConfig.MainDB.DB, "UPDATE erp_product SET update_at = NOW(), delete_at = to_timestamp(0), company_id = :company_id, company_name = :company_name, sort_id = :sort_id, tags = :tags, sn = :sn, code = :code, pin_yin = :pin_yin, en_name = :en_name, model_type_id = :model_type_id, manufacturer_name = :manufacturer_name, title = :title, title_des = :title_des, des = :des, cover_file_ids = :cover_file_ids, expire_hour = :expire_hour, weight = :weight, size_w = :size_w, size_h = :size_h, size_z = :size_z, pack_type = :pack_type, pack_unit_name = :pack_unit_name, pack_unit = :pack_unit, tip_price = :tip_price, tip_tax_price = :tip_tax_price, is_discount = :is_discount, currency = :currency, cost_price = :cost_price, tax = :tax, tax_cost_price = :tax_cost_price, rebate_price = :rebate_price, params = :params WHERE id = :id", map[string]interface{}{
 			"id":                data.ID,
 			"company_id":        companyData.ID,
 			"company_name":      args.CompanyName,
@@ -331,6 +332,7 @@ func SetProduct2(args *ArgsSetProduct) (data FieldsProduct, errCode string, err 
 			"code":              args.Code,
 			"pin_yin":           args.PinYin,
 			"en_name":           args.EnName,
+			"model_type_id":     args.ModelTypeID,
 			"manufacturer_name": args.ManufacturerName,
 			"title":             args.Title,
 			"title_des":         args.TitleDes,
