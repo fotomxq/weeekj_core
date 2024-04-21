@@ -22,10 +22,11 @@ func TestTemplateBindInit(t *testing.T) {
 
 func TestCreateTemplateBind(t *testing.T) {
 	newTemplateBindDataID, err := CreateTemplateBind(&ArgsCreateTemplateBind{
-		OrgID:      TestOrg.OrgData.ID,
-		TemplateID: newTemplateData.ID,
-		CategoryID: newSortData.ID,
-		BrandID:    newBrandData.ID,
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  newSortData.ID,
+		BrandID:     newBrandData.ID,
+		ModelTypeID: newModelTypeData.ID,
 	})
 	if err != nil {
 		t.Fatal("create template bind fail: ", err)
@@ -38,10 +39,11 @@ func TestCreateTemplateBind(t *testing.T) {
 
 func TestGetTemplateBindData(t *testing.T) {
 	newTemplateBindData = GetTemplateBindData(&ArgsGetTemplateBindData{
-		OrgID:      TestOrg.OrgData.ID,
-		TemplateID: newTemplateData.ID,
-		CategoryID: newSortData.ID,
-		BrandID:    newBrandData.ID,
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  newSortData.ID,
+		BrandID:     newBrandData.ID,
+		ModelTypeID: newModelTypeData.ID,
 	})
 	if newTemplateBindData.ID < 1 {
 		t.Fatal("get template bind data fail")
@@ -58,21 +60,24 @@ func TestGetTemplateBindList(t *testing.T) {
 			Sort: "id",
 			Desc: false,
 		},
-		OrgID:      TestOrg.OrgData.ID,
-		TemplateID: -1,
-		CategoryID: -1,
-		BrandID:    -1,
-		IsRemove:   false,
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  -1,
+		CategoryID:  -1,
+		BrandID:     -1,
+		ModelTypeID: -1,
+		IsRemove:    false,
 	})
 	ToolsTest.ReportDataList(t, err, dataList, dataCount)
+	//t.Error("test 1")
 }
 
 func TestCheckTemplateBind(t *testing.T) {
 	b := CheckTemplateBind(&ArgsCheckTemplateBind{
-		OrgID:      TestOrg.OrgData.ID,
-		TemplateID: newTemplateData.ID,
-		CategoryID: newSortData.ID,
-		BrandID:    newBrandData.ID,
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  newSortData.ID,
+		BrandID:     newBrandData.ID,
+		ModelTypeID: newModelTypeData.ID,
 	})
 	if !b {
 		t.Fatal("check template bind fail")
@@ -82,10 +87,11 @@ func TestCheckTemplateBind(t *testing.T) {
 
 func TestDeleteTemplateBind(t *testing.T) {
 	err := DeleteTemplateBind(&ArgsDeleteTemplateBind{
-		OrgID:      TestOrg.OrgData.ID,
-		TemplateID: newTemplateData.ID,
-		CategoryID: newSortData.ID,
-		BrandID:    newBrandData.ID,
+		OrgID:       TestOrg.OrgData.ID,
+		TemplateID:  newTemplateData.ID,
+		CategoryID:  newSortData.ID,
+		BrandID:     newBrandData.ID,
+		ModelTypeID: newModelTypeData.ID,
 	})
 	ToolsTest.ReportError(t, err)
 }

@@ -19,9 +19,10 @@ func TestBrandInit(t *testing.T) {
 
 func TestCreateBrand(t *testing.T) {
 	newBrandDataID, err := CreateBrand(&ArgsCreateBrand{
-		OrgID: newERPProductData.OrgID,
-		Code:  CoreFilter.GetRandStr4(10),
-		Name:  "测试品牌",
+		OrgID:      newERPProductData.OrgID,
+		Code:       CoreFilter.GetRandStr4(10),
+		Name:       "测试品牌",
+		CategoryID: 0,
 	})
 	if err != nil {
 		t.Fatal(err)

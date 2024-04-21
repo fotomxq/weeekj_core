@@ -30,7 +30,7 @@ type ArgsGetTemplateBindList struct {
 
 // GetTemplateBindList 获取绑定关系列表
 func GetTemplateBindList(args *ArgsGetTemplateBindList) (dataList []FieldsTemplateBind, dataCount int64, err error) {
-	dataCount, err = templateBindDB.Select().SetFieldsList([]string{"id", "org_id", "template_id", "category_id", "brand_id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SelectList("((delete_at < to_timestamp(1000000) AND $1 = false) OR (delete_at >= to_timestamp(1000000) AND $1 = true)) AND (org_id = $2 OR $2 < 0) AND (template_id = $3 OR $3 < 0) AND (category_id = $4 OR $4 < 0) AND (brand_id = $5 OR $5 < 0) AND (model_type_id = $6 OR $6 < 0)", args.IsRemove, args.OrgID, args.TemplateID, args.CategoryID, args.BrandID, args.ModelTypeID).ResultAndCount(&dataList)
+	dataCount, err = templateBindDB.Select().SetFieldsList([]string{"id", "org_id", "template_id", "category_id", "brand_id", "model_type_id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "delete_at"}).SetPages(args.Pages).SelectList("((delete_at < to_timestamp(1000000) AND $1 = false) OR (delete_at >= to_timestamp(1000000) AND $1 = true)) AND (org_id = $2 OR $2 < 0) AND (template_id = $3 OR $3 < 0) AND (category_id = $4 OR $4 < 0) AND (brand_id = $5 OR $5 < 0) AND (model_type_id = $6 OR $6 < 0)", args.IsRemove, args.OrgID, args.TemplateID, args.CategoryID, args.BrandID, args.ModelTypeID).ResultAndCount(&dataList)
 	if err != nil || len(dataList) < 1 {
 		return
 	}
