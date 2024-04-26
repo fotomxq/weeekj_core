@@ -647,6 +647,9 @@ func GetUserPhone(id int64) (data string) {
 }
 
 func GetUserNameByID(id int64) string {
+	if id < 1 {
+		return ""
+	}
 	data := getUserByID(id)
 	if data.ID < 1 {
 		return ""
