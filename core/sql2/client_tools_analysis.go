@@ -56,6 +56,8 @@ func (t *ClientAnalysisCtx) DataNoDelete() *ClientAnalysisCtx {
 	return t
 }
 
+// Count 计算总数
+// eg: where = "config = $1", args = "[config_id]"...
 func (t *ClientAnalysisCtx) Count(where string, args ...any) (val int64) {
 	if t.sqlNeedNoDelete {
 		_ = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT COUNT("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
