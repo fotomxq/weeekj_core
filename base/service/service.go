@@ -4,8 +4,10 @@ import (
 	"errors"
 	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
+	"github.com/nats-io/nats.go"
 	"time"
 )
 
@@ -159,6 +161,18 @@ func SetService(args *ArgsSetService) (err error) {
 			return
 		}
 	}
+	return
+}
+
+// SetServiceMarge 融合设置Service
+// 同时给予触发方法，自动构建sub订阅服务
+// 注意，推送服务还需要自行触发
+func SetServiceMarge(args *ArgsSetService, cb func(msg *nats.Msg, action string, id int64, mark string, data []byte)) (err error) {
+	err = SetService(args)
+	if err != nil {
+		return
+	}
+	CoreNats.SubDataByteNoErr(args.Code, args.EventURL, cb)
 	return
 }
 
