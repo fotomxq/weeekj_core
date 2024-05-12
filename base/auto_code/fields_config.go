@@ -37,7 +37,9 @@ type FieldsConfig struct {
 	//是否启用
 	IsEnable bool `db:"is_enable" json:"isEnable" check:"bool"`
 	//自定义生成规则
-	// 对应的字段名用","分割，支持多个字段组合；原则上仅支持英文字符（自动大写）、数字、下划线；不支持特殊字符
+	// 对应的字段名用","分割，支持多个字段组合；原则上仅支持英文字符（自动大写）、数字、下划线；不支持特殊字符、标点符号
 	// eq: prefix,auto_number
+	// eg: jk,area_code,date,count:3
+	//     固定标记,地区标记(模块内自定义),日期(年月日),表内计数器(3位)(如果有日期则按照日期检索当日计数器)
 	CustomRule string `db:"custom_rule" json:"customRule" check:"des" min:"1" max:"255" empty:"true"`
 }
