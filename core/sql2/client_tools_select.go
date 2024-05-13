@@ -143,6 +143,13 @@ func (t *ClientListCtx) SetStringQuery(field string, param string) *ClientListCt
 	return t
 }
 
+// SetBoolQuery Bool判断查询
+func (t *ClientListCtx) SetBoolQuery(field string, param bool) *ClientListCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, ")"), param)
+	return t
+}
+
 // SelectList
 // 如果启用了自动组合方法，请尽可能不要使用本方法where和args，否则请在where条件中明确一共注入了几个参数，并从对应参数为起点计算，避免$x顺序不匹配
 func (t *ClientListCtx) SelectList(where string, args ...interface{}) *ClientListCtx {
