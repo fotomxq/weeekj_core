@@ -120,14 +120,24 @@ func (t *ClientGetCtx) GetByIDAndUserID(id int64, userID int64) *ClientGetCtx {
 }
 
 func (t *ClientGetCtx) SetIDQuery(field string, param int64) *ClientGetCtx {
-	t.addPreemptionNum()
-	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, " OR $", t.preemptionNum, " < 0)"), param)
-	return t
+	return t.SetInt64Query(field, param)
 }
 
 func (t *ClientGetCtx) SetStringQuery(field string, param string) *ClientGetCtx {
 	t.addPreemptionNum()
 	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, " OR $", t.preemptionNum, " = '')"), param)
+	return t
+}
+
+func (t *ClientGetCtx) SetInt64Query(field string, param int64) *ClientGetCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, " OR $", t.preemptionNum, " < 0)"), param)
+	return t
+}
+
+func (t *ClientGetCtx) SetIntQuery(field string, param int) *ClientGetCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, " OR $", t.preemptionNum, " < 0)"), param)
 	return t
 }
 

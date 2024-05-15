@@ -103,6 +103,15 @@ func (t *ClientAnalysisCtx) Sum2(where string, args ...any) (val int64) {
 	return
 }
 
+func (t *ClientAnalysisCtx) Sum2ByFloat64(where string, args ...any) (val float64) {
+	if t.sqlNeedNoDelete {
+		_ = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT SUM("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+	} else {
+		_ = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT SUM("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+	}
+	return
+}
+
 func (t *ClientAnalysisCtx) Sum(data any, fields []string, where string, args ...any) (err error) {
 	sumQuery := ""
 	if len(fields) == 1 {
