@@ -6,15 +6,15 @@ import (
 )
 
 //用于求解两组相同长度的数据，相似度有多少
+// 主要采用：皮尔逊相关系数
 /**
 x := []float64{1, 2, 3, 4, 5, 6}
 	y := []float64{1, 20, 3, 40, 5, 60}
-	res, err := Corrcoef(x, y)
+	res, err := ArraySimilarity(x, y)
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println(res)
-
 */
 
 // ppmmccUtil 求解结构

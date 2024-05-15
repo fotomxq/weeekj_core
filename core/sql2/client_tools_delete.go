@@ -169,3 +169,13 @@ func (t *ClientDeleteCtx) ExecNamed(arg map[string]interface{}) error {
 	appendLog("delete", t.clientCtx.query, false, t.clientCtx.client.startAt, nil, err)
 	return err
 }
+
+// ClearAll 清理表
+func (t *ClientDeleteCtx) ClearAll() error {
+	t.clientCtx.query = "TRUNCATE "+"TABLE " + t.clientCtx.client.TableName
+	_, err := t.clientCtx.Exec(t.clientCtx.query)
+	if err != nil {
+		err = errors.New(fmt.Sprint(err, ", ", t.clientCtx.query))
+	}
+	return err
+}
