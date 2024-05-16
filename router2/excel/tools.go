@@ -28,6 +28,8 @@ type ExcelTemplate struct {
 	fileHash string
 	//Excel句柄
 	ExcelData *excelize.File
+	//图片后缀
+	imgSuffix string
 }
 
 func (t *ExcelTemplate) SetRootDir(dir string) {
@@ -48,6 +50,10 @@ func (t *ExcelTemplate) SetFileName(fileName string) {
 
 func (t *ExcelTemplate) SetFileHash(fileHash string) {
 	t.fileHash = fileHash
+}
+
+func (t *ExcelTemplate) SetImgSuffix(suffix string) {
+	t.imgSuffix = suffix
 }
 
 // GetExcelTemplate 获取模版文件
@@ -117,7 +123,7 @@ func (t *ExcelTemplate) SaveExcelFile(src string) (err error) {
 
 // SetImgByFileSysClaimID 将图片ID写入对应位置
 func (t *ExcelTemplate) SetImgByFileSysClaimID(fileClaimID int64, sheet string, cell string) (err error) {
-	fileURL := BaseFileSys2.GetPublicURLByClaimID(fileClaimID)
+	fileURL := fmt.Sprint(BaseFileSys2.GetPublicURLByClaimID(fileClaimID), t.imgSuffix)
 	if fileURL == "" {
 		return
 	}
@@ -126,7 +132,7 @@ func (t *ExcelTemplate) SetImgByFileSysClaimID(fileClaimID int64, sheet string, 
 	if err != nil {
 		return
 	}
-	tempFileSrc := fmt.Sprint(tempFileDir, CoreFile.Sep, CoreFilter.GetRandStr4(10), ".jpg")
+	tempFileSrc := fmt.Sprint(tempFileDir, CoreFile.Sep, CoreFilter.GetRandStr4(10), ".png")
 	err = CoreFile.DownloadByURLToTemp(fileURL, tempFileSrc)
 	if err != nil {
 		return
