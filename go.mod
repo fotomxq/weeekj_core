@@ -88,6 +88,8 @@ require (
 	github.com/pierrec/lz4/v4 v4.1.14 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20190826022208-cac0b30c2563 // indirect
+	github.com/richardlehane/mscfb v1.0.4 // indirect
+	github.com/richardlehane/msoleps v1.0.3 // indirect
 	github.com/therootcompany/xz v1.0.1 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
@@ -96,14 +98,17 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	github.com/ulikunitz/xz v0.5.11 // indirect
+	github.com/xuri/efp v0.0.0-20231025114914-d1ff6096ae53 // indirect
+	github.com/xuri/excelize/v2 v2.8.1 // indirect
+	github.com/xuri/nfp v0.0.0-20230919160717-d98342af3f05 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	golang.org/x/arch v0.3.0 // indirect
-	golang.org/x/crypto v0.16.0 // indirect
+	golang.org/x/crypto v0.19.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/image v0.14.0 // indirect
-	golang.org/x/net v0.19.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
-	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
