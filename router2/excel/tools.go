@@ -39,8 +39,8 @@ func (t *ExcelTemplate) SetTempFileExpire(tempFileExpire int) {
 	t.tempFileExpire = tempFileExpire
 }
 
-func (t *ExcelTemplate) SetFileName(fileName string, str ...string) {
-	t.fileName = fmt.Sprint(fileName, str)
+func (t *ExcelTemplate) SetFileName(fileName string) {
+	t.fileName = fileName
 }
 
 func (t *ExcelTemplate) SetFileHash(fileHash string) {
