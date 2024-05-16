@@ -9,6 +9,9 @@ import (
 	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/xuri/excelize/v2"
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
 )
 
 // ExcelTemplate 快速模板工具模块
