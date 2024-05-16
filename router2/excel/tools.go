@@ -8,7 +8,6 @@ import (
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
-	"github.com/xuri/excelize/v2"
 )
 
 // ExcelTemplate 快速模板工具模块
@@ -25,6 +24,8 @@ type ExcelTemplate struct {
 	fileHash string
 	//Excel句柄
 	ExcelData *excelize.File
+	//图片后缀
+	imgSuffix string
 }
 
 func (t *ExcelTemplate) SetRootDir(dir string) {
@@ -45,6 +46,10 @@ func (t *ExcelTemplate) SetFileName(fileName string) {
 
 func (t *ExcelTemplate) SetFileHash(fileHash string) {
 	t.fileHash = fileHash
+}
+
+func (t *ExcelTemplate) SetImgSuffix(suffix string) {
+	t.imgSuffix = suffix
 }
 
 // GetExcelTemplate 获取模版文件
