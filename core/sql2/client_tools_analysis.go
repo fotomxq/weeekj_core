@@ -26,6 +26,8 @@ type ClientAnalysisCtx struct {
 	isDesc bool
 	//是否判断删除操作
 	sqlNeedNoDelete bool
+	//最后一次错误信息
+	err error
 }
 
 type ClientAnalysisCountFieldCtx struct {
@@ -56,58 +58,63 @@ func (t *ClientAnalysisCtx) DataNoDelete() *ClientAnalysisCtx {
 	return t
 }
 
+// 获取最后的错误信息
+func (t *ClientAnalysisCtx) GetError() error {
+	return t.err
+}
+
 // Count 计算总数
 // eg: where = "config = $1", args = "[config_id]"...
 func (t *ClientAnalysisCtx) Count(where string, args ...any) (val int64) {
 	if t.sqlNeedNoDelete {
-		_ = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT COUNT("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT COUNT("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	} else {
-		_ = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT COUNT("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT COUNT("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	}
 	return
 }
 
 func (t *ClientAnalysisCtx) Max(where string, args ...any) (val int64) {
 	if t.sqlNeedNoDelete {
-		_ = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT MAX("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT MAX("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	} else {
-		_ = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT MAX("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT MAX("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	}
 	return
 }
 
 func (t *ClientAnalysisCtx) Min(where string, args ...any) (val int64) {
 	if t.sqlNeedNoDelete {
-		_ = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT MIN("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT MIN("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	} else {
-		_ = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT MIN("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT MIN("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	}
 	return
 }
 
 func (t *ClientAnalysisCtx) AVG(where string, args ...any) (val float64) {
 	if t.sqlNeedNoDelete {
-		_ = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT AVG("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT AVG("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	} else {
-		_ = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT AVG("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT AVG("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	}
 	return
 }
 
 func (t *ClientAnalysisCtx) Sum2(where string, args ...any) (val int64) {
 	if t.sqlNeedNoDelete {
-		_ = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT SUM("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT SUM("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	} else {
-		_ = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT SUM("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT SUM("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	}
 	return
 }
 
 func (t *ClientAnalysisCtx) Sum2ByFloat64(where string, args ...any) (val float64) {
 	if t.sqlNeedNoDelete {
-		_ = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT SUM("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.DataNoDelete().getSQLWhere(fmt.Sprint("SELECT SUM("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	} else {
-		_ = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT SUM("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
+		t.err = t.clientCtx.Get(&val, t.clientCtx.getSQLWhere(fmt.Sprint("SELECT SUM("+t.clientCtx.client.GetKey()+") FROM ", t.clientCtx.client.TableName), where), args...)
 	}
 	return
 }
