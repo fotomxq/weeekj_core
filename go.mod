@@ -16,7 +16,7 @@ require (
 	github.com/gomodule/redigo v1.8.9
 	github.com/issue9/identicon v1.0.1
 	github.com/jmind-systems/go-apple-signin v0.0.5
-	github.com/jmoiron/sqlx v1.2.0
+	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9
 	github.com/lukasjarosch/go-docx v0.4.7
 	github.com/mholt/archiver/v4 v4.0.0-alpha.6
