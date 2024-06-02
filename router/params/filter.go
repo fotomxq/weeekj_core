@@ -378,7 +378,11 @@ func filterParamChild(data interface{}, checkMark string, filterMark string, isE
 		if isEmpty && val == "" {
 			b = true
 		} else {
-			b = CoreFilter.CheckDes(val, min, max)
+			if max < 0 {
+				b = len(val) > min
+			} else {
+				b = CoreFilter.CheckDes(val, min, max)
+			}
 		}
 	case "title":
 		val, isOK := data.(string)
