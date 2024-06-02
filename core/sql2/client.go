@@ -61,6 +61,18 @@ func (t *Client) Init(mainDB *SQLClient, tableName string) *Client {
 	return t
 }
 
+func (t *Client) Init2(mainDB *SQLClient, tableName string, structData any) (client *Client, err error) {
+	t.DB = mainDB
+	t.TableName = tableName
+	t.Key = "id"
+	t.StructData = structData
+	err = t.InstallSQL()
+	if err != nil {
+		return
+	}
+	return t, nil
+}
+
 func (t *Client) SetKey(key string) *Client {
 	t.Key = key
 	return t
