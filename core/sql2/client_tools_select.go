@@ -41,6 +41,10 @@ type clientListCtxPreemption struct {
 	Num int
 }
 
+func (t *ClientListCtx) GetLastQuery() string {
+	return t.clientCtx.GetQuery()
+}
+
 func (t *ClientListCtx) SetFieldsList(fields []string) *ClientListCtx {
 	t.fieldsList = fields
 	if len(t.fieldsSort) < 1 {
@@ -138,6 +142,9 @@ func (t *ClientListCtx) SetIntNoQuery(field string, param int) *ClientListCtx {
 
 // SetStringQuery 常规字符串判断查询
 func (t *ClientListCtx) SetStringQuery(field string, param string) *ClientListCtx {
+	if param == "" {
+		return t
+	}
 	t.addPreemptionNum()
 	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, " OR $", t.preemptionNum, " = '')"), param)
 	return t
@@ -145,6 +152,15 @@ func (t *ClientListCtx) SetStringQuery(field string, param string) *ClientListCt
 
 // SetBoolQuery Bool判断查询
 func (t *ClientListCtx) SetBoolQuery(field string, param bool) *ClientListCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, ")"), param)
+	return t
+}
+
+func (t *ClientListCtx) SetBoolAndNeedQuery(field string, needParam, param bool) *ClientListCtx {
+	if !needParam {
+		return t
+	}
 	t.addPreemptionNum()
 	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, ")"), param)
 	return t

@@ -4,6 +4,7 @@ import (
 	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"github.com/golang-module/carbon"
+	"reflect"
 	"sync"
 )
 
@@ -14,6 +15,9 @@ type Client struct {
 	DB *SQLClient
 	//表名称
 	TableName string
+	//空结构体
+	// *args 注意采用引用关系，否则无法获取到结构体的类型
+	StructData any
 	//关键索引
 	Key string
 	//是否启动缓冲器
@@ -39,6 +43,15 @@ type Client struct {
 	deleteLock     sync.Mutex
 	//开始时间
 	startAt carbon.Carbon
+	////////////////////////////////////////////////////
+	//install特殊变量
+	////////////////////////////////////////////////////
+	//是否已经运行过install
+	installHaveRun bool
+	//等待插入的sql数据
+	installAppendSQLData []string
+	//主键发生数量，用于报错
+	installNunIndexKeyNum int
 }
 
 func (t *Client) Init(mainDB *SQLClient, tableName string) *Client {
@@ -97,6 +110,31 @@ func (t *Client) SetDeleteLock(b bool) *Client {
 func (t *Client) SetExpireSec(sec int) *Client {
 	t.cacheExpireSec = sec
 	return t
+}
+
+// GetSortNameByJsonStruct 通过json/db结构体获取排序字段
+func (t *Client) GetSortNameByJsonStruct(paramSort string, structData any, defaultSort string) (result string) {
+	paramsType := reflect.TypeOf(structData).Elem()
+	step := 0
+	for step <= paramsType.NumField() {
+		vField := paramsType.Field(step)
+		jsonVal := vField.Tag.Get("json")
+		//下一步
+		step += 1
+		if paramSort != jsonVal {
+			continue
+		}
+		dbVal := vField.Tag.Get("db")
+		result = dbVal
+		break
+	}
+	if paramSort == "" {
+		result = defaultSort
+	}
+	if result == paramSort {
+		result = defaultSort
+	}
+	return result
 }
 
 func (t *Client) Get() *ClientGetCtx {

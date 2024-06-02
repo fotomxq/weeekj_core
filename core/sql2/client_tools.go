@@ -21,6 +21,10 @@ func (t *ClientCtx) GetFields(l []string) string {
 	return strings.Join(l, ",")
 }
 
+func (t *ClientCtx) GetQuery() string {
+	return t.query
+}
+
 func (t *ClientCtx) DataNoDelete() *ClientCtx {
 	t.sqlNeedNoDelete = true
 	return t
