@@ -198,15 +198,17 @@ func InstallOrg() (err error) {
 		if err := loadConfigFile(configPermissionFileName, &dataPermission); err != nil {
 			return err
 		}
+		var newArgs []OrgCore.ArgsSetPermission
 		for _, v := range dataPermission.DataList {
-			if err = OrgCore.SetPermission(&OrgCore.ArgsSetPermission{
+			newArgs = append(newArgs, OrgCore.ArgsSetPermission{
 				Mark:     v.Mark,
 				FuncMark: v.FuncMark,
 				Name:     v.Name,
-			}); err != nil {
-				err = errors.New("安装组织权限失败, " + err.Error())
-				return
-			}
+			})
+		}
+		if err = OrgCore.SetPermissionAll(newArgs); err != nil {
+			err = errors.New("安装组织权限失败, " + err.Error())
+			return
 		}
 	}
 	return

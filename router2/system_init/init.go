@@ -86,6 +86,12 @@ import (
 )
 
 func Init() (err error) {
+	//记录开始时间
+	startRun := RunStartPrint{
+		Pre: "main router init success",
+		Suf: "",
+	}
+	startRun.Start()
 	//postgresql数据库监控服务
 	BaseMonitorPostgresql.OpenSub = OpenSub
 	BaseMonitorPostgresql.Init()
@@ -397,9 +403,8 @@ func Init() (err error) {
 	RestaurantPurchase.Init()
 	//原材料库
 	RestaurantRawMaterials.Init()
-
 	//启动完成提示
-	fmt.Println("main router init success.")
+	startRun.EndPrint()
 	//反馈
 	return
 }

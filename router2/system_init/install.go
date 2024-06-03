@@ -31,6 +31,12 @@ func Install() (err error) {
 	if !Router2SystemConfig.RunInstall {
 		return
 	}
+	//记录开始时间
+	startRun := RunStartPrint{
+		Pre: "main router system install success",
+		Suf: "",
+	}
+	startRun.Start()
 	//初始化安装程序
 	ToolsInstall.Init(fmt.Sprint(CoreFile.BaseDir()+CoreFile.Sep, "install", CoreFile.Sep, "data", CoreFile.Sep))
 	//安装sql
@@ -86,8 +92,8 @@ func Install() (err error) {
 			return
 		}
 	}
-	//提示信息
-	fmt.Println("main router system install success.")
+	//启动完成提示
+	startRun.EndPrint()
 	//反馈
 	return
 }

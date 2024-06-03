@@ -350,6 +350,59 @@ func SetPermission(args *ArgsSetPermission) (err error) {
 	return
 }
 
+// SetPermissionAll 设置全体权限
+func SetPermissionAll(args []ArgsSetPermission) (err error) {
+	var rawFuncList []FieldsPermissionFunc
+	_ = Router2SystemConfig.MainDB.Select(&rawFuncList, "SELECT * FROM org_core_permission_func;")
+	var rawList []FieldsPermission
+	_ = Router2SystemConfig.MainDB.Select(&rawList, "SELECT * FROM org_core_permission;")
+	for _, arg := range args {
+		isFindRawFunc := false
+		for _, vRawFunc := range rawFuncList {
+			if vRawFunc.Mark != arg.FuncMark {
+				continue
+			}
+			isFindRawFunc = true
+			break
+		}
+		if !isFindRawFunc {
+			err = errors.New("func mark not exist, func mark: " + arg.FuncMark)
+			return
+		}
+		vData := FieldsPermission{}
+		for _, vRaw := range rawList {
+			if vRaw.FuncMark != arg.FuncMark {
+				continue
+			}
+			if vRaw.Mark != arg.Mark {
+				continue
+			}
+			vData = vRaw
+			break
+		}
+		if vData.ID > 0 {
+			_, err = CoreSQL.UpdateOne(Router2SystemConfig.MainDB.DB, "UPDATE org_core_permission SET mark = :mark, func_mark = :func_mark, name = :name WHERE id = :id", map[string]interface{}{
+				"id":        vData.ID,
+				"mark":      arg.Mark,
+				"func_mark": arg.FuncMark,
+				"name":      arg.Name,
+			})
+			if err != nil {
+				err = errors.New("update permission fail, " + err.Error() + ", mark: " + arg.Mark)
+				return
+			}
+		} else {
+			_, err = CoreSQL.CreateOne(Router2SystemConfig.MainDB.DB, "INSERT INTO org_core_permission (mark, func_mark, name) VALUES (:mark, :func_mark, :name)", arg)
+			if err != nil {
+				err = errors.New("create permission fail, " + err.Error() + ", mark: " + arg.Mark)
+				return
+			}
+			deletePermissionCache(arg.Mark)
+		}
+	}
+	return
+}
+
 // ArgsDeletePermission 删除指定的权限参数
 type ArgsDeletePermission struct {
 	//标识码
