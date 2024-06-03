@@ -388,7 +388,11 @@ func Init() (err error) {
 	//电子菜品
 	RestaurantRecipe.Init()
 	//周食谱
-	RestaurantWeeklyRecipeMarge.Init()
+	err = RestaurantWeeklyRecipeMarge.Init()
+	if err != nil {
+		err = errors.New(fmt.Sprint("init restaurant weekly recipe marge, ", err))
+		return
+	}
 	//原材料采购台账
 	RestaurantPurchase.Init()
 	//原材料库

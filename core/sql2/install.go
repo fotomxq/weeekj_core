@@ -18,7 +18,7 @@ dataDefault 初始化需采用的空数据集
 识别规则(tag) :
 db: 数据库字段名
 index=true: 是否建立索引，用于提高检索效率
-isUnique=true: 是否全局唯一
+unique=true: 是否全局唯一
 
 值类型: 数据库字段类型
 max="1/-1": 最大长度，数字或者*代表最大长度，如果给予-1，则例如string按照text处理
@@ -98,9 +98,9 @@ func (t *Client) InstallSQL() (err error) {
 			if len(columnNames) > 0 {
 				continue
 			}
-			appendFields = append(appendFields, "id bigserial constraint "+dbVal+"_pk primary key")
+			appendFields = append(appendFields, "id bigserial constraint "+t.TableName+"_pk primary key")
 			t.installAppendUIndex("id")
-		case "createAt":
+		case "create_at":
 			if len(columnNames) > 0 {
 				if !haveField {
 					appendFields = append(appendFields, "ALTER TABLE"+" "+t.TableName+" ADD COLUMN IF NOT EXISTS create_at timestamp with time zone default CURRENT_TIMESTAMP not null;")
@@ -108,7 +108,7 @@ func (t *Client) InstallSQL() (err error) {
 			} else {
 				appendFields = append(appendFields, "create_at timestamp with time zone default CURRENT_TIMESTAMP not null")
 			}
-		case "updateAt":
+		case "update_at":
 			if len(columnNames) > 0 {
 				if !haveField {
 					appendFields = append(appendFields, "ALTER TABLE"+" "+t.TableName+" ADD COLUMN IF NOT EXISTS update_at timestamp with time zone default CURRENT_TIMESTAMP not null;")
@@ -116,7 +116,7 @@ func (t *Client) InstallSQL() (err error) {
 			} else {
 				appendFields = append(appendFields, "update_at timestamp with time zone default CURRENT_TIMESTAMP not null")
 			}
-		case "deleteAt":
+		case "delete_at":
 			if len(columnNames) > 0 {
 				if !haveField {
 					appendFields = append(appendFields, "ALTER TABLE"+" "+t.TableName+" ADD COLUMN IF NOT EXISTS delete_at timestamp with time zone default to_timestamp((0)::double precision) not null;")
@@ -264,7 +264,7 @@ func (t *Client) InstallSQL() (err error) {
 		sqlData += strings.Join(appendFields, ",") + ");"
 	}
 	sqlData += strings.Join(t.installAppendSQLData, "")
-	fmt.Println(sqlData)
+	//fmt.Println(sqlData)
 	//执行sql
 	_, err = t.DB.GetPostgresql().Exec(sqlData)
 	if err != nil {
@@ -279,13 +279,25 @@ func (t *Client) InstallSQL() (err error) {
 
 // installAppendUIndex 给表格插入uindex序列
 func (t *Client) installAppendUIndex(fieldName string) {
-	t.installAppendSQLData = append(t.installAppendSQLData, "create unique index if not exists "+t.TableName+"_"+fieldName+"_uindex on "+t.TableName+" ("+fieldName+");")
+	appendSQL := "create unique index if not exists " + t.TableName + "_" + fieldName + "_uindex on " + t.TableName + " (" + fieldName + ");"
+	for _, v := range t.installAppendSQLData {
+		if v == appendSQL {
+			return
+		}
+	}
+	t.installAppendSQLData = append(t.installAppendSQLData, appendSQL)
 	t.installNunIndexKeyNum += 1
 	return
 }
 
 // installAppendIndex 给表格插入index序列
 func (t *Client) installAppendIndex(fieldName string) {
-	t.installAppendSQLData = append(t.installAppendSQLData, "create index if not exists "+t.TableName+"_"+fieldName+"_index on "+t.TableName+" ("+fieldName+");")
+	appendSQL := "create index if not exists " + t.TableName + "_" + fieldName + "_index on " + t.TableName + " (" + fieldName + ");"
+	for _, v := range t.installAppendSQLData {
+		if v == appendSQL {
+			return
+		}
+	}
+	t.installAppendSQLData = append(t.installAppendSQLData, appendSQL)
 	return
 }

@@ -15,11 +15,11 @@ func TestClient_InstallSQL(t *testing.T) {
 		//ID
 		ID int64 `db:"id" json:"id" check:"id" unique:"true"`
 		//创建时间
-		CreateAt time.Time `db:"create_at" json:"createAt"`
+		CreateAt time.Time `db:"create_at" json:"createAt" default:"now()"`
 		//更新时间
-		UpdateAt time.Time `db:"update_at" json:"updateAt"`
+		UpdateAt time.Time `db:"update_at" json:"updateAt" default:"now()"`
 		//删除时间
-		DeleteAt time.Time `db:"delete_at" json:"deleteAt"`
+		DeleteAt time.Time `db:"delete_at" json:"deleteAt" default:"0"`
 		//事件编码
 		Code string `db:"code" json:"code" check:"des" min:"1" max:"300" index:"true"`
 		//Mark

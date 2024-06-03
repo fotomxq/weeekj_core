@@ -11,14 +11,38 @@ import (
 */
 
 var (
-	//缓冲时间
-	cacheWeeklyRecipeTime = 1800
 	//数据表
-	weeklyRecipeMargeDB CoreSQL2.Client
+	weeklyRecipeDB      CoreSQL2.Client
+	weeklyRecipeDayDB   CoreSQL2.Client
+	weeklyRecipeChildDB CoreSQL2.Client
 )
 
 // Init 初始化
-func Init() {
+func Init() (err error) {
 	//初始化数据表
-	weeklyRecipeMargeDB.Init(&Router2SystemConfig.MainSQL, "restaurant_weekly_recipe_marge")
+	_, err = weeklyRecipeDB.Init2(&Router2SystemConfig.MainSQL, "restaurant_weekly_recipe", &FieldsWeeklyRecipe{})
+	if err != nil {
+		return
+	}
+	err = weeklyRecipeDB.InstallSQL()
+	if err != nil {
+		return
+	}
+	_, err = weeklyRecipeDayDB.Init2(&Router2SystemConfig.MainSQL, "restaurant_weekly_recipe_day", &FieldsWeeklyRecipeDay{})
+	if err != nil {
+		return
+	}
+	err = weeklyRecipeDayDB.InstallSQL()
+	if err != nil {
+		return
+	}
+	_, err = weeklyRecipeChildDB.Init2(&Router2SystemConfig.MainSQL, "restaurant_weekly_recipe_child", &FieldsWeeklyRecipeChild{})
+	if err != nil {
+		return
+	}
+	err = weeklyRecipeChildDB.InstallSQL()
+	if err != nil {
+		return
+	}
+	return
 }
