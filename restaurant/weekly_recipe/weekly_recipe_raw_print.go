@@ -3,7 +3,6 @@ package RestaurantWeeklyRecipeMarge
 import (
 	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
-	RestaurantRawMaterials "github.com/fotomxq/weeekj_core/v5/restaurant/raw_materials"
 	Router2Excel "github.com/fotomxq/weeekj_core/v5/router2/excel"
 	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
 )
@@ -62,11 +61,11 @@ func PrintExcelRaw(c any, logErr string, args *ArgsPrintExcelRaw) {
 		//时间段
 		_ = excelFile.SetCellValue(mainSheetName, fmt.Sprint("B", rowIndex), fmt.Sprint(vItemData.DiningDate))
 		//菜品
-		_ = excelFile.SetCellValue(mainSheetName, fmt.Sprint("C", rowIndex), GetWeeklyRecipeNameByID(vItemData.RecipeID))
+		_ = excelFile.SetCellValue(mainSheetName, fmt.Sprint("C", rowIndex), vItemData.RecipeName)
 		//合并单元格
 		_ = excelFile.MergeCell(mainSheetName, fmt.Sprint("C", rowIndex), fmt.Sprint("D", rowIndex))
 		//原材料
-		_ = excelFile.SetCellValue(mainSheetName, fmt.Sprint("E", rowIndex), RestaurantRawMaterials.GetRawNameByID(vItemData.MaterialID))
+		_ = excelFile.SetCellValue(mainSheetName, fmt.Sprint("E", rowIndex), vItemData.MaterialName)
 		//合并单元格
 		_ = excelFile.MergeCell(mainSheetName, fmt.Sprint("E", rowIndex), fmt.Sprint("F", rowIndex))
 		//用量

@@ -3,6 +3,7 @@ package RestaurantWeeklyRecipeMarge
 import (
 	"fmt"
 	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
+	RestaurantRawMaterials "github.com/fotomxq/weeekj_core/v5/restaurant/raw_materials"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
@@ -17,7 +18,7 @@ func GetWeeklyRecipeRaw(args *ArgsGetWeeklyRecipeRaw) (dataList []FieldsWeeklyRe
 	if err = Router2SystemConfig.MainCache.GetStruct(cacheMark, &dataList); err == nil && len(dataList) > 0 {
 		return
 	}
-	err = weeklyRecipeRawDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "weekly_recipe_id", "dining_date", "day_type", "recipe_id", "material_id", "count"}).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
+	err = weeklyRecipeRawDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "weekly_recipe_id", "dining_date", "day_type", "recipe_id", "recipe_name", "material_id", "material_name", "count"}).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
 	if err != nil {
 		return
 	}
@@ -65,12 +66,14 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 	//创建数据
 	for k := 0; k < len(args.Items); k++ {
 		v := args.Items[k]
-		err = weeklyRecipeRawDB.Insert().SetFields([]string{"weekly_recipe_id", "dining_date", "day_type", "recipe_id", "material_id", "count"}).Add(map[string]any{
+		err = weeklyRecipeRawDB.Insert().SetFields([]string{"weekly_recipe_id", "dining_date", "day_type", "recipe_id", "recipe_name", "material_id", "material_name", "count"}).Add(map[string]any{
 			"weekly_recipe_id": args.WeeklyRecipeID,
 			"dining_date":      v.DiningDate,
 			"day_type":         v.DayType,
 			"recipe_id":        v.RecipeID,
+			"recipe_name":      GetWeeklyRecipeNameByID(v.RecipeID),
 			"material_id":      v.MaterialID,
+			"material_name":    RestaurantRawMaterials.GetRawNameByID(v.MaterialID),
 			"count":            v.Count,
 		}).ExecAndCheckID()
 		if err != nil {

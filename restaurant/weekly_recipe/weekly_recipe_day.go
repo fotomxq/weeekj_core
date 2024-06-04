@@ -46,8 +46,10 @@ func SetWeeklyRecipeDay(weeklyRecipeID int64, newData []DataGetWeeklyRecipeMarge
 	for k := 0; k < len(newData); k++ {
 		v := newData[k]
 		var newID int64
-		newID, err = weeklyRecipeDayDB.Insert().SetFields([]string{"weekly_recipe_id", "dining_date"}).Add(map[string]any{
+		newID, err = weeklyRecipeDayDB.Insert().SetFields([]string{"weekly_recipe_id", "recipe_type_id", "recipe_type_name", "recipe_type_name", "dining_date"}).Add(map[string]any{
 			"weekly_recipe_id": weeklyRecipeID,
+			"recipe_type_id":   v.RecipeTypeID,
+			"recipe_type_name": RecipeType.GetNameNoErr(v.RecipeTypeID),
 			"dining_date":      v.DiningDate,
 		}).ExecAndResultID()
 		if err != nil {
@@ -67,10 +69,12 @@ func SetWeeklyRecipeDay(weeklyRecipeID int64, newData []DataGetWeeklyRecipeMarge
 			return
 		}
 		dataList = append(dataList, DataGetWeeklyRecipeMargeDay{
-			DiningDate: v.DiningDate,
-			Breakfast:  breakfast,
-			Lunch:      lunch,
-			Dinner:     dinner,
+			DiningDate:     v.DiningDate,
+			RecipeTypeID:   v.RecipeTypeID,
+			RecipeTypeName: RecipeType.GetNameNoErr(v.RecipeTypeID),
+			Breakfast:      breakfast,
+			Lunch:          lunch,
+			Dinner:         dinner,
 		})
 	}
 	//删除缓冲

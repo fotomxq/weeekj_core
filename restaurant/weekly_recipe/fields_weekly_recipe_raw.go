@@ -22,8 +22,12 @@ type FieldsWeeklyRecipeRaw struct {
 	DayType int `db:"day_type" json:"dayType" check:"intThan0" empty:"true" index:"true"`
 	//菜品ID
 	RecipeID int64 `db:"recipe_id" json:"recipeID" check:"id" index:"true"`
+	//菜品名称
+	RecipeName string `db:"recipe_name" json:"recipeName"`
 	//原材料ID
 	MaterialID int64 `db:"material_id" json:"materialID" check:"id" empty:"true" index:"true"`
+	//原材料名称
+	MaterialName string `db:"material_name" json:"materialName" check:"des" min:"1" max:"300" empty:"true"`
 	//用量
 	Count float64 `db:"count" json:"count" check:"intThan0"`
 }

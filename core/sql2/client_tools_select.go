@@ -53,6 +53,10 @@ func (t *ClientListCtx) SetFieldsList(fields []string) *ClientListCtx {
 	return t
 }
 
+func (t *ClientListCtx) SetFieldsAll() *ClientListCtx {
+	return t.SetFieldsList(t.clientCtx.client.GetFields())
+}
+
 func (t *ClientListCtx) SetFieldsSort(fields []string) *ClientListCtx {
 	t.fieldsSort = fields
 	return t

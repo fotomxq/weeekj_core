@@ -3,6 +3,7 @@ package RestaurantWeeklyRecipeMarge
 import (
 	"errors"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
 
 // DataWeeklyRecipeMarge 聚合数据包
@@ -50,6 +51,10 @@ type DataGetWeeklyRecipeMargeDay struct {
 	// 用餐日期
 	// 例如：20210101
 	DiningDate int `db:"dining_date" json:"diningDate" index:"true"`
+	//菜谱类型ID
+	RecipeTypeID int64 `db:"recipe_type_id" json:"recipeTypeID" check:"id" index:"true"`
+	//菜谱类型名称
+	RecipeTypeName string `db:"recipe_type_name" json:"recipeTypeName" check:"des" min:"1" max:"300" empty:"true"`
 	//早餐
 	Breakfast []DataGetWeeklyRecipeMargeDayItem `json:"breakfast"`
 	//午餐
@@ -69,6 +74,10 @@ type DataGetWeeklyRecipeMargeDayItem struct {
 	Count int `db:"count" json:"count" check:"intThan0"`
 	//单位
 	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"300" empty:"true"`
+	//上周同时间段是否出现过
+	IsRepeat bool `db:"is_repeat" json:"isRepeat" default:"false"`
+	//上周早中晚是否全部出现过
+	IsRepeatAll bool `db:"is_repeat_all" json:"isRepeatAll" default:"false"`
 }
 
 //GetWeeklyRecipeMarge 获取周菜谱聚合数据
@@ -83,14 +92,26 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 		err = errors.New("no data")
 		return
 	}
+	//根据本周数据，获取上周数据
+	var beforeData []DataGetWeeklyRecipeMargeDay
+	var beforeList []FieldsWeeklyRecipeDay
+	_ = weeklyRecipeDayDB.Select().SetFieldsSort([]string{"create_at"}).SetFieldsAll().SetIDQuery("org_id", weeklyRecipeData.OrgID).SetIDQuery("store_id", weeklyRecipeData.StoreID).SetIntQuery("audit_status", 1).SetPages(CoreSQL2.ArgsPages{
+		Page: 1,
+		Max:  1,
+		Sort: "create_at",
+		Desc: true,
+	}).Result(&beforeList)
+	if len(beforeList) > 0 {
+		beforeData, _ = GetWeeklyRecipeBeforeMarge(beforeList[0].ID)
+	}
 	//获取菜谱下所有数据
 	var rawList []FieldsWeeklyRecipeDay
-	err = weeklyRecipeDayDB.Select().SetIDQuery("weekly_recipe_id", weeklyRecipeID).Result(&rawList)
+	err = weeklyRecipeDayDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).Result(&rawList)
 	if err != nil {
 		return
 	}
 	var rawList2 []FieldsWeeklyRecipeChild
-	_ = weeklyRecipeChildDB.Select().SetIDQuery("weekly_recipe_id", weeklyRecipeID).Result(&rawList2)
+	_ = weeklyRecipeChildDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).Result(&rawList2)
 	//整理数据
 	data = DataWeeklyRecipeMarge{
 		ID:              weeklyRecipeData.ID,
@@ -115,47 +136,205 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 		v := rawList[k]
 		//构建数据
 		appendData := DataGetWeeklyRecipeMargeDay{
-			DiningDate: v.DiningDate,
-			Breakfast:  []DataGetWeeklyRecipeMargeDayItem{},
-			Lunch:      []DataGetWeeklyRecipeMargeDayItem{},
-			Dinner:     []DataGetWeeklyRecipeMargeDayItem{},
+			DiningDate:   v.DiningDate,
+			RecipeTypeID: v.RecipeTypeID,
+			Breakfast:    []DataGetWeeklyRecipeMargeDayItem{},
+			Lunch:        []DataGetWeeklyRecipeMargeDayItem{},
+			Dinner:       []DataGetWeeklyRecipeMargeDayItem{},
 		}
 		//找出子集合
 		for k2 := 0; k2 < len(rawList2); k2++ {
 			v2 := rawList2[k2]
 			//构建子数据
-			if v.ID == v2.WeeklyRecipeDayID {
-				//找到对应的数据
-				switch v2.DayType {
-				case 1:
-					appendData.Breakfast = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
-						RecipeID: v2.RecipeID,
-						Name:     v2.Name,
-						Price:    v2.Price,
-						Count:    v2.Count,
-						Unit:     v2.Unit,
-					})
-				case 2:
-					appendData.Lunch = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
-						RecipeID: v2.RecipeID,
-						Name:     v2.Name,
-						Price:    v2.Price,
-						Count:    v2.Count,
-						Unit:     v2.Unit,
-					})
-				case 3:
-					appendData.Dinner = append(appendData.Dinner, DataGetWeeklyRecipeMargeDayItem{
-						RecipeID: v2.RecipeID,
-						Name:     v2.Name,
-						Price:    v2.Price,
-						Count:    v2.Count,
-						Unit:     v2.Unit,
-					})
+			if v.ID != v2.WeeklyRecipeDayID || v.WeeklyRecipeID != v2.WeeklyRecipeID {
+				continue
+			}
+			//检查上周是否重复出现
+			var isRepeat, isRepeatAll bool
+			for _, v3 := range beforeData {
+				if v3.DiningDate != v.DiningDate || v3.RecipeTypeID != v.RecipeTypeID {
+					continue
 				}
+				for _, v4 := range v3.Breakfast {
+					if v4.RecipeID != v2.RecipeID {
+						continue
+					}
+					isRepeatAll = true
+					break
+				}
+				if isRepeatAll {
+					break
+				}
+				for _, v4 := range v3.Lunch {
+					if v4.RecipeID != v2.RecipeID {
+						continue
+					}
+					isRepeatAll = true
+					break
+				}
+				if isRepeatAll {
+					break
+				}
+				for _, v4 := range v3.Dinner {
+					if v4.RecipeID != v2.RecipeID {
+						continue
+					}
+					isRepeatAll = true
+					break
+				}
+				if isRepeatAll {
+					break
+				}
+			}
+			//找到对应的数据
+			switch v2.DayType {
+			case 1:
+				for _, v3 := range beforeData {
+					if v3.DiningDate != v.DiningDate {
+						continue
+					}
+					for _, v4 := range v3.Breakfast {
+						if v4.RecipeID != v2.RecipeID {
+							continue
+						}
+						isRepeat = true
+						break
+					}
+					if isRepeat {
+						break
+					}
+				}
+				appendData.Breakfast = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
+					RecipeID:    v2.RecipeID,
+					Name:        v2.Name,
+					Price:       v2.Price,
+					Count:       v2.Count,
+					Unit:        v2.Unit,
+					IsRepeat:    isRepeat,
+					IsRepeatAll: isRepeatAll,
+				})
+			case 2:
+				for _, v3 := range beforeData {
+					if v3.DiningDate != v.DiningDate {
+						continue
+					}
+					for _, v4 := range v3.Lunch {
+						if v4.RecipeID != v2.RecipeID {
+							continue
+						}
+						isRepeat = true
+						break
+					}
+					if isRepeat {
+						break
+					}
+				}
+				appendData.Lunch = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
+					RecipeID:    v2.RecipeID,
+					Name:        v2.Name,
+					Price:       v2.Price,
+					Count:       v2.Count,
+					Unit:        v2.Unit,
+					IsRepeat:    isRepeat,
+					IsRepeatAll: isRepeatAll,
+				})
+			case 3:
+				for _, v3 := range beforeData {
+					if v3.DiningDate != v.DiningDate {
+						continue
+					}
+					for _, v4 := range v3.Dinner {
+						if v4.RecipeID != v2.RecipeID {
+							continue
+						}
+						isRepeat = true
+						break
+					}
+					if isRepeat {
+						break
+					}
+				}
+				appendData.Dinner = append(appendData.Dinner, DataGetWeeklyRecipeMargeDayItem{
+					RecipeID:    v2.RecipeID,
+					Name:        v2.Name,
+					Price:       v2.Price,
+					Count:       v2.Count,
+					Unit:        v2.Unit,
+					IsRepeat:    isRepeat,
+					IsRepeatAll: isRepeatAll,
+				})
 			}
 		}
 		//追加数据
 		data.DayList = append(data.DayList, appendData)
+	}
+	//反馈
+	return
+}
+
+func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRecipeMargeDay, err error) {
+	//获取菜谱下所有数据
+	var rawList []FieldsWeeklyRecipeDay
+	err = weeklyRecipeDayDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).Result(&rawList)
+	if err != nil {
+		return
+	}
+	var rawList2 []FieldsWeeklyRecipeChild
+	_ = weeklyRecipeChildDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).Result(&rawList2)
+
+	for k := 0; k < len(rawList); k++ {
+		v := rawList[k]
+		//构建数据
+		appendData := DataGetWeeklyRecipeMargeDay{
+			DiningDate:   v.DiningDate,
+			RecipeTypeID: v.WeeklyRecipeID,
+			Breakfast:    []DataGetWeeklyRecipeMargeDayItem{},
+			Lunch:        []DataGetWeeklyRecipeMargeDayItem{},
+			Dinner:       []DataGetWeeklyRecipeMargeDayItem{},
+		}
+		//找出子集合
+		for k2 := 0; k2 < len(rawList2); k2++ {
+			v2 := rawList2[k2]
+			//构建子数据
+			if v.ID != v2.WeeklyRecipeDayID || v.WeeklyRecipeID != v2.WeeklyRecipeID {
+				continue
+			}
+			//找到对应的数据
+			switch v2.DayType {
+			case 1:
+				appendData.Breakfast = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
+					RecipeID:    v2.RecipeID,
+					Name:        v2.Name,
+					Price:       v2.Price,
+					Count:       v2.Count,
+					Unit:        v2.Unit,
+					IsRepeat:    false,
+					IsRepeatAll: false,
+				})
+			case 2:
+				appendData.Lunch = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
+					RecipeID:    v2.RecipeID,
+					Name:        v2.Name,
+					Price:       v2.Price,
+					Count:       v2.Count,
+					Unit:        v2.Unit,
+					IsRepeat:    false,
+					IsRepeatAll: false,
+				})
+			case 3:
+				appendData.Dinner = append(appendData.Dinner, DataGetWeeklyRecipeMargeDayItem{
+					RecipeID:    v2.RecipeID,
+					Name:        v2.Name,
+					Price:       v2.Price,
+					Count:       v2.Count,
+					Unit:        v2.Unit,
+					IsRepeat:    false,
+					IsRepeatAll: false,
+				})
+			}
+		}
+		//追加数据
+		dayList = append(dayList, appendData)
 	}
 	//反馈
 	return
