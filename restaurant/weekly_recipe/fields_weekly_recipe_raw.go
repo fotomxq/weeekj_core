@@ -12,6 +12,10 @@ type FieldsWeeklyRecipeRaw struct {
 	UpdateAt time.Time `db:"update_at" json:"updateAt" default:"now()"`
 	//删除时间
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt" default:"0"`
+	//分公司ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true" index:"true"`
+	//门店ID
+	StoreID int64 `db:"store_id" json:"storeID" check:"id" empty:"true" index:"true"`
 	//每周菜谱ID
 	WeeklyRecipeID int64 `db:"weekly_recipe_id" json:"weeklyRecipeID" check:"id" index:"true"`
 	// 用餐日期
@@ -29,5 +33,5 @@ type FieldsWeeklyRecipeRaw struct {
 	//原材料名称
 	MaterialName string `db:"material_name" json:"materialName" check:"des" min:"1" max:"300" empty:"true"`
 	//用量
-	Count float64 `db:"count" json:"count" check:"intThan0"`
+	UseCount float64 `db:"use_count" json:"useCount" check:"intThan0"`
 }

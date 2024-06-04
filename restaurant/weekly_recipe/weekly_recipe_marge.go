@@ -71,7 +71,7 @@ type DataGetWeeklyRecipeMargeDayItem struct {
 	//售价
 	Price int64 `db:"price" json:"price" check:"int64Than0" empty:"true"`
 	//数量
-	Count int `db:"count" json:"count" check:"intThan0"`
+	RecipeCount int `db:"recipe_count" json:"recipeCount" check:"intThan0" empty:"true"`
 	//单位
 	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"300" empty:"true"`
 	//上周同时间段是否出现过
@@ -208,7 +208,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
-					Count:       v2.Count,
+					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
 					IsRepeat:    isRepeat,
 					IsRepeatAll: isRepeatAll,
@@ -233,7 +233,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
-					Count:       v2.Count,
+					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
 					IsRepeat:    isRepeat,
 					IsRepeatAll: isRepeatAll,
@@ -258,7 +258,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
-					Count:       v2.Count,
+					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
 					IsRepeat:    isRepeat,
 					IsRepeatAll: isRepeatAll,
@@ -306,7 +306,7 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
-					Count:       v2.Count,
+					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
 					IsRepeat:    false,
 					IsRepeatAll: false,
@@ -316,7 +316,7 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
-					Count:       v2.Count,
+					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
 					IsRepeat:    false,
 					IsRepeatAll: false,
@@ -326,7 +326,7 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
-					Count:       v2.Count,
+					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
 					IsRepeat:    false,
 					IsRepeatAll: false,

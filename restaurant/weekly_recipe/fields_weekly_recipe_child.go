@@ -26,7 +26,7 @@ type FieldsWeeklyRecipeChild struct {
 	//售价
 	Price int64 `db:"price" json:"price" check:"int64Than0" empty:"true"`
 	//数量
-	Count int `db:"count" json:"count" check:"intThan0"`
+	RecipeCount int `db:"recipe_count" json:"recipeCount" check:"intThan0" empty:"true"`
 	//单位
 	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"300" empty:"true"`
 }

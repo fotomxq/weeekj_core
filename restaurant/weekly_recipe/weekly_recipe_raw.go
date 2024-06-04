@@ -1,6 +1,7 @@
 package RestaurantWeeklyRecipeMarge
 
 import (
+	"errors"
 	"fmt"
 	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
 	RestaurantRawMaterials "github.com/fotomxq/weeekj_core/v5/restaurant/raw_materials"
@@ -18,7 +19,7 @@ func GetWeeklyRecipeRaw(args *ArgsGetWeeklyRecipeRaw) (dataList []FieldsWeeklyRe
 	if err = Router2SystemConfig.MainCache.GetStruct(cacheMark, &dataList); err == nil && len(dataList) > 0 {
 		return
 	}
-	err = weeklyRecipeRawDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "weekly_recipe_id", "dining_date", "day_type", "recipe_id", "recipe_name", "material_id", "material_name", "count"}).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
+	err = weeklyRecipeRawDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "org_id", "store_id", "weekly_recipe_id", "dining_date", "day_type", "recipe_id", "recipe_name", "material_id", "material_name", "use_count"}).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
 	if err != nil {
 		return
 	}
@@ -45,10 +46,20 @@ type ArgsSetWeeklyRecipeRawItem struct {
 	//原材料ID
 	MaterialID int64 `db:"material_id" json:"materialID" check:"id" empty:"true" index:"true"`
 	//用量
-	Count float64 `db:"count" json:"count" check:"intThan0"`
+	UseCount float64 `db:"use_count" json:"useCount" check:"intThan0"`
 }
 
 func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
+	//获取数据
+	recipeData := getWeeklyRecipeByID(args.WeeklyRecipeID)
+	if recipeData.ID < 1 {
+		err = errors.New("no data")
+		return
+	}
+	if recipeData.AuditStatus != 1 {
+		err = errors.New("audit status error")
+		return
+	}
 	//检查是否存在数据
 	var rawList []FieldsWeeklyRecipeRaw
 	rawList, err = GetWeeklyRecipeRaw(&ArgsGetWeeklyRecipeRaw{
@@ -66,7 +77,9 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 	//创建数据
 	for k := 0; k < len(args.Items); k++ {
 		v := args.Items[k]
-		err = weeklyRecipeRawDB.Insert().SetFields([]string{"weekly_recipe_id", "dining_date", "day_type", "recipe_id", "recipe_name", "material_id", "material_name", "count"}).Add(map[string]any{
+		err = weeklyRecipeRawDB.Insert().SetFields([]string{"org_id", "store_id", "weekly_recipe_id", "dining_date", "day_type", "recipe_id", "recipe_name", "material_id", "material_name", "use_count"}).Add(map[string]any{
+			"org_id":           recipeData.OrgID,
+			"store_id":         recipeData.StoreID,
 			"weekly_recipe_id": args.WeeklyRecipeID,
 			"dining_date":      v.DiningDate,
 			"day_type":         v.DayType,
@@ -74,7 +87,7 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 			"recipe_name":      GetWeeklyRecipeNameByID(v.RecipeID),
 			"material_id":      v.MaterialID,
 			"material_name":    RestaurantRawMaterials.GetRawNameByID(v.MaterialID),
-			"count":            v.Count,
+			"use_count":        v.UseCount,
 		}).ExecAndCheckID()
 		if err != nil {
 			return

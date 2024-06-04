@@ -23,7 +23,7 @@ func GetWeeklyRecipeChild(args *ArgsGetWeeklyRecipeChild) (dataList []FieldsWeek
 	if err = Router2SystemConfig.MainCache.GetStruct(cacheMark, &dataList); err == nil && len(dataList) > 0 {
 		return
 	}
-	err = weeklyRecipeChildDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "weekly_recipe_id", "weekly_recipe_day_id", "day_type", "recipe_id", "name", "price", "count", "unit"}).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetIDQuery("weekly_recipe_day_id", args.WeeklyRecipeDayID).SetIntQuery("day_type", args.DayType).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
+	err = weeklyRecipeChildDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "weekly_recipe_id", "weekly_recipe_day_id", "day_type", "recipe_id", "name", "price", "recipe_count", "unit"}).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetIDQuery("weekly_recipe_day_id", args.WeeklyRecipeDayID).SetIntQuery("day_type", args.DayType).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
 	if err != nil {
 		return
 	}
@@ -52,25 +52,27 @@ func SetWeeklyRecipeChild(weeklyRecipeID int64, weeklyRecipeDayID int64, dayType
 	//创建数据
 	for k := 0; k < len(newData); k++ {
 		v := newData[k]
-		err = weeklyRecipeChildDB.Insert().SetFields([]string{"weekly_recipe_id", "weekly_recipe_day_id", "day_type", "recipe_id", "name", "price", "count", "unit"}).Add(map[string]any{
+		err = weeklyRecipeChildDB.Insert().SetFields([]string{"weekly_recipe_id", "weekly_recipe_day_id", "day_type", "recipe_id", "name", "price", "recipe_count", "unit"}).Add(map[string]any{
 			"weekly_recipe_id":     weeklyRecipeID,
 			"weekly_recipe_day_id": weeklyRecipeDayID,
 			"day_type":             dayType,
 			"recipe_id":            v.RecipeID,
 			"name":                 v.Name,
 			"price":                v.Price,
-			"count":                v.Count,
+			"recipe_count":         v.RecipeCount,
 			"unit":                 v.Unit,
 		}).ExecAndCheckID()
 		if err != nil {
 			return
 		}
 		dataList = append(dataList, DataGetWeeklyRecipeMargeDayItem{
-			RecipeID: v.RecipeID,
-			Name:     v.Name,
-			Price:    v.Price,
-			Count:    v.Count,
-			Unit:     v.Unit,
+			RecipeID:    v.RecipeID,
+			Name:        v.Name,
+			Price:       v.Price,
+			RecipeCount: v.RecipeCount,
+			Unit:        v.Unit,
+			IsRepeat:    false,
+			IsRepeatAll: false,
 		})
 	}
 	//删除缓冲

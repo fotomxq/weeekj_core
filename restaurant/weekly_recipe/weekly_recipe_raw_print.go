@@ -84,7 +84,7 @@ func PrintExcelRaw(c any, logErr string, args *ArgsPrintExcelRaw) {
 		//合并单元格
 		_ = excelFile.MergeCell(mainSheetName, fmt.Sprint("F", rowIndex), fmt.Sprint("G", rowIndex))
 		//用量
-		_ = excelFile.SetCellValue(mainSheetName, fmt.Sprint("H", rowIndex), vItemData.Count)
+		_ = excelFile.SetCellValue(mainSheetName, fmt.Sprint("H", rowIndex), vItemData.UseCount)
 		//合并单元格
 		_ = excelFile.MergeCell(mainSheetName, fmt.Sprint("H", rowIndex), fmt.Sprint("I", rowIndex))
 		//设置样式
