@@ -17,9 +17,9 @@ var (
 	weeklyRecipeDayDB   CoreSQL2.Client
 	weeklyRecipeChildDB CoreSQL2.Client
 	weeklyRecipeRawDB   CoreSQL2.Client
-	//RecipeTypeType 菜谱类型
+	//RecipeType 菜谱类型
 	// 用于区分职工菜谱等内容
-	RecipeTypeType = ClassSort.Sort{
+	RecipeType = ClassSort.Sort{
 		SortTableName: "restaurant_weekly_recipe_type",
 	}
 )
@@ -43,7 +43,7 @@ func Init() (err error) {
 	if err != nil {
 		return
 	}
-	err = RecipeTypeType.Init(&Router2SystemConfig.MainSQL)
+	err = RecipeType.Init(&Router2SystemConfig.MainSQL)
 	if err != nil {
 		return
 	}
