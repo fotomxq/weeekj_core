@@ -42,7 +42,7 @@ func SetWeeklyRecipeChild(weeklyRecipeID int64, weeklyRecipeDayID int64, dayType
 	})
 	if err == nil && len(rawList) > 0 {
 		//清理并重建数据
-		err = weeklyRecipeDayDB.Delete().NeedSoft(true).SetWhereAnd("weekly_recipe_id", weeklyRecipeID).SetWhereAnd("weekly_recipe_day_id", weeklyRecipeDayID).SetWhereAnd("day_type", dayType).ExecNamed(nil)
+		err = weeklyRecipeChildDB.Delete().NeedSoft(true).SetWhereAnd("weekly_recipe_id", weeklyRecipeID).SetWhereAnd("weekly_recipe_day_id", weeklyRecipeDayID).SetWhereAnd("day_type", dayType).ExecNamed(nil)
 		if err != nil {
 			return
 		}

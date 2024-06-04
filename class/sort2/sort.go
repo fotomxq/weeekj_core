@@ -1,40 +1,19 @@
-package ClassSort
+package ClassSort2
 
 import (
 	"errors"
 	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
-	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
-	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 )
 
-//分组模块
-// 该模块可以将业务数据进行指定分组
-
-// Sort 对象结构
-type Sort struct {
-	//排序表名
-	SortTableName string
-	//数据库句柄
-	sortDB CoreSQL2.Client
-}
-
-func (t *Sort) Init(mainDB *CoreSQL2.SQLClient) (err error) {
-	_, err = t.sortDB.Init2(mainDB, t.SortTableName, &FieldsSort{})
-	if err != nil {
-		return
-	}
-	return
-}
-
 // ArgsGetList 查询列表参数
 type ArgsGetList struct {
 	//分页
-	Pages CoreSQLPages.ArgsDataList `json:"pages"`
+	Pages CoreSQL2.ArgsPages `json:"pages"`
 	//绑定ID
 	BindID int64 `json:"bindID" check:"id" empty:"true"`
 	//标识码
@@ -47,48 +26,8 @@ type ArgsGetList struct {
 
 // GetList 查询列表
 func (t *Sort) GetList(args *ArgsGetList) (dataList []FieldsSort, dataCount int64, err error) {
-	where := ""
-	maps := map[string]interface{}{}
-	if args.BindID > -1 {
-		where = where + "bind_id = :bind_id"
-		maps["bind_id"] = args.BindID
-	}
-	if args.Mark != "" {
-		if where != "" {
-			where = where + " AND "
-		}
-		where = where + "mark = :mark"
-		maps["mark"] = args.Mark
-	}
-	if args.ParentID > -1 {
-		if where != "" {
-			where = where + " AND "
-		}
-		where = where + "parent_id = :parent_id"
-		maps["parent_id"] = args.ParentID
-	}
-	if args.Search != "" {
-		if where != "" {
-			where = where + " AND "
-		}
-		where = where + "(name ILIKE '%' || :search || '%' OR des ILIKE '%' || :search || '%')"
-		maps["search"] = args.Search
-	}
-	if where == "" {
-		where = "true"
-	}
 	var rawList []FieldsSort
-	dataCount, err = CoreSQL.GetListPageAndCount(
-		Router2SystemConfig.MainDB.DB,
-		&rawList,
-		t.SortTableName,
-		"id",
-		"SELECT id "+"FROM "+t.SortTableName+" WHERE "+where,
-		where,
-		maps,
-		&args.Pages,
-		[]string{"id", "create_at", "update_at", "sort", "name"},
-	)
+	dataCount, err = t.sortDB.Select().SetFieldsList([]string{"id"}).SetFieldsSort([]string{"id", "create_at", "update_at", "sort", "name"}).SetIDQuery("bind_id", args.BindID).SetStringQuery("mark", args.Mark).SetIDQuery("parent_id", args.ParentID).SetSearchQuery([]string{"name", "des"}, args.Search).SetPages(args.Pages).ResultAndCount(&rawList)
 	if err != nil {
 		return
 	}
@@ -108,7 +47,7 @@ func (t *Sort) GetList(args *ArgsGetList) (dataList []FieldsSort, dataCount int6
 
 // GetByName 通过名称获取分类
 func (t *Sort) GetByName(bindID int64, name string) (data FieldsSort, err error) {
-	err = Router2SystemConfig.MainDB.Get(&data, "SELECT id "+"FROM"+" "+t.SortTableName+" WHERE bind_id = $1 AND name = $2", bindID, name)
+	err = t.sortDB.Get().SetIDQuery("bind_id", bindID).SetStringQuery("name", name).Result(&data)
 	if err != nil {
 		return
 	}
@@ -127,7 +66,12 @@ func (t *Sort) GetByName(bindID int64, name string) (data FieldsSort, err error)
 // GetAll 获取组织下所有分类
 func (t *Sort) GetAll(bindID int64, parentID int64) (dataList []FieldsSort, err error) {
 	var rawList []FieldsSort
-	err = Router2SystemConfig.MainDB.Select(&rawList, "SELECT id "+"FROM "+t.SortTableName+" WHERE bind_id = $1 AND parent_id = $2", bindID, parentID)
+	err = t.sortDB.Select().SetFieldsList([]string{"id"}).SetDeleteQuery("delete_at", false).SetIDQuery("bind_id", bindID).SetIDQuery("parent_id", parentID).SetPages(CoreSQL2.ArgsPages{
+		Page: 1,
+		Max:  999,
+		Sort: "id",
+		Desc: false,
+	}).Result(&dataList)
 	if err != nil {
 		return
 	}
@@ -190,7 +134,12 @@ type ArgsGetIDs struct {
 // GetByIDs 查询一组ID数据
 func (t *Sort) GetByIDs(args *ArgsGetIDs) (dataList []FieldsSort, err error) {
 	var rawList []FieldsSort
-	err = Router2SystemConfig.MainDB.Select(&rawList, "SELECT id "+"FROM "+t.SortTableName+" WHERE id = ANY($1) AND ($2 < 1 OR bind_id = $2) LIMIT $3;", args.IDs, args.BindID, args.Limit)
+	err = t.sortDB.Select().SetFieldsList([]string{"id"}).SetDeleteQuery("delete_at", false).SetIDsQuery("id", args.IDs).SetIDQuery("bind_id", args.BindID).SetPages(CoreSQL2.ArgsPages{
+		Page: 1,
+		Max:  int64(args.Limit),
+		Sort: "id",
+		Desc: false,
+	}).Result(&dataList)
 	if err != nil {
 		return
 	}
@@ -230,7 +179,7 @@ func (t *Sort) GetName(args *ArgsGetID) (data string, err error) {
 
 // GetAllCount 获取有多少分类
 func (t *Sort) GetAllCount() (count int64) {
-	_ = Router2SystemConfig.MainDB.Get(&count, "SELECT COUNT(id) "+"FROM "+t.SortTableName+"")
+	count = t.sortDB.Analysis().Count("")
 	return
 }
 
@@ -268,12 +217,12 @@ type ArgsGetParams struct {
 
 // GetParams 获取扩展
 func (t *Sort) GetParams(args *ArgsGetParams) (paramsData CoreSQLConfig.FieldsConfigsType, err error) {
-	data := t.getByID(args.ID)
-	if data.ID < 1 || !CoreFilter.EqID2(args.BindID, data.BindID) {
-		err = errors.New("no data")
-		return
-	}
-	paramsData = data.Params
+	//data := t.getByID(args.ID)
+	//if data.ID < 1 || !CoreFilter.EqID2(args.BindID, data.BindID) {
+	//	err = errors.New("no data")
+	//	return
+	//}
+	//paramsData = data.Params
 	return
 }
 
@@ -290,35 +239,35 @@ type ArgsGetParam struct {
 
 // GetParam 获取扩展
 func (t *Sort) GetParam(args *ArgsGetParam) (val string, err error) {
-	data := t.getByID(args.ID)
-	if data.ID < 1 || !CoreFilter.EqID2(args.BindID, data.BindID) {
-		err = errors.New("no data")
-		return
-	}
-	for _, v := range data.Params {
-		if v.Mark == args.Mark {
-			val = v.Val
-			return
-		}
-	}
-	err = errors.New("mark not find")
+	//data := t.getByID(args.ID)
+	//if data.ID < 1 || !CoreFilter.EqID2(args.BindID, data.BindID) {
+	//	err = errors.New("no data")
+	//	return
+	//}
+	//for _, v := range data.Params {
+	//	if v.Mark == args.Mark {
+	//		val = v.Val
+	//		return
+	//	}
+	//}
+	//err = errors.New("mark not find")
 	return
 }
 
 // GetParamInt64 获取扩展同时转int64
 func (t *Sort) GetParamInt64(args *ArgsGetParam) (val int64, err error) {
-	data := t.getByID(args.ID)
-	if data.ID < 1 || !CoreFilter.EqID2(args.BindID, data.BindID) {
-		err = errors.New("no data")
-		return
-	}
-	for _, v := range data.Params {
-		if v.Mark == args.Mark {
-			val, err = CoreFilter.GetInt64ByString(v.Val)
-			return
-		}
-	}
-	err = errors.New("mark not find")
+	//data := t.getByID(args.ID)
+	//if data.ID < 1 || !CoreFilter.EqID2(args.BindID, data.BindID) {
+	//	err = errors.New("no data")
+	//	return
+	//}
+	//for _, v := range data.Params {
+	//	if v.Mark == args.Mark {
+	//		val, err = CoreFilter.GetInt64ByString(v.Val)
+	//		return
+	//	}
+	//}
+	//err = errors.New("mark not find")
 	return
 }
 
@@ -337,7 +286,7 @@ func (t *Sort) CheckBind(args *ArgsCheckBind) (err error) {
 		ID int64 `db:"id" json:"id"`
 	}
 	var dataList []dataType
-	err = Router2SystemConfig.MainDB.Select(&dataList, "SELECT id "+"FROM "+t.SortTableName+" WHERE id = ANY($1) AND bind_id != :bind_id;", args.IDs, args.BindID)
+	err = t.sortDB.Select().SetFieldsList([]string{"id"}).SetDeleteQuery("delete_at", false).SetIDsQuery("id", args.IDs).SetIDQuery("bind_id", args.BindID).Result(&dataList)
 	if err != nil {
 		err = nil
 		return
@@ -380,14 +329,14 @@ func (t *Sort) Create(args *ArgsCreate) (data FieldsSort, err error) {
 	if args.ParentID > 0 {
 		data = t.getByID(args.ParentID)
 		if data.ID < 1 || !CoreFilter.EqID2(args.BindID, data.BindID) {
-			err = errors.New(fmt.Sprint("parent id not exist, ", err.Error(), ", parent id: ", args.ParentID, ", bind id: ", args.BindID))
+			err = errors.New(fmt.Sprint("parent id not exist, ", err, ", parent id: ", args.ParentID, ", bind id: ", args.BindID))
 			return
 		}
 	}
 	var sort int
 	var dataList []FieldsSort
 	dataList, _, err = t.GetList(&ArgsGetList{
-		Pages: CoreSQLPages.ArgsDataList{
+		Pages: CoreSQL2.ArgsPages{
 			Page: 1,
 			Max:  1,
 			Sort: "sort",
@@ -403,7 +352,8 @@ func (t *Sort) Create(args *ArgsCreate) (data FieldsSort, err error) {
 	} else {
 		sort = 1
 	}
-	err = CoreSQL.CreateOneAndData(Router2SystemConfig.MainDB.DB, t.SortTableName, "INSERT "+"INTO "+t.SortTableName+"(bind_id, mark, parent_id, sort, cover_file_id, des_files, name, des, params) VALUES(:bind_id, :mark, :parent_id, :sort, :cover_file_id, :des_files, :name, :des, :params)", map[string]interface{}{
+	var newID int64
+	newID, err = t.sortDB.Insert().SetFields([]string{"bind_id", "mark", "parent_id", "sort", "cover_file_id", "des_files", "name", "des"}).Add(map[string]any{
 		"bind_id":       args.BindID,
 		"mark":          args.Mark,
 		"parent_id":     args.ParentID,
@@ -412,8 +362,20 @@ func (t *Sort) Create(args *ArgsCreate) (data FieldsSort, err error) {
 		"des_files":     args.DesFiles,
 		"name":          args.Name,
 		"des":           args.Des,
-		"params":        args.Params,
-	}, &data)
+	}).ExecAndResultID()
+	if err != nil {
+		return
+	}
+	data = t.getByID(newID)
+	if data.ID < 1 {
+		err = errors.New("no data")
+		return
+	}
+	err = t.UpdateParamsAdd(&ArgsUpdateParams{
+		ID:     data.ID,
+		BindID: data.BindID,
+		Params: args.Params,
+	})
 	if err != nil {
 		return
 	}
@@ -458,8 +420,7 @@ func (t *Sort) UpdateByID(args *ArgsUpdateByID) (err error) {
 			return
 		}
 	}
-	_, err = CoreSQL.UpdateOne(Router2SystemConfig.MainDB.DB, "UPDATE "+t.SortTableName+" SET mark = :mark, parent_id = :parent_id, sort = :sort, cover_file_id = :cover_file_id, des_files = :des_files, name = :name, des = :des, params = :params WHERE id = :id", map[string]interface{}{
-		"id":            args.ID,
+	err = t.sortDB.Update().NeedSoft(true).AddWhereID(args.ID).SetFields([]string{"mark", "parent_id", "sort", "cover_file_id", "des_files", "name", "des"}).NamedExec(map[string]any{
 		"mark":          args.Mark,
 		"parent_id":     args.ParentID,
 		"sort":          args.Sort,
@@ -467,13 +428,16 @@ func (t *Sort) UpdateByID(args *ArgsUpdateByID) (err error) {
 		"des_files":     args.DesFiles,
 		"name":          args.Name,
 		"des":           args.Des,
-		"params":        args.Params,
 	})
 	if err != nil {
 		return
 	}
 	t.deleteSortCache(args.ID)
-	return
+	return t.UpdateParams(&ArgsUpdateParams{
+		ID:     data.ID,
+		BindID: data.BindID,
+		Params: args.Params,
+	})
 }
 
 // ArgsUpdateParams 修改扩展参数参数
@@ -489,46 +453,46 @@ type ArgsUpdateParams struct {
 
 // UpdateParams 修改扩展参数参数
 func (t *Sort) UpdateParams(args *ArgsUpdateParams) (err error) {
-	_, err = CoreSQL.UpdateOne(Router2SystemConfig.MainDB.DB, "UPDATE "+t.SortTableName+" SET params = :params WHERE id = :id AND (:bind_id < 1 OR bind_id = :bind_id)", map[string]interface{}{
-		"id":      args.ID,
-		"bind_id": args.BindID,
-		"params":  args.Params,
-	})
-	if err != nil {
-		return
-	}
-	t.deleteSortCache(args.ID)
+	//_, err = CoreSQL.UpdateOne(Router2SystemConfig.MainDB.DB, "UPDATE "+t.SortTableName+" SET params = :params WHERE id = :id AND (:bind_id < 1 OR bind_id = :bind_id)", map[string]interface{}{
+	//	"id":      args.ID,
+	//	"bind_id": args.BindID,
+	//	"params":  args.Params,
+	//})
+	//if err != nil {
+	//	return
+	//}
+	//t.deleteSortCache(args.ID)
 	return
 }
 
 // UpdateParamsAdd 增量修改扩展参数
 func (t *Sort) UpdateParamsAdd(args *ArgsUpdateParams) (err error) {
-	data := t.getByID(args.ID)
-	if data.ID < 1 || !CoreFilter.EqID2(args.BindID, data.BindID) {
-		return errors.New("no data")
-	}
-	for _, v := range args.Params {
-		isFind := false
-		for k2, v2 := range data.Params {
-			if v.Mark == v2.Mark {
-				isFind = true
-				data.Params[k2].Val = v.Val
-				break
-			}
-		}
-		if !isFind {
-			data.Params = append(data.Params, v)
-		}
-	}
-	_, err = CoreSQL.UpdateOne(Router2SystemConfig.MainDB.DB, "UPDATE "+t.SortTableName+" SET params = :params WHERE id = :id AND (:bind_id < 1 OR bind_id = :bind_id)", map[string]interface{}{
-		"id":      args.ID,
-		"bind_id": args.BindID,
-		"params":  data.Params,
-	})
-	if err != nil {
-		return
-	}
-	t.deleteSortCache(args.ID)
+	//data := t.getByID(args.ID)
+	//if data.ID < 1 || !CoreFilter.EqID2(args.BindID, data.BindID) {
+	//	return errors.New("no data")
+	//}
+	//for _, v := range args.Params {
+	//	isFind := false
+	//	for k2, v2 := range data.Params {
+	//		if v.Mark == v2.Mark {
+	//			isFind = true
+	//			data.Params[k2].Val = v.Val
+	//			break
+	//		}
+	//	}
+	//	if !isFind {
+	//		data.Params = append(data.Params, v)
+	//	}
+	//}
+	//_, err = CoreSQL.UpdateOne(Router2SystemConfig.MainDB.DB, "UPDATE "+t.SortTableName+" SET params = :params WHERE id = :id AND (:bind_id < 1 OR bind_id = :bind_id)", map[string]interface{}{
+	//	"id":      args.ID,
+	//	"bind_id": args.BindID,
+	//	"params":  data.Params,
+	//})
+	//if err != nil {
+	//	return
+	//}
+	//t.deleteSortCache(args.ID)
 	return
 }
 
@@ -543,10 +507,7 @@ type ArgsDeleteByID struct {
 
 // DeleteByID 删除分组参数
 func (t *Sort) DeleteByID(args *ArgsDeleteByID) (err error) {
-	_, err = CoreSQL.DeleteAll(Router2SystemConfig.MainDB.DB, t.SortTableName, "id = :id AND (:bind_id < 1 OR bind_id = :bind_id)", map[string]interface{}{
-		"id":      args.ID,
-		"bind_id": args.BindID,
-	})
+	err = t.sortDB.Delete().NeedSoft(true).AddWhereID(args.ID).SetWhereOrThan("bind_id", args.BindID).ExecNamed(nil)
 	if err != nil {
 		return
 	}
@@ -591,7 +552,7 @@ func (t *Sort) getByID(id int64) (data FieldsSort) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	_ = Router2SystemConfig.MainDB.Get(&data, "SELECT id, create_at, update_at, bind_id, mark, parent_id, sort, cover_file_id, des_files, name, des, params "+"FROM "+t.SortTableName+" WHERE id = $1", id)
+	_ = t.sortDB.Get().SetDefaultFields().GetByID(id).Result(&data)
 	if data.ID < 1 {
 		return
 	}

@@ -20,6 +20,8 @@ type Client struct {
 	StructData any
 	//关键索引
 	Key string
+	//默认全量字段
+	fieldNameList []clientField
 	//是否启动缓冲器
 	openCache bool
 	//缓冲时效
@@ -54,6 +56,33 @@ type Client struct {
 	installNunIndexKeyNum int
 }
 
+type clientField struct {
+	//字段名称
+	DBName string
+	//字段类型
+	DBType string
+	//列表是否允许反馈
+	IsList bool
+	//是否主键
+	IsKey bool
+	//是否包含索引
+	IsIndex bool
+	//是否唯一
+	IsUnique bool
+	//值类型(golang)
+	ValueType string
+	//最小长度
+	MinLen int
+	//最大长度
+	MaxLen int
+	//默认值
+	DefaultVal string
+	//JSON名称
+	JSONName string
+	//参数检查标识码
+	CheckCode string
+}
+
 func (t *Client) Init(mainDB *SQLClient, tableName string) *Client {
 	t.DB = mainDB
 	t.TableName = tableName
@@ -62,14 +91,17 @@ func (t *Client) Init(mainDB *SQLClient, tableName string) *Client {
 }
 
 func (t *Client) Init2(mainDB *SQLClient, tableName string, structData any) (client *Client, err error) {
+	//初始化db
 	t.DB = mainDB
 	t.TableName = tableName
 	t.Key = "id"
 	t.StructData = structData
+	//安装sql
 	err = t.InstallSQL()
 	if err != nil {
 		return
 	}
+	//反馈
 	return t, nil
 }
 
@@ -83,6 +115,14 @@ func (t *Client) GetKey() string {
 		return t.Key
 	}
 	return "id"
+}
+
+func (t *Client) GetFields() []string {
+	var result []string
+	for _, v := range t.fieldNameList {
+		result = append(result, v.DBName)
+	}
+	return result
 }
 
 func (t *Client) SetCache(obj *CoreCache.CacheData) *Client {

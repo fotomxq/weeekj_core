@@ -62,6 +62,10 @@ func (t *ClientUpdateCtx) SetFields(fields []string) *ClientUpdateCtx {
 	return t
 }
 
+func (t *ClientUpdateCtx) SetDefaultFields() *ClientUpdateCtx {
+	return t.SetFields(t.clientCtx.client.GetFields())
+}
+
 func (t *ClientUpdateCtx) SetFieldStr(fields string) *ClientUpdateCtx {
 	t.updateFieldStr = fields
 	t.clientCtx.query = fmt.Sprint("UPDATE ", t.clientCtx.client.TableName, " SET ")

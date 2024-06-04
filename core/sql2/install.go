@@ -58,11 +58,12 @@ func (t *Client) InstallSQL() (err error) {
 	if len(columnNames) > 0 {
 		sqlData = ""
 	} else {
-		fmt.Println(err)
 		err = nil
 	}
 	//计划增加的字段
 	var needAddFields []string
+	//初始化全量字段
+	t.fieldNameList = []clientField{}
 	//获取结构体
 	paramsType := reflect.TypeOf(t.StructData).Elem()
 	step := 0
@@ -86,6 +87,21 @@ func (t *Client) InstallSQL() (err error) {
 		indexOut := vField.Tag.Get("index_out")
 		//默认值
 		defaultVal := vField.Tag.Get("default")
+		//写入t.FieldNameAll
+		appendClientField := clientField{
+			DBName:     dbVal,
+			DBType:     "",
+			IsList:     true,
+			IsKey:      false,
+			IsIndex:    index,
+			IsUnique:   unique,
+			ValueType:  vType,
+			MinLen:     CoreFilter.GetIntByStringNoErr(vField.Tag.Get("min")),
+			MaxLen:     maxVal,
+			DefaultVal: defaultVal,
+			JSONName:   vField.Tag.Get("json"),
+			CheckCode:  vField.Tag.Get("check"),
+		}
 		//当前字段是否已经存在
 		haveField := false
 		for _, nowField := range columnNames {
@@ -103,6 +119,8 @@ func (t *Client) InstallSQL() (err error) {
 			}
 			appendFields = append(appendFields, "id bigserial constraint "+t.TableName+"_pk primary key")
 			t.installAppendUIndex("id")
+			appendClientField.IsIndex = true
+			appendClientField.DBType = "bigint"
 		case "create_at":
 			if len(columnNames) > 0 {
 				if !haveField {
@@ -111,6 +129,7 @@ func (t *Client) InstallSQL() (err error) {
 			} else {
 				appendFields = append(appendFields, "create_at timestamp with time zone default CURRENT_TIMESTAMP not null")
 			}
+			appendClientField.DBType = "timestamp with time zone"
 		case "update_at":
 			if len(columnNames) > 0 {
 				if !haveField {
@@ -119,6 +138,7 @@ func (t *Client) InstallSQL() (err error) {
 			} else {
 				appendFields = append(appendFields, "update_at timestamp with time zone default CURRENT_TIMESTAMP not null")
 			}
+			appendClientField.DBType = "timestamp with time zone"
 		case "delete_at":
 			if len(columnNames) > 0 {
 				if !haveField {
@@ -127,6 +147,7 @@ func (t *Client) InstallSQL() (err error) {
 			} else {
 				appendFields = append(appendFields, "delete_at timestamp with time zone default to_timestamp((0)::double precision) not null")
 			}
+			appendClientField.DBType = "timestamp with time zone"
 		case "code":
 			if maxVal < 1 {
 				maxVal = 50
@@ -144,6 +165,7 @@ func (t *Client) InstallSQL() (err error) {
 			if index {
 				t.installAppendIndex("code")
 			}
+			appendClientField.DBType = "varchar"
 		case "mark":
 			if maxVal < 1 {
 				maxVal = 50
@@ -159,8 +181,9 @@ func (t *Client) InstallSQL() (err error) {
 				t.installAppendUIndex("mark")
 			}
 			if index {
-				t.installAppendIndex("code")
+				t.installAppendIndex("mark")
 			}
+			appendClientField.DBType = "varchar"
 		default:
 			appendTypeSQL := ""
 			appendDefaultSQL := ""
@@ -170,11 +193,13 @@ func (t *Client) InstallSQL() (err error) {
 					appendDefaultSQL = " default " + defaultVal
 				}
 				appendTypeSQL = "integer"
+				appendClientField.DBType = "integer"
 			case "[]int":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
 				}
 				appendTypeSQL = "integer[]"
+				appendClientField.DBType = "integer[]"
 			case "pq.Int32Array":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
@@ -185,21 +210,37 @@ func (t *Client) InstallSQL() (err error) {
 					appendDefaultSQL = " default " + defaultVal
 				}
 				appendTypeSQL = "bigint"
+				appendClientField.DBType = "bigint"
 			case "[]int64":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
 				}
 				appendTypeSQL = "bigint[]"
+				appendClientField.DBType = "bigint[]"
 			case "pq.Int64Array":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
 				}
 				appendTypeSQL = "bigint[]"
+				appendClientField.DBType = "bigint[]"
+			case "float64":
+				if defaultVal != "" {
+					appendDefaultSQL = " default " + defaultVal
+				}
+				appendTypeSQL = "float"
+				appendClientField.DBType = "float"
+			case "[]float64":
+				if defaultVal != "" {
+					appendDefaultSQL = " default " + defaultVal
+				}
+				appendTypeSQL = "float[]"
+				appendClientField.DBType = "float[]"
 			case "bool":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
 				}
 				appendTypeSQL = "boolean"
+				appendClientField.DBType = "boolean"
 			case "time.Time":
 				if defaultVal != "" {
 					if defaultVal == "now()" {
@@ -214,6 +255,7 @@ func (t *Client) InstallSQL() (err error) {
 					appendDefaultSQL = " default " + defaultVal
 				}
 				appendTypeSQL = "timestamp with time zone"
+				appendClientField.DBType = "timestamp with time zone"
 			case "string":
 				if defaultVal != "" {
 					appendDefaultSQL = " default '" + defaultVal + "'"
@@ -223,6 +265,8 @@ func (t *Client) InstallSQL() (err error) {
 						appendDefaultSQL = " default " + defaultVal
 					}
 					appendTypeSQL = "text"
+					appendClientField.DBType = "text"
+					appendClientField.IsList = false
 				} else {
 					if maxVal < 1 {
 						maxVal = 255
@@ -231,7 +275,17 @@ func (t *Client) InstallSQL() (err error) {
 						appendDefaultSQL = " default " + defaultVal
 					}
 					appendTypeSQL = fmt.Sprint("varchar(", maxVal, ")")
+					appendClientField.DBType = "varchar"
 				}
+			default:
+				//err = errors.New("install sql error: table " + t.TableName + " field " + dbVal + " type " + vType + " not support")
+				//return
+				//按照jsonb处理，不建议使用
+				if defaultVal != "" {
+					appendDefaultSQL = " default " + defaultVal
+				}
+				appendTypeSQL = "jsonb"
+				appendClientField.DBType = "jsonb"
 			}
 			if len(columnNames) > 0 {
 				if !haveField {
@@ -243,9 +297,11 @@ func (t *Client) InstallSQL() (err error) {
 				appendFields = append(appendFields, fmt.Sprint(dbVal, " ", appendTypeSQL, appendDefaultSQL, " not null"))
 			}
 			if unique {
+				appendClientField.IsUnique = true
 				t.installAppendUIndex(dbVal)
 			}
 			if index {
+				appendClientField.IsIndex = true
 				t.installAppendIndex(dbVal)
 			}
 		}
@@ -254,6 +310,7 @@ func (t *Client) InstallSQL() (err error) {
 			err = errors.New("install sql error: table " + t.TableName + " has index_out, not support")
 			return
 		}
+		t.fieldNameList = append(t.fieldNameList, appendClientField)
 	}
 	//检查主键数量
 	if t.installNunIndexKeyNum > 1 {
@@ -284,7 +341,7 @@ func (t *Client) InstallSQL() (err error) {
 	//执行sql
 	_, err = t.DB.GetPostgresql().Exec(sqlData)
 	if err != nil {
-		err = errors.New("install sql exec error: " + err.Error())
+		err = errors.New(fmt.Sprint("install sql exec error: "+err.Error(), ", ", sqlData))
 		return
 	}
 	//标记已运行

@@ -58,7 +58,7 @@ func (t *ClientAnalysisCtx) DataNoDelete() *ClientAnalysisCtx {
 	return t
 }
 
-// 获取最后的错误信息
+// GetError 获取最后的错误信息
 func (t *ClientAnalysisCtx) GetError() error {
 	return t.err
 }

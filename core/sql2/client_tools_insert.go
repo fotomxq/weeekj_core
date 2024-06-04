@@ -24,6 +24,10 @@ func (t *ClientInsertCtx) SetFields(fields []string) *ClientInsertCtx {
 	return t
 }
 
+func (t *ClientInsertCtx) SetDefaultFields() *ClientInsertCtx {
+	return t.SetFields(t.clientCtx.client.GetFields())
+}
+
 func (t *ClientInsertCtx) getFieldVal() string {
 	return fmt.Sprint(":", strings.Join(t.fields, ",:"))
 }

@@ -1,6 +1,7 @@
 package RestaurantWeeklyRecipeMarge
 
 import (
+	ClassSort "github.com/fotomxq/weeekj_core/v5/class/sort"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
@@ -15,6 +16,12 @@ var (
 	weeklyRecipeDB      CoreSQL2.Client
 	weeklyRecipeDayDB   CoreSQL2.Client
 	weeklyRecipeChildDB CoreSQL2.Client
+	weeklyRecipeRawDB   CoreSQL2.Client
+	//RecipeTypeType 菜谱类型
+	// 用于区分职工菜谱等内容
+	RecipeTypeType = ClassSort.Sort{
+		SortTableName: "restaurant_weekly_recipe_type",
+	}
 )
 
 // Init 初始化
@@ -24,15 +31,7 @@ func Init() (err error) {
 	if err != nil {
 		return
 	}
-	err = weeklyRecipeDB.InstallSQL()
-	if err != nil {
-		return
-	}
 	_, err = weeklyRecipeDayDB.Init2(&Router2SystemConfig.MainSQL, "restaurant_weekly_recipe_day", &FieldsWeeklyRecipeDay{})
-	if err != nil {
-		return
-	}
-	err = weeklyRecipeDayDB.InstallSQL()
 	if err != nil {
 		return
 	}
@@ -40,7 +39,11 @@ func Init() (err error) {
 	if err != nil {
 		return
 	}
-	err = weeklyRecipeChildDB.InstallSQL()
+	_, err = weeklyRecipeRawDB.Init2(&Router2SystemConfig.MainSQL, "restaurant_weekly_recipe_raw", &FieldsWeeklyRecipeRaw{})
+	if err != nil {
+		return
+	}
+	err = RecipeTypeType.Init(&Router2SystemConfig.MainSQL)
 	if err != nil {
 		return
 	}
