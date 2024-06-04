@@ -8,13 +8,13 @@ import (
 	Router2Mid "github.com/fotomxq/weeekj_core/v5/router2/mid"
 )
 
-type ArgsExcelRaw struct {
+type ArgsPrintExcelRaw struct {
 	//每周菜谱ID
 	WeeklyRecipeID int64 `db:"weekly_recipe_id" json:"weeklyRecipeID" check:"id" index:"true"`
 }
 
 // PrintExcelRaw 导出周菜谱原材料
-func PrintExcelRaw(c any, logErr string, args *ArgsExcelRaw) {
+func PrintExcelRaw(c any, logErr string, args *ArgsPrintExcelRaw) {
 	//菜谱信息
 	weeklyRecipeData := getWeeklyRecipeByID(args.WeeklyRecipeID)
 	if weeklyRecipeData.ID < 1 {
