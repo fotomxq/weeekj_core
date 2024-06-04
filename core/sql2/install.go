@@ -61,6 +61,8 @@ func (t *Client) InstallSQL() (err error) {
 		fmt.Println(err)
 		err = nil
 	}
+	//计划增加的字段
+	var needAddFields []string
 	//获取结构体
 	paramsType := reflect.TypeOf(t.StructData).Elem()
 	step := 0
@@ -73,6 +75,7 @@ func (t *Client) InstallSQL() (err error) {
 		vType := vField.Type.String()
 		//获取db值
 		dbVal := vField.Tag.Get("db")
+		needAddFields = append(needAddFields, dbVal)
 		//是否索引
 		index := vField.Tag.Get("index") == "true"
 		//是否唯一索引
@@ -257,6 +260,20 @@ func (t *Client) InstallSQL() (err error) {
 		err = errors.New("install sql error: table " + t.TableName + " has more than one primary key")
 		return
 	}
+	//反向核查字段是否被删除
+	// alter table if exists table_name drop column if exists field_name;
+	for _, nowField := range columnNames {
+		isFind := false
+		for _, addField := range needAddFields {
+			if addField == nowField {
+				isFind = true
+				break
+			}
+		}
+		if !isFind {
+			t.installAppendSQLData = append(t.installAppendSQLData, fmt.Sprintf("alter table if exists %s drop column if exists %s;", t.TableName, nowField))
+		}
+	}
 	//追加sql
 	if len(columnNames) > 0 {
 		sqlData += strings.Join(appendFields, "")
@@ -264,7 +281,6 @@ func (t *Client) InstallSQL() (err error) {
 		sqlData += strings.Join(appendFields, ",") + ");"
 	}
 	sqlData += strings.Join(t.installAppendSQLData, "")
-	//fmt.Println(sqlData)
 	//执行sql
 	_, err = t.DB.GetPostgresql().Exec(sqlData)
 	if err != nil {

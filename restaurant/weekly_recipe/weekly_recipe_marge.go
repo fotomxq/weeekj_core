@@ -69,10 +69,6 @@ type DataGetWeeklyRecipeMargeDayItem struct {
 	Count int `db:"count" json:"count" check:"intThan0"`
 	//单位
 	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"300" empty:"true"`
-	//原材料ID
-	MaterialID int64 `db:"material_id" json:"materialID" check:"id" empty:"true"`
-	//原材料数量
-	MaterialCount int `db:"material_count" json:"materialCount" check:"intThan0" empty:"true"`
 }
 
 //GetWeeklyRecipeMarge 获取周菜谱聚合数据
@@ -133,33 +129,27 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 				switch v2.DayType {
 				case 1:
 					appendData.Breakfast = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
-						RecipeID:      v2.RecipeID,
-						Name:          v2.Name,
-						Price:         v2.Price,
-						Count:         v2.Count,
-						Unit:          v2.Unit,
-						MaterialID:    v2.MaterialID,
-						MaterialCount: v2.MaterialCount,
+						RecipeID: v2.RecipeID,
+						Name:     v2.Name,
+						Price:    v2.Price,
+						Count:    v2.Count,
+						Unit:     v2.Unit,
 					})
 				case 2:
 					appendData.Lunch = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
-						RecipeID:      v2.RecipeID,
-						Name:          v2.Name,
-						Price:         v2.Price,
-						Count:         v2.Count,
-						Unit:          v2.Unit,
-						MaterialID:    v2.MaterialID,
-						MaterialCount: v2.MaterialCount,
+						RecipeID: v2.RecipeID,
+						Name:     v2.Name,
+						Price:    v2.Price,
+						Count:    v2.Count,
+						Unit:     v2.Unit,
 					})
 				case 3:
 					appendData.Dinner = append(appendData.Dinner, DataGetWeeklyRecipeMargeDayItem{
-						RecipeID:      v2.RecipeID,
-						Name:          v2.Name,
-						Price:         v2.Price,
-						Count:         v2.Count,
-						Unit:          v2.Unit,
-						MaterialID:    v2.MaterialID,
-						MaterialCount: v2.MaterialCount,
+						RecipeID: v2.RecipeID,
+						Name:     v2.Name,
+						Price:    v2.Price,
+						Count:    v2.Count,
+						Unit:     v2.Unit,
 					})
 				}
 			}
@@ -193,9 +183,8 @@ type ArgsCreateWeeklyRecipeMarge struct {
 }
 
 // CreateWeeklyRecipeMarge 聚合创建数据
-func CreateWeeklyRecipeMarge(args *ArgsCreateWeeklyRecipeMarge) (err error) {
+func CreateWeeklyRecipeMarge(args *ArgsCreateWeeklyRecipeMarge) (weeklyRecipeID int64, err error) {
 	//创建周数据
-	var weeklyRecipeID int64
 	weeklyRecipeID, err = CreateWeeklyRecipe(&ArgsCreateWeeklyRecipe{
 		OrgID:           args.OrgID,
 		StoreID:         args.StoreID,
