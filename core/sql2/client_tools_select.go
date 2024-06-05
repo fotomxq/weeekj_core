@@ -57,8 +57,46 @@ func (t *ClientListCtx) SetFieldsAll() *ClientListCtx {
 	return t.SetFieldsList(t.clientCtx.client.GetFields())
 }
 
+func (t *ClientListCtx) SetDefaultListFields() *ClientListCtx {
+	t.fieldsList = []string{}
+	for k := 0; k < len(t.clientCtx.client.fieldNameList); k++ {
+		if !t.clientCtx.client.fieldNameList[k].IsList {
+			continue
+		}
+		t.fieldsList = append(t.fieldsList, t.clientCtx.client.fieldNameList[k].DBName)
+	}
+	return t
+}
+
+func (t *ClientListCtx) SetDefaultKeyListFields() *ClientListCtx {
+	t.fieldsList = []string{t.clientCtx.client.GetKey()}
+	return t
+}
+
+func (t *ClientListCtx) SetDefaultIndexFields() *ClientListCtx {
+	t.fieldsList = []string{}
+	for k := 0; k < len(t.clientCtx.client.fieldNameList); k++ {
+		if !t.clientCtx.client.fieldNameList[k].IsIndex && !t.clientCtx.client.fieldNameList[k].IsUnique {
+			continue
+		}
+		t.fieldsList = append(t.fieldsList, t.clientCtx.client.fieldNameList[k].DBName)
+	}
+	return t
+}
+
 func (t *ClientListCtx) SetFieldsSort(fields []string) *ClientListCtx {
 	t.fieldsSort = fields
+	return t
+}
+
+func (t *ClientListCtx) SetFieldsSortDefault() *ClientListCtx {
+	t.fieldsSort = []string{}
+	for k := 0; k < len(t.clientCtx.client.fieldNameList); k++ {
+		if !t.clientCtx.client.fieldNameList[k].IsIndex && !t.clientCtx.client.fieldNameList[k].IsUnique {
+			continue
+		}
+		t.fieldsSort = append(t.fieldsSort, t.clientCtx.client.fieldNameList[k].DBName)
+	}
 	return t
 }
 
@@ -151,6 +189,12 @@ func (t *ClientListCtx) SetStringQuery(field string, param string) *ClientListCt
 	}
 	t.addPreemptionNum()
 	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, " OR $", t.preemptionNum, " = '')"), param)
+	return t
+}
+
+func (t *ClientListCtx) SetStringNoNullQuery(field string) *ClientListCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("($", t.preemptionNum, " = true AND $", t.preemptionNum, " != '')"), true)
 	return t
 }
 
