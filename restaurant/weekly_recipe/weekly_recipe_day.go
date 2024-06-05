@@ -26,6 +26,14 @@ func GetWeeklyRecipeDay(args *ArgsGetWeeklyRecipeDay) (dataList []FieldsWeeklyRe
 	return
 }
 
+func getWeeklyRecipeDayByID(id int64) (data FieldsWeeklyRecipeDay) {
+	err := weeklyRecipeDayDB.Get().SetDefaultFields().GetByID(id).Result(&data)
+	if err != nil {
+		return
+	}
+	return
+}
+
 // SetWeeklyRecipeDay 创建日数据
 func SetWeeklyRecipeDay(weeklyRecipeID int64, newData []DataGetWeeklyRecipeMargeDay) (dataList []DataGetWeeklyRecipeMargeDay, err error) {
 	//检查是否存在数据

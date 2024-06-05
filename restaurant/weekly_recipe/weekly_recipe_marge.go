@@ -64,6 +64,8 @@ type DataGetWeeklyRecipeMargeDay struct {
 }
 
 type DataGetWeeklyRecipeMargeDayItem struct {
+	//唯一ID
+	ID int64 `db:"id" json:"id"`
 	//菜品ID
 	RecipeID int64 `db:"recipe_id" json:"recipeID" check:"id" index:"true"`
 	//菜品名称
@@ -206,6 +208,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					}
 				}
 				appendData.Breakfast = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
+					ID:          v2.ID,
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
@@ -231,6 +234,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					}
 				}
 				appendData.Lunch = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
+					ID:          v2.ID,
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
@@ -256,6 +260,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					}
 				}
 				appendData.Dinner = append(appendData.Dinner, DataGetWeeklyRecipeMargeDayItem{
+					ID:          v2.ID,
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,

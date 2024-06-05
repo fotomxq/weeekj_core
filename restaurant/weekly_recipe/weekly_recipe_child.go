@@ -3,6 +3,7 @@ package RestaurantWeeklyRecipeMarge
 import (
 	"fmt"
 	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
+	RestaurantRecipe "github.com/fotomxq/weeekj_core/v5/restaurant/recipe"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
 
@@ -31,6 +32,14 @@ func GetWeeklyRecipeChild(args *ArgsGetWeeklyRecipeChild) (dataList []FieldsWeek
 	return
 }
 
+func getWeeklyRecipeChildByID(id int64) (data FieldsWeeklyRecipeChild) {
+	err := weeklyRecipeChildDB.Get().SetDefaultFields().GetByID(id).Result(&data)
+	if err != nil {
+		return
+	}
+	return
+}
+
 // SetWeeklyRecipeChild 修改日明细数据
 func SetWeeklyRecipeChild(weeklyRecipeID int64, weeklyRecipeDayID int64, dayType int, newData []DataGetWeeklyRecipeMargeDayItem) (dataList []DataGetWeeklyRecipeMargeDayItem, err error) {
 	//检查是否存在数据
@@ -52,6 +61,9 @@ func SetWeeklyRecipeChild(weeklyRecipeID int64, weeklyRecipeDayID int64, dayType
 	//创建数据
 	for k := 0; k < len(newData); k++ {
 		v := newData[k]
+		if v.Name == "" {
+			v.Name = RestaurantRecipe.GetRecipeNameByID(v.RecipeID)
+		}
 		err = weeklyRecipeChildDB.Insert().SetFields([]string{"weekly_recipe_id", "weekly_recipe_day_id", "day_type", "recipe_id", "name", "price", "recipe_count", "unit"}).Add(map[string]any{
 			"weekly_recipe_id":     weeklyRecipeID,
 			"weekly_recipe_day_id": weeklyRecipeDayID,
@@ -66,6 +78,7 @@ func SetWeeklyRecipeChild(weeklyRecipeID int64, weeklyRecipeDayID int64, dayType
 			return
 		}
 		dataList = append(dataList, DataGetWeeklyRecipeMargeDayItem{
+			ID:          v.ID,
 			RecipeID:    v.RecipeID,
 			Name:        v.Name,
 			Price:       v.Price,

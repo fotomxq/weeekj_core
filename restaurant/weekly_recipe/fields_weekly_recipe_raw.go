@@ -32,6 +32,8 @@ type FieldsWeeklyRecipeRaw struct {
 	RecipeID int64 `db:"recipe_id" json:"recipeID" check:"id" index:"true"`
 	//菜品名称
 	RecipeName string `db:"recipe_name" json:"recipeName"`
+	//周菜品关联行ID
+	RecipeChildID int64 `db:"recipe_child_id" json:"recipeChildID" check:"id" empty:"true" index:"true"`
 	//原材料ID
 	MaterialID int64 `db:"material_id" json:"materialID" check:"id" empty:"true" index:"true"`
 	//原材料名称
