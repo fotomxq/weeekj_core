@@ -115,11 +115,10 @@ func (t *Client) InstallSQL() (err error) {
 		// 识别预设
 		switch dbVal {
 		case "id":
-			if len(columnNames) > 0 {
-				continue
+			if len(columnNames) < 1 {
+				appendFields = append(appendFields, "id bigserial constraint "+t.TableName+"_pk primary key")
+				t.installAppendUIndex("id")
 			}
-			appendFields = append(appendFields, "id bigserial constraint "+t.TableName+"_pk primary key")
-			t.installAppendUIndex("id")
 			appendClientField.IsIndex = true
 			appendClientField.DBType = "bigint"
 			appendClientField.IsCreateRequired = false
@@ -292,15 +291,18 @@ func (t *Client) InstallSQL() (err error) {
 				appendTypeSQL = "jsonb"
 				appendClientField.DBType = "jsonb"
 			}
+			//检查是否需继续写入数据
 			if len(columnNames) > 0 {
 				if !haveField {
+					//需要删除字段
 					appendFields = append(appendFields, fmt.Sprint("ALTER TABLE"+" "+t.TableName+" ADD COLUMN IF NOT EXISTS ", dbVal, " ", appendTypeSQL, appendDefaultSQL, " not null;"))
 				} else {
-					continue
+					//跳过情况，不处理，但此处不能跳出，因为还需后续进行处理优化
 				}
 			} else {
 				appendFields = append(appendFields, fmt.Sprint(dbVal, " ", appendTypeSQL, appendDefaultSQL, " not null"))
 			}
+			//需要跳过处理，因为字段不需要做任何额外的处理
 			if unique {
 				appendClientField.IsUnique = true
 				t.installAppendUIndex(dbVal)
