@@ -22,6 +22,10 @@ var (
 	RecipeType = ClassSort.Sort{
 		SortTableName: "restaurant_weekly_recipe_type",
 	}
+	//RecipeUnit 菜品单位
+	RecipeUnit = ClassSort.Sort{
+		SortTableName: "restaurant_weekly_recipe_unit",
+	}
 )
 
 // Init 初始化
@@ -44,6 +48,10 @@ func Init() (err error) {
 		return
 	}
 	err = RecipeType.Init(&Router2SystemConfig.MainSQL)
+	if err != nil {
+		return
+	}
+	err = RecipeUnit.Init(&Router2SystemConfig.MainSQL)
 	if err != nil {
 		return
 	}
