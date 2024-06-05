@@ -71,7 +71,7 @@ func GetRecipeNameByID(id int64) (name string) {
 
 // GetRecipeByName 通过名称找到菜品
 func GetRecipeByName(orgID int64, storeID int64, name string) (data FieldsRecipe) {
-	_ = recipeDB.Get().SetFieldsOne([]string{"id"}).SetIDQuery("org_id", orgID).SetIDQuery("store_id", storeID).SetStringQuery("name", name).NeedLimit().Result(&data)
+	_ = recipeDB.Get().SetFieldsOne([]string{"id"}).SetIDQuery("org_id", orgID).SetIDQuery("store_id", storeID).SetStringQuery("name", name).SetDeleteQuery("delete_at", false).NeedLimit().Result(&data)
 	if data.ID < 1 {
 		return
 	}

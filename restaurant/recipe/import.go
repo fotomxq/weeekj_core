@@ -25,7 +25,7 @@ type ArgsImportData struct {
 // ImportData 批量导入数据
 // excelData 为文件的excel文件结构体，请参考ToolsLoadExcel.UploadFileAndGetExcelData实现获取
 // waitDeleteFile 为导入完成后需要删除的文件路径
-func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile string) (errCode string, err error) {
+func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile string) (errCode string, importCount int, skipImportCount int, err error) {
 	//获取子表，只拿取第一张子表，其他子表不做导入
 	sheetMaps := excelData.GetSheetMap()
 	var sheetName string
@@ -46,13 +46,16 @@ func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile s
 	for {
 		step += 1
 		if step >= len(excelVals) {
+			//fmt.Println("step >= len(excelVals), ", step, ", ", len(excelVals))
 			break
 		}
 		rows := excelVals[step]
 		if len(rows) < 3 {
+			//fmt.Println("rows len < 3, ", step)
 			break
 		}
 		if rows[0] == "" || rows[1] == "" {
+			//fmt.Println(rows, step)
 			break
 		}
 		//检查分类是否存在
@@ -77,10 +80,11 @@ func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile s
 		}
 		if findSortData.ID < 1 {
 			CoreLog.Error("restaurant recipe import data failed, sort not found: ", rows[0])
+			skipImportCount += 1
 			continue
 		}
 		//检查菜品是否存在
-		if rows[2] != "" {
+		if rows[1] != "" {
 			findRecipeData := GetRecipeByName(args.OrgID, -1, rows[1])
 			if findRecipeData.ID < 1 {
 				//梳理价格
@@ -117,6 +121,7 @@ func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile s
 					return
 				}
 			}
+			importCount += 1
 		}
 	}
 	//删除临时文件
@@ -130,14 +135,14 @@ func ImportData(args *ArgsImportData, excelData *excelize.File, waitDeleteFile s
 }
 
 // ImportDataByUpload 上传文件并导入
-func ImportDataByUpload(args *ArgsImportData, c *gin.Context, argsUploadTemp *BaseFileUpload.ArgsUploadToTemp) (errCode string, err error) {
+func ImportDataByUpload(args *ArgsImportData, c *gin.Context, argsUploadTemp *BaseFileUpload.ArgsUploadToTemp) (errCode string, importCount int, skipImportCount int, err error) {
 	var excelData *excelize.File
 	var waitDeleteFile string
 	excelData, waitDeleteFile, errCode, err = ToolsLoadExcel.UploadFileAndGetExcelData(c, argsUploadTemp)
 	if err != nil {
 		return
 	}
-	errCode, err = ImportData(args, excelData, waitDeleteFile)
+	errCode, importCount, skipImportCount, err = ImportData(args, excelData, waitDeleteFile)
 	if err != nil {
 		return
 	}
