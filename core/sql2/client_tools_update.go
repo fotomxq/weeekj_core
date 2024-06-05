@@ -32,6 +32,10 @@ func (t *ClientUpdateCtx) NeedSoft(b bool) *ClientUpdateCtx {
 	return t
 }
 
+func (t *ClientUpdateCtx) GetLastQuery() string {
+	return t.clientCtx.GetQuery()
+}
+
 func (t *ClientUpdateCtx) SetWhereAnd(name string, val interface{}) *ClientUpdateCtx {
 	t.whereFields = append(t.whereFields, fmt.Sprint(name, " = :", name))
 	t.whereArgs[name] = val
