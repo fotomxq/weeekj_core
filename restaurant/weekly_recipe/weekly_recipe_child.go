@@ -23,7 +23,7 @@ func GetWeeklyRecipeChild(args *ArgsGetWeeklyRecipeChild) (dataList []FieldsWeek
 	if err = Router2SystemConfig.MainCache.GetStruct(cacheMark, &dataList); err == nil && len(dataList) > 0 {
 		return
 	}
-	err = weeklyRecipeChildDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "weekly_recipe_id", "weekly_recipe_day_id", "day_type", "recipe_id", "name", "price", "recipe_count", "unit"}).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetIDQuery("weekly_recipe_day_id", args.WeeklyRecipeDayID).SetIntQuery("day_type", args.DayType).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
+	err = weeklyRecipeChildDB.Select().SetFieldsSortDefault().SetFieldsAll().SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetIDQuery("weekly_recipe_day_id", args.WeeklyRecipeDayID).SetIntQuery("day_type", args.DayType).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
 	if err != nil {
 		return
 	}

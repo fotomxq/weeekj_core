@@ -81,6 +81,8 @@ type clientField struct {
 	JSONName string
 	//参数检查标识码
 	CheckCode string
+	//是否创建必填
+	IsCreateRequired bool
 }
 
 func (t *Client) Init(mainDB *SQLClient, tableName string) *Client {

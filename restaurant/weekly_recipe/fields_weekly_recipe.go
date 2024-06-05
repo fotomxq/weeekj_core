@@ -41,4 +41,8 @@ type FieldsWeeklyRecipe struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//备注
 	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"1000" empty:"true"`
+	//菜谱类型ID
+	RecipeTypeID int64 `db:"recipe_type_id" json:"recipeTypeID" check:"id" index:"true"`
+	//菜谱类型名称
+	RecipeTypeName string `db:"recipe_type_name" json:"recipeTypeName" check:"des" min:"1" max:"300" empty:"true"`
 }

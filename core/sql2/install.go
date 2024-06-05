@@ -89,18 +89,19 @@ func (t *Client) InstallSQL() (err error) {
 		defaultVal := vField.Tag.Get("default")
 		//写入t.FieldNameAll
 		appendClientField := clientField{
-			DBName:     dbVal,
-			DBType:     "",
-			IsList:     true,
-			IsKey:      false,
-			IsIndex:    index,
-			IsUnique:   unique,
-			ValueType:  vType,
-			MinLen:     CoreFilter.GetIntByStringNoErr(vField.Tag.Get("min")),
-			MaxLen:     maxVal,
-			DefaultVal: defaultVal,
-			JSONName:   vField.Tag.Get("json"),
-			CheckCode:  vField.Tag.Get("check"),
+			DBName:           dbVal,
+			DBType:           "",
+			IsList:           true,
+			IsKey:            false,
+			IsIndex:          index,
+			IsUnique:         unique,
+			ValueType:        vType,
+			MinLen:           CoreFilter.GetIntByStringNoErr(vField.Tag.Get("min")),
+			MaxLen:           maxVal,
+			DefaultVal:       defaultVal,
+			JSONName:         vField.Tag.Get("json"),
+			CheckCode:        vField.Tag.Get("check"),
+			IsCreateRequired: true,
 		}
 		//当前字段是否已经存在
 		haveField := false
@@ -121,6 +122,7 @@ func (t *Client) InstallSQL() (err error) {
 			t.installAppendUIndex("id")
 			appendClientField.IsIndex = true
 			appendClientField.DBType = "bigint"
+			appendClientField.IsCreateRequired = false
 		case "create_at":
 			if len(columnNames) > 0 {
 				if !haveField {
@@ -130,6 +132,7 @@ func (t *Client) InstallSQL() (err error) {
 				appendFields = append(appendFields, "create_at timestamp with time zone default CURRENT_TIMESTAMP not null")
 			}
 			appendClientField.DBType = "timestamp with time zone"
+			appendClientField.IsCreateRequired = false
 		case "update_at":
 			if len(columnNames) > 0 {
 				if !haveField {
@@ -139,6 +142,7 @@ func (t *Client) InstallSQL() (err error) {
 				appendFields = append(appendFields, "update_at timestamp with time zone default CURRENT_TIMESTAMP not null")
 			}
 			appendClientField.DBType = "timestamp with time zone"
+			appendClientField.IsCreateRequired = false
 		case "delete_at":
 			if len(columnNames) > 0 {
 				if !haveField {
@@ -148,6 +152,7 @@ func (t *Client) InstallSQL() (err error) {
 				appendFields = append(appendFields, "delete_at timestamp with time zone default to_timestamp((0)::double precision) not null")
 			}
 			appendClientField.DBType = "timestamp with time zone"
+			appendClientField.IsCreateRequired = false
 		case "code":
 			if maxVal < 1 {
 				maxVal = 50

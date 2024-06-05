@@ -43,6 +43,10 @@ type DataWeeklyRecipeMarge struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//备注
 	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"1000" empty:"true"`
+	//菜谱类型ID
+	RecipeTypeID int64 `db:"recipe_type_id" json:"recipeTypeID" check:"id" index:"true"`
+	//菜谱类型名称
+	RecipeTypeName string `db:"recipe_type_name" json:"recipeTypeName" check:"des" min:"1" max:"300" empty:"true"`
 	//日数据
 	DayList []DataGetWeeklyRecipeMargeDay `json:"dayList"`
 }
@@ -51,10 +55,6 @@ type DataGetWeeklyRecipeMargeDay struct {
 	// 用餐日期
 	// 例如：20210101
 	DiningDate int `db:"dining_date" json:"diningDate" index:"true"`
-	//菜谱类型ID
-	RecipeTypeID int64 `db:"recipe_type_id" json:"recipeTypeID" check:"id" index:"true"`
-	//菜谱类型名称
-	RecipeTypeName string `db:"recipe_type_name" json:"recipeTypeName" check:"des" min:"1" max:"300" empty:"true"`
 	//早餐
 	Breakfast []DataGetWeeklyRecipeMargeDayItem `json:"breakfast"`
 	//午餐
@@ -95,7 +95,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 	//根据本周数据，获取上周数据
 	var beforeData []DataGetWeeklyRecipeMargeDay
 	var beforeList []FieldsWeeklyRecipeDay
-	_ = weeklyRecipeDayDB.Select().SetFieldsSort([]string{"create_at"}).SetFieldsAll().SetIDQuery("org_id", weeklyRecipeData.OrgID).SetIDQuery("store_id", weeklyRecipeData.StoreID).SetIntQuery("audit_status", 1).SetPages(CoreSQL2.ArgsPages{
+	_ = weeklyRecipeDayDB.Select().SetFieldsSort([]string{"create_at"}).SetFieldsAll().SetIDQuery("org_id", weeklyRecipeData.OrgID).SetIDQuery("store_id", weeklyRecipeData.StoreID).SetIntQuery("audit_status", 1).SetIDQuery("recipe_type_id", weeklyRecipeData.RecipeTypeID).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  1,
 		Sort: "create_at",
@@ -130,17 +130,18 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 		AuditUserName:   weeklyRecipeData.AuditUserName,
 		Name:            weeklyRecipeData.Name,
 		Remark:          weeklyRecipeData.Remark,
+		RecipeTypeID:    weeklyRecipeData.RecipeTypeID,
+		RecipeTypeName:  weeklyRecipeData.RecipeTypeName,
 		DayList:         []DataGetWeeklyRecipeMargeDay{},
 	}
 	for k := 0; k < len(rawList); k++ {
 		v := rawList[k]
 		//构建数据
 		appendData := DataGetWeeklyRecipeMargeDay{
-			DiningDate:   v.DiningDate,
-			RecipeTypeID: v.RecipeTypeID,
-			Breakfast:    []DataGetWeeklyRecipeMargeDayItem{},
-			Lunch:        []DataGetWeeklyRecipeMargeDayItem{},
-			Dinner:       []DataGetWeeklyRecipeMargeDayItem{},
+			DiningDate: v.DiningDate,
+			Breakfast:  []DataGetWeeklyRecipeMargeDayItem{},
+			Lunch:      []DataGetWeeklyRecipeMargeDayItem{},
+			Dinner:     []DataGetWeeklyRecipeMargeDayItem{},
 		}
 		//找出子集合
 		for k2 := 0; k2 < len(rawList2); k2++ {
@@ -152,7 +153,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 			//检查上周是否重复出现
 			var isRepeat, isRepeatAll bool
 			for _, v3 := range beforeData {
-				if v3.DiningDate != v.DiningDate || v3.RecipeTypeID != v.RecipeTypeID {
+				if v3.DiningDate != v.DiningDate {
 					continue
 				}
 				for _, v4 := range v3.Breakfast {
@@ -286,11 +287,10 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 		v := rawList[k]
 		//构建数据
 		appendData := DataGetWeeklyRecipeMargeDay{
-			DiningDate:   v.DiningDate,
-			RecipeTypeID: v.WeeklyRecipeID,
-			Breakfast:    []DataGetWeeklyRecipeMargeDayItem{},
-			Lunch:        []DataGetWeeklyRecipeMargeDayItem{},
-			Dinner:       []DataGetWeeklyRecipeMargeDayItem{},
+			DiningDate: v.DiningDate,
+			Breakfast:  []DataGetWeeklyRecipeMargeDayItem{},
+			Lunch:      []DataGetWeeklyRecipeMargeDayItem{},
+			Dinner:     []DataGetWeeklyRecipeMargeDayItem{},
 		}
 		//找出子集合
 		for k2 := 0; k2 < len(rawList2); k2++ {
@@ -357,6 +357,8 @@ type ArgsCreateWeeklyRecipeMarge struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//备注
 	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"1000" empty:"true"`
+	//菜谱类型ID
+	RecipeTypeID int64 `db:"recipe_type_id" json:"recipeTypeID" check:"id" index:"true"`
 	//日数据
 	DayList []DataGetWeeklyRecipeMargeDay `json:"dayList"`
 }
@@ -372,6 +374,7 @@ func CreateWeeklyRecipeMarge(args *ArgsCreateWeeklyRecipeMarge) (weeklyRecipeID 
 		SubmitUserName:  args.SubmitUserName,
 		Name:            args.Name,
 		Remark:          args.Remark,
+		RecipeTypeID:    args.RecipeTypeID,
 	})
 	if err != nil {
 		return
@@ -397,6 +400,8 @@ type ArgsUpdateWeeklyRecipeMarge struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//备注
 	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"1000" empty:"true"`
+	//菜谱类型ID
+	RecipeTypeID int64 `db:"recipe_type_id" json:"recipeTypeID" check:"id" index:"true"`
 	//日数据
 	DayList []DataGetWeeklyRecipeMargeDay `json:"dayList"`
 }
@@ -405,11 +410,12 @@ type ArgsUpdateWeeklyRecipeMarge struct {
 func UpdateWeeklyRecipeMarge(args *ArgsUpdateWeeklyRecipeMarge) (err error) {
 	//修改周数据
 	err = UpdateWeeklyRecipe(&ArgsUpdateWeeklyRecipe{
-		ID:      args.ID,
-		OrgID:   args.OrgID,
-		StoreID: args.StoreID,
-		Name:    args.Name,
-		Remark:  args.Remark,
+		ID:           args.ID,
+		OrgID:        args.OrgID,
+		StoreID:      args.StoreID,
+		Name:         args.Name,
+		Remark:       args.Remark,
+		RecipeTypeID: args.RecipeTypeID,
 	})
 	if err != nil {
 		return

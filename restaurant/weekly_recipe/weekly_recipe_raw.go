@@ -19,7 +19,7 @@ func GetWeeklyRecipeRaw(args *ArgsGetWeeklyRecipeRaw) (dataList []FieldsWeeklyRe
 	if err = Router2SystemConfig.MainCache.GetStruct(cacheMark, &dataList); err == nil && len(dataList) > 0 {
 		return
 	}
-	err = weeklyRecipeRawDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "org_id", "store_id", "weekly_recipe_id", "dining_date", "day_type", "recipe_id", "recipe_name", "material_id", "material_name", "use_count"}).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
+	err = weeklyRecipeRawDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
 	if err != nil {
 		return
 	}
@@ -41,6 +41,8 @@ type ArgsSetWeeklyRecipeRawItem struct {
 	//每日类型
 	// 1:早餐; 2:中餐; 3:晚餐
 	DayType int `db:"day_type" json:"dayType" check:"intThan0" empty:"true" index:"true"`
+	//菜谱类型ID
+	RecipeTypeID int64 `db:"recipe_type_id" json:"recipeTypeID" check:"id" index:"true"`
 	//菜品ID
 	RecipeID int64 `db:"recipe_id" json:"recipeID" check:"id" index:"true"`
 	//原材料ID
@@ -77,10 +79,12 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 	//创建数据
 	for k := 0; k < len(args.Items); k++ {
 		v := args.Items[k]
-		err = weeklyRecipeRawDB.Insert().SetFields([]string{"org_id", "store_id", "weekly_recipe_id", "dining_date", "day_type", "recipe_id", "recipe_name", "material_id", "material_name", "use_count"}).Add(map[string]any{
+		err = weeklyRecipeRawDB.Insert().SetFields([]string{"org_id", "store_id", "weekly_recipe_id", "recipe_type_id", "recipe_type_name", "dining_date", "day_type", "recipe_id", "recipe_name", "material_id", "material_name", "use_count"}).Add(map[string]any{
 			"org_id":           recipeData.OrgID,
 			"store_id":         recipeData.StoreID,
 			"weekly_recipe_id": args.WeeklyRecipeID,
+			"recipe_type_id":   v.RecipeTypeID,
+			"recipe_type_name": RecipeType.GetNameNoErr(v.RecipeTypeID),
 			"dining_date":      v.DiningDate,
 			"day_type":         v.DayType,
 			"recipe_id":        v.RecipeID,

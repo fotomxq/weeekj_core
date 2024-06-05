@@ -18,7 +18,7 @@ func GetWeeklyRecipeDay(args *ArgsGetWeeklyRecipeDay) (dataList []FieldsWeeklyRe
 	if err = Router2SystemConfig.MainCache.GetStruct(cacheMark, &dataList); err == nil && len(dataList) > 0 {
 		return
 	}
-	err = weeklyRecipeDayDB.Select().SetFieldsList([]string{"id", "create_at", "update_at", "delete_at", "weekly_recipe_id", "dining_date"}).SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
+	err = weeklyRecipeDayDB.Select().SetFieldsSortDefault().SetFieldsAll().SetIDQuery("weekly_recipe_id", args.WeeklyRecipeID).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
 	if err != nil {
 		return
 	}
@@ -46,10 +46,8 @@ func SetWeeklyRecipeDay(weeklyRecipeID int64, newData []DataGetWeeklyRecipeMarge
 	for k := 0; k < len(newData); k++ {
 		v := newData[k]
 		var newID int64
-		newID, err = weeklyRecipeDayDB.Insert().SetFields([]string{"weekly_recipe_id", "recipe_type_id", "recipe_type_name", "recipe_type_name", "dining_date"}).Add(map[string]any{
+		newID, err = weeklyRecipeDayDB.Insert().SetFields([]string{"weekly_recipe_id", "dining_date"}).Add(map[string]any{
 			"weekly_recipe_id": weeklyRecipeID,
-			"recipe_type_id":   v.RecipeTypeID,
-			"recipe_type_name": RecipeType.GetNameNoErr(v.RecipeTypeID),
 			"dining_date":      v.DiningDate,
 		}).ExecAndResultID()
 		if err != nil {
@@ -69,12 +67,10 @@ func SetWeeklyRecipeDay(weeklyRecipeID int64, newData []DataGetWeeklyRecipeMarge
 			return
 		}
 		dataList = append(dataList, DataGetWeeklyRecipeMargeDay{
-			DiningDate:     v.DiningDate,
-			RecipeTypeID:   v.RecipeTypeID,
-			RecipeTypeName: RecipeType.GetNameNoErr(v.RecipeTypeID),
-			Breakfast:      breakfast,
-			Lunch:          lunch,
-			Dinner:         dinner,
+			DiningDate: v.DiningDate,
+			Breakfast:  breakfast,
+			Lunch:      lunch,
+			Dinner:     dinner,
 		})
 	}
 	//删除缓冲
