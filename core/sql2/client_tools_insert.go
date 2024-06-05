@@ -28,6 +28,18 @@ func (t *ClientInsertCtx) SetDefaultFields() *ClientInsertCtx {
 	return t.SetFields(t.clientCtx.client.GetFields())
 }
 
+func (t *ClientInsertCtx) SetDefaultInsertFields() *ClientInsertCtx {
+	var result []string
+	for k := 0; k < len(t.clientCtx.client.fieldNameList); k++ {
+		v := t.clientCtx.client.fieldNameList[k]
+		if !v.IsCreateRequired {
+			continue
+		}
+		result = append(result, v.DBName)
+	}
+	return t.SetFields(result)
+}
+
 func (t *ClientInsertCtx) getFieldVal() string {
 	return fmt.Sprint(":", strings.Join(t.fields, ",:"))
 }
