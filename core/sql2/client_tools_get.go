@@ -58,6 +58,17 @@ func (t *ClientGetCtx) SetDefaultFields() *ClientGetCtx {
 	return t
 }
 
+func (t *ClientGetCtx) SetDefaultListFields() *ClientGetCtx {
+	t.fieldOne = []string{}
+	for k := 0; k < len(t.clientCtx.client.fieldNameList); k++ {
+		if !t.clientCtx.client.fieldNameList[k].IsList {
+			continue
+		}
+		t.fieldOne = append(t.fieldOne, t.clientCtx.client.fieldNameList[k].DBName)
+	}
+	return t
+}
+
 func (t *ClientGetCtx) getFieldsOne() string {
 	return t.clientCtx.GetFields(t.fieldOne)
 }
