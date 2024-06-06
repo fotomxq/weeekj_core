@@ -9,7 +9,7 @@ type ArgsGetRawAnalysis struct {
 	//门店ID
 	StoreID int64 `db:"store_id" json:"storeID" check:"id" empty:"true" index:"true"`
 	//菜谱类型ID
-	RecipeTypeID int64 `db:"recipe_type_id" json:"recipeTypeID" check:"id" index:"true"`
+	RecipeTypeID int64 `db:"recipe_type_id" json:"recipeTypeID" check:"id" empty:"true" index:"true"`
 	//时间范围
 	BetweenAt CoreSQL2.ArgsTimeBetween `json:"betweenAt"`
 }
@@ -24,6 +24,10 @@ type DataGetRawAnalysis struct {
 	UseCount float64 `db:"use_count" json:"useCount" check:"intThan0"`
 	//使用次数
 	CountUse int `db:"count_use" json:"countUse" check:"intThan0"`
+	//单价均价
+	PriceAvg float64 `db:"price_avg" json:"priceAvg"`
+	//合计总价
+	PriceTotal float64 `db:"price_total" json:"priceTotal"`
 }
 
 // GetRawAnalysis 周分化单统计数据
@@ -35,7 +39,7 @@ func GetRawAnalysis(args *ArgsGetRawAnalysis) (dataList []DataGetRawAnalysis, er
 		return
 	}
 	//获取数据
-	err = weeklyRecipeRawDB.DB.GetPostgresql().Select(&dataList, "select material_id, max(material_name) as material_name, sum(use_count) as use_count, count(id) as count_use from restaurant_weekly_recipe_raw where day_type >= $1 and day_type <= $2 and ($3 < 0 or org_id = $3) and ($4 < 0 or store_id = $4) and ($5 < 0 or recipe_type_id = $5) group by material_id order by use_count desc;", betweenAt.MinTime.Format("20060102"), betweenAt.MaxTime.Format("20060102"), args.OrgID, args.StoreID, args.RecipeTypeID)
+	err = weeklyRecipeRawDB.DB.GetPostgresql().Select(&dataList, "select material_id, max(material_name) as material_name, sum(use_count) as use_count, count(id) as count_use, avg(price) as price_avg, sum(total_price) as price_total from restaurant_weekly_recipe_raw where dining_date >= $1 and dining_date <= $2 and ($3 < 0 or org_id = $3) and ($4 < 0 or store_id = $4) and ($5 < 0 or recipe_type_id = $5) group by material_id order by use_count desc;", betweenAt.MinTime.Format("20060102"), betweenAt.MaxTime.Format("20060102"), args.OrgID, args.StoreID, args.RecipeTypeID)
 	if err != nil {
 		return
 	}
