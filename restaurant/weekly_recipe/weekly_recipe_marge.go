@@ -97,7 +97,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 	//根据本周数据，获取上周数据
 	var beforeData []DataGetWeeklyRecipeMargeDay
 	var beforeList []FieldsWeeklyRecipeDay
-	_ = weeklyRecipeDayDB.Select().SetFieldsSort([]string{"create_at"}).SetFieldsAll().SetIDQuery("org_id", weeklyRecipeData.OrgID).SetIDQuery("store_id", weeklyRecipeData.StoreID).SetIntQuery("audit_status", 1).SetIDQuery("recipe_type_id", weeklyRecipeData.RecipeTypeID).SetPages(CoreSQL2.ArgsPages{
+	_ = weeklyRecipeDayDB.Select().SetFieldsSort([]string{"create_at"}).SetFieldsAll().SetIDQuery("org_id", weeklyRecipeData.OrgID).SetIDQuery("store_id", weeklyRecipeData.StoreID).SetIntQuery("audit_status", 1).SetIDQuery("recipe_type_id", weeklyRecipeData.RecipeTypeID).SetDeleteQuery("delete_at", false).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  1,
 		Sort: "create_at",
@@ -108,12 +108,12 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 	}
 	//获取菜谱下所有数据
 	var rawList []FieldsWeeklyRecipeDay
-	err = weeklyRecipeDayDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).Result(&rawList)
+	err = weeklyRecipeDayDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).SetDeleteQuery("delete_at", false).Result(&rawList)
 	if err != nil {
 		return
 	}
 	var rawList2 []FieldsWeeklyRecipeChild
-	_ = weeklyRecipeChildDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).Result(&rawList2)
+	_ = weeklyRecipeChildDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).SetDeleteQuery("delete_at", false).Result(&rawList2)
 	//整理数据
 	data = DataWeeklyRecipeMarge{
 		ID:              weeklyRecipeData.ID,
@@ -281,12 +281,12 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRecipeMargeDay, err error) {
 	//获取菜谱下所有数据
 	var rawList []FieldsWeeklyRecipeDay
-	err = weeklyRecipeDayDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).Result(&rawList)
+	err = weeklyRecipeDayDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).SetDeleteQuery("delete_at", false).Result(&rawList)
 	if err != nil {
 		return
 	}
 	var rawList2 []FieldsWeeklyRecipeChild
-	_ = weeklyRecipeChildDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).Result(&rawList2)
+	_ = weeklyRecipeChildDB.Select().SetFieldsAll().SetIDQuery("weekly_recipe_id", weeklyRecipeID).SetDeleteQuery("delete_at", false).Result(&rawList2)
 
 	for k := 0; k < len(rawList); k++ {
 		v := rawList[k]
