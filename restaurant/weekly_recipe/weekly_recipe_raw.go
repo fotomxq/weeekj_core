@@ -153,6 +153,8 @@ func UpdateWeeklyRecipeRaw(args *ArgsUpdateWeeklyRecipeRaw) (err error) {
 		"price":       args.Price,
 		"total_price": args.TotalPrice,
 	})
+	//删除redis缓存
+	deleteWeeklyRecipeRawCache(args.ID)
 	//反馈
 	return
 
