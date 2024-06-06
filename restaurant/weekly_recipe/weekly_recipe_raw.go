@@ -43,7 +43,7 @@ type ArgsGetWeeklyRecipeRawByChildID struct {
 
 // GetWeeklyRecipeRawByChildID 获取指定周菜谱的原材料
 func GetWeeklyRecipeRawByChildID(args *ArgsGetWeeklyRecipeRawByChildID) (dataList []FieldsWeeklyRecipeRaw, err error) {
-	err = weeklyRecipeRawDB.Select().SetIDQuery("recipe_child_id", args.RecipeChildID).SelectList("").Result(&dataList)
+	err = weeklyRecipeRawDB.Select().SetIDQuery("recipe_child_id", args.RecipeChildID).SetDeleteQuery("delete_at", false).SelectList("").Result(&dataList)
 	if err != nil {
 		return
 	}
@@ -108,7 +108,7 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 	//创建数据
 	for k := 0; k < len(args.RawList); k++ {
 		v := args.RawList[k]
-		err = weeklyRecipeRawDB.Insert().SetFields([]string{"org_id", "store_id", "weekly_recipe_id", "recipe_type_id", "recipe_type_name", "dining_date", "day_type", "recipe_id", "recipe_name", "recipe_child_id", "material_id", "material_name", "use_count"}).Add(map[string]any{
+		err = weeklyRecipeRawDB.Insert().SetFields([]string{"org_id", "store_id", "weekly_recipe_id", "recipe_type_id", "recipe_type_name", "dining_date", "day_type", "recipe_id", "recipe_name", "recipe_child_id", "material_id", "material_name", "use_count", "price", "total_price"}).Add(map[string]any{
 			"org_id":           recipeData.OrgID,
 			"store_id":         recipeData.StoreID,
 			"weekly_recipe_id": recipeDayData.WeeklyRecipeID,
@@ -122,6 +122,8 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 			"material_id":      v.MaterialID,
 			"material_name":    RestaurantRawMaterials.GetRawNameByID(v.MaterialID),
 			"use_count":        v.UseCount,
+			"price":            v.Price,
+			"total_price":      v.TotalPrice,
 		}).ExecAndCheckID()
 		if err != nil {
 			return
@@ -133,21 +135,23 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 
 // 更新指定周菜谱的原材料参数
 type ArgsUpdateWeeklyRecipeRaw struct {
-	//周菜品关联行ID
-	RecipeChildID int64 `db:"recipe_child_id" json:"recipeChildID" check:"id" index:"true"`
-	//原材料ID
-	MaterialID int64 `db:"material_id" json:"materialID" check:"id" empty:"true" index:"true"`
+	//ID
+	ID int64 `db:"id" json:"id" check:"id"`
 	//用量
 	UseCount float64 `db:"use_count" json:"useCount" check:"intThan0"`
+	//单价
+	Price float64 `db:"price" json:"price" check:"intThan0" empty:"true"`
+	//总价
+	TotalPrice float64 `db:"total_price" json:"totalPrice" check:"intThan0" empty:"true"`
 }
 
 // 更新指定周菜谱的原材料
 func UpdateWeeklyRecipeRaw(args *ArgsUpdateWeeklyRecipeRaw) (err error) {
 	//更新数据
-	err = weeklyRecipeRawDB.Update().SetFields([]string{"material_id", "material_name", "use_count"}).NeedUpdateTime().AddWhereID(args.RecipeChildID).NamedExec(map[string]any{
-		"material_id":   args.MaterialID,
-		"material_name": RestaurantRawMaterials.GetRawNameByID(args.MaterialID),
-		"use_count":     args.UseCount,
+	err = weeklyRecipeRawDB.Update().SetFields([]string{"use_count", "price", "total_price"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+		"use_count":   args.UseCount,
+		"price":       args.Price,
+		"total_price": args.TotalPrice,
 	})
 	//反馈
 	return
