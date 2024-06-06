@@ -65,6 +65,10 @@ type ArgsSetWeeklyRecipeRawItem struct {
 	MaterialID int64 `db:"material_id" json:"materialID" check:"id" empty:"true" index:"true"`
 	//用量
 	UseCount float64 `db:"use_count" json:"useCount" check:"intThan0"`
+	//单价
+	Price float64 `db:"price" json:"price" check:"intThan0" empty:"true"`
+	//总价
+	TotalPrice float64 `db:"total_price" json:"totalPrice" check:"intThan0" empty:"true"`
 }
 
 func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
@@ -104,7 +108,7 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 	//创建数据
 	for k := 0; k < len(args.RawList); k++ {
 		v := args.RawList[k]
-		err = weeklyRecipeRawDB.Insert().SetFields([]string{"org_id", "store_id", "weekly_recipe_id", "recipe_type_id", "recipe_type_name", "dining_date", "day_type", "recipe_id", "recipe_name", "material_id", "material_name", "use_count"}).Add(map[string]any{
+		err = weeklyRecipeRawDB.Insert().SetFields([]string{"org_id", "store_id", "weekly_recipe_id", "recipe_type_id", "recipe_type_name", "dining_date", "day_type", "recipe_id", "recipe_name", "recipe_child_id", "material_id", "material_name", "use_count"}).Add(map[string]any{
 			"org_id":           recipeData.OrgID,
 			"store_id":         recipeData.StoreID,
 			"weekly_recipe_id": recipeDayData.WeeklyRecipeID,
@@ -114,6 +118,7 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 			"day_type":         recipeRawData.DayType,
 			"recipe_id":        recipeRawData.RecipeID,
 			"recipe_name":      recipeRawData.Name,
+			"recipe_child_id":  recipeRawData.ID,
 			"material_id":      v.MaterialID,
 			"material_name":    RestaurantRawMaterials.GetRawNameByID(v.MaterialID),
 			"use_count":        v.UseCount,
@@ -123,6 +128,39 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 		}
 	}
 	//反馈
+	return
+}
+
+// 更新指定周菜谱的原材料参数
+type ArgsUpdateWeeklyRecipeRaw struct {
+	//周菜品关联行ID
+	RecipeChildID int64 `db:"recipe_child_id" json:"recipeChildID" check:"id" index:"true"`
+	//原材料ID
+	MaterialID int64 `db:"material_id" json:"materialID" check:"id" empty:"true" index:"true"`
+	//用量
+	UseCount float64 `db:"use_count" json:"useCount" check:"intThan0"`
+}
+
+// 更新指定周菜谱的原材料
+func UpdateWeeklyRecipeRaw(args *ArgsUpdateWeeklyRecipeRaw) (err error) {
+	//更新数据
+	err = weeklyRecipeRawDB.Update().SetFields([]string{"material_id", "material_name", "use_count"}).NeedUpdateTime().AddWhereID(args.RecipeChildID).NamedExec(map[string]any{
+		"material_id":   args.MaterialID,
+		"material_name": RestaurantRawMaterials.GetRawNameByID(args.MaterialID),
+		"use_count":     args.UseCount,
+	})
+	//反馈
+	return
+
+}
+
+// DeleteWeeklyRecipeRaw 删除指定周菜谱的原材料
+func DeleteWeeklyRecipeRaw(id int64) (err error) {
+	err = weeklyRecipeRawDB.Delete().NeedSoft(true).AddWhereID(id).ExecNamed(nil)
+	if err != nil {
+		return
+	}
+	deleteWeeklyRecipeRawCache(id)
 	return
 }
 

@@ -40,4 +40,8 @@ type FieldsWeeklyRecipeRaw struct {
 	MaterialName string `db:"material_name" json:"materialName" check:"des" min:"1" max:"300" empty:"true"`
 	//用量
 	UseCount float64 `db:"use_count" json:"useCount" check:"intThan0"`
+	//单价
+	Price float64 `db:"price" json:"price" check:"intThan0" empty:"true" default:"0"`
+	//总价
+	TotalPrice float64 `db:"total_price" json:"totalPrice" check:"intThan0" empty:"true" default:"0"`
 }
