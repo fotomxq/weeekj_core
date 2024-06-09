@@ -181,7 +181,7 @@ func getRecipeByID(id int64) (data FieldsRecipe) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := recipeDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "category_id", "name", "unit", "org_id", "store_id", "price", "remark"}).GetByID(id).NeedLimit().Result(&data)
+	err := recipeDB.Get().SetDefaultFields().GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}

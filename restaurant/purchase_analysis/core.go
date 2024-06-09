@@ -21,8 +21,15 @@ var (
 )
 
 // Init 初始化
-func Init() {
+func Init() (err error) {
 	//初始化数据表
-	restaurantPurchaseDB.Init(&Router2SystemConfig.MainSQL, "restaurant_purchase")
-	restaurantPurchaseItemDB.Init(&Router2SystemConfig.MainSQL, "restaurant_purchase_item")
+	_, err = restaurantPurchaseDB.Init2(&Router2SystemConfig.MainSQL, "restaurant_purchase", &FieldsPurchaseAnalysis{})
+	if err != nil {
+		return
+	}
+	_, err = restaurantPurchaseItemDB.Init2(&Router2SystemConfig.MainSQL, "restaurant_purchase_item", &FieldsPurchaseAnalysisItem{})
+	if err != nil {
+		return
+	}
+	return
 }

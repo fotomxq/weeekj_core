@@ -392,7 +392,11 @@ func Init() (err error) {
 	//电子餐厅
 	///////////////////////////////////////////////////////////////////////////////////
 	//电子菜品
-	RestaurantRecipe.Init()
+	err = RestaurantRecipe.Init()
+	if err != nil {
+		err = errors.New(fmt.Sprint("init restaurant recipe, ", err))
+		return
+	}
 	//周食谱
 	err = RestaurantWeeklyRecipeMarge.Init()
 	if err != nil {
@@ -400,9 +404,17 @@ func Init() (err error) {
 		return
 	}
 	//原材料采购台账
-	RestaurantPurchase.Init()
+	err = RestaurantPurchase.Init()
+	if err != nil {
+		err = errors.New(fmt.Sprint("init restaurant purchase, ", err))
+		return
+	}
 	//原材料库
-	RestaurantRawMaterials.Init()
+	err = RestaurantRawMaterials.Init()
+	if err != nil {
+		err = errors.New(fmt.Sprint("init restaurant raw materials, ", err))
+		return
+	}
 	//启动完成提示
 	startRun.EndPrint()
 	//反馈

@@ -23,7 +23,11 @@ var (
 )
 
 // Init 初始化
-func Init() {
+func Init() (err error) {
 	//初始化数据表
-	recipeDB.Init(&Router2SystemConfig.MainSQL, "restaurant_recipe")
+	_, err = recipeDB.Init2(&Router2SystemConfig.MainSQL, "restaurant_recipe", &FieldsRecipe{})
+	if err != nil {
+		return
+	}
+	return
 }

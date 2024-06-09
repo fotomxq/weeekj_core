@@ -64,7 +64,7 @@ func SetWeeklyRecipeChild(weeklyRecipeID int64, weeklyRecipeDayID int64, dayType
 		if v.Name == "" {
 			v.Name = RestaurantRecipe.GetRecipeNameByID(v.RecipeID)
 		}
-		err = weeklyRecipeChildDB.Insert().SetFields([]string{"weekly_recipe_id", "weekly_recipe_day_id", "day_type", "recipe_id", "name", "price", "recipe_count", "unit"}).Add(map[string]any{
+		err = weeklyRecipeChildDB.Insert().SetFields([]string{"weekly_recipe_id", "weekly_recipe_day_id", "day_type", "recipe_id", "name", "price", "recipe_count", "unit", "unit_id"}).Add(map[string]any{
 			"weekly_recipe_id":     weeklyRecipeID,
 			"weekly_recipe_day_id": weeklyRecipeDayID,
 			"day_type":             dayType,
@@ -73,6 +73,7 @@ func SetWeeklyRecipeChild(weeklyRecipeID int64, weeklyRecipeDayID int64, dayType
 			"price":                v.Price,
 			"recipe_count":         v.RecipeCount,
 			"unit":                 v.Unit,
+			"unit_id":              v.UnitID,
 		}).ExecAndCheckID()
 		if err != nil {
 			return
@@ -84,6 +85,7 @@ func SetWeeklyRecipeChild(weeklyRecipeID int64, weeklyRecipeDayID int64, dayType
 			Price:       v.Price,
 			RecipeCount: v.RecipeCount,
 			Unit:        v.Unit,
+			UnitID:      v.UnitID,
 			IsRepeat:    false,
 			IsRepeatAll: false,
 		})

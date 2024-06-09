@@ -76,6 +76,8 @@ type DataGetWeeklyRecipeMargeDayItem struct {
 	RecipeCount int `db:"recipe_count" json:"recipeCount" check:"intThan0" empty:"true"`
 	//单位
 	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"300" empty:"true"`
+	//单位ID
+	UnitID int64 `db:"unit_id" json:"unitID" index:"true" check:"id" empty:"true"`
 	//上周同时间段是否出现过
 	IsRepeat bool `db:"is_repeat" json:"isRepeat" default:"false"`
 	//上周早中晚是否全部出现过
@@ -214,6 +216,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					Price:       v2.Price,
 					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
+					UnitID:      v2.UnitID,
 					IsRepeat:    isRepeat,
 					IsRepeatAll: isRepeatAll,
 				})
@@ -240,6 +243,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					Price:       v2.Price,
 					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
+					UnitID:      v2.UnitID,
 					IsRepeat:    isRepeat,
 					IsRepeatAll: isRepeatAll,
 				})
@@ -266,6 +270,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					Price:       v2.Price,
 					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
+					UnitID:      v2.UnitID,
 					IsRepeat:    isRepeat,
 					IsRepeatAll: isRepeatAll,
 				})
@@ -313,6 +318,7 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 					Price:       v2.Price,
 					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
+					UnitID:      v2.UnitID,
 					IsRepeat:    false,
 					IsRepeatAll: false,
 				})
@@ -323,6 +329,7 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 					Price:       v2.Price,
 					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
+					UnitID:      v2.UnitID,
 					IsRepeat:    false,
 					IsRepeatAll: false,
 				})
@@ -333,6 +340,7 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 					Price:       v2.Price,
 					RecipeCount: v2.RecipeCount,
 					Unit:        v2.Unit,
+					UnitID:      v2.UnitID,
 					IsRepeat:    false,
 					IsRepeatAll: false,
 				})

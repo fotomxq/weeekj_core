@@ -18,7 +18,11 @@ var (
 )
 
 // Init 初始化
-func Init() {
+func Init() (err error) {
 	//初始化数据表
-	rawDB.Init(&Router2SystemConfig.MainSQL, "restaurant_raw_materials")
+	_, err = rawDB.Init2(&Router2SystemConfig.MainSQL, "restaurant_raw_materials", &FieldsRaw{})
+	if err != nil {
+		return
+	}
+	return
 }

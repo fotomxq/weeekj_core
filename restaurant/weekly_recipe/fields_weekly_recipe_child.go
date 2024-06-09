@@ -29,4 +29,6 @@ type FieldsWeeklyRecipeChild struct {
 	RecipeCount int `db:"recipe_count" json:"recipeCount" check:"intThan0" empty:"true"`
 	//单位
 	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"300" empty:"true"`
+	//单位ID
+	UnitID int64 `db:"unit_id" json:"unitID" index:"true" check:"id" empty:"true"`
 }

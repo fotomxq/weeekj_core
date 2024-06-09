@@ -158,7 +158,7 @@ func (t *Client) InstallSQL() (err error) {
 			}
 			if len(columnNames) > 0 {
 				if !haveField {
-					appendFields = append(appendFields, fmt.Sprint("ALTER TABLE"+" "+t.TableName+" ADD COLUMN IF NOT EXISTS code varchar(", maxVal, ") not null;"))
+					appendFields = append(appendFields, fmt.Sprint("ALTER TABLE"+" "+t.TableName+" ADD COLUMN IF NOT EXISTS code varchar(", maxVal, ") default '"+defaultVal+"' not null;"))
 				}
 			} else {
 				appendFields = append(appendFields, fmt.Sprint("code varchar(", maxVal, ") not null"))
@@ -176,7 +176,7 @@ func (t *Client) InstallSQL() (err error) {
 			}
 			if len(columnNames) > 0 {
 				if !haveField {
-					appendFields = append(appendFields, fmt.Sprint("ALTER TABLE"+" "+t.TableName+" ADD COLUMN IF NOT EXISTS mark varchar(", maxVal, ") not null;"))
+					appendFields = append(appendFields, fmt.Sprint("ALTER TABLE"+" "+t.TableName+" ADD COLUMN IF NOT EXISTS mark varchar(", maxVal, ") default '"+defaultVal+"' not null;"))
 				}
 			} else {
 				appendFields = append(appendFields, fmt.Sprint("mark varchar(", maxVal, ") not null"))
@@ -195,53 +195,71 @@ func (t *Client) InstallSQL() (err error) {
 			case "int":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default 0"
 				}
 				appendTypeSQL = "integer"
 				appendClientField.DBType = "integer"
 			case "[]int":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default '{}'::integer[]"
 				}
 				appendTypeSQL = "integer[]"
 				appendClientField.DBType = "integer[]"
 			case "pq.Int32Array":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default '{}'::integer[]"
 				}
 				appendTypeSQL = "integer[]"
 			case "int64":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default 0"
 				}
 				appendTypeSQL = "bigint"
 				appendClientField.DBType = "bigint"
 			case "[]int64":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default '{}'::bigint[]"
 				}
 				appendTypeSQL = "bigint[]"
 				appendClientField.DBType = "bigint[]"
 			case "pq.Int64Array":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default '{}'::bigint[]"
 				}
 				appendTypeSQL = "bigint[]"
 				appendClientField.DBType = "bigint[]"
 			case "float64":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default 0"
 				}
 				appendTypeSQL = "float"
 				appendClientField.DBType = "float"
 			case "[]float64":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default '{}'::float[]"
 				}
 				appendTypeSQL = "float[]"
 				appendClientField.DBType = "float[]"
 			case "bool":
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default false"
 				}
 				appendTypeSQL = "boolean"
 				appendClientField.DBType = "boolean"
@@ -254,29 +272,24 @@ func (t *Client) InstallSQL() (err error) {
 							appendDefaultSQL = " default to_timestamp((0)::double precision)"
 						}
 					}
-				}
-				if defaultVal != "" {
-					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default to_timestamp((0)::double precision)"
 				}
 				appendTypeSQL = "timestamp with time zone"
 				appendClientField.DBType = "timestamp with time zone"
 			case "string":
 				if defaultVal != "" {
 					appendDefaultSQL = " default '" + defaultVal + "'"
+				} else {
+					appendDefaultSQL = " default ''"
 				}
 				if maxVal == -1 {
-					if defaultVal != "" {
-						appendDefaultSQL = " default " + defaultVal
-					}
 					appendTypeSQL = "text"
 					appendClientField.DBType = "text"
 					appendClientField.IsList = false
 				} else {
 					if maxVal < 1 {
 						maxVal = 255
-					}
-					if defaultVal != "" {
-						appendDefaultSQL = " default " + defaultVal
 					}
 					appendTypeSQL = fmt.Sprint("varchar(", maxVal, ")")
 					appendClientField.DBType = "varchar"
@@ -287,6 +300,8 @@ func (t *Client) InstallSQL() (err error) {
 				//按照jsonb处理，不建议使用
 				if defaultVal != "" {
 					appendDefaultSQL = " default " + defaultVal
+				} else {
+					appendDefaultSQL = " default '{}'::jsonb"
 				}
 				appendTypeSQL = "jsonb"
 				appendClientField.DBType = "jsonb"

@@ -20,6 +20,8 @@ type FieldsRecipe struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//单位
 	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"60" empty:"true"`
+	//单位ID
+	UnitID int64 `db:"unit_id" json:"unitID" check:"id" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
