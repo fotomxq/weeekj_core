@@ -49,6 +49,8 @@ type DataWeeklyRecipeMarge struct {
 	RecipeTypeName string `db:"recipe_type_name" json:"recipeTypeName" check:"des" min:"1" max:"300" empty:"true"`
 	//日数据
 	DayList []DataGetWeeklyRecipeMargeDay `json:"dayList"`
+	//上周日数据
+	BeforeDayList []DataGetWeeklyRecipeMargeDay `json:"beforeDayList"`
 }
 
 type DataGetWeeklyRecipeMargeDay struct {
@@ -81,6 +83,8 @@ type DataGetWeeklyRecipeMargeDayItem struct {
 	//上周同时间段是否出现过
 	IsRepeat bool `db:"is_repeat" json:"isRepeat" default:"false"`
 	//上周早中晚是否全部出现过
+	IsRepeatDay bool `db:"is_repeat_day" json:"isRepeatDay" default:"false"`
+	//上周任意一天出现过
 	IsRepeatAll bool `db:"is_repeat_all" json:"isRepeatAll" default:"false"`
 }
 
@@ -98,13 +102,13 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 	}
 	//根据本周数据，获取上周数据
 	var beforeData []DataGetWeeklyRecipeMargeDay
-	var beforeList []FieldsWeeklyRecipeDay
-	_ = weeklyRecipeDayDB.Select().SetFieldsSort([]string{"create_at"}).SetFieldsAll().SetIDQuery("org_id", weeklyRecipeData.OrgID).SetIDQuery("store_id", weeklyRecipeData.StoreID).SetIntQuery("audit_status", 1).SetIDQuery("recipe_type_id", weeklyRecipeData.RecipeTypeID).SetDeleteQuery("delete_at", false).SetPages(CoreSQL2.ArgsPages{
+	var beforeList []FieldsWeeklyRecipe
+	err = weeklyRecipeDB.Select().SetFieldsSort([]string{"create_at"}).SetFieldsAll().SetIDQuery("org_id", weeklyRecipeData.OrgID).SetIDQuery("store_id", weeklyRecipeData.StoreID).SetIntQuery("audit_status", 1).SetIDQuery("recipe_type_id", weeklyRecipeData.RecipeTypeID).SetDeleteQuery("delete_at", false).SetPages(CoreSQL2.ArgsPages{
 		Page: 1,
 		Max:  1,
 		Sort: "create_at",
 		Desc: true,
-	}).Result(&beforeList)
+	}).SetIDThanLessQuery("id", weeklyRecipeID).Result(&beforeList)
 	if len(beforeList) > 0 {
 		beforeData, _ = GetWeeklyRecipeBeforeMarge(beforeList[0].ID)
 	}
@@ -137,6 +141,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 		RecipeTypeID:    weeklyRecipeData.RecipeTypeID,
 		RecipeTypeName:  weeklyRecipeData.RecipeTypeName,
 		DayList:         []DataGetWeeklyRecipeMargeDay{},
+		BeforeDayList:   beforeData,
 	}
 	for k := 0; k < len(rawList); k++ {
 		v := rawList[k]
@@ -155,11 +160,8 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 				continue
 			}
 			//检查上周是否重复出现
-			var isRepeat, isRepeatAll bool
+			var isRepeat, isRepeatDay, isRepeatAll bool
 			for _, v3 := range beforeData {
-				if v3.DiningDate != v.DiningDate {
-					continue
-				}
 				for _, v4 := range v3.Breakfast {
 					if v4.RecipeID != v2.RecipeID {
 						continue
@@ -168,7 +170,10 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					break
 				}
 				if isRepeatAll {
-					break
+					if v3.DiningDate == v.DiningDate {
+						isRepeatDay = true
+						break
+					}
 				}
 				for _, v4 := range v3.Lunch {
 					if v4.RecipeID != v2.RecipeID {
@@ -178,7 +183,10 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					break
 				}
 				if isRepeatAll {
-					break
+					if v3.DiningDate == v.DiningDate {
+						isRepeatDay = true
+						break
+					}
 				}
 				for _, v4 := range v3.Dinner {
 					if v4.RecipeID != v2.RecipeID {
@@ -188,7 +196,10 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					break
 				}
 				if isRepeatAll {
-					break
+					if v3.DiningDate == v.DiningDate {
+						isRepeatDay = true
+						break
+					}
 				}
 			}
 			//找到对应的数据
@@ -218,6 +229,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					Unit:        v2.Unit,
 					UnitID:      v2.UnitID,
 					IsRepeat:    isRepeat,
+					IsRepeatDay: isRepeatDay,
 					IsRepeatAll: isRepeatAll,
 				})
 			case 2:
@@ -245,6 +257,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					Unit:        v2.Unit,
 					UnitID:      v2.UnitID,
 					IsRepeat:    isRepeat,
+					IsRepeatDay: isRepeatDay,
 					IsRepeatAll: isRepeatAll,
 				})
 			case 3:
@@ -272,6 +285,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 					Unit:        v2.Unit,
 					UnitID:      v2.UnitID,
 					IsRepeat:    isRepeat,
+					IsRepeatDay: isRepeatDay,
 					IsRepeatAll: isRepeatAll,
 				})
 			}
@@ -313,6 +327,7 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 			switch v2.DayType {
 			case 1:
 				appendData.Breakfast = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
+					ID:          v2.ID,
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
@@ -320,10 +335,12 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 					Unit:        v2.Unit,
 					UnitID:      v2.UnitID,
 					IsRepeat:    false,
+					IsRepeatDay: false,
 					IsRepeatAll: false,
 				})
 			case 2:
 				appendData.Lunch = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
+					ID:          v2.ID,
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
@@ -331,10 +348,12 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 					Unit:        v2.Unit,
 					UnitID:      v2.UnitID,
 					IsRepeat:    false,
+					IsRepeatDay: false,
 					IsRepeatAll: false,
 				})
 			case 3:
 				appendData.Dinner = append(appendData.Dinner, DataGetWeeklyRecipeMargeDayItem{
+					ID:          v2.ID,
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,
 					Price:       v2.Price,
@@ -342,6 +361,7 @@ func GetWeeklyRecipeBeforeMarge(weeklyRecipeID int64) (dayList []DataGetWeeklyRe
 					Unit:        v2.Unit,
 					UnitID:      v2.UnitID,
 					IsRepeat:    false,
+					IsRepeatDay: false,
 					IsRepeatAll: false,
 				})
 			}

@@ -19,11 +19,11 @@ func URLView(r *Router2Mid.RouterURLHeader, appendURL string, sortObj *ClassSort
 		//日志
 		c.LogAppend = "header url class sort get list"
 		//权限检查
-		if len(permissions) > 0 {
-			if !Router2Mid.CheckPermission(c, permissions) {
-				return
-			}
-		}
+		//if len(permissions) > 0 {
+		//	if !Router2Mid.CheckPermission(c, permissions) {
+		//		return
+		//	}
+		//}
 		//获取参数
 		type paramsType struct {
 			//分页
@@ -86,11 +86,11 @@ func URLView(r *Router2Mid.RouterURLHeader, appendURL string, sortObj *ClassSort
 		//日志
 		c.LogAppend = "header url class sort get more"
 		//权限检查
-		if len(permissions) > 0 {
-			if !Router2Mid.CheckPermission(c, permissions) {
-				return
-			}
-		}
+		//if len(permissions) > 0 {
+		//	if !Router2Mid.CheckPermission(c, permissions) {
+		//		return
+		//	}
+		//}
 		//获取参数
 		type paramsType struct {
 			//ID列
@@ -154,11 +154,11 @@ func URLView(r *Router2Mid.RouterURLHeader, appendURL string, sortObj *ClassSort
 		//日志
 		c.LogAppend = "header url class sort get by id"
 		//权限检查
-		if len(permissions) > 0 {
-			if !Router2Mid.CheckPermission(c, permissions) {
-				return
-			}
-		}
+		//if len(permissions) > 0 {
+		//	if !Router2Mid.CheckPermission(c, permissions) {
+		//		return
+		//	}
+		//}
 		//获取参数
 		type paramsType struct {
 			//ID

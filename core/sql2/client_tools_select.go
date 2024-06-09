@@ -159,6 +159,13 @@ func (t *ClientListCtx) SetIDQuery(field string, param int64) *ClientListCtx {
 	return t
 }
 
+// SetIDThanLessQuery 小于ID判断
+func (t *ClientListCtx) SetIDThanLessQuery(field string, param int64) *ClientListCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " < $", t.preemptionNum, ")"), param)
+	return t
+}
+
 // SetIDsQuery 常规IDs判断查询
 func (t *ClientListCtx) SetIDsQuery(field string, param pq.Int64Array) *ClientListCtx {
 	if len(param) > 0 {
