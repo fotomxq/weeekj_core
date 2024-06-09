@@ -86,6 +86,8 @@ type ArgsCreateRecipe struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//单位
 	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"60" empty:"true"`
+	//单位ID
+	UnitID int64 `db:"unit_id" json:"unitID" check:"id" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
@@ -99,10 +101,11 @@ type ArgsCreateRecipe struct {
 // CreateRecipe 创建Recipe
 func CreateRecipe(args *ArgsCreateRecipe) (id int64, err error) {
 	//创建数据
-	id, err = recipeDB.Insert().SetFields([]string{"category_id", "name", "unit", "org_id", "store_id", "price", "remark"}).Add(map[string]any{
+	id, err = recipeDB.Insert().SetFields([]string{"category_id", "name", "unit", "unit_id", "org_id", "store_id", "price", "remark"}).Add(map[string]any{
 		"category_id": args.CategoryID,
 		"name":        args.Name,
 		"unit":        args.Unit,
+		"unit_id":     args.UnitID,
 		"org_id":      args.OrgID,
 		"store_id":    args.StoreID,
 		"price":       args.Price,
@@ -125,6 +128,8 @@ type ArgsUpdateRecipe struct {
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true"`
 	//单位
 	Unit string `db:"unit" json:"unit" check:"des" min:"1" max:"60" empty:"true"`
+	//单位ID
+	UnitID int64 `db:"unit_id" json:"unitID" check:"id" empty:"true"`
 	//分公司ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id"`
 	//门店ID
@@ -138,10 +143,11 @@ type ArgsUpdateRecipe struct {
 // UpdateRecipe 修改Recipe
 func UpdateRecipe(args *ArgsUpdateRecipe) (err error) {
 	//更新数据
-	err = recipeDB.Update().SetFields([]string{"category_id", "name", "unit", "org_id", "store_id", "price", "remark"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+	err = recipeDB.Update().SetFields([]string{"category_id", "name", "unit", "unit_id", "org_id", "store_id", "price", "remark"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"category_id": args.CategoryID,
 		"name":        args.Name,
 		"unit":        args.Unit,
+		"unit_id":     args.UnitID,
 		"org_id":      args.OrgID,
 		"store_id":    args.StoreID,
 		"price":       args.Price,

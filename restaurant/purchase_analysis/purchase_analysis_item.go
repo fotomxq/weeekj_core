@@ -167,7 +167,7 @@ func getRestaurantPurchaseItemByID(id int64) (data FieldsPurchaseAnalysisItem) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	err := restaurantPurchaseItemDB.Get().SetFieldsOne([]string{"id", "create_at", "update_at", "delete_at", "org_id", "store_id", "purchase_analysis_id", "material_id", "name", "weight", "price", "total_price"}).GetByID(id).NeedLimit().Result(&data)
+	err := restaurantPurchaseItemDB.Get().SetDefaultFields().GetByID(id).NeedLimit().Result(&data)
 	if err != nil {
 		return
 	}
