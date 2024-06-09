@@ -221,6 +221,53 @@ func GetOrgSearch(args *ArgsGetOrgSearch) (dataList []DataGetOrgSearch, err erro
 	return
 }
 
+type ArgsGetOrgSearch2 struct {
+	//要查询的ID列
+	IDs pq.Int64Array `json:"ids" check:"ids" empty:"true"`
+	//上级ID
+	ParentID int64 `json:"parentID" check:"id" empty:"true"`
+	//搜索
+	// 查询名称、描述信息
+	Search string `json:"search" check:"search" empty:"true"`
+}
+
+type DataGetOrgSearch2 struct {
+	//ID
+	ID int64 `db:"id" json:"id"`
+	//构架名称，或组织名称
+	Name string `db:"name" json:"name"`
+	//组织描述
+	Des string `db:"des" json:"des"`
+	//上级ID
+	ParentID int64 `json:"parentID" check:"id" empty:"true"`
+}
+
+func GetOrgSearch2(args *ArgsGetOrgSearch2) (dataList []DataGetOrgSearch2, err error) {
+	var rawList []FieldsOrg
+	err = orgSQL.Select().SetFieldsList([]string{"id"}).SetPages(CoreSQL2.ArgsPages{
+		Page: 1,
+		Max:  10,
+		Sort: "id",
+		Desc: true,
+	}).SetIDsQuery("id", args.IDs).SetIDQuery("parent_id", args.ParentID).SetSearchQuery([]string{"name"}, args.Search).SetDeleteQuery("delete_at", false).Result(&rawList)
+	if err != nil {
+		return
+	}
+	for _, v := range rawList {
+		vData := getOrgByID(v.ID)
+		if vData.ID < 1 {
+			continue
+		}
+		dataList = append(dataList, DataGetOrgSearch2{
+			ID:       vData.ID,
+			Name:     vData.Name,
+			Des:      vData.Des,
+			ParentID: vData.ParentID,
+		})
+	}
+	return
+}
+
 // ArgsGetOrg 查看组织参数
 type ArgsGetOrg struct {
 	//ID
@@ -680,7 +727,7 @@ func getOrgByID(id int64) (data FieldsOrg) {
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
 		return
 	}
-	_ = Router2SystemConfig.MainDB.Get(&data, "SELECT id, create_at, update_at, delete_at, user_id, key, name, des, parent_id, parent_func, open_func, sort_id FROM org_core WHERE id = $1", id)
+	_ = orgSQL.Get().SetDefaultFields().GetByID(id).Result(&data)
 	if data.ID < 1 {
 		return
 	}

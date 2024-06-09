@@ -206,7 +206,11 @@ func Init() (err error) {
 	//组织核心
 	OrgCoreCore.OpenSub = OpenSub
 	OrgCoreCore.OpenAnalysis = OpenAnalysis
-	OrgCoreCore.Init()
+	err = OrgCoreCore.Init()
+	if err != nil {
+		err = errors.New(fmt.Sprint("init org core core, ", err))
+		return
+	}
 	//组织订阅
 	OrgSubscription.OpenSub = OpenSub
 	OrgSubscription.Init()

@@ -17,7 +17,7 @@ import (
 // LocalInit 本地化初始化
 func LocalInit() {
 	UserCore.Init()
-	OrgCore.Init()
+	_ = OrgCore.Init()
 	OrgTime.Init()
 }
 

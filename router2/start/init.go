@@ -88,7 +88,11 @@ func moduleInit() (err error) {
 	//行政
 	///////////////////////////////////////////////////////////////////////////////////
 	//组织核心
-	OrgCoreCore.Init()
+	err = OrgCoreCore.Init()
+	if err != nil {
+		err = errors.New("org core core, " + err.Error())
+		return
+	}
 	//组织订阅
 	OrgSubscription.Init()
 

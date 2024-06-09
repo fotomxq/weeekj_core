@@ -52,9 +52,12 @@ var (
 	roleConfigCacheTime     = 21600
 )
 
-func Init() {
+func Init() (err error) {
 	//初始化数据库
-	orgSQL.Init(&Router2SystemConfig.MainSQL, "org_core")
+	_, err = orgSQL.Init2(&Router2SystemConfig.MainSQL, "org_core", &FieldsOrg{})
+	if err != nil {
+		return
+	}
 	//初始化mqtt订阅
 	if OpenSub {
 		subNats()
@@ -64,4 +67,5 @@ func Init() {
 		AnalysisAny2.SetConfigBeforeNoErr("org_bind_count", 3, 365)
 		AnalysisAny2.SetConfigBeforeNoErr("org_user_visit_count", 1, 365)
 	}
+	return
 }

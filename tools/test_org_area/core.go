@@ -24,7 +24,7 @@ func Init(t *testing.T) {
 	if !isInit {
 		ToolsTest.Init(t)
 		//OrgCore.Init(true, true)
-		OrgCore.Init()
+		_ = OrgCore.Init()
 	}
 	isInit = true
 	TestOrg.LocalCreateOrg(t)
