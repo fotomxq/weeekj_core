@@ -28,7 +28,7 @@ type ArgsGetGroupList struct {
 
 // GetGroupList 获取分组数据
 func GetGroupList(args *ArgsGetGroupList) (dataList []FieldsGroup, dataCount int64, err error) {
-	where := "org_id = :org_id"
+	where := "(org_id = :org_id or org_id = 0)"
 	maps := map[string]interface{}{
 		"org_id": args.OrgID,
 	}

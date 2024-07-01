@@ -36,7 +36,8 @@ var (
 		SortTableName: "org_core_sort",
 	}
 	//数据库操作句柄
-	orgSQL CoreSQL2.Client
+	orgSQL        CoreSQL2.Client
+	orgBindAttrDB CoreSQL2.Client
 	//OpenSub 是否启动订阅
 	OpenSub = false
 	//OpenAnalysis 是否启动analysis
@@ -55,6 +56,10 @@ var (
 func Init() (err error) {
 	//初始化数据库
 	_, err = orgSQL.Init2(&Router2SystemConfig.MainSQL, "org_core", &FieldsOrg{})
+	if err != nil {
+		return
+	}
+	_, err = orgBindAttrDB.Init2(&Router2SystemConfig.MainSQL, "org_core_bind", &FieldsBindAttr{})
 	if err != nil {
 		return
 	}
