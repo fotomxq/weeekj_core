@@ -3,6 +3,7 @@ package OrgCoreCore
 import (
 	"errors"
 	"fmt"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
 	CoreNats "github.com/fotomxq/weeekj_core/v5/core/nats"
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
@@ -86,6 +87,22 @@ func SetBind(args *ArgsSetBind) (data FieldsBind, err error) {
 			return
 		}
 		data = findBind
+	}
+	//检查数量
+	var orgCoreBindCheckManagers pq.StringArray
+	orgCoreBindCheckManagers = append(orgCoreBindCheckManagers, "all", "base_manager")
+	checkManagerOrgGroups := getGroupByManager(args.OrgID, orgCoreBindCheckManagers)
+	var checkManagerOrgGroupIDs pq.Int64Array
+	for _, v := range checkManagerOrgGroups {
+		checkManagerOrgGroupIDs = append(checkManagerOrgGroupIDs, v.ID)
+	}
+	var haveGroupCount int64
+	haveGroupCount, err = CoreSQL.GetAllCount(Router2SystemConfig.MainDB.DB, "org_core_bind", "id", "manager = ANY($1) OR group_ids = ANY($2)", orgCoreBindCheckManagers, checkManagerOrgGroupIDs)
+	// 获取配置的最大数量
+	orgBindManagerCount := BaseConfig.GetDataInt64NoErr("OrgBindManagerCount")
+	if haveGroupCount > orgBindManagerCount {
+		err = errors.New("over max count")
+		return
 	}
 	//绑定关系
 	if err == nil && data.ID > 0 {

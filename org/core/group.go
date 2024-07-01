@@ -94,6 +94,23 @@ func GetAllGroup(orgID int64) (dataList []FieldsGroup) {
 	return
 }
 
+// 获取符合权限的分组
+func getGroupByManager(orgID int64, managers pq.StringArray) (dataList []FieldsGroup) {
+	var rawList []FieldsGroup
+	err := Router2SystemConfig.MainDB.Select(&rawList, "SELECT id FROM org_core_group WHERE org_id = $1 AND delete_at < to_timestamp(1000000) AND manager = ANY($2)", orgID, managers)
+	if err != nil {
+		return
+	}
+	for _, v := range rawList {
+		vData := getGroupByID(v.ID)
+		if vData.ID < 1 {
+			continue
+		}
+		dataList = append(dataList, vData)
+	}
+	return
+}
+
 // ArgsGetGroup 获取某个分组参数
 type ArgsGetGroup struct {
 	//ID
