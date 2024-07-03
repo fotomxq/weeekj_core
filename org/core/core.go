@@ -59,7 +59,7 @@ func Init() (err error) {
 	if err != nil {
 		return
 	}
-	_, err = orgBindAttrDB.Init2(&Router2SystemConfig.MainSQL, "org_core_bind", &FieldsBindAttr{})
+	_, err = orgBindAttrDB.Init2(&Router2SystemConfig.MainSQL, "org_core_bind_attr", &FieldsBindAttr{})
 	if err != nil {
 		return
 	}
