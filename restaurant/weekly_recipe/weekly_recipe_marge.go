@@ -220,7 +220,7 @@ func GetWeeklyRecipeMarge(weeklyRecipeID int64) (data DataWeeklyRecipeMarge, err
 						break
 					}
 				}
-				appendData.Breakfast = append(appendData.Lunch, DataGetWeeklyRecipeMargeDayItem{
+				appendData.Breakfast = append(appendData.Breakfast, DataGetWeeklyRecipeMargeDayItem{
 					ID:          v2.ID,
 					RecipeID:    v2.RecipeID,
 					Name:        v2.Name,

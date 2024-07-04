@@ -185,6 +185,8 @@ type ArgsAuditWeeklyRecipe struct {
 	AuditUserID int64 `db:"audit_user_id" json:"auditUserID" check:"id" empty:"true"`
 	//审核人姓名
 	AuditUserName string `db:"audit_user_name" json:"auditUserName" check:"des" min:"1" max:"300" empty:"true"`
+	//审核备注
+	AuditRemark string `db:"audit_remark" json:"auditRemark" check:"des" min:"1" max:"1000" default:"empty" empty:"true"`
 }
 
 // AuditWeeklyRecipe 审核每周菜谱上报
@@ -196,12 +198,13 @@ func AuditWeeklyRecipe(args *ArgsAuditWeeklyRecipe) (err error) {
 	if args.AuditStatus == 2 {
 		auditAt = time.Time{}
 	}
-	err = weeklyRecipeDB.Update().SetFields([]string{"audit_at", "audit_status", "audit_org_bind_id", "audit_user_id", "audit_user_name"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
+	err = weeklyRecipeDB.Update().SetFields([]string{"audit_at", "audit_status", "audit_remark", "audit_org_bind_id", "audit_user_id", "audit_user_name"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"audit_at":          auditAt,
 		"audit_status":      args.AuditStatus,
 		"audit_org_bind_id": args.AuditOrgBindID,
 		"audit_user_id":     args.AuditUserID,
 		"audit_user_name":   args.AuditUserName,
+		"audit_remark":      args.AuditRemark,
 	})
 	if err != nil {
 		return
