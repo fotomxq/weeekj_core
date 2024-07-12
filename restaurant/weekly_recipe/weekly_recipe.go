@@ -176,7 +176,7 @@ type ArgsAuditWeeklyRecipe struct {
 	// 用于验证数据是否属于当前组织
 	RawOrgID int64 `db:"raw_org_id" json:"rawOrgID" check:"id" empty:"true"`
 	//审核状态
-	// 0 未审核; 1 审核通过; 2 审核不通过
+	//0 草稿; 1 未审核; 2 审核通过; 3 审核不通过 ; 4 审核未通过，重新提交
 	AuditStatus int `db:"audit_status" json:"auditStatus" check:"intThan0" empty:"true"`
 	//审核人ID
 	AuditOrgBindID int64 `db:"audit_org_bind_id" json:"auditOrgBindID" check:"id" empty:"true"`
@@ -192,12 +192,12 @@ type ArgsAuditWeeklyRecipe struct {
 // AuditWeeklyRecipe 审核每周菜谱上报
 func AuditWeeklyRecipe(args *ArgsAuditWeeklyRecipe) (err error) {
 	var auditAt time.Time
-	if args.AuditStatus == 1 {
-		auditAt = CoreFilter.GetNowTime()
-	}
 	if args.AuditStatus == 2 {
+		auditAt = CoreFilter.GetNowTime()
+	} else {
 		auditAt = time.Time{}
 	}
+
 	err = weeklyRecipeDB.Update().SetFields([]string{"audit_at", "audit_status", "audit_remark", "audit_org_bind_id", "audit_user_id", "audit_user_name"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
 		"audit_at":          auditAt,
 		"audit_status":      args.AuditStatus,
