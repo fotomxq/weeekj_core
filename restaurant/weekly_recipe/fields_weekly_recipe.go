@@ -28,7 +28,7 @@ type FieldsWeeklyRecipe struct {
 	//审核时间
 	AuditAt time.Time `db:"audit_at" json:"auditAt" index:"true"`
 	//审核状态
-	// 0 未审核; 1 审核通过; 2 审核不通过 ; 3 审核未通过，重新提交
+	//0 草稿; 1 未审核; 2 审核通过; 3 审核不通过 ; 4 审核未通过，重新提交
 	AuditStatus int `db:"audit_status" json:"auditStatus" check:"intThan0" empty:"true" index:"true"`
 	//审核备注
 	AuditRemark string `db:"audit_remark" json:"auditRemark" check:"des" min:"1" max:"1000" default:"empty" empty:"true"`
