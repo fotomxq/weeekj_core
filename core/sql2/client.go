@@ -20,6 +20,8 @@ type Client struct {
 	StructData any
 	//关键索引
 	Key string
+	//是否关闭自动安装
+	CloseAutoInstall bool
 	//默认全量字段
 	fieldNameList []clientField
 	//是否启动缓冲器
@@ -99,9 +101,11 @@ func (t *Client) Init2(mainDB *SQLClient, tableName string, structData any) (cli
 	t.Key = "id"
 	t.StructData = structData
 	//安装sql
-	err = t.InstallSQL()
-	if err != nil {
-		return
+	if !t.CloseAutoInstall {
+		err = t.InstallSQL()
+		if err != nil {
+			return
+		}
 	}
 	//反馈
 	return t, nil
