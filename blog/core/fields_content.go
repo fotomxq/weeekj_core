@@ -62,7 +62,7 @@ type FieldsContent struct {
 	//附加封面图
 	DesFiles pq.Int64Array `db:"des_files" json:"desFiles" check:"ids" empty:"true"`
 	//内容
-	Des string `db:"des" json:"des" check:"des" empty:"true"`
+	Des string `db:"des" json:"des" check:"des" min:"1" max:"-1" empty:"true"`
 	//扩展参数
 	Params CoreSQLConfig.FieldsConfigsType `db:"params" json:"params"`
 }
