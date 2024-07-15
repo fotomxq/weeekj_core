@@ -117,6 +117,16 @@ func (t *ClientListCtx) SetDeleteQuery(field string, param bool) *ClientListCtx 
 	return t
 }
 
+// SetTimeExistQuery 设置时间查询
+// 如果启动此设定，请注意基于查询条件的$顺序，叠加后使用，否则讲造成条件和参数不匹配
+func (t *ClientListCtx) SetTimeExistQuery(field string, needParam bool, param bool) *ClientListCtx {
+	if needParam {
+		t.addPreemptionNum()
+		t.addPreemption(fmt.Sprint("((", field, " < to_timestamp(1000000) AND $", t.preemptionNum, " = false) OR (", field, " >= to_timestamp(1000000) AND $", t.preemptionNum, " = true))"), param)
+	}
+	return t
+}
+
 // SetTimeBetweenByArgQuery 设置时间范围
 func (t *ClientListCtx) SetTimeBetweenByArgQuery(field string, betweenAt ArgsTimeBetween) *ClientListCtx {
 	betweenTimeAt, err := betweenAt.GetFields()
@@ -166,6 +176,19 @@ func (t *ClientListCtx) SetIDThanLessQuery(field string, param int64) *ClientLis
 	return t
 }
 
+// SetInt64BetweenQuery 整数在指定范围内
+func (t *ClientListCtx) SetInt64BetweenQuery(field string, minParam int64, maxParam int64) *ClientListCtx {
+	if minParam > 0 {
+		t.addPreemptionNum()
+		t.addPreemption(fmt.Sprint("(", field, " >= $", t.preemptionNum, ")"), minParam)
+	}
+	if maxParam > 0 {
+		t.addPreemptionNum()
+		t.addPreemption(fmt.Sprint("(", field, " <= $", t.preemptionNum, ")"), maxParam)
+	}
+	return t
+}
+
 // SetIDsQuery 常规IDs判断查询
 func (t *ClientListCtx) SetIDsQuery(field string, param pq.Int64Array) *ClientListCtx {
 	if len(param) > 0 {
@@ -173,6 +196,40 @@ func (t *ClientListCtx) SetIDsQuery(field string, param pq.Int64Array) *ClientLi
 		t.addPreemption(fmt.Sprint("(", field, " = ANY($", t.preemptionNum, "))"), param)
 	}
 	return t
+}
+
+// SetIDsAndMoreQuery 多个列交叉比对 和
+func (t *ClientListCtx) SetIDsAndMoreQuery(field string, param pq.Int64Array) *ClientListCtx {
+	if len(param) > 0 {
+		t.addPreemptionNum()
+		t.addPreemption(fmt.Sprint("(", field, " @> $", t.preemptionNum, ")"), param)
+	}
+	return t
+}
+
+// SetIDsOrMoreQuery 多个列交叉比对 或
+func (t *ClientListCtx) SetIDsOrMoreQuery(field string, param pq.Int64Array) *ClientListCtx {
+	if len(param) > 0 {
+		for k := 0; k < len(param); k++ {
+			if k == 0 {
+				t.addPreemptionNum()
+				t.addPreemption(fmt.Sprint("(", field, " && $", t.preemptionNum, ""), pq.Int64Array{param[k]})
+			} else {
+				t.addPreemptionNum()
+				t.addPreemption(fmt.Sprint(" OR ", field, " && $", t.preemptionNum, ")"), pq.Int64Array{param[k]})
+			}
+		}
+	}
+	return t
+}
+
+// SetIDsMixMoreQuery 多个列交叉比对 和、或
+func (t *ClientListCtx) SetIDsMixMoreQuery(field string, isOr bool, param pq.Int64Array) *ClientListCtx {
+	if isOr {
+		return t.SetIDsOrMoreQuery(field, param)
+	} else {
+		return t.SetIDsAndMoreQuery(field, param)
+	}
 }
 
 // SetIntQuery 常规Int判断查询
