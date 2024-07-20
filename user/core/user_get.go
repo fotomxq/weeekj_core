@@ -728,6 +728,16 @@ func GetUserCountByOrgID(orgID int64) (count int64) {
 	return
 }
 
+// GetUserCountByOrgIDAndSort 获取组织下总人数
+func GetUserCountByOrgIDAndSort(orgID int64, sortID int64) (count int64) {
+	if orgID < 0 {
+		_ = Router2SystemConfig.MainDB.Get(&count, "SELECT COUNT(id) FROM user_core WHERE delete_at < to_timestamp(1000000) AND sort_id = $1", sortID)
+	} else {
+		_ = Router2SystemConfig.MainDB.Get(&count, "SELECT COUNT(id) FROM user_core WHERE org_id = $1 AND delete_at < to_timestamp(1000000) AND org_id = $2", orgID, sortID)
+	}
+	return
+}
+
 // 获取指定用户数据
 func getUserByID(userID int64) (data FieldsUserType) {
 	cacheMark := getUserCacheMark(userID)
