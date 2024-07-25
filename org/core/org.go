@@ -660,6 +660,12 @@ func DeleteOrgParent(args *ArgsDeleteOrgParent) (err error) {
 	return
 }
 
+// GetOrgIDsAll 返回当前所有组织IDs
+func GetOrgIDsAll() (data pq.Int64Array) {
+	_ = Router2SystemConfig.MainDB.Select(&data, "SELECT id FROM org_core WHERE delete_at < to_timestamp(1000000)")
+	return
+}
+
 // checkOrgInParentFunc 检查一个级别功能是否在另外一个范围内
 // 只要有一个超出，则禁止
 func checkOrgInParentFunc(parentFunc []string, childFunc []string) (err error) {

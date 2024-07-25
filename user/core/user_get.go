@@ -751,3 +751,9 @@ func getUserByID(userID int64) (data FieldsUserType) {
 	Router2SystemConfig.MainCache.SetStruct(cacheMark, data, cacheUserTime)
 	return
 }
+
+// GetUserIDsByOrgIDs 获取指定组织下所有用户ID
+func GetUserIDsByOrgIDs(orgID int64) (data pq.Int64Array) {
+	_ = Router2SystemConfig.MainDB.Select(&data, "SELECT id FROM user_core WHERE org_id = $1 AND delete_at < to_timestamp(1000000)", orgID)
+	return
+}
