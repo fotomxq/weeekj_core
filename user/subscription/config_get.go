@@ -81,6 +81,29 @@ func GetConfigByID(args *ArgsGetConfigByID) (data FieldsConfig, err error) {
 	return
 }
 
+// ArgsGetConfigByMark 获取指定配置标识码参数
+type ArgsGetConfigByMark struct {
+	//标识码
+	Mark string `db:"mark" json:"mark" check:"mark"`
+	//组织ID
+	// 可选
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+}
+
+// GetConfigByMark 获取指定配置标识码
+func GetConfigByMark(args *ArgsGetConfigByMark) (data FieldsConfig, err error) {
+	err = Router2SystemConfig.MainDB.Get(&data, "SELECT id FROM user_sub_config WHERE delete_at < to_timestamp(1000000) AND mark = $1 AND (org_id = $2 OR $2 < 0) ORDER BY id ASC LIMIT 1")
+	if err != nil || data.ID < 1 {
+		err = errors.New(fmt.Sprint("no data, id: ", args.ID, ", org id: ", args.OrgID))
+		return
+	}
+	data, err = getConfigByID(data.ID)
+	if err != nil {
+		return
+	}
+	return
+}
+
 // GetConfigOnlyOne 获取全局唯一一个会员配置
 func GetConfigOnlyOne() (data FieldsConfig) {
 	err := Router2SystemConfig.MainDB.Get(&data, "SELECT id FROM user_sub_config WHERE delete_at < to_timestamp(1000000) ORDER BY id ASC LIMIT 1")
