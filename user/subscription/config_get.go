@@ -92,9 +92,9 @@ type ArgsGetConfigByMark struct {
 
 // GetConfigByMark 获取指定配置标识码
 func GetConfigByMark(args *ArgsGetConfigByMark) (data FieldsConfig, err error) {
-	err = Router2SystemConfig.MainDB.Get(&data, "SELECT id FROM user_sub_config WHERE delete_at < to_timestamp(1000000) AND mark = $1 AND (org_id = $2 OR $2 < 0) ORDER BY id ASC LIMIT 1")
+	err = Router2SystemConfig.MainDB.Get(&data, "SELECT id FROM user_sub_config WHERE delete_at < to_timestamp(1000000) AND mark = $1 AND (org_id = $2 OR $2 < 0) ORDER BY id ASC LIMIT 1", args.Mark, args.OrgID)
 	if err != nil || data.ID < 1 {
-		err = errors.New(fmt.Sprint("no data, id: ", args.ID, ", org id: ", args.OrgID))
+		err = errors.New(fmt.Sprint("no data, mark: ", args.Mark, ", org id: ", args.OrgID))
 		return
 	}
 	data, err = getConfigByID(data.ID)
