@@ -340,7 +340,7 @@ func GetContentListV3(args *ArgsGetContentListV3) (dataList []FieldsContent, dat
 // ArgsGetContentListV4 获取列表参数
 type ArgsGetContentListV4 struct {
 	//分页
-	Pages CoreSQLPages.ArgsDataList `json:"pages"`
+	Pages CoreSQL2.ArgsPages `json:"pages"`
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
 	//用户ID
@@ -483,7 +483,12 @@ func GetContentListV4(args *ArgsGetContentListV4) (dataList []FieldsContent, dat
 		"SELECT id FROM "+tableName+" WHERE "+where,
 		where,
 		maps,
-		&args.Pages,
+		&CoreSQLPages.ArgsDataList{
+			Page: args.Pages.Page,
+			Max:  args.Pages.Max,
+			Sort: args.Pages.Sort,
+			Desc: args.Pages.Desc,
+		},
 		[]string{"id", "create_at", "update_at", "delete_at", "audit_at", "publish_at"},
 	)
 	if err != nil {
