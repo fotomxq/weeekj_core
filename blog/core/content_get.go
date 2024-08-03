@@ -7,6 +7,7 @@ import (
 	CoreSQL "github.com/fotomxq/weeekj_core/v5/core/sql"
 	CoreSQLIDs "github.com/fotomxq/weeekj_core/v5/core/sql/ids"
 	CoreSQLPages "github.com/fotomxq/weeekj_core/v5/core/sql/pages"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/lib/pq"
 	"strings"
@@ -302,6 +303,171 @@ func GetContentListV3(args *ArgsGetContentListV3) (dataList []FieldsContent, dat
 		where = where + " AND param3 >= :param3_min AND param3 <= :param3_max"
 		maps["param3_min"] = args.Param3Min
 		maps["param3_max"] = args.Param3Max
+	}
+	if args.Search != "" {
+		where = where + " AND (title ILIKE '%' || :search || '%' OR title_des ILIKE '%' || :search || '%' OR des ILIKE '%' || :search || '%')"
+		maps["search"] = args.Search
+	}
+	tableName := "blog_core_content"
+	var rawList []FieldsContent
+	dataCount, err = CoreSQL.GetListPageAndCount(
+		Router2SystemConfig.MainDB.DB,
+		&rawList,
+		tableName,
+		"id",
+		"SELECT id FROM "+tableName+" WHERE "+where,
+		where,
+		maps,
+		&args.Pages,
+		[]string{"id", "create_at", "update_at", "delete_at", "audit_at", "publish_at"},
+	)
+	if err != nil {
+		return
+	}
+	if len(rawList) < 1 {
+		err = errors.New("no data")
+		return
+	}
+	for _, v := range rawList {
+		vData := getContentID(v.ID)
+		vData.Des = ""
+		dataList = append(dataList, vData)
+	}
+	//反馈
+	return
+}
+
+// ArgsGetContentListV4 获取列表参数
+type ArgsGetContentListV4 struct {
+	//分页
+	Pages CoreSQLPages.ArgsDataList `json:"pages"`
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//用户ID
+	// 文章可以是由用户发出，组织ID可以为0
+	UserIDs pq.Int64Array `db:"user_ids" json:"userIDs" check:"ids" empty:"true"`
+	//成员ID
+	BindID int64 `db:"bind_id" json:"bindID" check:"id" empty:"true"`
+	//分类ID
+	// > -1 为包含；否则不包含。0为没有设定
+	SortID int64 `db:"sort_id" json:"sortID" check:"id" empty:"true"`
+	//标签组
+	Tags pq.Int64Array `db:"tags" json:"tags" check:"ids" empty:"true"`
+	//标签或关系
+	TagsOr bool `json:"tagsOr" check:"bool"`
+	//是否已经发布
+	NeedIsPublish bool `db:"need_is_publish" json:"needIsPublish" check:"bool"`
+	IsPublish     bool `db:"is_publish" json:"IsPublish" check:"bool"`
+	//归属关系
+	// 删除后作为原始文档的子项目存在，key将自动失效
+	ParentID int64 `db:"parent_id" json:"parentID" check:"id" empty:"true"`
+	//是否需要审核
+	NeedAudit bool `json:"needAudit" check:"bool"`
+	//是否已经审核
+	IsAudit bool `json:"isAudit" check:"bool"`
+	//是否置顶
+	NeedIsTop bool `json:"needIsTop" check:"bool" empty:"true"`
+	IsTop     bool `db:"is_top" json:"isTop" check:"bool" empty:"true"`
+	//扩展选项范围查询
+	Param1Min int64 `json:"param1Min"`
+	Param1Max int64 `json:"param1Max"`
+	Param2Min int64 `json:"param2Min"`
+	Param2Max int64 `json:"param2Max"`
+	Param3Min int64 `json:"param3Min"`
+	Param3Max int64 `json:"param3Max"`
+	//发布时间范围
+	PublishBetween CoreSQL2.ArgsTimeBetween `json:"publishBetween"`
+	//是否删除
+	IsRemove bool `db:"is_remove" json:"isRemove" check:"bool"`
+	//搜索
+	Search string `json:"search" check:"search" empty:"true"`
+}
+
+// GetContentListV4 获取列表
+func GetContentListV4(args *ArgsGetContentListV4) (dataList []FieldsContent, dataCount int64, err error) {
+	//获取数据
+	where := ""
+	maps := map[string]interface{}{}
+	where = CoreSQL.GetDeleteSQL(args.IsRemove, where)
+	if args.OrgID > -1 {
+		where = where + " AND org_id = :org_id"
+		maps["org_id"] = args.OrgID
+	}
+	if len(args.UserIDs) > -1 {
+		where = where + " AND user_id = ANY(:user_id)"
+		maps["user_id"] = args.UserIDs
+	}
+	if args.BindID > 0 {
+		where = where + " AND bind_id = :bind_id"
+		maps["bind_id"] = args.BindID
+	}
+	if args.SortID > -1 {
+		where = where + " AND sort_id = :sort_id"
+		maps["sort_id"] = args.SortID
+	}
+	if args.TagsOr {
+		if len(args.Tags) > 0 {
+			var tagStrs []string
+			for _, v := range args.Tags {
+				tagStrs = append(tagStrs, fmt.Sprint("tags && :tags_", v))
+				maps[fmt.Sprint("tags_", v)] = pq.Int64Array{v}
+			}
+			whereOr := strings.Join(tagStrs, " OR ")
+			where = where + " AND (" + whereOr + ")"
+		}
+	} else {
+		if len(args.Tags) > 0 {
+			where = where + " AND tags @> :tags"
+			maps["tags"] = args.Tags
+		}
+	}
+	if args.NeedAudit {
+		if args.IsAudit {
+			where = where + " AND audit_at > to_timestamp(1000000)"
+		} else {
+			where = where + " AND audit_at <= to_timestamp(1000000)"
+		}
+	}
+	if args.NeedIsPublish {
+		if args.IsPublish {
+			where = where + " AND publish_at > to_timestamp(1000000)"
+		} else {
+			where = where + " AND publish_at <= to_timestamp(1000000)"
+		}
+	}
+	if args.ParentID > -1 {
+		where = where + " AND parent_id = :parent_id"
+		maps["parent_id"] = args.ParentID
+	}
+	if args.NeedIsTop {
+		if args.IsTop {
+			where = where + " AND is_top = true"
+		} else {
+			where = where + " AND is_top = false"
+		}
+	}
+	if args.Param1Min > 0 && args.Param1Max > 0 {
+		where = where + " AND param1 >= :param1_min AND param1 <= :param1_max"
+		maps["param1_min"] = args.Param1Min
+		maps["param1_max"] = args.Param1Max
+	}
+	if args.Param2Min > 0 && args.Param2Max > 0 {
+		where = where + " AND param2 >= :param2_min AND param2 <= :param2_max"
+		maps["param2_min"] = args.Param2Min
+		maps["param2_max"] = args.Param2Max
+	}
+	if args.Param3Min > 0 && args.Param3Max > 0 {
+		where = where + " AND param3 >= :param3_min AND param3 <= :param3_max"
+		maps["param3_min"] = args.Param3Min
+		maps["param3_max"] = args.Param3Max
+	}
+	if args.PublishBetween.MinTime != "" {
+		where = where + " AND publish_at >= :publish_at_min"
+		maps["publish_at_min"] = CoreFilter.GetTimeByDefaultNoErr(args.PublishBetween.MinTime)
+	}
+	if args.PublishBetween.MaxTime != "" {
+		where = where + " AND publish_at <= :publish_at_max"
+		maps["publish_at_max"] = CoreFilter.GetTimeByDefaultNoErr(args.PublishBetween.MaxTime)
 	}
 	if args.Search != "" {
 		where = where + " AND (title ILIKE '%' || :search || '%' OR title_des ILIKE '%' || :search || '%' OR des ILIKE '%' || :search || '%')"
