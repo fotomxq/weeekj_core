@@ -393,7 +393,7 @@ func GetContentListV4(args *ArgsGetContentListV4) (dataList []FieldsContent, dat
 		where = where + " AND org_id = :org_id"
 		maps["org_id"] = args.OrgID
 	}
-	if len(args.UserIDs) > -1 {
+	if len(args.UserIDs) > 0 {
 		where = where + " AND user_id = ANY(:user_id)"
 		maps["user_id"] = args.UserIDs
 	}
