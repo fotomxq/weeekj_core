@@ -62,7 +62,7 @@ func InstallUser() error {
 					SkipCheckGroup: true,
 				})
 				if err != nil {
-					return err
+					return errors.New("delete old permission, " + err.Error())
 				}
 			}
 			if err := UserCore.CreatePermission(&UserCore.ArgsCreatePermission{
@@ -80,13 +80,13 @@ func InstallUser() error {
 		AllowOrg: false,
 	})
 	if err != nil {
-		return err
+		return errors.New("get all permission, " + err.Error())
 	}
 	allPermissions2, err := UserCore.GetAllPermission(&UserCore.ArgsGetAllPermission{
 		AllowOrg: true,
 	})
 	if err != nil {
-		return err
+		return errors.New("get all permission2, " + err.Error())
 	}
 	var allPermissions []UserCore.FieldsPermissionType
 	for _, v := range allPermissions1 {
