@@ -62,7 +62,9 @@ func InstallUser() error {
 					SkipCheckGroup: true,
 				})
 				if err != nil {
-					return errors.New("delete old permission, " + err.Error())
+					if err.Error() != "no rows affected" {
+						return errors.New(fmt.Sprint("delete old permission, "+err.Error(), ", mark: ", data.Mark))
+					}
 				}
 			}
 			if err := UserCore.CreatePermission(&UserCore.ArgsCreatePermission{
