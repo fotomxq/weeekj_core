@@ -248,7 +248,7 @@ func UpdateAudit(args *ArgsUpdateAudit) (err error) {
 // UpdateContentTop 设置文章置顶
 func UpdateContentTop(id int64, isTop bool) (err error) {
 	//更新数据
-	_, err = CoreSQL.UpdateOneSoft(Router2SystemConfig.MainDB.DB, "UPDATE blog_core_content SET is_top = :isTop WHERE id = :id ", map[string]interface{}{
+	_, err = CoreSQL.UpdateOneSoft(Router2SystemConfig.MainDB.DB, "UPDATE blog_core_content SET is_top = :is_top WHERE id = :id", map[string]interface{}{
 		"is_top": isTop,
 		"id":     id,
 	})
