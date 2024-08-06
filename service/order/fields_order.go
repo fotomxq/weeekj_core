@@ -142,6 +142,8 @@ type FieldsOrder struct {
 	PayList pq.Int64Array `db:"pay_list" json:"payList"`
 	//支付渠道
 	PayFrom string `db:"pay_from" json:"payFrom"`
+	//支付时间
+	PayAt string `db:"pay_at" json:"payAt"`
 	//备注信息
 	Des string `db:"des" json:"des"`
 	//日志
