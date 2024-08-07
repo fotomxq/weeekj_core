@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	AnalysisAny2 "github.com/fotomxq/weeekj_core/v5/analysis/any2"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
 	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreLog "github.com/fotomxq/weeekj_core/v5/core/log"
@@ -187,9 +188,17 @@ func create(args *argsCreate) (data FieldsOrder, errCode, errMsg string, err err
 	if paySystem != "" {
 		args.Params = CoreSQLConfig.Set(args.Params, "paySystem", paySystem)
 	}
+	var orderExpireAtConfig int
+	orderExpireAtConfig, err = BaseConfig.GetDataInt("ServiceOrderExpireAt")
+	if err != nil {
+		return
+	}
+	if orderExpireAtConfig < 1 {
+		orderExpireAtConfig = 1440
+	}
 	//生成数据
 	err = CoreSQL.CreateOneAndData(Router2SystemConfig.MainDB.DB, "service_order", "INSERT INTO service_order (expire_at, system_mark, org_id, user_id, create_from, serial_number, serial_number_day, status, refund_status, address_from, address_to, goods, exemptions, allow_auto_audit, transport_id, transport_allow_auto, transport_task_at, transport_pay_after, transport_ids, transport_system, transport_sn, transport_info, transport_status, price_list, price_pay, currency, price, price_total, pay_status, pay_id, pay_list, des, logs, params) VALUES (:expire_at, :system_mark, :org_id, :user_id, :create_from, :serial_number, :serial_number_day, 0, 0, :address_from, :address_to, :goods, :exemptions, :allow_auto_audit, 0, :transport_allow_auto, :transport_task_at, :transport_pay_after, :transport_ids, :transport_system, '', '', 0, :price_list, :price < 1, :currency, :price, :price_total, :pay_status, 0, :pay_list, :des, :logs, :params)", map[string]interface{}{
-		"expire_at":            CoreFilter.GetNowTimeCarbon().AddHours(24),
+		"expire_at":            CoreFilter.GetNowTimeCarbon().AddMinutes(orderExpireAtConfig),
 		"system_mark":          args.SystemMark,
 		"org_id":               args.OrgID,
 		"user_id":              args.UserID,
