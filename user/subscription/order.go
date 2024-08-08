@@ -3,6 +3,7 @@ package UserSubscription
 import (
 	"errors"
 	"fmt"
+	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
 	ClassConfig "github.com/fotomxq/weeekj_core/v5/class/config"
 	CoreSQLAddress "github.com/fotomxq/weeekj_core/v5/core/sql/address"
 	CoreSQLConfig "github.com/fotomxq/weeekj_core/v5/core/sql/config"
@@ -64,16 +65,24 @@ func CreateSubOrder(args *ArgsCreateSubOrder) (data ServiceOrderWaitFields.Field
 	if args.UnitPrice > 0 {
 		configData.Price = args.UnitPrice
 	}
+	//检查平台是否启用了锁定机制
+	var userSubLevelLockGlob bool
+	userSubLevelLockGlob, err = BaseConfig.GetDataBool("UserSubscriptionLevelLock")
+	if err != nil {
+		userSubLevelLockGlob = true
+	}
 	//获取商户配置，订阅锁定机制
 	var userSubLevelLock bool
-	userSubLevelLock, err = OrgCore.Config.GetConfigValBool(&ClassConfig.ArgsGetConfig{
-		BindID:    args.OrgID,
-		Mark:      "UserSubLevelLock",
-		VisitType: "admin",
-	})
-	if err != nil {
-		userSubLevelLock = true
-		err = nil
+	if userSubLevelLockGlob {
+		userSubLevelLock, err = OrgCore.Config.GetConfigValBool(&ClassConfig.ArgsGetConfig{
+			BindID:    args.OrgID,
+			Mark:      "UserSubLevelLock",
+			VisitType: "admin",
+		})
+		if err != nil {
+			userSubLevelLock = true
+			err = nil
+		}
 	}
 	if userSubLevelLock {
 		//获取用户当前在续订阅情况
