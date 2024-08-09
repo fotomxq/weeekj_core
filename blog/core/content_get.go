@@ -343,6 +343,8 @@ type ArgsGetContentListV4 struct {
 	Pages CoreSQL2.ArgsPages `json:"pages"`
 	//组织ID
 	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//组织ID列
+	OrgIDs pq.Int64Array `db:"org_ids" json:"orgIDs" check:"ids" empty:"true"`
 	//用户ID
 	// 文章可以是由用户发出，组织ID可以为0
 	UserIDs pq.Int64Array `db:"user_ids" json:"userIDs" check:"ids" empty:"true"`
@@ -392,6 +394,10 @@ func GetContentListV4(args *ArgsGetContentListV4) (dataList []FieldsContent, dat
 	if args.OrgID > -1 {
 		where = where + " AND org_id = :org_id"
 		maps["org_id"] = args.OrgID
+	}
+	if len(args.OrgIDs) > 0 {
+		where = where + " AND org_id = ANY(:org_id)"
+		maps["org_id"] = args.OrgIDs
 	}
 	if len(args.UserIDs) > 0 {
 		where = where + " AND user_id = ANY(:user_id)"
