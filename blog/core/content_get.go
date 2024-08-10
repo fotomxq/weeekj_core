@@ -379,6 +379,8 @@ type ArgsGetContentListV4 struct {
 	Param3Max int64 `json:"param3Max"`
 	//发布时间范围
 	PublishBetween CoreSQL2.ArgsTimeBetween `json:"publishBetween"`
+	//是否是平台数据
+	IsPlatform bool `json:"isPlatform" check:"bool" empty:"true"`
 	//是否删除
 	IsRemove bool `db:"is_remove" json:"isRemove" check:"bool"`
 	//搜索
@@ -398,6 +400,9 @@ func GetContentListV4(args *ArgsGetContentListV4) (dataList []FieldsContent, dat
 	if len(args.OrgIDs) > 0 {
 		where = where + " AND org_id = ANY(:org_id)"
 		maps["org_id"] = args.OrgIDs
+	}
+	if !args.IsPlatform {
+		where = where + " AND org_id != 0"
 	}
 	if len(args.UserIDs) > 0 {
 		where = where + " AND user_id = ANY(:user_id)"
