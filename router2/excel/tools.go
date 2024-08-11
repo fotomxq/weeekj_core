@@ -48,8 +48,16 @@ func (t *ExcelTemplate) SetFileName(fileName string) {
 	t.fileName = fileName
 }
 
+func (t *ExcelTemplate) GetFileName() string {
+	return t.fileName
+}
+
 func (t *ExcelTemplate) SetFileHash(fileHash string) {
 	t.fileHash = fileHash
+}
+
+func (t *ExcelTemplate) GetFileHash() string {
+	return t.fileHash
 }
 
 func (t *ExcelTemplate) SetImgSuffix(suffix string) {
@@ -88,18 +96,27 @@ func (t *ExcelTemplate) BeforeLoadParamsFile(c any, logErr string) (result bool)
 	return true
 }
 
-// SaveExcelTemplate 第二代保存excel文件
-func (t *ExcelTemplate) SaveExcelTemplate(c any, logErr string) error {
+// 保存excel文件到指定新的路径
+func (t *ExcelTemplate) SaveExcelAndCreateTempFile(c any, logErr string) (fileSrc string, newID int64, hash string, err error) {
 	if t.tempFileExpire < 1 {
 		t.tempFileExpire = 60
 	}
-	fileSrc, newID, hash, err := BaseTempFile.SaveFile(t.tempFileExpire, t.fileHash, t.fileName, "", "xlsx")
+	fileSrc, newID, hash, err = BaseTempFile.SaveFile(t.tempFileExpire, t.fileHash, t.fileName, "", "xlsx")
 	if err != nil {
 		Router2Mid.ReportWarnLog(c, logErr+", save temp file, ", err, "err_make_file")
-		return err
+		return
 	}
 	if err := t.SaveExcelFile(fileSrc); err != nil {
 		Router2Mid.ReportWarnLog(c, logErr+", , ", err, "err_make_file")
+		return
+	}
+	return
+}
+
+// SaveExcelTemplate 第二代保存excel文件
+func (t *ExcelTemplate) SaveExcelTemplate(c any, logErr string) error {
+	_, newID, hash, err := t.SaveExcelAndCreateTempFile(t, logErr)
+	if err != nil {
 		return err
 	}
 	//反馈数据

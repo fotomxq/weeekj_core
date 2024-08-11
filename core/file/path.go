@@ -32,7 +32,7 @@ func GetTimeDirSrc(src string, appendFileType string) (string, error) {
 // param path string 地址路径
 // return string 返回值
 func GetDir(path string) string {
-	return SubString(path, 0, strings.LastIndex(path, "/"))
+	return SubString(path, 0, strings.LastIndex(path, Sep))
 }
 
 // SubString 截取字符串
@@ -43,15 +43,12 @@ func GetDir(path string) string {
 func SubString(str string, start, end int) string {
 	rs := []rune(str)
 	length := len(rs)
-
 	if start < 0 || start > length {
 		panic("start is wrong")
 	}
-
 	if end < start || end > length {
 		panic("end is wrong")
 	}
-
 	return string(rs[start:end])
 }
 
@@ -80,6 +77,15 @@ func GetFileNames(src string) (map[string]string, error) {
 		}
 	}
 	return res, nil
+}
+
+// GetFileName 获取文件名称
+func GetFileName(src string) string {
+	info, err := os.Stat(src)
+	if err != nil {
+		return ""
+	}
+	return info.Name()
 }
 
 // GetNowFileName 获取当前运行程序的名称

@@ -8,9 +8,13 @@ import (
 func TestConvertToPDF(t *testing.T) {
 	fileDir, _ := CoreFile.BaseWDDir()
 	srcFileSrc := fileDir + CoreFile.Sep + "test_out.xlsx"
-	outFileSrc := fileDir + CoreFile.Sep + "test_out.pdf"
+	newFileDirSrc := CoreFile.GetDir(srcFileSrc)
+	outFileSrc := newFileDirSrc
 	if CoreFile.IsFile(srcFileSrc) {
 		t.Log("is file: ", srcFileSrc)
 	}
-	ConvertToPDF(srcFileSrc, outFileSrc)
+	if !ConvertToPDF(srcFileSrc, outFileSrc) {
+		t.Error("convert to pdf fail")
+		return
+	}
 }
