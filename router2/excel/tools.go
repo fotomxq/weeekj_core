@@ -96,7 +96,7 @@ func (t *ExcelTemplate) BeforeLoadParamsFile(c any, logErr string) (result bool)
 	return true
 }
 
-// 保存excel文件到指定新的路径
+// SaveExcelAndCreateTempFile 保存excel文件到指定新的路径
 func (t *ExcelTemplate) SaveExcelAndCreateTempFile(c any, logErr string) (fileSrc string, newID int64, hash string, err error) {
 	if t.tempFileExpire < 1 {
 		t.tempFileExpire = 60
@@ -106,7 +106,7 @@ func (t *ExcelTemplate) SaveExcelAndCreateTempFile(c any, logErr string) (fileSr
 		Router2Mid.ReportWarnLog(c, logErr+", save temp file, ", err, "err_make_file")
 		return
 	}
-	if err := t.SaveExcelFile(fileSrc); err != nil {
+	if err = t.SaveExcelFile(fileSrc); err != nil {
 		Router2Mid.ReportWarnLog(c, logErr+", , ", err, "err_make_file")
 		return
 	}
