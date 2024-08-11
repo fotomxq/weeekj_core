@@ -7,6 +7,14 @@ import (
 	"runtime"
 )
 
+/**
+libreoffice转PDF
+1. 采用libreoffice转PDF方案
+2. 采用命令行方式转换
+
+注意，必须安装libreoffice，如果是windows系统，需要配置环境变量；如果是linux系统，需要安装libreoffice软件
+*/
+
 // ConvertToPDF
 // @Description: 转换文件为pdf
 // @param filePath 需要转换的文件
