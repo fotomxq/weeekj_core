@@ -68,6 +68,46 @@ func CheckCertByMarks(args *ArgsCheckCertByMarks) (dataList []DataCheckCertByMar
 	return
 }
 
+// CheckCertByMarks2 通过一组mark查询证件到期情况
+func CheckCertByMarks2(args *ArgsCheckCertByMarks) (dataList []DataCheckCertByMarks, err error) {
+	var configList []FieldsConfig
+	err = Router2SystemConfig.MainDB.Select(&configList, "SELECT id, mark FROM org_cert_config2 WHERE mark = ANY($1) AND delete_at < to_timestamp(1000000)", args.Marks)
+	if err != nil {
+		return
+	}
+	var configIDs pq.Int64Array
+	for _, v := range configList {
+		configIDs = append(configIDs, v.ID)
+	}
+	var certList []FieldsCert
+	err = Router2SystemConfig.MainDB.Select(&certList, "SELECT id, config_id, sn FROM org_cert2 WHERE bind_id = $1 AND config_id = ANY($2) AND ($3 < 1 OR org_id = $3) AND delete_at < to_timestamp(1000000) AND audit_at >= to_timestamp(1000000)", args.BindID, configIDs, args.OrgID)
+	if err != nil {
+		return
+	}
+	for _, v := range configList {
+		isFind := false
+		for _, v2 := range certList {
+			if v.ID == v2.ConfigID {
+				isFind = true
+				dataList = append(dataList, DataCheckCertByMarks{
+					Mark: v.Mark,
+					IsOK: true,
+					SN:   v2.SN,
+				})
+				break
+			}
+		}
+		if !isFind {
+			dataList = append(dataList, DataCheckCertByMarks{
+				Mark: v.Mark,
+				IsOK: false,
+				SN:   "",
+			})
+		}
+	}
+	return
+}
+
 // 处理证件过期提醒
 func checkCertExpireSend(certID int64, expireAt time.Time) {
 	if !CoreSQL.CheckTimeHaveData(expireAt) {
