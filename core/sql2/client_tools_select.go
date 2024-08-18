@@ -26,6 +26,8 @@ type ClientListCtx struct {
 	preemptionNum int
 	//预占位数据结构列
 	preemptionData []clientListCtxPreemption
+	//非预占条件
+	preemptionAppend []string
 	//预占err
 	globErr []error
 	//是否经过SelectList处理
@@ -284,9 +286,14 @@ func (t *ClientListCtx) SetBoolAndNeedQuery(field string, needParam, param bool)
 	return t
 }
 
-func (t *ClientListCtx) AddQuery(field string, param any) *ClientListCtx {
+func (t *ClientListCtx) AddQueryAndParam(field string, param any) *ClientListCtx {
 	t.addPreemptionNum()
 	t.addPreemption(field, param)
+	return t
+}
+
+func (t *ClientListCtx) AddQuery(field string) *ClientListCtx {
+	t.preemptionAppend = append(t.preemptionAppend, field)
 	return t
 }
 
@@ -307,6 +314,13 @@ func (t *ClientListCtx) SelectList(where string, args ...interface{}) *ClientLis
 			where = fmt.Sprint(t.preemptionData[k].Query, " AND ", where)
 		}
 		newArgs = append(newArgs, t.preemptionData[k].Param)
+	}
+	if t.preemptionAppend != nil && len(t.preemptionAppend) > 0 {
+		if where != "" {
+			where = fmt.Sprint(where, " AND ", strings.Join(t.preemptionAppend, " AND "))
+		} else {
+			where = strings.Join(t.preemptionAppend, " AND ")
+		}
 	}
 	t.clientCtx.query = t.getSQLSelect(where, step, int(t.pages.Max), t.pages.Sort, t.pages.Desc)
 	t.queryCount = t.getSQLSelectCount(where)

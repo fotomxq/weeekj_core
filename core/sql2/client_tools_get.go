@@ -2,6 +2,7 @@ package CoreSQL2
 
 import (
 	"fmt"
+	"strings"
 )
 
 type ClientGetCtx struct {
@@ -21,6 +22,8 @@ type ClientGetCtx struct {
 	preemptionNum int
 	//预占位数据结构列
 	preemptionData []clientGetCtxPreemption
+	//非预占条件
+	preemptionAppend []string
 }
 
 type clientGetCtxPreemption struct {
@@ -167,9 +170,14 @@ func (t *ClientGetCtx) SetDeleteQuery(field string, param bool) *ClientGetCtx {
 	return t
 }
 
-func (t *ClientGetCtx) AddQuery(field string, param any) *ClientGetCtx {
+func (t *ClientGetCtx) AddQueryAndParam(field string, param any) *ClientGetCtx {
 	t.addPreemptionNum()
 	t.addPreemption(field, param)
+	return t
+}
+
+func (t *ClientGetCtx) AddQuery(field string) *ClientGetCtx {
+	t.preemptionAppend = append(t.preemptionAppend, field)
 	return t
 }
 
@@ -198,6 +206,11 @@ func (t *ClientGetCtx) addPreemption(query string, param any) {
 func (t *ClientGetCtx) Result(data interface{}) error {
 	if t.clientCtx.query == "" {
 		t.clientCtx.query = t.getSQLGet("")
+	}
+	if t.clientCtx.query != "" {
+		if t.preemptionAppend != nil && len(t.preemptionAppend) > 0 {
+			t.clientCtx.query = fmt.Sprint(t.clientCtx.query, " AND ", strings.Join(t.preemptionAppend, " AND "))
+		}
 	}
 	err := t.clientCtx.Get(data, t.clientCtx.query, t.clientCtx.appendArgs...)
 	appendLog("get", t.clientCtx.query, false, t.clientCtx.client.startAt, data, err)
