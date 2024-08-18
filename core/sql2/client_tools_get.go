@@ -167,6 +167,12 @@ func (t *ClientGetCtx) SetDeleteQuery(field string, param bool) *ClientGetCtx {
 	return t
 }
 
+func (t *ClientGetCtx) AddQuery(field string, param any) *ClientGetCtx {
+	t.addPreemptionNum()
+	t.addPreemption(field, param)
+	return t
+}
+
 // AppendWhere 直接覆盖where
 func (t *ClientGetCtx) AppendWhere(where string, args ...interface{}) *ClientGetCtx {
 	t.clientCtx.query = t.getSQLGet(where)

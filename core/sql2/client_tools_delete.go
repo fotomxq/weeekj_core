@@ -73,6 +73,11 @@ func (t *ClientDeleteCtx) SetWhereStr(where string, arg map[string]interface{}) 
 	return t
 }
 
+func (t *ClientDeleteCtx) AddQuery(fieldName string, param any) *ClientDeleteCtx {
+	t.SetWhereOrThan(fieldName, param)
+	return t
+}
+
 func (t *ClientDeleteCtx) makeWhere() {
 	if !t.haveWhere {
 		t.clientCtx.query = fmt.Sprint(t.clientCtx.query, " WHERE ")
@@ -172,7 +177,7 @@ func (t *ClientDeleteCtx) ExecNamed(arg map[string]interface{}) error {
 
 // ClearAll 清理表
 func (t *ClientDeleteCtx) ClearAll() error {
-	t.clientCtx.query = "TRUNCATE "+"TABLE " + t.clientCtx.client.TableName
+	t.clientCtx.query = "TRUNCATE " + "TABLE " + t.clientCtx.client.TableName
 	_, err := t.clientCtx.Exec(t.clientCtx.query)
 	if err != nil {
 		err = errors.New(fmt.Sprint(err, ", ", t.clientCtx.query))
