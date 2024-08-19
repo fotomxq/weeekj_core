@@ -260,9 +260,46 @@ func GetCertCount(args *ArgsGetCertCount) (count int64, err error) {
 	return
 }
 
+// ArgsGetCertCount2 获取证件数量参数
+type ArgsGetCertCount2 struct {
+	//组织ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" empty:"true"`
+	//标识码
+	// 用于程序化识别处理机制
+	Mark string `db:"mark" json:"mark" check:"mark"`
+	// 是否已经删除
+	IsRemove bool `db:"is_remove" json:"isRemove" check:"bool" empty:"true"`
+}
+
+// GetCertCount2 获取证件数量
+func GetCertCount2(args *ArgsGetCertCount2) (count int64, err error) {
+	//获取配置
+	var configData FieldsConfig
+	configData = getConfigByMark(args.OrgID, args.Mark)
+	if configData.ID < 1 {
+		configData = getConfigByMark(0, args.Mark)
+	}
+	if configData.ID < 1 {
+		err = errors.New("no config")
+		return
+	}
+	//获取数量
+	err = Router2SystemConfig.MainDB.Get(&count, "SELECT COUNT(id) as count FROM org_cert2 WHERE config_id = $1 AND ($2 < 1 OR org_id = $2) AND audit_at >= to_timestamp(1000000) AND ((delete_at < to_timestamp(1000000) AND $3 = false) OR (delete_at >= to_timestamp(1000000) AND $3 = true))", configData.ID, args.OrgID, args.IsRemove)
+	if err != nil {
+		return
+	}
+	return
+}
+
 // GetCertCountNoErr 获取证件数量
 func GetCertCountNoErr(args *ArgsGetCertCount) (count int64) {
 	count, _ = GetCertCount(args)
+	return
+}
+
+// GetCertCountDeletedNoErr 获取已删除证件数量
+func GetCertCountDeletedNoErr(args *ArgsGetCertCount2) (count int64) {
+	count, _ = GetCertCount2(args)
 	return
 }
 
