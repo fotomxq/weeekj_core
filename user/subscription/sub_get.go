@@ -112,6 +112,17 @@ func CheckHaveAnySub(userID int64) (b bool) {
 	return
 }
 
+// CheckHaveSub 用户是否具有指定会员？
+func CheckHaveSub(userID int64, configID int64) (b bool) {
+	var id int64
+	err := Router2SystemConfig.MainDB.Get(&id, "SELECT id FROM user_sub WHERE delete_at < to_timestamp(1000000) AND expire_at >= NOW() AND user_id = $1 AND config_id = $2 ORDER BY id DESC LIMIT 1", userID, configID)
+	if err != nil || id < 1 {
+		return
+	}
+	b = true
+	return
+}
+
 // 获取订阅的hash
 func getSubHash(subData *FieldsSub) string {
 	return CoreFilter.GetSha1Str(fmt.Sprint(subData.ID, ".", subData.OrgID, ".", subData.UserID, ".", subData.ConfigID, ".", subData.ExpireAt))
