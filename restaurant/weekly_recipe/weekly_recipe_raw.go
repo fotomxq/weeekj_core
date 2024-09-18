@@ -90,7 +90,7 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 		err = errors.New("no data")
 		return
 	}
-	if recipeData.AuditStatus != 1 {
+	if recipeData.AuditStatus != 2 {
 		err = errors.New("audit status error")
 		return
 	}
