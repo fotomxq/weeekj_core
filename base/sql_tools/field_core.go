@@ -1,4 +1,4 @@
-package SQLTools
+package BaseSQLTools
 
 import "reflect"
 
