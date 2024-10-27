@@ -17,15 +17,18 @@ func TestInitFields(t *testing.T) {
 func TestCreateFields(t *testing.T) {
 	newID, err := CreateFields(&ArgsCreateFields{
 		TableID:       newTestTableID,
-		FieldName:     "test_field",
-		FieldLabel:    "测试字段",
+		InputName:     "测试字段",
 		InputType:     "string",
 		InputLength:   0,
 		InputDefault:  "",
 		InputRequired: false,
 		InputPattern:  "",
+		FieldName:     "test_field",
+		FieldLabel:    "测试字段",
+		IsPrimary:     false,
 		IsIndex:       false,
 		IsSystem:      false,
+		IsSearch:      false,
 		DataType:      "text",
 		FieldDesc:     "测试字段",
 	})
@@ -89,14 +92,12 @@ func TestGetFieldsListByTableID(t *testing.T) {
 func TestUpdateFields(t *testing.T) {
 	err := UpdateFields(&ArgsUpdateFields{
 		ID:            newTestFieldID,
-		FieldName:     "test_field",
-		FieldLabel:    "测试字段",
+		InputName:     "测试字段",
 		InputType:     "string",
 		InputLength:   0,
 		InputDefault:  "",
 		InputRequired: false,
 		InputPattern:  "",
-		IsPrimary:     false,
 		IsIndex:       false,
 		IsSearch:      false,
 		FieldDesc:     "测试字段",

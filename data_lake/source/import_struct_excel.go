@@ -6,9 +6,11 @@ import (
 	"fmt"
 	CoreFile "github.com/fotomxq/weeekj_core/v5/core/file"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	"github.com/mozillazg/go-pinyin"
 	"github.com/xuri/excelize/v2"
 	"io"
 	"os"
+	"strings"
 )
 
 // ArgsImportStructExcel 通用导入Excel文件快速建立表结构参数
@@ -140,37 +142,76 @@ func ImportStructExcel(args *ArgsImportStructExcel) (tableID int64, errCode stri
 	}
 	//遍历列头，并创建
 	for k := 0; k < len(head); k++ {
+		v := head[k]
 		//分析数据类型
-		var dataType string
+		var inputType string
+		var fieldType string
 		paramType := CoreFilter.DetermineType(params[k])
 		switch paramType {
 		case "int":
-			dataType = "integer"
+			inputType = FIELDS_INPUT_TYPE_ENUM_NUMBER
+			fieldType = FIELDS_DATA_TYPE_ENUM_INT
 		case "int64":
-			dataType = "bigint"
+			inputType = FIELDS_INPUT_TYPE_ENUM_NUMBER
+			fieldType = FIELDS_DATA_TYPE_ENUM_INT64
 		case "float64":
-			dataType = "float"
+			inputType = FIELDS_INPUT_TYPE_ENUM_NUMBER
+			fieldType = FIELDS_DATA_TYPE_ENUM_FLOAT
+		case "bool":
+			inputType = FIELDS_INPUT_TYPE_ENUM_RADIO
+			fieldType = FIELDS_DATA_TYPE_ENUM_BOOL
 		case "string":
-			dataType = "text"
+			inputType = FIELDS_INPUT_TYPE_ENUM_TEXTAREA
+			fieldType = FIELDS_DATA_TYPE_ENUM_TEXT
+		case "date":
+			inputType = FIELDS_INPUT_TYPE_ENUM_DATE
+			fieldType = FIELDS_DATA_TYPE_ENUM_DATE
+		case "datetime":
+			inputType = FIELDS_INPUT_TYPE_ENUM_DATETIME
+			fieldType = FIELDS_DATA_TYPE_ENUM_DATETIME
 		default:
-			dataType = "text"
+			inputType = FIELDS_INPUT_TYPE_ENUM_TEXTAREA
+			fieldType = "text"
+		}
+		//修订字段名称
+		var vFieldName = v
+		//检查v.FieldName如果为非英文
+		if !CoreFilter.CheckMark(v) {
+			//转为拼音
+			strArr := pinyin.LazyPinyin(v, pinyin.NewArgs())
+			for strK, strV := range strArr {
+				strArr[strK] = strings.ToUpper(strV)
+			}
+			vFieldName = strings.Join(strArr, "")
+		} else {
+			//转为大写
+			vFieldName = strings.ToUpper(vFieldName)
+		}
+		//如果vFieldName为空，则按照序列给值
+		if vFieldName == "" {
+			vFieldName = fmt.Sprint("F", k)
 		}
 		//创建字段
 		_, err = CreateFields(&ArgsCreateFields{
 			TableID:       tableData.ID,
-			FieldName:     head[k],
-			FieldLabel:    head[k],
-			InputType:     "",
+			InputName:     v,
+			InputType:     inputType,
 			InputLength:   0,
 			InputDefault:  "",
 			InputRequired: false,
 			InputPattern:  "",
-			DataType:      dataType,
-			FieldDesc:     head[k],
+			FieldName:     vFieldName,
+			FieldLabel:    v,
+			IsPrimary:     false,
+			IsIndex:       false,
+			IsSystem:      false,
+			IsSearch:      false,
+			DataType:      fieldType,
+			FieldDesc:     v,
 		})
 		if err != nil {
 			errCode = "report_create_failed"
-			err = errors.New(fmt.Sprint("create fields failed: ", err, ", field name: ", head[k], ", field type: ", dataType, ", field desc: ", head[k]))
+			err = errors.New(fmt.Sprint("create fields failed: ", err, ", field name: ", v, ", field type: ", fieldType, ", field desc: ", v))
 			return
 		}
 	}
