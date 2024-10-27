@@ -211,3 +211,25 @@ func GetStructToMap(structData interface{}, mapData *map[string]interface{}) err
 	}
 	return nil
 }
+
+// DetermineType 简单识别字符串实际的数据类型
+func DetermineType(s string) string {
+	// Attempt to convert to int
+	if _, err := strconv.Atoi(s); err == nil {
+		return "int"
+	}
+	// Attempt to convert to int64
+	if _, err := strconv.ParseInt(s, 10, 64); err == nil {
+		return "int64"
+	}
+	// Attempt to convert to float64
+	if _, err := strconv.ParseFloat(s, 64); err == nil {
+		return "float64"
+	}
+	// Attempt to convert to bool
+	if _, err := strconv.ParseBool(s); err == nil {
+		return "bool"
+	}
+	// Default to string
+	return "string"
+}

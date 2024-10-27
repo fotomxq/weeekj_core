@@ -79,6 +79,18 @@ func GetFileNames(src string) (map[string]string, error) {
 	return res, nil
 }
 
+// 获取文件格式
+// 反馈jpg、csv等格式名称
+// param src string 文件路径
+// return string 文件格式名称
+func GetFileType(src string) string {
+	names := strings.Split(src, ".")
+	if len(names) < 2 {
+		return ""
+	}
+	return names[len(names)-1]
+}
+
 // GetFileName 获取文件名称
 func GetFileName(src string) string {
 	info, err := os.Stat(src)

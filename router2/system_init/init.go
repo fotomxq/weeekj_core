@@ -25,6 +25,7 @@ import (
 	BlogExam "github.com/fotomxq/weeekj_core/v5/blog/exam"
 	BlogStuRead "github.com/fotomxq/weeekj_core/v5/blog/stu_read"
 	BlogUserRead "github.com/fotomxq/weeekj_core/v5/blog/user_read"
+	DataLakeSource "github.com/fotomxq/weeekj_core/v5/data_lake/source"
 	EAMCore "github.com/fotomxq/weeekj_core/v5/eam/core"
 	ERPAudit "github.com/fotomxq/weeekj_core/v5/erp/audit"
 	ERPBudget "github.com/fotomxq/weeekj_core/v5/erp/budget"
@@ -386,6 +387,15 @@ func Init() (err error) {
 	//统计
 	///////////////////////////////////////////////////////////////////////////////////
 	AnalysisAny.Init()
+
+	///////////////////////////////////////////////////////////////////////////////////
+	//数据湖
+	///////////////////////////////////////////////////////////////////////////////////
+	//数据湖
+	if err = DataLakeSource.Init(); err != nil {
+		err = errors.New(fmt.Sprint("init data lake source, ", err))
+		return
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//外部
