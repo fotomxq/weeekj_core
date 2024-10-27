@@ -44,6 +44,7 @@ updateAt: 更新时间
 deleteAt: 删除时间
 code: 编码
 mark: 标识码
+comment: 评价
 */
 func (t *Client) InstallSQL() (err error) {
 	//构建SQL
@@ -87,6 +88,8 @@ func (t *Client) InstallSQL() (err error) {
 		indexOut := vField.Tag.Get("index_out")
 		//默认值
 		defaultVal := vField.Tag.Get("default")
+		//评价值
+		commentVal := vField.Tag.Get("comment")
 		//写入t.FieldNameAll
 		appendClientField := clientField{
 			DBName:           dbVal,
@@ -326,6 +329,10 @@ func (t *Client) InstallSQL() (err error) {
 				appendClientField.IsIndex = true
 				t.installAppendIndex(dbVal)
 			}
+		}
+		//写入评论值
+		if commentVal != "" {
+			appendFields = append(appendFields, fmt.Sprintf("COMMENT ON COLUMN %s.%s IS %s;", t.TableName, dbVal, commentVal))
 		}
 		//TODO: 尚未支持外键
 		if indexOut != "" {
