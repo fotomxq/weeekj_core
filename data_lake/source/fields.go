@@ -1,7 +1,9 @@
 package DataLakeSource
 
 import (
+	"errors"
 	BaseSQLTools "github.com/fotomxq/weeekj_core/v5/base/sql_tools"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
 
@@ -47,6 +49,10 @@ func GetFieldsList(args *ArgsGetFieldsList) (dataList []FieldsFields, dataCount 
 	if err != nil {
 		return
 	}
+	if len(dataList) == 0 {
+		err = errors.New("not found")
+		return
+	}
 	return
 }
 
@@ -73,6 +79,37 @@ func GetFieldsListByTableID(tableID int64) (dataList []FieldsFields, dataCount i
 	if err != nil {
 		return
 	}
+	if len(dataList) == 0 {
+		err = errors.New("not found")
+		return
+	}
+	return
+}
+
+// GetFieldsDetailByTableIDAndFieldName 根据表ID和字段名称的信息
+func GetFieldsDetailByTableIDAndFieldName(tableID int64, fieldName string) (data FieldsFields, err error) {
+	var dataList []FieldsFields
+	_, err = fieldsDB.GetList().GetAll(&BaseSQLTools.ArgsGetAll{
+		ConditionFields: []BaseSQLTools.ArgsGetListSimpleConditionID{
+			{
+				Name: "table_id",
+				Val:  tableID,
+			},
+			{
+				Name: "field_name",
+				Val:  fieldName,
+			},
+		},
+		IsRemove: false,
+	}, &dataList)
+	if err != nil {
+		return
+	}
+	if len(dataList) == 0 {
+		err = errors.New("not found")
+		return
+	}
+	data = dataList[0]
 	return
 }
 
@@ -95,8 +132,17 @@ type ArgsCreateFields struct {
 	InputRequired bool `db:"input_required" json:"inputRequired"`
 	//字段表单正则表达式
 	InputPattern string `db:"input_pattern" json:"inputPattern"`
+	//是否为主键
+	IsPrimary bool `db:"is_primary" json:"isPrimary"`
+	//字段是否为索引
+	IsIndex bool `db:"is_index" json:"isIndex"`
+	//是否为系统内置字段
+	// id/create_at/update_at/delete_at
+	IsSystem bool `db:"is_system" json:"isSystem"`
+	//是否支持搜索
+	IsSearch bool `db:"is_search" json:"isSearch"`
 	//字段数据类型
-	// int/float/string/text/bool/date/datetime
+	// int/int64/float/text/bool/date/datetime
 	DataType string `db:"data_type" json:"dataType" field_search:"true"`
 	//字段描述
 	FieldDesc string `db:"field_desc" json:"fieldDesc" field_search:"true"`
@@ -104,10 +150,26 @@ type ArgsCreateFields struct {
 
 // CreateFields 创建表
 func CreateFields(args *ArgsCreateFields) (newID int64, err error) {
-	newID, err = fieldsDB.GetInsert().InsertRow(&args)
+	//检查数据表是否存在
+	var tableData FieldsTable
+	tableData, err = GetTableDetail(args.TableID)
+	if err != nil || tableData.ID < 1 || CoreFilter.CheckHaveTime(tableData.DeleteAt) {
+		err = errors.New("table not found")
+		return
+	}
+	//检查字段名称
+	var fieldData FieldsFields
+	fieldData, err = GetFieldsDetailByTableIDAndFieldName(args.TableID, args.FieldName)
+	if err == nil && fieldData.ID > 0 && !CoreFilter.CheckHaveTime(fieldData.DeleteAt) {
+		err = errors.New("field is exist")
+		return
+	}
+	//写入数据
+	newID, err = fieldsDB.GetInsert().InsertRow(args)
 	if err != nil {
 		return
 	}
+	//反馈
 	return
 }
 
@@ -115,13 +177,12 @@ func CreateFields(args *ArgsCreateFields) (newID int64, err error) {
 type ArgsUpdateFields struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
-	//表ID
-	TableID int64 `db:"table_id" json:"tableId" index:"true"`
 	//字段名
 	FieldName string `db:"field_name" json:"fieldName" field_search:"true"`
 	//提示名称
 	FieldLabel string `db:"field_label" json:"fieldLabel" field_search:"true"`
 	//字段表单类型
+	// input/textarea/select/radio/checkbox/date/datetime
 	InputType string `db:"input_type" json:"inputType" field_search:"true"`
 	//字段表单长度
 	InputLength int `db:"input_length" json:"inputLength"`
@@ -131,8 +192,12 @@ type ArgsUpdateFields struct {
 	InputRequired bool `db:"input_required" json:"inputRequired"`
 	//字段表单正则表达式
 	InputPattern string `db:"input_pattern" json:"inputPattern"`
-	//字段数据类型
-	DataType string `db:"data_type" json:"dataType" field_search:"true"`
+	//是否为主键
+	IsPrimary bool `db:"is_primary" json:"isPrimary"`
+	//字段是否为索引
+	IsIndex bool `db:"is_index" json:"isIndex"`
+	//是否支持搜索
+	IsSearch bool `db:"is_search" json:"isSearch"`
 	//字段描述
 	FieldDesc string `db:"field_desc" json:"fieldDesc" field_search:"true"`
 }
@@ -150,6 +215,15 @@ func UpdateFields(args *ArgsUpdateFields) (err error) {
 // 必须先删除表数据和结构后才能删除，否则报错
 func DeleteFields(id int64) (err error) {
 	err = fieldsDB.GetDelete().DeleteByID(id)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// ClearFields 清理表字段
+func ClearFields(tableID int64) (err error) {
+	err = fieldsDB.GetDelete().DeleteByField("table_id", tableID)
 	if err != nil {
 		return
 	}

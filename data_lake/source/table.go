@@ -2,7 +2,9 @@ package DataLakeSource
 
 import (
 	"errors"
+	"fmt"
 	BaseSQLTools "github.com/fotomxq/weeekj_core/v5/base/sql_tools"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
 
@@ -41,7 +43,7 @@ func GetTableDetail(id int64) (data FieldsTable, err error) {
 
 // GetTableDetailByName 找到表名称
 func GetTableDetailByName(tableName string) (data FieldsTable, err error) {
-	err = tableDB.GetInfo().GetInfoByField("table_name", tableName, &data)
+	err = tableDB.GetInfo().GetInfoByField("table_name", tableName, true, &data)
 	if err != nil {
 		return
 	}
@@ -65,10 +67,101 @@ type ArgsCreateTable struct {
 
 // CreateTable 创建表
 func CreateTable(args *ArgsCreateTable) (newID int64, err error) {
-	newID, err = tableDB.GetInsert().InsertRow(&args)
-	if err != nil {
+	//检查是否存在重复表
+	var tableData FieldsTable
+	tableData, err = GetTableDetailByName(args.TableName)
+	if err == nil && tableData.ID > 0 && !CoreFilter.CheckHaveTime(tableData.DeleteAt) {
+		err = errors.New(fmt.Sprint("table is exist, table name: ", args.TableName, ", table id: ", tableData.ID))
 		return
 	}
+	//写入数据
+	newID, err = tableDB.GetInsert().InsertRow(args)
+	if err != nil {
+		err = errors.New(fmt.Sprint("create table error: ", err))
+		return
+	}
+	//初始化建立系统内置字段
+	// id/create_at/update_at/delete_at
+	_, err = CreateFields(&ArgsCreateFields{
+		TableID:       newID,
+		FieldName:     "id",
+		FieldLabel:    "ID",
+		InputType:     "number",
+		InputLength:   0,
+		InputDefault:  "id",
+		InputRequired: true,
+		InputPattern:  "",
+		IsPrimary:     true,
+		IsIndex:       true,
+		IsSystem:      true,
+		IsSearch:      false,
+		DataType:      "int64",
+		FieldDesc:     "ID",
+	})
+	if err != nil {
+		err = errors.New(fmt.Sprint("create id field error: ", err))
+	}
+	_, err = CreateFields(&ArgsCreateFields{
+		TableID:       newID,
+		FieldName:     "create_at",
+		FieldLabel:    "创建时间",
+		InputType:     "datetime",
+		InputLength:   0,
+		InputDefault:  "now",
+		InputRequired: true,
+		InputPattern:  "",
+		IsPrimary:     false,
+		IsIndex:       false,
+		IsSystem:      true,
+		IsSearch:      false,
+		DataType:      "datetime",
+		FieldDesc:     "创建时间",
+	})
+	if err != nil {
+		err = errors.New(fmt.Sprint("create create_at field error: ", err))
+		return
+	}
+	_, err = CreateFields(&ArgsCreateFields{
+		TableID:       newID,
+		FieldName:     "update_at",
+		FieldLabel:    "更新时间",
+		InputType:     "datetime",
+		InputLength:   0,
+		InputDefault:  "now",
+		InputRequired: true,
+		InputPattern:  "",
+		IsPrimary:     false,
+		IsIndex:       false,
+		IsSystem:      true,
+		IsSearch:      false,
+		DataType:      "datetime",
+		FieldDesc:     "更新时间",
+	})
+	if err != nil {
+		err = errors.New(fmt.Sprint("create update_at field error: ", err))
+		return
+	}
+	_, err = CreateFields(&ArgsCreateFields{
+		TableID:       newID,
+		FieldName:     "delete_at",
+		FieldLabel:    "删除时间",
+		InputType:     "datetime",
+		InputLength:   0,
+		InputDefault:  "",
+		InputRequired: true,
+		InputPattern:  "",
+		IsPrimary:     false,
+		IsIndex:       false,
+		IsSystem:      true,
+		IsSearch:      false,
+		DataType:      "datetime",
+		FieldDesc:     "删除时间",
+	})
+	if err != nil {
+		err = errors.New(fmt.Sprint("create delete_at field error: ", err))
+		return
+	}
+	//反馈
 	return
 }
 
@@ -111,6 +204,7 @@ func DeleteTable(id int64) (err error) {
 	//执行删除
 	err = tableDB.GetDelete().DeleteByID(id)
 	if err != nil {
+		err = errors.New(fmt.Sprint("delete table error: ", err, ", id: ", id))
 		return
 	}
 	//反馈

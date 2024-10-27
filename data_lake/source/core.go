@@ -12,6 +12,24 @@ var (
 	//DB
 	tableDB  BaseSQLTools.Quick
 	fieldsDB BaseSQLTools.Quick
+	//表单字段类型枚举值
+	// input/textarea/select/radio/checkbox/date/datetime
+	FIELDS_INPUT_TYPE_ENUM_INPUT    = "input"
+	FIELDS_INPUT_TYPE_ENUM_TEXTAREA = "textarea"
+	FIELDS_INPUT_TYPE_ENUM_SELECT   = "select"
+	FIELDS_INPUT_TYPE_ENUM_RADIO    = "radio"
+	FIELDS_INPUT_TYPE_ENUM_CHECKBOX = "checkbox"
+	FIELDS_INPUT_TYPE_ENUM_DATE     = "date"
+	FIELDS_INPUT_TYPE_ENUM_DATETIME = "datetime"
+	//字段数据类型
+	// int/int64/float/text/bool/date/datetime
+	FIELDS_DATA_TYPE_ENUM_INT      = "int"
+	FIELDS_DATA_TYPE_ENUM_INT64    = "int64"
+	FIELDS_DATA_TYPE_ENUM_FLOAT    = "float"
+	FIELDS_DATA_TYPE_ENUM_TEXT     = "text"
+	FIELDS_DATA_TYPE_ENUM_BOOL     = "bool"
+	FIELDS_DATA_TYPE_ENUM_DATE     = "date"
+	FIELDS_DATA_TYPE_ENUM_DATETIME = "datetime"
 )
 
 func Init() (err error) {

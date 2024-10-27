@@ -15,7 +15,7 @@ func (c *QuickInfo) GetInfoByID(id int64, result any) (err error) {
 		return errors.New("id error")
 	}
 	//获取缓冲
-	if err = c.quickClient.GetCacheInfoByID(id, result); err != nil {
+	if err = c.quickClient.GetCacheInfoByID(id, result); err == nil {
 		return
 	}
 	//获取数据
@@ -30,18 +30,24 @@ func (c *QuickInfo) GetInfoByID(id int64, result any) (err error) {
 }
 
 // GetInfoByField 通过指定字段获取信息（必须是唯一的字段）
-func (c *QuickInfo) GetInfoByField(fieldName string, fieldVal any, result any) (err error) {
+// 注意，当字段存在软删除时，请务必启用haveDelete，否则将出现异常
+func (c *QuickInfo) GetInfoByField(fieldName string, fieldVal any, haveDelete bool, result any) (err error) {
 	//获取数据
+	ctx := c.quickClient.client.Get().SetDefaultFields()
+	if haveDelete {
+		ctx = ctx.SetDeleteQuery("delete_at", false)
+	}
 	switch fieldVal.(type) {
 	case int:
-		err = c.quickClient.client.Get().SetDefaultFields().SetIntQuery(fieldName, fieldVal.(int)).Result(result)
+		ctx = ctx.SetIntQuery(fieldName, fieldVal.(int))
 	case int64:
-		err = c.quickClient.client.Get().SetDefaultFields().SetInt64Query(fieldName, fieldVal.(int64)).Result(result)
+		ctx = ctx.SetInt64Query(fieldName, fieldVal.(int64))
 	case string:
-		err = c.quickClient.client.Get().SetDefaultFields().SetStringQuery(fieldName, fieldVal.(string)).Result(result)
+		ctx = ctx.SetStringQuery(fieldName, fieldVal.(string))
 	default:
 		return errors.New("field type error")
 	}
+	err = ctx.Result(result)
 	if err != nil {
 		return
 	}
