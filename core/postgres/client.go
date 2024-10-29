@@ -94,11 +94,15 @@ func (t *Client) Exec(query string, args ...any) (s sql.Result, err error) {
 	//捕捉异常
 	defer func() {
 		if r := recover(); r != nil {
-			err = errors.New(fmt.Sprint(r))
+			err = errors.New(fmt.Sprint("recover: ", r))
 			return
 		}
 	}()
-	return t.DB.Exec(query, args...)
+	if len(args) < 1 {
+		return t.DB.Exec(query)
+	} else {
+		return t.DB.Exec(query, args...)
+	}
 }
 
 // PrepareNamed returns an sqlx.NamedStmt
