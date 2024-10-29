@@ -1,6 +1,7 @@
 package CoreSQL2
 
 import (
+	"errors"
 	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"github.com/golang-module/carbon"
@@ -104,6 +105,7 @@ func (t *Client) Init2(mainDB *SQLClient, tableName string, structData any) (cli
 	if !t.CloseAutoInstall {
 		err = t.InstallSQL()
 		if err != nil {
+			err = errors.New("install sql failed: " + err.Error())
 			return
 		}
 	}

@@ -1,6 +1,7 @@
 package BaseSQLTools
 
 import (
+	"errors"
 	"fmt"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
@@ -51,6 +52,7 @@ func (c *Quick) Init(tableName string, structData any) (err error) {
 	//初始化
 	_, err = c.client.Init2(&Router2SystemConfig.MainSQL, tableName, structData)
 	if err != nil {
+		err = errors.New(fmt.Sprint("init sql client failed: ", err))
 		return
 	}
 	//设置前缀
