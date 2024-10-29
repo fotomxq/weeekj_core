@@ -172,6 +172,16 @@ func GetFloat64ByStringNoErr(data string) float64 {
 	d, _ := GetFloat64ByString(data)
 	return d
 }
+func GetFloat64ByStringNoErrPanic(data string) float64 {
+	//捕捉异常
+	defer func() {
+		if r := recover(); r != nil {
+			return
+		}
+	}()
+	d, _ := GetFloat64ByString(data)
+	return d
+}
 
 func GetFloat64ByInt64(data int64) float64 {
 	return float64(data)

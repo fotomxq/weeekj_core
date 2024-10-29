@@ -66,6 +66,10 @@ func (c *Quick) Init(tableName string, structData any) (err error) {
 	return
 }
 
+func (c *Quick) GetClient() *CoreSQL2.Client {
+	return &c.client
+}
+
 // GetInfo 获取Info
 func (c *Quick) GetInfo() *QuickInfo {
 	return &QuickInfo{
