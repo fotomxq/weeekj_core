@@ -54,3 +54,64 @@ func (c *QuickInfo) GetInfoByField(fieldName string, fieldVal any, haveDelete bo
 	//反馈
 	return
 }
+
+// GetInfoByFields 多个条件获取数据
+func (c *QuickInfo) GetInfoByFields(fields map[string]any, haveDelete bool, result any) (err error) {
+	//获取数据
+	ctx := c.quickClient.client.Get().SetDefaultFields()
+	if haveDelete {
+		ctx = ctx.SetDeleteQuery("delete_at", false)
+	}
+	for fieldName, fieldVal := range fields {
+		switch fieldVal.(type) {
+		case int:
+			ctx = ctx.SetIntQuery(fieldName, fieldVal.(int))
+		case int64:
+			ctx = ctx.SetInt64Query(fieldName, fieldVal.(int64))
+		case string:
+			ctx = ctx.SetStringQuery(fieldName, fieldVal.(string))
+		default:
+			return errors.New("field type error")
+		}
+	}
+	err = ctx.Result(result)
+	if err != nil {
+		return
+	}
+	//反馈
+	return
+}
+
+// CheckInfoByFields 检查多条件是否存在数据
+func (c *QuickInfo) CheckInfoByFields(fields map[string]any, haveDelete bool) (b bool, err error) {
+	//获取数据
+	ctx := c.quickClient.client.Get().SetFieldsOne([]string{"id"})
+	if haveDelete {
+		ctx = ctx.SetDeleteQuery("delete_at", false)
+	}
+	for fieldName, fieldVal := range fields {
+		switch fieldVal.(type) {
+		case int:
+			ctx = ctx.SetIntQuery(fieldName, fieldVal.(int))
+		case int64:
+			ctx = ctx.SetInt64Query(fieldName, fieldVal.(int64))
+		case string:
+			ctx = ctx.SetStringQuery(fieldName, fieldVal.(string))
+		default:
+			err = errors.New("field type error")
+			return
+		}
+	}
+	//解析结构体
+	var id int64
+	err = ctx.Result(&id)
+	if err != nil {
+		return
+	}
+	if id < 1 {
+		return false, nil
+	}
+	b = true
+	//反馈
+	return
+}
