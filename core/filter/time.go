@@ -3,6 +3,7 @@ package CoreFilter
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -240,4 +241,62 @@ func GetHalfYearByTimeCarbon() string {
 		return fmt.Sprint(d.Year(), "-H1")
 	}
 	return fmt.Sprint(d.Year(), "-H2")
+}
+
+// 根据年月获取当月的第一天时间
+// 例如：2016-07
+func GetFirstDayByYearMonth(yearMonth string) (firstDay string) {
+	// 解析年月字符串
+	year, month, err := parseYearMonth(yearMonth)
+	if err != nil {
+		return ""
+	}
+	// 获取该月份的第一天
+	firstDayTime := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+	firstDay = firstDayTime.Format("2006-01-02")
+	return firstDay
+}
+
+// 根据年月获取当月的最后一天时间
+func GetLastDayByYearMonth(yearMonth string) (lastDay string) {
+	// 解析年月字符串
+	year, month, err := parseYearMonth(yearMonth)
+	if err != nil {
+		return ""
+	}
+	// 获取该月份的第一天
+	firstDayTime := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+	// 获取下一个月的第一天
+	nextMonthTime := firstDayTime.AddDate(0, 1, 0)
+	// 获取这个月的最后一天
+	lastDayTime := nextMonthTime.Add(-24 * time.Hour)
+	lastDay = lastDayTime.Format("2006-01-02")
+
+	return lastDay
+}
+
+// 解析年月字符串为年份和月份
+func parseYearMonth(yearMonth string) (year int, month int, err error) {
+	if len(yearMonth) != 7 || yearMonth[4] != '-' {
+		return 0, 0, fmt.Errorf("invalid yearMonth format, should be YYYY-MM")
+	}
+
+	// 解析年份
+	year, err = strconv.Atoi(yearMonth[:4])
+	if err != nil {
+		return 0, 0, err
+	}
+
+	// 解析月份
+	month, err = strconv.Atoi(yearMonth[5:])
+	if err != nil {
+		return 0, 0, err
+	}
+
+	// 检查月份范围
+	if month < 1 || month > 12 {
+		return 0, 0, fmt.Errorf("month should be between 1 and 12")
+	}
+
+	return year, month, nil
 }
