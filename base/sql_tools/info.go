@@ -1,6 +1,9 @@
 package BaseSQLTools
 
-import "errors"
+import (
+	"errors"
+	"time"
+)
 
 // QuickInfo 获取信息
 type QuickInfo struct {
@@ -101,6 +104,47 @@ func (c *QuickInfo) CheckInfoByFields(fields map[string]any, haveDelete bool) (b
 			err = errors.New("field type error")
 			return
 		}
+	}
+	//解析结构体
+	var id int64
+	err = ctx.Result(&id)
+	if err != nil {
+		return
+	}
+	if id < 1 {
+		return false, nil
+	}
+	b = true
+	//反馈
+	return
+}
+
+// CheckInfoByFieldsAndTime 检查多条件是否存在数据，且判断时间是否在有效期内
+func (c *QuickInfo) CheckInfoByFieldsAndTime(fields map[string]any, haveDelete bool, timeField string, timeMin, timeMax time.Time) (b bool, err error) {
+	//获取数据
+	ctx := c.quickClient.client.Get().SetFieldsOne([]string{"id"})
+	if haveDelete {
+		ctx = ctx.SetDeleteQuery("delete_at", false)
+	}
+	for fieldName, fieldVal := range fields {
+		switch fieldVal.(type) {
+		case int:
+			ctx = ctx.SetIntQuery(fieldName, fieldVal.(int))
+		case int64:
+			ctx = ctx.SetInt64Query(fieldName, fieldVal.(int64))
+		case string:
+			ctx = ctx.SetStringQuery(fieldName, fieldVal.(string))
+		default:
+			err = errors.New("field type error")
+			return
+		}
+	}
+	//检查时间范围
+	if timeMin != (time.Time{}) {
+		ctx = ctx.SetTimeMinQuery(timeField, timeMin)
+	}
+	if timeMax != (time.Time{}) {
+		ctx = ctx.SetTimeMaxQuery(timeField, timeMax)
 	}
 	//解析结构体
 	var id int64

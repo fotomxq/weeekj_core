@@ -3,6 +3,7 @@ package CoreSQL2
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 type ClientGetCtx struct {
@@ -178,6 +179,20 @@ func (t *ClientGetCtx) AddQueryAndParam(field string, param any) *ClientGetCtx {
 
 func (t *ClientGetCtx) AddQuery(field string) *ClientGetCtx {
 	t.preemptionAppend = append(t.preemptionAppend, field)
+	return t
+}
+
+// SetTimeMinQuery 大于等于某个时间
+func (t *ClientGetCtx) SetTimeMinQuery(field string, minAt time.Time) *ClientGetCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " >= $", t.preemptionNum, ")"), minAt)
+	return t
+}
+
+// SetTimeMaxQuery 小于等于某个时间
+func (t *ClientGetCtx) SetTimeMaxQuery(field string, maxAt time.Time) *ClientGetCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " <= $", t.preemptionNum, ")"), maxAt)
 	return t
 }
 
