@@ -280,23 +280,39 @@ func parseYearMonth(yearMonth string) (year int, month int, err error) {
 	if len(yearMonth) != 7 || yearMonth[4] != '-' {
 		return 0, 0, fmt.Errorf("invalid yearMonth format, should be YYYY-MM")
 	}
-
 	// 解析年份
 	year, err = strconv.Atoi(yearMonth[:4])
 	if err != nil {
 		return 0, 0, err
 	}
-
 	// 解析月份
 	month, err = strconv.Atoi(yearMonth[5:])
 	if err != nil {
 		return 0, 0, err
 	}
-
 	// 检查月份范围
 	if month < 1 || month > 12 {
 		return 0, 0, fmt.Errorf("month should be between 1 and 12")
 	}
-
 	return year, month, nil
+}
+
+// GetTimeByParseExcelDate 解析 Excel 格式的日期字符串，并返回 time.Time 类型
+func GetTimeByParseExcelDate(dateStr string) time.Time {
+	// 定义可能的时间格式
+	formats := []string{
+		"2006/01/02 15:04:05", // 格式：2020/08/27 14:30:00
+		"1/2/06 3:04:05 PM",   // 格式：8/27/20 2:30:00 PM
+		"2006/01/02",          // 格式：2020/08/27
+		"1/2/06",              // 格式：8/27/20
+	}
+
+	for _, format := range formats {
+		parsedTime, err := time.Parse(format, dateStr)
+		if err == nil {
+			return parsedTime // 成功解析，返回时间和成功标志
+		}
+	}
+
+	return time.Time{} // 解析失败，返回默认时间和失败标志
 }
