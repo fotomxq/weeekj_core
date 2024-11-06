@@ -305,6 +305,16 @@ func GetTimeByParseExcelDate(dateStr string) time.Time {
 	// 定义时间格式
 	layout := "06-01-02 15:04:05"
 	layout2 := "06-01-02"
+	layout3 := "20060102"
+	//数据格式
+	if len(dateStr) == 8 {
+		// 解析时间字符串
+		timeAt, err := time.Parse(layout3, dateStr)
+		if err != nil {
+			return time.Time{}
+		}
+		return timeAt
+	}
 	//判断字符串是否含有时间
 	if strings.Contains(dateStr, " ") {
 		dateArr := strings.Split(dateStr, " ")
@@ -415,7 +425,6 @@ func GetTimeByParseExcelDate(dateStr string) time.Time {
 				}
 				return timeAt
 			}
-
 		}
 	}
 	return time.Time{}
