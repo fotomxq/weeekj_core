@@ -299,20 +299,124 @@ func parseYearMonth(yearMonth string) (year int, month int, err error) {
 
 // GetTimeByParseExcelDate 解析 Excel 格式的日期字符串，并返回 time.Time 类型
 func GetTimeByParseExcelDate(dateStr string) time.Time {
-	// 定义可能的时间格式
-	formats := []string{
-		"2006/01/02 15:04:05", // 格式：2020/08/27 14:30:00
-		"1/2/06 3:04:05 PM",   // 格式：8/27/20 2:30:00 PM
-		"2006/01/02",          // 格式：2020/08/27
-		"1/2/06",              // 格式：8/27/20
+	if dateStr == "" {
+		return time.Time{}
 	}
+	// 定义时间格式
+	layout := "06-01-02 15:04:05"
+	layout2 := "06-01-02"
+	//判断字符串是否含有时间
+	if strings.Contains(dateStr, " ") {
+		dateArr := strings.Split(dateStr, " ")
+		switch len(dateArr) {
+		case 0:
+			return time.Time{}
+		case 1:
+			return time.Time{}
+		case 2:
+			newDate := dateArr[0]
+			newTime := dateArr[1]
+			if strings.Contains(newDate, "/") {
+				newDateArr := strings.Split(newDate, "/")
+				if len(newDateArr) == 3 {
+					//转换为完整时间
+					str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1], " ", newTime)
+					// 解析时间字符串
+					timeAt, err := time.Parse(layout, str)
+					if err != nil {
+						return time.Time{}
+					}
+					return timeAt
+				}
+			}
+			if strings.Contains(newDate, "-") {
+				newDateArr := strings.Split(newDate, "-")
+				if len(newDateArr) == 3 {
+					str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1], " ", newTime)
+					// 解析时间字符串
+					timeAt, err := time.Parse(layout, str)
+					if err != nil {
+						return time.Time{}
+					}
+					return timeAt
+				}
+			}
+			if strings.Contains(newDate, "：") {
+				newDateArr := strings.Split(newDate, "：")
+				if len(newDateArr) == 3 {
+					str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1], " ", newTime)
+					// 解析时间字符串
+					timeAt, err := time.Parse(layout, str)
+					if err != nil {
+						return time.Time{}
+					}
+					return timeAt
+				}
+			}
+			if strings.Contains(newDate, ":") {
+				newDateArr := strings.Split(newDate, ":")
+				if len(newDateArr) == 3 {
+					str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1], " ", newTime)
+					// 解析时间字符串
+					timeAt, err := time.Parse(layout, str)
+					if err != nil {
+						return time.Time{}
+					}
+					return timeAt
+				}
 
-	for _, format := range formats {
-		parsedTime, err := time.Parse(format, dateStr)
-		if err == nil {
-			return parsedTime // 成功解析，返回时间和成功标志
+			}
+		}
+	} else {
+		if strings.Contains(dateStr, "/") {
+			newDateArr := strings.Split(dateStr, "/")
+			if len(newDateArr) == 3 {
+				str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1])
+				// 解析时间字符串
+				timeAt, err := time.Parse(layout2, str)
+				if err != nil {
+					return time.Time{}
+				}
+				return timeAt
+			}
+		}
+		if strings.Contains(dateStr, "-") {
+			newDateArr := strings.Split(dateStr, "-")
+			if len(newDateArr) == 3 {
+				str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1])
+				// 解析时间字符串
+				timeAt, err := time.Parse(layout2, str)
+				if err != nil {
+					return time.Time{}
+				}
+				return timeAt
+			}
+		}
+		if strings.Contains(dateStr, "：") {
+			newDateArr := strings.Split(dateStr, "：")
+			if len(newDateArr) == 3 {
+				str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1])
+				// 解析时间字符串
+				timeAt, err := time.Parse(layout2, str)
+				if err != nil {
+					return time.Time{}
+				}
+				return timeAt
+			}
+		}
+		if strings.Contains(dateStr, ":") {
+			newDateArr := strings.Split(dateStr, ":")
+			if len(newDateArr) == 3 {
+				str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1])
+				// 解析时间字符串
+				timeAt, err := time.Parse(layout2, str)
+				if err != nil {
+					return time.Time{}
+				}
+				return timeAt
+			}
+
 		}
 	}
-
-	return time.Time{} // 解析失败，返回默认时间和失败标志
+	return time.Time{}
 }
