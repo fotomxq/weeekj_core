@@ -3,11 +3,11 @@ package CoreFilter
 import (
 	"errors"
 	"fmt"
+	"github.com/araddon/dateparse"
+	"github.com/golang-module/carbon"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/golang-module/carbon"
 )
 
 // LoadTimeLocation 加载时区文件
@@ -302,130 +302,9 @@ func GetTimeByParseExcelDate(dateStr string) time.Time {
 	if dateStr == "" {
 		return time.Time{}
 	}
-	// 定义时间格式
-	layout := "06-01-02 15:04:05"
-	layout2 := "06-01-02"
-	layout3 := "20060102"
-	//数据格式
-	if len(dateStr) == 8 {
-		// 解析时间字符串
-		timeAt, err := time.Parse(layout3, dateStr)
-		if err != nil {
-			return time.Time{}
-		}
-		return timeAt
+	timeAt, err := dateparse.ParseAny(dateStr)
+	if err != nil {
+		return time.Time{}
 	}
-	//判断字符串是否含有时间
-	if strings.Contains(dateStr, " ") {
-		dateArr := strings.Split(dateStr, " ")
-		switch len(dateArr) {
-		case 0:
-			return time.Time{}
-		case 1:
-			return time.Time{}
-		case 2:
-			newDate := dateArr[0]
-			newTime := dateArr[1]
-			if strings.Contains(newDate, "/") {
-				newDateArr := strings.Split(newDate, "/")
-				if len(newDateArr) == 3 {
-					//转换为完整时间
-					str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1], " ", newTime)
-					// 解析时间字符串
-					timeAt, err := time.Parse(layout, str)
-					if err != nil {
-						return time.Time{}
-					}
-					return timeAt
-				}
-			}
-			if strings.Contains(newDate, "-") {
-				newDateArr := strings.Split(newDate, "-")
-				if len(newDateArr) == 3 {
-					str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1], " ", newTime)
-					// 解析时间字符串
-					timeAt, err := time.Parse(layout, str)
-					if err != nil {
-						return time.Time{}
-					}
-					return timeAt
-				}
-			}
-			if strings.Contains(newDate, "：") {
-				newDateArr := strings.Split(newDate, "：")
-				if len(newDateArr) == 3 {
-					str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1], " ", newTime)
-					// 解析时间字符串
-					timeAt, err := time.Parse(layout, str)
-					if err != nil {
-						return time.Time{}
-					}
-					return timeAt
-				}
-			}
-			if strings.Contains(newDate, ":") {
-				newDateArr := strings.Split(newDate, ":")
-				if len(newDateArr) == 3 {
-					str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1], " ", newTime)
-					// 解析时间字符串
-					timeAt, err := time.Parse(layout, str)
-					if err != nil {
-						return time.Time{}
-					}
-					return timeAt
-				}
-
-			}
-		}
-	} else {
-		if strings.Contains(dateStr, "/") {
-			newDateArr := strings.Split(dateStr, "/")
-			if len(newDateArr) == 3 {
-				str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1])
-				// 解析时间字符串
-				timeAt, err := time.Parse(layout2, str)
-				if err != nil {
-					return time.Time{}
-				}
-				return timeAt
-			}
-		}
-		if strings.Contains(dateStr, "-") {
-			newDateArr := strings.Split(dateStr, "-")
-			if len(newDateArr) == 3 {
-				str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1])
-				// 解析时间字符串
-				timeAt, err := time.Parse(layout2, str)
-				if err != nil {
-					return time.Time{}
-				}
-				return timeAt
-			}
-		}
-		if strings.Contains(dateStr, "：") {
-			newDateArr := strings.Split(dateStr, "：")
-			if len(newDateArr) == 3 {
-				str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1])
-				// 解析时间字符串
-				timeAt, err := time.Parse(layout2, str)
-				if err != nil {
-					return time.Time{}
-				}
-				return timeAt
-			}
-		}
-		if strings.Contains(dateStr, ":") {
-			newDateArr := strings.Split(dateStr, ":")
-			if len(newDateArr) == 3 {
-				str := fmt.Sprint(newDateArr[2], "-", newDateArr[0], "-", newDateArr[1])
-				// 解析时间字符串
-				timeAt, err := time.Parse(layout2, str)
-				if err != nil {
-					return time.Time{}
-				}
-				return timeAt
-			}
-		}
-	}
-	return time.Time{}
+	return timeAt
 }

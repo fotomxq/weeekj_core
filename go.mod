@@ -8,6 +8,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.5.1
 	github.com/Shopify/sarama v1.26.1
 	github.com/aliyun/alibaba-cloud-sdk-go v1.62.567
+	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
 	github.com/denisbrodbeck/machineid v1.0.1
 	github.com/denisenkom/go-mssqldb v0.12.0
 	github.com/eclipse/paho.mqtt.golang v1.2.0
