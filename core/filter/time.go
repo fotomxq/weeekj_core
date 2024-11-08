@@ -302,6 +302,12 @@ func GetTimeByParseExcelDate(dateStr string) time.Time {
 	if dateStr == "" {
 		return time.Time{}
 	}
+	//判断字符串是否含有中文，如果有则替换为-
+	if strings.ContainsAny(dateStr, "年月日") {
+		dateStr = strings.Replace(dateStr, "年", "-", -1)
+		dateStr = strings.Replace(dateStr, "月", "-", -1)
+		dateStr = strings.Replace(dateStr, "日", "", -1)
+	}
 	timeAt, err := dateparse.ParseAny(dateStr)
 	if err != nil {
 		return time.Time{}
