@@ -22,7 +22,7 @@ func (c *QuickInfo) GetInfoByID(id int64, result any) (err error) {
 		return
 	}
 	//获取数据
-	err = c.quickClient.client.Get().SetDefaultFields().GetByID(id).Result(result)
+	err = c.quickClient.client.Get().NeedLimit().SetDefaultFields().GetByID(id).Result(result)
 	if err != nil {
 		return
 	}
@@ -36,7 +36,7 @@ func (c *QuickInfo) GetInfoByID(id int64, result any) (err error) {
 // 注意，当字段存在软删除时，请务必启用haveDelete，否则将出现异常
 func (c *QuickInfo) GetInfoByField(fieldName string, fieldVal any, haveDelete bool, result any) (err error) {
 	//获取数据
-	ctx := c.quickClient.client.Get().SetDefaultFields()
+	ctx := c.quickClient.client.Get().NeedLimit().SetDefaultFields()
 	if haveDelete {
 		ctx = ctx.SetDeleteQuery("delete_at", false)
 	}
@@ -61,7 +61,7 @@ func (c *QuickInfo) GetInfoByField(fieldName string, fieldVal any, haveDelete bo
 // GetInfoByFields 多个条件获取数据
 func (c *QuickInfo) GetInfoByFields(fields map[string]any, haveDelete bool, result any) (err error) {
 	//获取数据
-	ctx := c.quickClient.client.Get().SetDefaultFields()
+	ctx := c.quickClient.client.Get().NeedLimit().SetDefaultFields()
 	if haveDelete {
 		ctx = ctx.SetDeleteQuery("delete_at", false)
 	}
