@@ -26,12 +26,13 @@ func (c *QuickUpdate) UpdateByID(args any) (err error) {
 		//捕捉结构
 		vField := paramsType.Field(step)
 		vValueType := valueType.Field(step)
+		vTagDB := vField.Tag.Get("db")
 		//下一步
 		step += 1
 		//检查参数是否存在
 		isFind := false
 		for _, v := range fieldList {
-			if v == vField.Tag.Get("db") {
+			if v == vTagDB {
 				isFind = true
 				break
 			}
@@ -40,13 +41,18 @@ func (c *QuickUpdate) UpdateByID(args any) (err error) {
 			err = errors.New("no support field: " + vField.Tag.Get("db"))
 			return
 		}
-		//找到ID
-		if vField.Tag.Get("db") == "id" {
+		//内置字段禁止设置，主要用于其他操作
+		switch vTagDB {
+		case "id":
+			//找到ID
 			argID = vValueType.Int()
-		}
-		//找到更新字段
-		if vField.Tag.Get("db") != "id" {
-			setFields = append(setFields, vField.Tag.Get("db"))
+		case "create_at":
+			//禁止更新
+		case "delete_at":
+			//软删除，不能采用此方法操作
+		default:
+			//找到更新字段
+			setFields = append(setFields, vTagDB)
 			if setVals == nil {
 				setVals = make(map[string]any)
 			}
