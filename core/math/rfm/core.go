@@ -34,6 +34,28 @@ func (t *Core) SetWeight(weightList []Weight) {
 	t.weightList = weightList
 }
 
+// GetWeight 获取权重
+func (t *Core) GetWeight(num int64) Weight {
+	if len(t.weightList) < 1 {
+		return Weight{
+			Number: num,
+			R:      0.3,
+			F:      0.3,
+			M:      0.6,
+		}
+	}
+	for k := 0; k < len(t.weightList); k++ {
+		v := t.weightList[k]
+		if v.Number == num {
+			return v
+		}
+		if num > v.Number {
+			return v
+		}
+	}
+	return t.weightList[len(t.weightList)-1]
+}
+
 // SetDataRange 设置数据范围
 func (t *Core) SetDataRange(rMin float64, fMin float64, mMin float64, rMax float64, fMax float64, mMax float64) {
 	t.rMin = rMin
@@ -48,12 +70,7 @@ func (t *Core) SetDataRange(rMin float64, fMin float64, mMin float64, rMax float
 func (t *Core) GetScoreByWeight(recency float64, frequency float64, monetary float64, widthNum int64) (score float64) {
 	//获取权重
 	var weight Weight
-	for _, v := range t.weightList {
-		if v.Number == widthNum {
-			weight = v
-			break
-		}
-	}
+	weight = t.GetWeight(widthNum)
 	//计算RFM得分
 	score = t.GetScore(recency, frequency, monetary, weight.R, weight.F, weight.M, t.rMin, t.fMin, t.mMin, t.rMax, t.fMax, t.mMax)
 	//反馈
@@ -62,6 +79,16 @@ func (t *Core) GetScoreByWeight(recency float64, frequency float64, monetary flo
 
 // GetScore 获取分数底层方法
 func (t *Core) GetScore(recency float64, frequency float64, monetary float64, weightR float64, weightF float64, weightM float64, minValR float64, minValF float64, minValM float64, maxValR float64, maxValF float64, maxValM float64) (score float64) {
+	//检查意外值
+	if (maxValR - minValR) == 0 {
+		return 0
+	}
+	if (maxValF - minValF) == 0 {
+		return 0
+	}
+	if (maxValM - minValM) == 0 {
+		return 0
+	}
 	//归一化处理
 	r := (maxValR - recency) / (maxValR - minValR)
 	f := (frequency - minValF) / (maxValF - minValF)
