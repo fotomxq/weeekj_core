@@ -1,5 +1,7 @@
 package CoreMathRFM
 
+import CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+
 /**
 RFM模型
 1. 用于测量客户价值和客户分群的一种方法
@@ -80,21 +82,21 @@ func (t *Core) GetScoreByWeight(recency float64, frequency float64, monetary flo
 // GetScore 获取分数底层方法
 func (t *Core) GetScore(recency float64, frequency float64, monetary float64, weightR float64, weightF float64, weightM float64, minValR float64, minValF float64, minValM float64, maxValR float64, maxValF float64, maxValM float64) (score float64) {
 	//检查意外值
-	if (maxValR - minValR) == 0 {
-		return 0
-	}
-	if (maxValF - minValF) == 0 {
-		return 0
-	}
-	if (maxValM - minValM) == 0 {
-		return 0
-	}
+	var r, f, m float64
 	//归一化处理
-	r := (maxValR - recency) / (maxValR - minValR)
-	f := (frequency - minValF) / (maxValF - minValF)
-	m := (monetary - minValM) / (maxValM - minValM)
+	if (maxValR - minValR) != 0 {
+		r = (maxValR - recency) / (maxValR - minValR)
+	}
+	if (maxValF - minValF) != 0 {
+		f = (frequency - minValF) / (maxValF - minValF)
+	}
+	if (maxValM - minValM) != 0 {
+		m = (monetary - minValM) / (maxValM - minValM)
+	}
 	//计算RFM得分
 	score = weightR*r + weightF*f + weightM*m
+	//保留小数点2位
+	score = CoreFilter.RoundToTwoDecimalPlaces(score)
 	//反馈
 	return
 }
