@@ -254,6 +254,13 @@ func (t *ClientListCtx) SetIntNoQuery(field string, param int) *ClientListCtx {
 	return t
 }
 
+// SetFloat 常规Int判断查询（非）
+func (t *ClientListCtx) SetFloat(field string, param float64) *ClientListCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " != $", t.preemptionNum, " OR $", t.preemptionNum, " < 0)"), param)
+	return t
+}
+
 // SetStringQuery 常规字符串判断查询
 func (t *ClientListCtx) SetStringQuery(field string, param string) *ClientListCtx {
 	if param == "" {

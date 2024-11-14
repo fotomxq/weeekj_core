@@ -49,6 +49,7 @@ func (c *QuickList) GetListSimple(args *ArgsGetListSimple, result any) (dataCoun
 			}
 			if !isFind {
 				err = errors.New(fmt.Sprintf("no support field: %s", v.Name))
+				continue
 			}
 			switch v.Val.(type) {
 			case int:
@@ -61,6 +62,11 @@ func (c *QuickList) GetListSimple(args *ArgsGetListSimple, result any) (dataCoun
 					break
 				}
 				ctx = ctx.SetIDQuery(v.Name, v.Val.(int64))
+			case float64:
+				if v.Val.(int64) < 0 {
+					break
+				}
+				ctx = ctx.SetFloat(v.Name, v.Val.(float64))
 			case string:
 				if v.Val.(string) == "" {
 					break

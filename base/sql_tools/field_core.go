@@ -30,7 +30,7 @@ func (c *Quick) getFieldsByCondition(conditionName string) (result []resultGetFi
 		//获取当前节点值
 		vField := paramsType.Field(step)
 		dbVal := vField.Tag.Get("db")
-		conditionVal := vField.Tag.Get("condition")
+		conditionVal := vField.Tag.Get(conditionName)
 		//获取值
 		if conditionVal != "" {
 			result = append(result, resultGetFieldsByCondition{
