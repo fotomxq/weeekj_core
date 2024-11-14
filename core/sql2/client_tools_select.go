@@ -339,6 +339,9 @@ func (t *ClientListCtx) Result(data interface{}) error {
 	}
 	err := t.clientCtx.Select(data, t.clientCtx.query, t.clientCtx.appendArgs...)
 	appendLog("select", t.clientCtx.query, false, t.clientCtx.client.startAt, data, err)
+	if err != nil {
+		err = errors.New(fmt.Sprint("select query: ", t.clientCtx.query, ", err: ", err.Error()))
+	}
 	//fmt.Println("query: ", t.clientCtx.query)
 	return err
 }
@@ -358,11 +361,13 @@ func (t *ClientListCtx) ResultAndCount(data interface{}) (count int64, err error
 	err = t.clientCtx.Select(data, t.clientCtx.query, t.clientCtx.appendArgs...)
 	if err != nil {
 		appendLog("select", t.clientCtx.query, false, t.clientCtx.client.startAt, data, err)
+		err = errors.New(fmt.Sprint("select query: ", t.clientCtx.query, ", err: ", err.Error()))
 		return
 	}
 	err = t.clientCtx.Get(&count, t.queryCount, t.clientCtx.appendArgs...)
 	if err != nil {
 		appendLog("select", t.clientCtx.query, false, t.clientCtx.client.startAt, data, err)
+		err = errors.New(fmt.Sprint("get query: ", t.clientCtx.query, ", err: ", err.Error()))
 		return
 	}
 	appendLog("select", t.clientCtx.query, false, t.clientCtx.client.startAt, data, err)

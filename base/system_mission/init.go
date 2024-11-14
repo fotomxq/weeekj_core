@@ -68,6 +68,7 @@ func (t *Mission) init() {
 	})
 	if err != nil {
 		CoreLog.Error("core system mission: ", t.Name, ", mark: ", t.Mark, ", create mission failed, err: ", err)
+		return
 	}
 	//通过mark获取数据
 	t.nowData = getMissionByMark(t.Mark, t.OrgID)

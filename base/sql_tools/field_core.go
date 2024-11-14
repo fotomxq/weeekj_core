@@ -1,6 +1,8 @@
 package BaseSQLTools
 
-import "reflect"
+import (
+	"reflect"
+)
 
 // GetFields 获取结构体字段列表
 func (c *Quick) getFields() []string {
@@ -27,14 +29,15 @@ func (c *Quick) getFieldsByCondition(conditionName string) (result []resultGetFi
 	for step < paramsType.NumField() {
 		//获取当前节点值
 		vField := paramsType.Field(step)
+		dbVal := vField.Tag.Get("db")
+		conditionVal := vField.Tag.Get("condition")
 		//获取值
-		vVal := vField.Tag.Get(conditionName)
-		if vVal != "" {
+		if conditionVal != "" {
 			result = append(result, resultGetFieldsByCondition{
 				Index:          step,
-				FieldName:      vField.Name,
+				FieldName:      dbVal,
 				ConditionName:  conditionName,
-				ConditionValue: vVal,
+				ConditionValue: conditionVal,
 			})
 		}
 		//下一步
