@@ -47,50 +47,50 @@ func InstallConfig() error {
 			}
 			//写入一切配置，后续需要用到
 			configAllConfig.Configs = append(configAllConfig.Configs, v)
-			//检查是否已经存在，如果存在则跳过
-			data, err := BaseConfig.GetByMark(&BaseConfig.ArgsGetByMark{
+			//检查是否已经存在，如果存在则删除或更新
+			var configData BaseConfig.FieldsConfigType
+			configData, err = BaseConfig.GetByMark(&BaseConfig.ArgsGetByMark{
 				Mark: v.Mark,
 			})
-			//检查是否为删除模式
-			if v.NeedDelete {
-				if err == nil && data.Mark != "" {
+			if err == nil && configData.Mark != "" {
+				//检查是否为删除模式
+				if v.NeedDelete {
 					err = BaseConfig.DeleteByMark(&BaseConfig.ArgsDeleteByMark{
-						Mark: data.Mark,
+						Mark: configData.Mark,
 					})
 					if err != nil {
+						err = errors.New(fmt.Sprint("cannot delete config, mark: ", v.Mark, ", err: "+err.Error()))
 						return err
 					}
+				} else {
+					//变更配置描述信息
+					err = BaseConfig.UpdateInfo(&BaseConfig.ArgsUpdateInfo{
+						Mark:        configData.Mark,
+						AllowPublic: v.AllowPublic,
+						Name:        v.Name,
+						GroupMark:   v.GroupMark,
+						Des:         v.Des,
+						ValueType:   v.ValueType,
+					})
+					if err != nil {
+						err = errors.New(fmt.Sprint("cannot update config, mark: ", configData.Mark, ", err: "+err.Error()))
+						return err
+					}
+					continue
 				}
 			}
-			//如果存在配置
-			if err == nil {
-				//变更配置描述信息
-				err = BaseConfig.UpdateInfo(&BaseConfig.ArgsUpdateInfo{
-					Mark:        v.Mark,
-					AllowPublic: v.AllowPublic,
-					Name:        v.Name,
-					GroupMark:   v.GroupMark,
-					Des:         v.Des,
-					ValueType:   v.ValueType,
-				})
-				if err != nil {
-					return err
-				}
-				continue
-			} else {
-				//创建新的
-				err = BaseConfig.Create(&BaseConfig.ArgsCreate{
-					Mark:        v.Mark,
-					AllowPublic: v.AllowPublic,
-					Name:        v.Name,
-					ValueType:   v.ValueType,
-					Value:       v.Value,
-					GroupMark:   v.GroupMark,
-					Des:         v.Des,
-				})
-				if err != nil {
-					return errors.New(fmt.Sprint("cannot create config, mark: ", v.Mark, ", err: "+err.Error()))
-				}
+			//不存在配置，则创建
+			err = BaseConfig.Create(&BaseConfig.ArgsCreate{
+				Mark:        v.Mark,
+				AllowPublic: v.AllowPublic,
+				Name:        v.Name,
+				ValueType:   v.ValueType,
+				Value:       v.Value,
+				GroupMark:   v.GroupMark,
+				Des:         v.Des,
+			})
+			if err != nil {
+				return errors.New(fmt.Sprint("cannot create config, mark: ", v.Mark, ", err: "+err.Error()))
 			}
 		}
 		/**
