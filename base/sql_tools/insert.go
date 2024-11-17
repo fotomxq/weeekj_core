@@ -22,13 +22,13 @@ func (c *QuickInsert) InsertRow(args any) (newID int64, err error) {
 	for step < paramsType.NumField()-1 {
 		//捕捉结构
 		vField := paramsType.Field(step)
-		//vValueType := valueType.Field(step)
+		vDBVal := vField.Tag.Get("db")
 		//下一步
 		step += 1
 		//检查参数是否存在
 		isFind := false
 		for _, v := range fieldList {
-			if v == vField.Tag.Get("db") {
+			if v == vDBVal {
 				isFind = true
 				break
 			}
