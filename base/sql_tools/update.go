@@ -2,6 +2,7 @@ package BaseSQLTools
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -60,6 +61,10 @@ func (c *QuickUpdate) UpdateByID(args any) (err error) {
 		}
 	}
 	//执行更新
+	if len(setFields) < 1 {
+		err = errors.New(fmt.Sprint("no update field, id: ", argID, ", fields: ", setFields))
+		return
+	}
 	ctx := c.quickClient.client.Update().NeedSoft(c.quickClient.openSoftDelete).AddWhereID(argID).SetFields(setFields)
 	err = ctx.NamedExec(setVals)
 	if err != nil {
