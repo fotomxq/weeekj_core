@@ -40,6 +40,29 @@ func GetIndexList(args *ArgsGetIndexList) (dataList []FieldsIndex, dataCount int
 	return
 }
 
+// DataGetIndexListByTop 获取指标列表顶部数据
+type DataGetIndexListByTop struct {
+	//指标编码
+	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" index:"true"`
+	//指标名称
+	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" index:"true" field_search:"true" field_list:"true"`
+	//指标描述
+	Description string `db:"description" json:"description" check:"des" min:"1" max:"100" field_search:"true" field_list:"true" empty:"true"`
+	//指标决策建议
+	Decision string `db:"decision" json:"decision" check:"des" min:"1" max:"-1" empty:"true" field_search:"true"`
+}
+
+// GetIndexListByTop 获取指标列表顶部
+func GetIndexListByTop() (dataList []DataGetIndexListByTop, dataCount int64, err error) {
+	//获取数据
+	err = indexDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT i.code as code, max(i.name) as name, max(i.description) as description, max(i.decision) as decision FROM analysis_index as i, analysis_index_relation as r WHERE i.delete_at < to_timestamp(100000) and i.id = r.index_id GROUP BY i.code ORDER BY i.code;")
+	if err != nil || len(dataList) < 1 {
+		return
+	}
+	//反馈
+	return
+}
+
 // GetIndexByCode 通过编码获取指标
 func GetIndexByCode(code string) (data FieldsIndex, err error) {
 	//获取数据
