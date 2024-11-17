@@ -5,6 +5,7 @@ import (
 	"fmt"
 	AnalysisAny "github.com/fotomxq/weeekj_core/v5/analysis/any"
 	AnalysisBindVisit "github.com/fotomxq/weeekj_core/v5/analysis/bind_visit"
+	AnalysisIndex "github.com/fotomxq/weeekj_core/v5/analysis/index"
 	BaseApprover "github.com/fotomxq/weeekj_core/v5/base/approver"
 	BaseAutoCode "github.com/fotomxq/weeekj_core/v5/base/auto_code"
 	BaseBPM "github.com/fotomxq/weeekj_core/v5/base/bpm"
@@ -151,6 +152,12 @@ func Init() (err error) {
 	//访问统计
 	AnalysisBindVisit.OpenSub = OpenSub
 	AnalysisBindVisit.Init()
+	//指标体系
+	AnalysisIndex.OpenSub = OpenSub
+	if err = AnalysisIndex.Init(); err != nil {
+		err = errors.New("analysis index, " + err.Error())
+		return
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//工具
