@@ -24,7 +24,7 @@ func filterParams(c *gin.Context, params interface{}) (errField string, errCode 
 	valueType := reflect.ValueOf(params).Elem()
 	step := 0
 	//遍历结构，对内容进行解析处理
-	for step < paramsType.NumField()-1 {
+	for step < paramsType.NumField() {
 		//捕捉结构
 		vField := paramsType.Field(step)
 		vValueType := valueType.Field(step)

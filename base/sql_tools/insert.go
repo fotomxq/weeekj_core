@@ -19,7 +19,7 @@ func (c *QuickInsert) InsertRow(args any) (newID int64, err error) {
 	paramsType := reflect.TypeOf(args).Elem()
 	//valueType := reflect.ValueOf(args).Elem()
 	step := 0
-	for step < paramsType.NumField()-1 {
+	for step < paramsType.NumField() {
 		//捕捉结构
 		vField := paramsType.Field(step)
 		vDBVal := vField.Tag.Get("db")

@@ -93,7 +93,7 @@ func (c *QuickList) GetListSimple(args *ArgsGetListSimple, result any) (dataCoun
 	//paramsType := reflect.TypeOf(result).Elem()
 	//valueType := reflect.ValueOf(result).Elem()
 	//step := 0
-	//for step < paramsType.NumField()-1 {
+	//for step < paramsType.NumField() {
 	//	//捕捉结构
 	//	vField := paramsType.Field(step)
 	//	vValueType := valueType.Field(step)

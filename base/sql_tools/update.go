@@ -2,7 +2,6 @@ package BaseSQLTools
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 )
 
@@ -23,7 +22,7 @@ func (c *QuickUpdate) UpdateByID(args any) (err error) {
 	paramsType := reflect.TypeOf(args).Elem()
 	valueType := reflect.ValueOf(args).Elem()
 	step := 0
-	for step < paramsType.NumField()-1 {
+	for step < paramsType.NumField() {
 		//捕捉结构
 		vField := paramsType.Field(step)
 		vValueType := valueType.Field(step)
@@ -53,18 +52,18 @@ func (c *QuickUpdate) UpdateByID(args any) (err error) {
 			//软删除，不能采用此方法操作
 		default:
 			//找到更新字段
-			setFields = append(setFields, vTagDB)
 			if setVals == nil {
 				setVals = make(map[string]any)
 			}
+			setFields = append(setFields, vTagDB)
 			setVals[vField.Tag.Get("db")] = vValueType.Interface()
 		}
 	}
 	//执行更新
-	if len(setFields) < 1 {
-		err = errors.New(fmt.Sprint("no update field, id: ", argID, ", fields: ", setFields))
-		return
-	}
+	//if len(setFields) < 1 {
+	//	err = errors.New(fmt.Sprint("no update field, id: ", argID, ", fields: ", setFields))
+	//	return
+	//}
 	ctx := c.quickClient.client.Update().NeedSoft(c.quickClient.openSoftDelete).AddWhereID(argID).SetFields(setFields)
 	err = ctx.NamedExec(setVals)
 	if err != nil {

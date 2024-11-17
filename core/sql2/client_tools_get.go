@@ -163,6 +163,12 @@ func (t *ClientGetCtx) SetIntQuery(field string, param int) *ClientGetCtx {
 	return t
 }
 
+func (t *ClientGetCtx) SetBoolQuery(field string, param bool) *ClientGetCtx {
+	t.addPreemptionNum()
+	t.addPreemption(fmt.Sprint("(", field, " = $", t.preemptionNum, ")"), param)
+	return t
+}
+
 // SetDeleteQuery 设置删除查询
 // 如果启动此设定，请注意基于查询条件的$顺序，叠加后使用，否则讲造成条件和参数不匹配
 func (t *ClientGetCtx) SetDeleteQuery(field string, param bool) *ClientGetCtx {

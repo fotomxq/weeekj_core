@@ -71,6 +71,8 @@ func (c *QuickInfo) GetInfoByFields(fields map[string]any, haveDelete bool, resu
 			ctx = ctx.SetIntQuery(fieldName, fieldVal.(int))
 		case int64:
 			ctx = ctx.SetInt64Query(fieldName, fieldVal.(int64))
+		case bool:
+			ctx = ctx.SetBoolQuery(fieldName, fieldVal.(bool))
 		case string:
 			ctx = ctx.SetStringQuery(fieldName, fieldVal.(string))
 		default:
