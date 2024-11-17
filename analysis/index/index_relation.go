@@ -49,6 +49,20 @@ func GetIndexRelationList(args *ArgsGetIndexRelationList) (dataList []FieldsInde
 	return
 }
 
+// GetIndexRelationByCode 获取指标关系
+func GetIndexRelationByCode(parentID, indexID int64) (data FieldsIndexRelation, err error) {
+	//获取数据
+	err = indexRelationDB.GetInfo().GetInfoByFields(map[string]any{
+		"index_id":          parentID,
+		"relation_index_id": indexID,
+	}, true, &data)
+	if err != nil || data.ID < 1 {
+		return
+	}
+	//反馈
+	return
+}
+
 // ArgsCreateIndexRelation 创建指标关系参数
 type ArgsCreateIndexRelation struct {
 	//指标ID
