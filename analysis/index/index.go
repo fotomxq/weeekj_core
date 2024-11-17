@@ -87,6 +87,12 @@ func GetIndexByID(id int64) (data FieldsIndex, err error) {
 	return
 }
 
+// GetIndexNameByID 获取指标名称
+func GetIndexNameByID(id int64) (name string) {
+	data, _ := GetIndexByID(id)
+	return data.Name
+}
+
 // ArgsCreateIndex 创建新的指标参数
 type ArgsCreateIndex struct {
 	//指标编码
