@@ -2,6 +2,7 @@ package AnalysisIndexVal
 
 import (
 	"errors"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"github.com/lib/pq"
 )
 
@@ -108,7 +109,10 @@ func RefAnalysisIndexValTotal(args *ArgsRefAnalysisIndexValTotal) (err error) {
 	}
 	//如果args.CalcType为均值，自动归一化处理
 	if args.CalcType == "avg" {
-		norVal := (topData.AvgVal - topData.MinVal) / (topData.MaxVal - topData.MinVal)
+		var norVal float64
+		if (topData.MaxVal - topData.MinVal) != 0 {
+			norVal = CoreFilter.RoundToTwoDecimalPlaces(((topData.AvgVal - topData.MinVal) / (topData.MaxVal - topData.MinVal)) * 100)
+		}
 		err = reviseNormVal(&argsReviseNormVal{
 			Code:       args.Code,
 			YearMD:     args.YearMD,
