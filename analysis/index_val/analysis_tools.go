@@ -1,5 +1,10 @@
 package AnalysisIndexVal
 
+import (
+	"errors"
+	"github.com/lib/pq"
+)
+
 // DataGetAnalysisIndexValTotal 计算某个指标存在维度值的总体值分布数据
 type DataGetAnalysisIndexValTotal struct {
 	//次数
@@ -22,12 +27,27 @@ type ArgsGetAnalysisIndexValTotal struct {
 	// 不建议构建小时及以下级别的指标
 	// 同一个维度和时间范围，仅会存在一个数据，否则将覆盖
 	YearMD string `db:"year_md" json:"yearMD" index:"true"`
+	//排除列
+	ExcludeCol pq.StringArray `db:"exclude_col" json:"excludeCol"`
+	//是否为预测值
+	IsForecast bool `db:"is_forecast" json:"isForecast"`
 }
 
 // GetAnalysisIndexValTotal 计算某个指标存在维度值的总体值分布
 // 只查询该指标下，维度存在数据，但
 func GetAnalysisIndexValTotal(args *ArgsGetAnalysisIndexValTotal) (data DataGetAnalysisIndexValTotal) {
-	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&data, "SELECT count(id) as val_count, sum(val_raw) as sum_val, avg(val_raw) as avg_val, max(val_raw) as max_val, min(val_raw) as min_val FROM analysis_index_vals WHERE code = $1 AND year_md = $2 AND (extend1 != '' OR extend2 != '' OR extend3 != '' OR extend4 != '' OR extend5 != '') LIMIT 1", args.Code, args.YearMD)
+	sqlAppend := ""
+	if len(args.ExcludeCol) > 0 {
+		sqlAppend = " AND ("
+		for i, v := range args.ExcludeCol {
+			if i > 0 {
+				sqlAppend += " OR "
+			}
+			sqlAppend += v + " != ''"
+		}
+		sqlAppend += ")"
+	}
+	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&data, "SELECT count(id) as val_count, sum(val_raw) as sum_val, avg(val_raw) as avg_val, max(val_raw) as max_val, min(val_raw) as min_val FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md = $2 AND is_forecast = $3 "+sqlAppend+" LIMIT 1", args.Code, args.YearMD, args.IsForecast)
 	return
 }
 
@@ -43,14 +63,18 @@ type ArgsRefAnalysisIndexValTotal struct {
 	//计算方式
 	// count/sum/avg/max/min
 	CalcType string `db:"calc_type" json:"calcType"`
+	//排除列
+	ExcludeCol pq.StringArray `db:"exclude_col" json:"excludeCol"`
 }
 
 // RefAnalysisIndexValTotal 指标总体值及归一化计算
-// 注意：此方法不能用于预测值，预测值请使用CreateVal方法
+// 注意：此方法不能用于预测值，预测值请使用CreateVal方法; 归一化处理请使用reviseNormVal方法
 func RefAnalysisIndexValTotal(args *ArgsRefAnalysisIndexValTotal) (err error) {
 	topData := GetAnalysisIndexValTotal(&ArgsGetAnalysisIndexValTotal{
-		Code:   args.Code,
-		YearMD: args.YearMD,
+		Code:       args.Code,
+		YearMD:     args.YearMD,
+		ExcludeCol: args.ExcludeCol,
+		IsForecast: false,
 	})
 	var valRaw float64
 	switch args.CalcType {
@@ -64,6 +88,9 @@ func RefAnalysisIndexValTotal(args *ArgsRefAnalysisIndexValTotal) (err error) {
 		valRaw = topData.MaxVal
 	case "min":
 		valRaw = topData.MinVal
+	default:
+		err = errors.New("calc_type error")
+		return
 	}
 	err = CreateVal(&ArgsCreateVal{
 		Code:       args.Code,
@@ -79,5 +106,19 @@ func RefAnalysisIndexValTotal(args *ArgsRefAnalysisIndexValTotal) (err error) {
 	if err != nil {
 		return
 	}
+	//如果args.CalcType为均值，自动归一化处理
+	if args.CalcType == "avg" {
+		norVal := (topData.AvgVal - topData.MinVal) / (topData.MaxVal - topData.MinVal)
+		err = reviseNormVal(&argsReviseNormVal{
+			Code:       args.Code,
+			YearMD:     args.YearMD,
+			ValNorm:    norVal,
+			IsForecast: false,
+		})
+		if err != nil {
+			return
+		}
+	}
+	//反馈
 	return
 }

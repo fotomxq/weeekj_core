@@ -1,5 +1,10 @@
 package AnalysisIndexVal
 
+import (
+	"errors"
+	"fmt"
+)
+
 // ArgsGetValsByBetweenAt 获取指定时间范围内的指标值参数
 type ArgsGetValsByBetweenAt struct {
 	//指标编码
@@ -81,6 +86,8 @@ type ArgsGetValsByFilter struct {
 	Extend4 string `db:"extend4" json:"extend4" index:"true"`
 	//扩展维度5
 	Extend5 string `db:"extend5" json:"extend5" index:"true"`
+	//是否为预测值
+	IsForecast bool `db:"is_forecast" json:"isForecast"`
 }
 
 // GetValsByFilter 获取指定的数据
@@ -88,13 +95,14 @@ type ArgsGetValsByFilter struct {
 func GetValsByFilter(args *ArgsGetValsByFilter) (data DataGetValsByBetweenAt) {
 	var rawData FieldsVal
 	_ = indexValDB.GetInfo().GetInfoByFields(map[string]any{
-		"code":    args.Code,
-		"year_md": args.YearMD,
-		"extend1": args.Extend1,
-		"extend2": args.Extend2,
-		"extend3": args.Extend3,
-		"extend4": args.Extend4,
-		"extend5": args.Extend5,
+		"code":        args.Code,
+		"year_md":     args.YearMD,
+		"extend1":     args.Extend1,
+		"extend2":     args.Extend2,
+		"extend3":     args.Extend3,
+		"extend4":     args.Extend4,
+		"extend5":     args.Extend5,
+		"is_forecast": args.IsForecast,
 	}, true, &rawData)
 	data = DataGetValsByBetweenAt{
 		YearMD:  rawData.YearMD,
@@ -138,15 +146,16 @@ func CreateVal(args *ArgsCreateVal) (err error) {
 	//获取数据
 	var rawData FieldsVal
 	_ = indexValDB.GetInfo().GetInfoByFields(map[string]any{
-		"code":    args.Code,
-		"year_md": args.YearMD,
-		"extend1": args.Extend1,
-		"extend2": args.Extend2,
-		"extend3": args.Extend3,
-		"extend4": args.Extend4,
-		"extend5": args.Extend5,
+		"code":        args.Code,
+		"year_md":     args.YearMD,
+		"extend1":     args.Extend1,
+		"extend2":     args.Extend2,
+		"extend3":     args.Extend3,
+		"extend4":     args.Extend4,
+		"extend5":     args.Extend5,
+		"is_forecast": args.IsForecast,
 	}, true, &rawData)
-	if rawData.YearMD == "" {
+	if rawData.ID < 1 {
 		//插入数据
 		type insertType struct {
 			//指标编码
@@ -197,21 +206,68 @@ func CreateVal(args *ArgsCreateVal) (err error) {
 			ID int64 `db:"id" json:"id" check:"id" unique:"true"`
 			//原始值
 			ValRaw float64 `db:"val_raw" json:"valRaw" index:"true"`
-			//是否为预测值
-			IsForecast bool `db:"is_forecast" json:"isForecast"`
 		}
 		updateData := updateType{
-			ID:         rawData.ID,
-			ValRaw:     args.ValRaw,
-			IsForecast: args.IsForecast,
+			ID:     rawData.ID,
+			ValRaw: args.ValRaw,
 		}
 		err = indexValDB.GetUpdate().UpdateByID(&updateData)
 		if err != nil {
 			return
 		}
 	}
-	//修正归一化值
-	_, _ = indexValDB.GetClient().DB.GetPostgresql().Exec("UPDATE analysis_index_vals SET val_norm = (val_raw - (SELECT MIN(val_raw) FROM analysis_index_vals WHERE code = $1 AND year_md = $2 AND extend1 = $3 AND extend2 = $4 AND extend3 = $5 AND extend4 = $6 AND extend5 = $7)) / ((SELECT MAX(val_raw) FROM analysis_index_vals WHERE code = $1 AND year_md = $2 AND extend1 = $3 AND extend2 = $4 AND extend3 = $5 AND extend4 = $6 AND extend5 = $7) - (SELECT MIN(val_raw) FROM analysis_index_vals WHERE code = $1 AND year_md = $2 AND extend1 = $3 AND extend2 = $4 AND extend3 = $5 AND extend4 = $6 AND extend5 = $7)) WHERE code = $1 AND year_md = $2 AND extend1 = $3 AND extend2 = $4 AND extend3 = $5 AND extend4 = $6 AND extend5 = $7", args.Code, args.YearMD, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5)
+	//返回
+	return
+}
+
+// argsReviseNormVal 修订归一化值参数
+type argsReviseNormVal struct {
+	//指标编码
+	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" index:"true"`
+	//年月日
+	// 可任意持续，如年，或仅年月
+	// 不建议构建小时及以下级别的指标
+	// 同一个维度和时间范围，仅会存在一个数据，否则将覆盖
+	YearMD string `db:"year_md" json:"yearMD" index:"true"`
+	//归一化值
+	ValNorm float64 `db:"val_norm" json:"valNorm" index:"true"`
+	//是否为预测值
+	IsForecast bool `db:"is_forecast" json:"isForecast"`
+}
+
+// reviseNormVal 修订归一化值
+func reviseNormVal(args *argsReviseNormVal) (err error) {
+	//获取数据
+	var rawData FieldsVal
+	err = indexValDB.GetInfo().GetInfoByFields(map[string]any{
+		"code":        args.Code,
+		"year_md":     args.YearMD,
+		"extend1":     "",
+		"extend2":     "",
+		"extend3":     "",
+		"extend4":     "",
+		"extend5":     "",
+		"is_forecast": args.IsForecast,
+	}, true, &rawData)
+	if rawData.ID < 1 {
+		err = errors.New(fmt.Sprint("no data, ", err))
+		return
+	}
+	//更新数据
+	type updateType struct {
+		// ID
+		ID int64 `db:"id" json:"id" check:"id" unique:"true"`
+		//归一化值
+		ValNorm float64 `db:"val_norm" json:"valNorm" index:"true"`
+	}
+	updateData := updateType{
+		ID:      rawData.ID,
+		ValNorm: args.ValNorm,
+	}
+	err = indexValDB.GetUpdate().UpdateByID(&updateData)
+	if err != nil {
+		return
+	}
 	//返回
 	return
 }
