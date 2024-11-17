@@ -80,7 +80,31 @@ func (t *Core) GetScoreByWeight(recency float64, frequency float64, monetary flo
 }
 
 // GetScore 获取分数底层方法
+// 注意，R指标方向和F、M指标相同
 func (t *Core) GetScore(recency float64, frequency float64, monetary float64, weightR float64, weightF float64, weightM float64, minValR float64, minValF float64, minValM float64, maxValR float64, maxValF float64, maxValM float64) (score float64) {
+	//检查意外值
+	var r, f, m float64
+	//归一化处理
+	if (maxValR - minValR) != 0 {
+		r = (recency - minValR) / (maxValR - minValR)
+	}
+	if (maxValF - minValF) != 0 {
+		f = (frequency - minValF) / (maxValF - minValF)
+	}
+	if (maxValM - minValM) != 0 {
+		m = (monetary - minValM) / (maxValM - minValM)
+	}
+	//计算RFM得分
+	score = weightR*r + weightF*f + weightM*m
+	//保留小数点2位
+	score = CoreFilter.RoundToTwoDecimalPlaces(score)
+	//反馈
+	return
+}
+
+// GetScoreR2 反转R指标
+// R指标与FM不同，尤其可用于
+func (t *Core) GetScoreR2(recency float64, frequency float64, monetary float64, weightR float64, weightF float64, weightM float64, minValR float64, minValF float64, minValM float64, maxValR float64, maxValF float64, maxValM float64) (score float64) {
 	//检查意外值
 	var r, f, m float64
 	//归一化处理
