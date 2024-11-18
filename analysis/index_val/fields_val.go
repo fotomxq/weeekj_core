@@ -13,23 +13,23 @@ type FieldsVal struct {
 	//删除时间
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt" default:"0" index:"true"`
 	//指标编码
-	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" index:"true"`
+	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
 	//年月日
 	// 可任意持续，如年，或仅年月
 	// 不建议构建小时及以下级别的指标
 	// 同一个维度和时间范围，仅会存在一个数据，否则将覆盖
-	YearMD string `db:"year_md" json:"yearMD" index:"true"`
+	YearMD string `db:"year_md" json:"yearMD" index:"true" field_list:"true"`
 	//扩展维度1
 	// 可建议特别的维度关系，例如特定供应商的数据、特定地区的数据等
-	Extend1 string `db:"extend1" json:"extend1" index:"true"`
+	Extend1 string `db:"extend1" json:"extend1" index:"true" field_list:"true"`
 	//扩展维度2
-	Extend2 string `db:"extend2" json:"extend2" index:"true"`
+	Extend2 string `db:"extend2" json:"extend2" index:"true" field_list:"true"`
 	//扩展维度3
-	Extend3 string `db:"extend3" json:"extend3" index:"true"`
+	Extend3 string `db:"extend3" json:"extend3" index:"true" field_list:"true"`
 	//扩展维度4
-	Extend4 string `db:"extend4" json:"extend4" index:"true"`
+	Extend4 string `db:"extend4" json:"extend4" index:"true" field_list:"true"`
 	//扩展维度5
-	Extend5 string `db:"extend5" json:"extend5" index:"true"`
+	Extend5 string `db:"extend5" json:"extend5" index:"true" field_list:"true"`
 	//原始值
 	ValRaw float64 `db:"val_raw" json:"valRaw" index:"true"`
 	//归一化值

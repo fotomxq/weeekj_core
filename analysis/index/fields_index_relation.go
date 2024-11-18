@@ -14,10 +14,10 @@ type FieldsIndexRelation struct {
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt" default:"0" index:"true"`
 	//指标ID
 	// 上级指标
-	IndexID int64 `db:"index_id" json:"indexID" check:"id"`
+	IndexID int64 `db:"index_id" json:"indexID" check:"id" field_list:"true"`
 	//关联指标
 	// 禁出现嵌套关系，系统将检查并报错
-	RelationIndexID int64 `db:"relation_index_id" json:"relationIndexID" check:"id"`
+	RelationIndexID int64 `db:"relation_index_id" json:"relationIndexID" check:"id" field_list:"true"`
 	//指标权重占比
 	// 同一个indexID下，所有指标的权重总和必须为1，否则计算的结果将出现异常
 	Weight int64 `db:"weight" json:"weight" check:"int64Than0"`
@@ -25,5 +25,5 @@ type FieldsIndexRelation struct {
 	// 同一个indexID下，所有指标的权重总和必须为1，否则计算的结果将出现异常
 	AutoWeight int64 `db:"auto_weight" json:"autoWeight" check:"int64Than0"`
 	//是否启动算法自动权重
-	IsAutoWeight bool `db:"is_auto_weight" json:"isAutoWeight"`
+	IsAutoWeight bool `db:"is_auto_weight" json:"isAutoWeight" field_list:"true"`
 }
