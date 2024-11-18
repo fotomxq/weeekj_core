@@ -49,7 +49,7 @@ func (c *QuickList) GetListSimple(args *ArgsGetListSimple, result any) (dataCoun
 			}
 			if !isFind {
 				err = errors.New(fmt.Sprintf("no support field: %s", v.Name))
-				continue
+				return
 			}
 			switch v.Val.(type) {
 			case int:
