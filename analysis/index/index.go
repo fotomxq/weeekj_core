@@ -42,6 +42,8 @@ func GetIndexList(args *ArgsGetIndexList) (dataList []FieldsIndex, dataCount int
 
 // DataGetIndexListByTop 获取指标列表顶部数据
 type DataGetIndexListByTop struct {
+	//指标ID
+	IndexID int64 `db:"index_id" json:"indexID" check:"id" unique:"true"`
 	//指标编码
 	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" index:"true"`
 	//指标名称
@@ -55,7 +57,7 @@ type DataGetIndexListByTop struct {
 // GetIndexListByTop 获取指标列表顶部
 func GetIndexListByTop() (dataList []DataGetIndexListByTop, dataCount int64, err error) {
 	//获取数据
-	err = indexDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT i.code as code, max(i.name) as name, max(i.description) as description, max(i.decision) as decision FROM analysis_index as i, analysis_index_relation as r WHERE i.delete_at < to_timestamp(100000) and i.id = r.index_id GROUP BY i.code ORDER BY i.code;")
+	err = indexDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT i.id as index_id, i.code as code, max(i.name) as name, max(i.description) as description, max(i.decision) as decision FROM analysis_index as i, analysis_index_relation as r WHERE i.delete_at < to_timestamp(100000) and i.id = r.index_id GROUP BY i.id, i.code ORDER BY i.code;")
 	if err != nil || len(dataList) < 1 {
 		return
 	}
