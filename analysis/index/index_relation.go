@@ -104,6 +104,13 @@ func CreateIndexRelation(args *ArgsCreateIndexRelation) (err error) {
 		err = errors.New("relation is exist")
 		return
 	}
+	//子指标不能再次作为父指标
+	if b, _ := indexRelationDB.GetInfo().CheckInfoByFields(map[string]any{
+		"index_id": args.RelationIndexID,
+	}, true); b {
+		err = errors.New("relation is index")
+		return
+	}
 	//创建
 	_, err = indexRelationDB.GetInsert().InsertRow(args)
 	if err != nil {
