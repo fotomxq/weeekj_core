@@ -20,9 +20,11 @@ type FieldsIndexRelation struct {
 	RelationIndexID int64 `db:"relation_index_id" json:"relationIndexID" check:"id" field_list:"true"`
 	//指标权重占比
 	// 同一个indexID下，所有指标的权重总和必须为1，否则计算的结果将出现异常
+	// 注意在底层使用时，需转为浮点数并/10000
 	Weight int64 `db:"weight" json:"weight" check:"int64Than0"`
 	//算法自动权重
 	// 同一个indexID下，所有指标的权重总和必须为1，否则计算的结果将出现异常
+	// 注意在底层使用时，需转为浮点数并/10000
 	AutoWeight int64 `db:"auto_weight" json:"autoWeight" check:"int64Than0"`
 	//是否启动算法自动权重
 	IsAutoWeight bool `db:"is_auto_weight" json:"isAutoWeight" field_list:"true"`

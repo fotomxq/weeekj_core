@@ -85,7 +85,7 @@ func CreateBPM(args *ArgsCreateBPM) (id int64, err error) {
 		"json_node":   args.JSONNode,
 	}).ExecAndResultID()
 	if err != nil {
-		fmt.Println(err)
+		//fmt.Println(err)
 		return
 	}
 	//反馈

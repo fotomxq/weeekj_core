@@ -183,10 +183,6 @@ type ArgsUpdateIndexRelation struct {
 	//指标权重占比
 	// 同一个indexID下，所有指标的权重总和必须为1，否则计算的结果将出现异常
 	Weight int64 `db:"weight" json:"weight" check:"int64Than0"`
-	//算法自动权重
-	// 同一个indexID下，所有指标的权重总和必须为1，否则计算的结果将出现异常
-	// 接口不能设置该参数，必须程序化内置实现
-	AutoWeight int64 `db:"auto_weight" json:"autoWeight" check:"int64Than0"`
 	//是否启动算法自动权重
 	// 接口不能设置该参数，必须程序化内置实现
 	IsAutoWeight bool `db:"is_auto_weight" json:"isAutoWeight"`
@@ -196,6 +192,29 @@ type ArgsUpdateIndexRelation struct {
 func UpdateIndexRelation(args *ArgsUpdateIndexRelation) (err error) {
 	//修改数据
 	err = indexRelationDB.GetUpdate().UpdateByID(args)
+	if err != nil {
+		return
+	}
+	//反馈
+	return
+}
+
+// 仅修改算法权重值
+func UpdateIndexRelationAutoWeight(id, autoWeight int64) (err error) {
+	//修改数据
+	type updateType struct {
+		// ID
+		ID int64 `db:"id" json:"id" check:"id" unique:"true"`
+		//算法自动权重
+		// 同一个indexID下，所有指标的权重总和必须为1，否则计算的结果将出现异常
+		// 接口不能设置该参数，必须程序化内置实现
+		AutoWeight int64 `db:"auto_weight" json:"autoWeight" check:"int64Than0"`
+	}
+	updateData := updateType{
+		ID:         id,
+		AutoWeight: autoWeight,
+	}
+	err = indexRelationDB.GetUpdate().UpdateByID(&updateData)
 	if err != nil {
 		return
 	}
