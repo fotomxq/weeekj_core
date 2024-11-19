@@ -42,7 +42,7 @@ type ArgsGetVal struct {
 }
 
 // GetVal 获取具体的数据
-func GetVal(args *ArgsCreateVal) (data FieldsVal, err error) {
+func GetVal(args *ArgsGetVal) (data FieldsVal, err error) {
 	err = indexValCustomDB.GetInfo().GetInfoByFields(map[string]any{
 		"code":    args.Code,
 		"year_md": args.YearMD,

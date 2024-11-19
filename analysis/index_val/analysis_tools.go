@@ -2,6 +2,7 @@ package AnalysisIndexVal
 
 import (
 	"errors"
+	"fmt"
 	AnalysisIndex "github.com/fotomxq/weeekj_core/v5/analysis/index"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"github.com/lib/pq"
@@ -38,10 +39,12 @@ type ArgsGetAnalysisIndexValTotal struct {
 
 // GetAnalysisIndexValTotal 计算某个指标存在维度值的总体值分布
 // 只查询该指标下，维度存在数据，但
-func GetAnalysisIndexValTotal(args *ArgsGetAnalysisIndexValTotal) (data DataGetAnalysisIndexValTotal) {
+func GetAnalysisIndexValTotal(args *ArgsGetAnalysisIndexValTotal) (data DataGetAnalysisIndexValTotal, err error) {
 	//检查code是否存在
-	codeData, _ := AnalysisIndex.GetIndexByCode(args.Code)
-	if codeData.ID < 1 {
+	var codeData AnalysisIndex.FieldsIndex
+	codeData, err = AnalysisIndex.GetIndexByCode(args.Code)
+	if err != nil || codeData.ID < 1 {
+		err = errors.New(fmt.Sprint("code not exist, ", err))
 		return
 	}
 	//组装筛选条件
@@ -56,7 +59,11 @@ func GetAnalysisIndexValTotal(args *ArgsGetAnalysisIndexValTotal) (data DataGetA
 		}
 		sqlAppend += ")"
 	}
-	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&data, "SELECT count(id) as val_count, sum(val_raw) as sum_val, avg(val_raw) as avg_val, max(val_raw) as max_val, min(val_raw) as min_val FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md = $2 AND is_forecast = $3 "+sqlAppend+" LIMIT 1", args.Code, args.YearMD, args.IsForecast)
+	err = indexValDB.GetClient().DB.GetPostgresql().Get(&data, "SELECT count(id) as val_count, sum(val_raw) as sum_val, avg(val_raw) as avg_val, max(val_raw) as max_val, min(val_raw) as min_val FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md = $2 AND is_forecast = $3 "+sqlAppend+" LIMIT 1", args.Code, args.YearMD, args.IsForecast)
+	if err != nil {
+		err = errors.New(fmt.Sprint("get data failed, ", err))
+		return
+	}
 	return
 }
 
@@ -98,12 +105,17 @@ func RefAnalysisIndexValTotal(args *ArgsRefAnalysisIndexValTotal) (err error) {
 		return
 	}
 	//获取总体值
-	topData := GetAnalysisIndexValTotal(&ArgsGetAnalysisIndexValTotal{
+	var topData DataGetAnalysisIndexValTotal
+	topData, err = GetAnalysisIndexValTotal(&ArgsGetAnalysisIndexValTotal{
 		Code:       args.Code,
 		YearMD:     args.YearMD,
 		ExcludeCol: args.ExcludeCol,
 		IsForecast: false,
 	})
+	if err != nil {
+		err = errors.New(fmt.Sprint("get top data failed, ", err))
+		return
+	}
 	//计算值
 	var valRaw float64
 	switch args.CalcType {

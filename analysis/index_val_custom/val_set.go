@@ -1,5 +1,10 @@
 package AnalysisIndexValCustom
 
+import (
+	"errors"
+	AnalysisIndex "github.com/fotomxq/weeekj_core/v5/analysis/index"
+)
+
 // ArgsCreateVal 添加数据参数
 type ArgsCreateVal struct {
 	//编码
@@ -149,7 +154,37 @@ type ArgsCreateVal struct {
 
 // CreateVal 添加数据
 func CreateVal(args *ArgsCreateVal) (err error) {
-	//获取定义的数据
+	//获取指标定义数据
+	indexData, _ := AnalysisIndex.GetIndexByCode(args.Code)
+	if indexData.ID < 1 {
+		err = errors.New("index not exists")
+		return
+	}
+	//尝试获取数据
+	data, _ := GetVal(&ArgsGetVal{
+		Code:    args.Code,
+		YearMD:  args.YearMD,
+		Extend1: args.Extend1,
+		Extend2: args.Extend2,
+		Extend3: args.Extend3,
+		Extend4: args.Extend4,
+		Extend5: args.Extend5,
+		Extend6: args.Extend6,
+		Extend7: args.Extend7,
+		Extend8: args.Extend8,
+		Extend9: args.Extend9,
+	})
+	//更新数据
+	if data.ID > 0 {
+		err = errors.New("data exists")
+		return
+	} else {
+		//添加数据
+		_, err = indexValCustomDB.GetInsert().InsertRow(args)
+		if err != nil {
+			return
+		}
+	}
 	//反馈
 	return
 }
