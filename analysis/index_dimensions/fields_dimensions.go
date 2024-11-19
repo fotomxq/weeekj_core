@@ -23,4 +23,8 @@ type FieldsDimensions struct {
 	// 约定指标、指标值
 	// 例如：extend1
 	ExtendIndex string `db:"extend_index" json:"extendIndex" index:"true"`
+	//所属表名称
+	TableName string `db:"table_name" json:"tableName" check:"des" min:"1" max:"50"`
+	//字段名称
+	FieldName string `db:"field_name" json:"fieldName" check:"des" min:"1" max:"50"`
 }
