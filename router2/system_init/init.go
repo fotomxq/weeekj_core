@@ -6,6 +6,7 @@ import (
 	AnalysisAny "github.com/fotomxq/weeekj_core/v5/analysis/any"
 	AnalysisBindVisit "github.com/fotomxq/weeekj_core/v5/analysis/bind_visit"
 	AnalysisIndex "github.com/fotomxq/weeekj_core/v5/analysis/index"
+	AnalysisIndexRFM "github.com/fotomxq/weeekj_core/v5/analysis/index_rfm"
 	AnalysisIndexVal "github.com/fotomxq/weeekj_core/v5/analysis/index_val"
 	BaseApprover "github.com/fotomxq/weeekj_core/v5/base/approver"
 	BaseAutoCode "github.com/fotomxq/weeekj_core/v5/base/auto_code"
@@ -163,6 +164,11 @@ func Init() (err error) {
 	AnalysisIndexVal.OpenSub = OpenSub
 	if err = AnalysisIndexVal.Init(); err != nil {
 		err = errors.New("analysis index val, " + err.Error())
+		return
+	}
+	AnalysisIndexRFM.OpenSub = OpenSub
+	if err = AnalysisIndexRFM.Init(); err != nil {
+		err = errors.New("analysis index rfm, " + err.Error())
 		return
 	}
 

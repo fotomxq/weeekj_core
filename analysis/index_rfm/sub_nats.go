@@ -1,0 +1,5 @@
+package AnalysisIndexRFM
+
+func subNats() {
+
+}
