@@ -2,8 +2,10 @@ package AnalysisIndexVal
 
 import (
 	"errors"
+	AnalysisIndex "github.com/fotomxq/weeekj_core/v5/analysis/index"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"github.com/lib/pq"
+	"time"
 )
 
 // DataGetAnalysisIndexValTotal 计算某个指标存在维度值的总体值分布数据
@@ -37,6 +39,12 @@ type ArgsGetAnalysisIndexValTotal struct {
 // GetAnalysisIndexValTotal 计算某个指标存在维度值的总体值分布
 // 只查询该指标下，维度存在数据，但
 func GetAnalysisIndexValTotal(args *ArgsGetAnalysisIndexValTotal) (data DataGetAnalysisIndexValTotal) {
+	//检查code是否存在
+	codeData, _ := AnalysisIndex.GetIndexByCode(args.Code)
+	if codeData.ID < 1 {
+		return
+	}
+	//组装筛选条件
 	sqlAppend := ""
 	if len(args.ExcludeCol) > 0 {
 		sqlAppend = " AND ("
@@ -49,6 +57,19 @@ func GetAnalysisIndexValTotal(args *ArgsGetAnalysisIndexValTotal) (data DataGetA
 		sqlAppend += ")"
 	}
 	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&data, "SELECT count(id) as val_count, sum(val_raw) as sum_val, avg(val_raw) as avg_val, max(val_raw) as max_val, min(val_raw) as min_val FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md = $2 AND is_forecast = $3 "+sqlAppend+" LIMIT 1", args.Code, args.YearMD, args.IsForecast)
+	return
+}
+
+// GetAnalysisIndexValTotalCount 获取指标计算的数量
+func GetAnalysisIndexValTotalCount(code string, afterAt time.Time) (count int64) {
+	//检查code是否存在
+	codeData, _ := AnalysisIndex.GetIndexByCode(code)
+	if codeData.ID < 1 {
+		return
+	}
+	//获取数据
+	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&count, "SELECT count(id) FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md >= $2 LIMIT 1", code, afterAt.Format("2006-01-02"))
+	//反馈
 	return
 }
 
@@ -71,12 +92,19 @@ type ArgsRefAnalysisIndexValTotal struct {
 // RefAnalysisIndexValTotal 指标总体值及归一化计算
 // 注意：此方法不能用于预测值，预测值请使用CreateVal方法; 归一化处理请使用reviseNormVal方法
 func RefAnalysisIndexValTotal(args *ArgsRefAnalysisIndexValTotal) (err error) {
+	//检查code是否存在
+	codeData, _ := AnalysisIndex.GetIndexByCode(args.Code)
+	if codeData.ID < 1 {
+		return
+	}
+	//获取总体值
 	topData := GetAnalysisIndexValTotal(&ArgsGetAnalysisIndexValTotal{
 		Code:       args.Code,
 		YearMD:     args.YearMD,
 		ExcludeCol: args.ExcludeCol,
 		IsForecast: false,
 	})
+	//计算值
 	var valRaw float64
 	switch args.CalcType {
 	case "count":
@@ -93,6 +121,7 @@ func RefAnalysisIndexValTotal(args *ArgsRefAnalysisIndexValTotal) (err error) {
 		err = errors.New("calc_type error")
 		return
 	}
+	//插入新的数据
 	err = CreateVal(&ArgsCreateVal{
 		Code:       args.Code,
 		YearMD:     args.YearMD,
