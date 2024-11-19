@@ -101,9 +101,6 @@ func Create(args *ArgsCreate) (id int64, err error) {
 type ArgsUpdate struct {
 	// ID
 	ID int64 `db:"id" json:"id" check:"id" unique:"true"`
-	//编码
-	// 维度编码，用于程序内部识别
-	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
 	//名称
 	Name string `db:"name" json:"name" check:"des" min:"1" max:"300" empty:"true" field_search:"true" field_list:"true"`
 	//描述
