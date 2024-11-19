@@ -3,9 +3,7 @@ package AnalysisIndexVal
 import (
 	"errors"
 	"fmt"
-	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
-	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 	"github.com/golang-module/carbon"
 )
 
@@ -141,11 +139,11 @@ type DataGetValsByBetweenAtAndAutoFullChild struct {
 // GetValsByBetweenAtAndAutoFull 获取指定时间范围的多指标数据集
 func GetValsByBetweenAtAndAutoFull(args *ArgsGetValsByBetweenAtAndAutoFull) (dataList []DataGetValsByBetweenAtAndAutoFull, err error) {
 	//缓冲器设计
-	cacheMark := fmt.Sprint("analysis:index:vals:between.auto.full:args:", CoreFilter.GetMd5StrByStr(fmt.Sprint(args)))
-	if err = Router2SystemConfig.MainCache.GetStruct(cacheMark, &dataList); err == nil && len(dataList) > 0 {
-		return
-	}
-	dataList = []DataGetValsByBetweenAtAndAutoFull{}
+	//cacheMark := fmt.Sprint("analysis:index:vals:between.auto.full:args:", CoreFilter.GetMd5StrByStr(fmt.Sprint(args)))
+	//if err = Router2SystemConfig.MainCache.GetStruct(cacheMark, &dataList); err == nil && len(dataList) > 0 {
+	//	return
+	//}
+	//dataList = []DataGetValsByBetweenAtAndAutoFull{}
 	//参数检查
 	switch args.DateType {
 	case "year":
@@ -299,8 +297,8 @@ func GetValsByBetweenAtAndAutoFull(args *ArgsGetValsByBetweenAtAndAutoFull) (dat
 		})
 	}
 	//存储缓冲
-	Router2SystemConfig.MainCache.DeleteMark(cacheMark)
-	Router2SystemConfig.MainCache.SetStruct(cacheMark, dataList, CoreCache.CacheTime1Hour)
+	//Router2SystemConfig.MainCache.DeleteMark(cacheMark)
+	//Router2SystemConfig.MainCache.SetStruct(cacheMark, dataList, CoreCache.CacheTime1Hour)
 	//反馈
 	return
 }
