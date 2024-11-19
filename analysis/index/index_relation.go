@@ -63,6 +63,62 @@ func GetIndexRelationByCode(parentID, indexID int64) (data FieldsIndexRelation, 
 	return
 }
 
+// GetIndexByRelationID 获取指标下的所有子指标
+// 只能获取下一个层级所有指标
+func GetIndexByRelationID(topID int64) (dataList []FieldsIndexRelation, err error) {
+	//获取指标定义
+	var topData FieldsIndex
+	topData, _ = GetIndexByID(topID)
+	if topData.ID < 1 {
+		err = errors.New("top index not exist")
+		return
+	}
+	//获取关系网络
+	_, err = indexRelationDB.GetList().GetAll(&BaseSQLTools.ArgsGetAll{
+		ConditionFields: []BaseSQLTools.ArgsGetListSimpleConditionID{
+			{
+				Name: "index_id",
+				Val:  topData.ID,
+			},
+		},
+		IsRemove: false,
+	}, &dataList)
+	if err != nil || len(dataList) < 1 {
+		err = errors.New("relation not exist")
+		return
+	}
+	//反馈
+	return
+}
+
+// GetIndexByRelationCode 获取指标下的所有子指标
+// 只能获取下一个层级所有指标
+func GetIndexByRelationCode(topCode string) (dataList []FieldsIndexRelation, err error) {
+	//获取指标定义
+	var topData FieldsIndex
+	topData, _ = GetIndexByCode(topCode)
+	if topData.ID < 1 {
+		err = errors.New("top index not exist")
+		return
+	}
+	//获取关系网络
+	_, err = indexRelationDB.GetList().GetAll(&BaseSQLTools.ArgsGetAll{
+		ConditionFields: []BaseSQLTools.ArgsGetListSimpleConditionID{
+			{
+				Name: "index_id",
+				Val:  topData.ID,
+			},
+		},
+		IsRemove: false,
+	}, &dataList)
+	if err != nil || len(dataList) < 1 {
+		err = errors.New("relation not exist")
+		return
+	}
+	//反馈
+	return
+}
+
 // ArgsCreateIndexRelation 创建指标关系参数
 type ArgsCreateIndexRelation struct {
 	//指标ID
