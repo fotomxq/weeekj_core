@@ -6,8 +6,10 @@ import (
 	AnalysisAny "github.com/fotomxq/weeekj_core/v5/analysis/any"
 	AnalysisBindVisit "github.com/fotomxq/weeekj_core/v5/analysis/bind_visit"
 	AnalysisIndex "github.com/fotomxq/weeekj_core/v5/analysis/index"
+	AnalysisIndexDimensions "github.com/fotomxq/weeekj_core/v5/analysis/index_dimensions"
 	AnalysisIndexRFM "github.com/fotomxq/weeekj_core/v5/analysis/index_rfm"
 	AnalysisIndexVal "github.com/fotomxq/weeekj_core/v5/analysis/index_val"
+	AnalysisIndexValCustom "github.com/fotomxq/weeekj_core/v5/analysis/index_val_custom"
 	BaseApprover "github.com/fotomxq/weeekj_core/v5/base/approver"
 	BaseAutoCode "github.com/fotomxq/weeekj_core/v5/base/auto_code"
 	BaseBPM "github.com/fotomxq/weeekj_core/v5/base/bpm"
@@ -154,6 +156,12 @@ func Init() (err error) {
 	//访问统计
 	AnalysisBindVisit.OpenSub = OpenSub
 	AnalysisBindVisit.Init()
+	//指标维度
+	AnalysisIndexDimensions.OpenSub = OpenSub
+	if err = AnalysisIndexDimensions.Init(); err != nil {
+		err = errors.New("analysis index dimensions, " + err.Error())
+		return
+	}
 	//指标体系
 	AnalysisIndex.OpenSub = OpenSub
 	if err = AnalysisIndex.Init(); err != nil {
@@ -166,6 +174,13 @@ func Init() (err error) {
 		err = errors.New("analysis index val, " + err.Error())
 		return
 	}
+	//指标值自定义模块
+	AnalysisIndexValCustom.OpenSub = OpenSub
+	if err = AnalysisIndexValCustom.Init(); err != nil {
+		err = errors.New("analysis index val custom, " + err.Error())
+		return
+	}
+	//RFM
 	AnalysisIndexRFM.OpenSub = OpenSub
 	if err = AnalysisIndexRFM.Init(); err != nil {
 		err = errors.New("analysis index rfm, " + err.Error())

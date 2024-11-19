@@ -1,0 +1,5 @@
+package AnalysisIndexValCustom
+
+func subNats() {
+
+}
