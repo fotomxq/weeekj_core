@@ -67,6 +67,8 @@ func (c *QuickList) GetListSimple(args *ArgsGetListSimple, result any) (dataCoun
 					break
 				}
 				ctx = ctx.SetFloat(v.Name, v.Val.(float64))
+			case bool:
+				ctx = ctx.SetBoolQuery(v.Name, v.Val.(bool))
 			case string:
 				if v.Val.(string) == "" {
 					break
