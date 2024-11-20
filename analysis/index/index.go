@@ -10,6 +10,10 @@ import (
 type ArgsGetIndexList struct {
 	//分页
 	Pages CoreSQL2.ArgsPages `json:"pages"`
+	//是否内置
+	// 前端应拦截内置指标的删除操作，以免影响系统正常运行，启动重启后将自动恢复，所以删除操作是无法生效的
+	NeedIsSystem bool `json:"needIsSystem"`
+	IsSystem     bool `db:"is_system" json:"isSystem" index:"true" field_list:"true"`
 	//是否删除
 	IsRemove bool `db:"is_remove" json:"isRemove" check:"bool"`
 	//搜索
@@ -18,10 +22,18 @@ type ArgsGetIndexList struct {
 
 // GetIndexList 获取指标列表
 func GetIndexList(args *ArgsGetIndexList) (dataList []FieldsIndex, dataCount int64, err error) {
+	//构建参数
+	var conditionFields []BaseSQLTools.ArgsGetListSimpleConditionID
+	if args.NeedIsSystem {
+		conditionFields = append(conditionFields, BaseSQLTools.ArgsGetListSimpleConditionID{
+			Name: "is_system",
+			Val:  args.IsSystem,
+		})
+	}
 	//获取数据
 	dataCount, err = indexDB.GetList().GetListSimple(&BaseSQLTools.ArgsGetListSimple{
 		Pages:           args.Pages,
-		ConditionFields: nil,
+		ConditionFields: conditionFields,
 		IsRemove:        args.IsRemove,
 		Search:          args.Search,
 	}, &dataList)
