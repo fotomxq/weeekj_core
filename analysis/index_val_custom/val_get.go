@@ -1,5 +1,10 @@
 package AnalysisIndexValCustom
 
+import (
+	BaseSQLTools "github.com/fotomxq/weeekj_core/v5/base/sql_tools"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+)
+
 // ArgsGetVal 获取具体的数据参数
 type ArgsGetVal struct {
 	//编码
@@ -60,6 +65,41 @@ func GetVal(args *ArgsGetVal) (data FieldsVal, err error) {
 		return
 	}
 	return
+}
+
+// ArgsGetValListParams 获取指标值列表参数结构体
+type ArgsGetValListParams struct {
+	//分页
+	Pages CoreSQL2.ArgsPages `json:"pages"`
+	//是否删除
+	IsRemove bool `db:"is_remove" json:"isRemove" check:"bool"`
+	//搜索
+	Search string `json:"search" check:"search" empty:"true"`
+}
+
+// GetValList 获取指标值列表
+func GetValList(args *ArgsGetValListParams) (dataList []FieldsVal, dataCount int64, err error) {
+	//获取数据
+	dataCount, err = indexValCustomDB.GetList().GetListSimple(&BaseSQLTools.ArgsGetListSimple{
+		Pages:           args.Pages,
+		ConditionFields: nil,
+		IsRemove:        args.IsRemove,
+		Search:          args.Search,
+	}, &dataList)
+	if err != nil || len(dataList) < 1 {
+		return
+	}
+	for k, v := range dataList {
+		var vData FieldsVal
+		err = indexValCustomDB.GetInfo().GetInfoByID(v.ID, &vData)
+		if err != nil || vData.ID < 1 {
+			continue
+		}
+		dataList[k] = vData
+	}
+	//反馈
+	return
+
 }
 
 func getValByID(id int64) (data FieldsVal) {
