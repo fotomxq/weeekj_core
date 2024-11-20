@@ -61,3 +61,9 @@ func GetVal(args *ArgsGetVal) (data FieldsVal, err error) {
 	}
 	return
 }
+
+func getValByID(id int64) (data FieldsVal) {
+	_ = indexValCustomDB.GetInfo().GetInfoByID(id, &data)
+	//反馈
+	return
+}
