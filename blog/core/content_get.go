@@ -784,3 +784,9 @@ func GetContentCountBySortIDAndTime(orgID int64, sortID int64, startTime time.Ti
 	//反馈
 	return
 }
+
+// 获取指定分类下指定时间段文章IDs列
+func GetContentIDsBySortIDAndTime(orgID int64, sortID int64, startTime time.Time, endTime time.Time) (ids pq.Int64Array) {
+	_ = Router2SystemConfig.MainDB.Select(&ids, "SELECT id FROM blog_core_content WHERE org_id = $1 AND sort_id = $2 AND create_at >= $3 AND create_at <= $4 AND delete_at < to_timestamp(1000000) AND publish_at > to_timestamp(1000000) AND audit_at > to_timestamp(1000000)", orgID, sortID, startTime, endTime)
+	return
+}
