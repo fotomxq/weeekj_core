@@ -74,7 +74,16 @@ func (t *ClientDeleteCtx) SetWhereStr(where string, arg map[string]interface{}) 
 }
 
 func (t *ClientDeleteCtx) AddQuery(fieldName string, param any) *ClientDeleteCtx {
-	t.SetWhereOrThan(fieldName, param)
+	switch param.(type) {
+	case int:
+		t.SetWhereOrThan(fieldName, param)
+	case int64:
+		t.SetWhereOrThan(fieldName, param)
+	case string:
+		t.SetWhereAnd(fieldName, param)
+	case float64:
+		t.SetWhereOrThan(fieldName, param)
+	}
 	return t
 }
 
