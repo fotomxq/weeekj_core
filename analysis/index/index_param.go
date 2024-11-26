@@ -87,6 +87,8 @@ func GetIndexParamByCode(indexID int64, code string) (data FieldsIndexParam, err
 type ArgsCreateIndexParam struct {
 	//指标ID
 	IndexID int64 `db:"index_id" json:"indexID" check:"id" index:"true"`
+	//参数名称
+	Name string `db:"name" json:"name" check:"des" min:"1" max:"50" field_search:"true" field_list:"true"`
 	//参数编码
 	// 用于程序内识别内置指标的参数
 	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" field_search:"true" field_list:"true"`

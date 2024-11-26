@@ -11,6 +11,7 @@ import (
 	AnalysisIndexRFM "github.com/fotomxq/weeekj_core/v5/analysis/index_rfm"
 	AnalysisIndexVal "github.com/fotomxq/weeekj_core/v5/analysis/index_val"
 	AnalysisIndexValCustom "github.com/fotomxq/weeekj_core/v5/analysis/index_val_custom"
+	AnalysisSignatureLibrary "github.com/fotomxq/weeekj_core/v5/analysis/signature_library"
 	BaseApprover "github.com/fotomxq/weeekj_core/v5/base/approver"
 	BaseAutoCode "github.com/fotomxq/weeekj_core/v5/base/auto_code"
 	BaseBPM "github.com/fotomxq/weeekj_core/v5/base/bpm"
@@ -191,6 +192,12 @@ func Init() (err error) {
 	AnalysisIndexEvent.OpenSub = OpenSub
 	if err = AnalysisIndexEvent.Init(); err != nil {
 		err = errors.New("analysis index event, " + err.Error())
+		return
+	}
+	//相似度分析模块
+	AnalysisSignatureLibrary.OpenSub = OpenSub
+	if err = AnalysisSignatureLibrary.Init(); err != nil {
+		err = errors.New("analysis signature library, " + err.Error())
 		return
 	}
 
