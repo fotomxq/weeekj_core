@@ -80,6 +80,30 @@ func GetAnalysisIndexValTotalCount(code string, afterAt time.Time) (count int64)
 	return
 }
 
+// GetAnalysisIndexValTotalCountByBetweenAt 获取指标在指定时间断内的数据量
+func GetAnalysisIndexValTotalCountByBetweenAt(code string, startTime time.Time, endTime time.Time) (count int64) {
+	//检查code是否存在
+	codeData, _ := AnalysisIndex.GetIndexByCode(code)
+	if codeData.ID < 1 {
+		return
+	}
+	//获取数据
+	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&count, "SELECT count(id) FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md >= $2 AND year_md <= $3 LIMIT 1", code, startTime.Format("2006-01-02"), endTime.Format("2006-01-02"))
+	//反馈
+	return
+}
+
+// GetEventExtendDistinctList 获取指定维度的所有可选值
+func GetEventExtendDistinctList(extendNum int) (dataList []string, err error) {
+	//获取数据
+	dataList, err = indexValDB.GetList().GetDistinctList(fmt.Sprintf("extend%d", extendNum))
+	if err != nil {
+		return
+	}
+	//反馈
+	return
+}
+
 // ArgsRefAnalysisIndexValTotal 指标总体值及归一化计算参数
 type ArgsRefAnalysisIndexValTotal struct {
 	//指标编码

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	"github.com/lib/pq"
 	"reflect"
 )
 
@@ -91,28 +92,6 @@ func (c *QuickList) GetListSimple(args *ArgsGetListSimple, result any) (dataCoun
 	if err != nil {
 		return
 	}
-	//result转化为数组
-	//paramsType := reflect.TypeOf(result).Elem()
-	//valueType := reflect.ValueOf(result).Elem()
-	//step := 0
-	//for step < paramsType.NumField() {
-	//	//捕捉结构
-	//	vField := paramsType.Field(step)
-	//	vValueType := valueType.Field(step)
-	//	//下一步
-	//	step += 1
-	//	//找到ID
-	//	if vField.Name == "ID" || vField.Tag.Get("db") == "id" {
-	//		//获取ID
-	//		id := vValueType.Int()
-	//		if id < 1 {
-	//			err = errors.New("id error")
-	//			return
-	//		}
-	//		//跳出
-	//		break
-	//	}
-	//}
 	//反馈
 	return
 }
@@ -165,6 +144,17 @@ func (c *QuickList) GetAll(args *ArgsGetAll, result any) (dataCount int64, err e
 	}
 	//获取数据
 	dataCount, err = ctx.ResultAndCount(result)
+	if err != nil {
+		return
+	}
+	//反馈
+	return
+}
+
+// GetDistinctList 获取指定字段的所有差异值清单
+func (c *QuickList) GetDistinctList(fieldName string) (result pq.StringArray, err error) {
+	//获取数据
+	err = c.quickClient.client.DB.GetPostgresql().Select(&result, "SELECT DISTINCT "+fieldName+" as name FROM "+c.quickClient.client.TableName+";")
 	if err != nil {
 		return
 	}

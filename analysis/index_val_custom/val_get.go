@@ -1,6 +1,7 @@
 package AnalysisIndexValCustom
 
 import (
+	"fmt"
 	BaseSQLTools "github.com/fotomxq/weeekj_core/v5/base/sql_tools"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
@@ -99,7 +100,17 @@ func GetValList(args *ArgsGetValListParams) (dataList []FieldsVal, dataCount int
 	}
 	//反馈
 	return
+}
 
+// GetIndexExtendDistinctList 获取指定维度的所有可选值
+func GetIndexExtendDistinctList(extendNum int) (dataList []string, err error) {
+	//获取数据
+	dataList, err = indexValCustomDB.GetList().GetDistinctList(fmt.Sprintf("extend%d", extendNum))
+	if err != nil {
+		return
+	}
+	//反馈
+	return
 }
 
 func getValByID(id int64) (data FieldsVal) {

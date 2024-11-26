@@ -1,16 +1,7 @@
 package AnalysisIndexEvent
 
-import "time"
-
-type FieldsEvent struct {
-	// ID
-	ID int64 `db:"id" json:"id" check:"id" unique:"true"`
-	//创建时间
-	CreateAt time.Time `db:"create_at" json:"createAt" default:"now()"`
-	//更新时间
-	UpdateAt time.Time `db:"update_at" json:"updateAt" default:"now()"`
-	//删除时间
-	DeleteAt time.Time `db:"delete_at" json:"deleteAt" default:"0" index:"true"`
+// ArgsInsertEvent 插入新的预警事件参数
+type ArgsInsertEvent struct {
 	//指标编码
 	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
 	//年月日
@@ -30,7 +21,8 @@ type FieldsEvent struct {
 	// 根据项目需求划定类型，可以留空
 	FromType string `db:"from_type" json:"fromType" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
 	//扩展维度1
-	// 可建议特别的维度关系，例如特定供应商的数据、特定地区的数据等
+	// 可建立特别的维度关系，例如特定供应商的数据、特定地区的数据等
+	// 该维度主要用于筛选数据
 	Extend1 string `db:"extend1" json:"extend1" index:"true" field_list:"true"`
 	//扩展维度2
 	Extend2 string `db:"extend2" json:"extend2" index:"true" field_list:"true"`
@@ -44,6 +36,21 @@ type FieldsEvent struct {
 	Threshold int64 `db:"threshold" json:"threshold" index:"true"`
 	//触发值
 	Val float64 `db:"val" json:"val" index:"true"`
-	//备注信息
-	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"3000" empty:"true" index:"true" field_list:"true"  field_search:"true"`
+}
+
+// InsertEvent 插入新的预警事件
+func InsertEvent(args *ArgsInsertEvent) (err error) {
+	//检查指标是否已触发过风险
+	_, err = getEventBySystem(args.FromSystem, args.FromID, args.FromType)
+	if err != nil {
+		err = nil
+		return
+	}
+	//写入数据
+	_, err = eventDB.GetInsert().InsertRow(args)
+	if err != nil {
+		return
+	}
+	//反馈
+	return
 }
