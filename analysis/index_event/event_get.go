@@ -1,7 +1,6 @@
 package AnalysisIndexEvent
 
 import (
-	"fmt"
 	BaseSQLTools "github.com/fotomxq/weeekj_core/v5/base/sql_tools"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
@@ -21,11 +20,11 @@ type ArgsGetEventList struct {
 	Level int `db:"level" json:"level" index:"true" field_list:"true"`
 	//来源指标值的系统和ID
 	// 避免重复触发预警
-	FromSystem string `db:"from_system" json:"fromSystem" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
-	FromID     int64  `db:"from_id" json:"fromID" check:"id" index:"true" field_list:"true"`
+	FromSystem string `db:"from_system" json:"fromSystem" check:"des" min:"1" max:"50" empty:"true" index:"true" field_list:"true"`
+	FromID     int64  `db:"from_id" json:"fromID" check:"id" empty:"true" index:"true" field_list:"true"`
 	//触发类型
 	// 根据项目需求划定类型，可以留空
-	FromType string `db:"from_type" json:"fromType" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
+	FromType string `db:"from_type" json:"fromType" check:"des" min:"1" max:"50" empty:"true" index:"true" field_list:"true"`
 	//扩展维度1
 	// 可建议特别的维度关系，例如特定供应商的数据、特定地区的数据等
 	Extend1 string `db:"extend1" json:"extend1" index:"true" field_list:"true"`
@@ -64,32 +63,6 @@ func GetEventList(args *ArgsGetEventList) (dataList []FieldsEvent, dataCount int
 	ctx = ctx.SetStringQuery("extend5", args.Extend5)
 	//获取数据
 	dataCount, err = eventDB.GetList().GetListDo(ctx, &dataList)
-	if err != nil {
-		return
-	}
-	//反馈
-	return
-}
-
-type DataGetEventLevelCount struct {
-	//预警等级
-	// 根据项目需求划定等级
-	// 例如：0 低风险; 1 中风险; 2 高风险
-	Level int `db:"level" json:"level"`
-	//数量
-	Count int64 `db:"count" json:"count"`
-}
-
-// GetEventLevelCount 获取风险等级统计
-func GetEventLevelCount() (dataList []DataGetEventLevelCount) {
-	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT level,count(*) as count FROM "+eventDB.GetClient().TableName+" GROUP BY level")
-	return
-}
-
-// GetEventExtendDistinctList 获取指定维度的所有可选值
-func GetEventExtendDistinctList(extendNum int) (dataList []string, err error) {
-	//获取数据
-	dataList, err = eventDB.GetList().GetDistinctList(fmt.Sprintf("extend%d", extendNum))
 	if err != nil {
 		return
 	}
