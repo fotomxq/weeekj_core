@@ -83,7 +83,7 @@ func (v *variableArray) getPPMCC() (float64, error) {
 }
 
 // ArraySimilarity 求数据相似度
-func ArraySimilarity(x []float64, y []float64) (float64, error) {
+func ArraySimilarity(x []float64, y []float64) float64 {
 	var ppmccUtil ppmmccUtil = &variableArray{
 		X:          x,
 		Y:          y,
@@ -91,7 +91,7 @@ func ArraySimilarity(x []float64, y []float64) (float64, error) {
 	}
 	ppmcc, err := ppmccUtil.getPPMCC()
 	if err != nil {
-		return 0, nil
+		return 0
 	}
-	return ppmcc, nil
+	return ppmcc
 }

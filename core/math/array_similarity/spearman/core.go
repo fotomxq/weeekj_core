@@ -1,6 +1,6 @@
 package CoreMathArraySimilaritySpearman
 
-//皮尔逊相关系数
+//斯皮尔曼相关系数
 /**
 使用方法：
 	x := []float64{1, 2, 3, 4, 5, 6}
