@@ -1,4 +1,4 @@
-package CoreMathCore
+package CoreMathArraySimilarityPPMCC
 
 import "testing"
 
