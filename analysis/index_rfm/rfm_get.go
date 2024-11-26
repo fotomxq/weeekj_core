@@ -1,5 +1,7 @@
 package AnalysisIndexRFM
 
+import "fmt"
+
 // ArgsGetRFMByCodeAndBetweenAt 获取指定时间范围的数据参数
 type ArgsGetRFMByCodeAndBetweenAt struct {
 	//指标编码
@@ -138,6 +140,17 @@ func GetRFMByCodeAndYMAndExtend(args *ArgsGetRFMByCodeAndYMAndExtend) (result fl
 	if data.ID > 0 {
 		result = data.RFMResult
 	}
+	return
+}
+
+// GetRFMExtendDistinctList 获取指定维度的所有可选值
+func GetRFMExtendDistinctList(extendNum int) (dataList []string, err error) {
+	//获取数据
+	dataList, err = rfmDB.GetList().GetDistinctList(fmt.Sprintf("extend%d", extendNum))
+	if err != nil {
+		return
+	}
+	//反馈
 	return
 }
 
