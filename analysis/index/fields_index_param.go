@@ -15,9 +15,11 @@ type FieldsIndexParam struct {
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt" default:"0" index:"true"`
 	//指标ID
 	IndexID int64 `db:"index_id" json:"indexID" check:"id" index:"true" field_list:"true"`
+	//参数名称
+	Name string `db:"name" json:"name" check:"des" min:"1" max:"50" field_search:"true" field_list:"true"`
 	//参数编码
 	// 用于程序内识别内置指标的参数
-	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" field_search:"true" field_list:"true"`
+	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" index:"true" field_search:"true" field_list:"true"`
 	//参数值
 	ParamVal string `db:"param_val" json:"paramVal"`
 }
