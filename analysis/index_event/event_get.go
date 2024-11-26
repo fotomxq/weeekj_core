@@ -71,6 +71,21 @@ func GetEventList(args *ArgsGetEventList) (dataList []FieldsEvent, dataCount int
 	return
 }
 
+type DataGetEventLevelCount struct {
+	//预警等级
+	// 根据项目需求划定等级
+	// 例如：0 低风险; 1 中风险; 2 高风险
+	Level int `db:"level" json:"level"`
+	//数量
+	Count int64 `db:"count" json:"count"`
+}
+
+// GetEventLevelCount 获取风险等级统计
+func GetEventLevelCount() (dataList []DataGetEventLevelCount) {
+	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT level,count(*) as count FROM "+eventDB.GetClient().TableName+" GROUP BY level")
+	return
+}
+
 // GetEventExtendDistinctList 获取指定维度的所有可选值
 func GetEventExtendDistinctList(extendNum int) (dataList []string, err error) {
 	//获取数据
