@@ -7,6 +7,7 @@ import (
 	AnalysisBindVisit "github.com/fotomxq/weeekj_core/v5/analysis/bind_visit"
 	AnalysisIndex "github.com/fotomxq/weeekj_core/v5/analysis/index"
 	AnalysisIndexDimensions "github.com/fotomxq/weeekj_core/v5/analysis/index_dimensions"
+	AnalysisIndexEvent "github.com/fotomxq/weeekj_core/v5/analysis/index_event"
 	AnalysisIndexRFM "github.com/fotomxq/weeekj_core/v5/analysis/index_rfm"
 	AnalysisIndexVal "github.com/fotomxq/weeekj_core/v5/analysis/index_val"
 	AnalysisIndexValCustom "github.com/fotomxq/weeekj_core/v5/analysis/index_val_custom"
@@ -184,6 +185,12 @@ func Init() (err error) {
 	AnalysisIndexRFM.OpenSub = OpenSub
 	if err = AnalysisIndexRFM.Init(); err != nil {
 		err = errors.New("analysis index rfm, " + err.Error())
+		return
+	}
+	//指标事件
+	AnalysisIndexEvent.OpenSub = OpenSub
+	if err = AnalysisIndexEvent.Init(); err != nil {
+		err = errors.New("analysis index event, " + err.Error())
 		return
 	}
 
