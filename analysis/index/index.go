@@ -226,7 +226,7 @@ func GetIndexNameByID(id int64) (name string) {
 	return data.Name
 }
 
-// GetIndexNameByID 获取指标名称
+// GetIndexNameByCode 获取指标名称
 func GetIndexNameByCode(code string) (name string) {
 	data, _ := GetIndexByCode(code)
 	return data.Name
