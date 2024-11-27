@@ -56,6 +56,29 @@ func SimilarityList(args *ArgsSimilarityList) (dataList []DataSimilarityList, er
 
 // Similarity 计算一组数据的相似度
 func Similarity(libType string, data1, data2 []float64) (result float64) {
+	//如果data1、2的所有数据为0，则直接返回0
+	if len(data1) > 0 {
+		zeroCount := 0
+		for _, v := range data1 {
+			if v == 0 {
+				zeroCount++
+			}
+		}
+		if zeroCount == len(data1) {
+			return 0
+		}
+	}
+	if len(data2) > 0 {
+		zeroCount := 0
+		for _, v := range data2 {
+			if v == 0 {
+				zeroCount++
+			}
+		}
+		if zeroCount == len(data2) {
+			return 0
+		}
+	}
 	//根据libType选择不同的算法
 	switch libType {
 	case "1":
