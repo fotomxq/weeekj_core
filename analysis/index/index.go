@@ -2,6 +2,7 @@ package AnalysisIndex
 
 import (
 	"errors"
+	"fmt"
 	BaseSQLTools "github.com/fotomxq/weeekj_core/v5/base/sql_tools"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
@@ -135,6 +136,11 @@ func GetIndexAll() (dataList []DataGetIndexAll, err error) {
 			})
 		}
 	}
+	//检查指标环路
+	if b := checkIndexAllRelChild(relationRawList); b {
+		err = errors.New(fmt.Sprint("index relation loop"))
+		return
+	}
 	//基于第一级指标，建立下级指标
 	for k, vData := range dataList {
 		dataList[k].SubIndex = getIndexAllRelChild(indexRawList, relationRawList, vData.ID)
@@ -169,6 +175,45 @@ func getIndexAllRelChild(indexRawList []FieldsIndex, relationRawList []FieldsInd
 		}
 	}
 	return
+}
+
+// checkIndexAllRelChild 指标关系环路检查
+// 禁止子指标出现在上级指标中
+func checkIndexAllRelChild(relationRawList []FieldsIndexRelation) (b bool) { // 创建一个map，用于存储每个IndexID的访问状态: 0-未访问, 1-正在访问, 2-已访问完
+	visitStatus := make(map[int64]int64)
+	// 递归函数，用于检查从某个IndexID开始的路径是否形成环路
+	var checkLoop func(int64) bool
+	checkLoop = func(indexID int64) bool {
+		// 如果当前IndexID正在被访问，说明存在环路
+		if visitStatus[indexID] == 1 {
+			return true
+		}
+		// 如果当前IndexID已经被访问完，直接返回false
+		if visitStatus[indexID] == 2 {
+			return false
+		}
+		// 标记当前IndexID为正在访问
+		visitStatus[indexID] = 1
+		// 遍历所有关系，查找以当前IndexID为上级指标的关系
+		for _, relation := range relationRawList {
+			if relation.IndexID == indexID {
+				// 递归检查下级指标
+				if checkLoop(relation.RelationIndexID) {
+					return true
+				}
+			}
+		}
+		// 标记当前IndexID为已访问完
+		visitStatus[indexID] = 2
+		return false
+	}
+	// 遍历所有关系，从每个未访问的IndexID开始检查
+	for _, relation := range relationRawList {
+		if visitStatus[relation.IndexID] == 0 && checkLoop(relation.IndexID) {
+			return true
+		}
+	}
+	return false
 }
 
 // DataGetIndexListByTop 获取指标列表顶部数据

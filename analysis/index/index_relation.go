@@ -199,7 +199,7 @@ func UpdateIndexRelation(args *ArgsUpdateIndexRelation) (err error) {
 	return
 }
 
-// 仅修改算法权重值
+// UpdateIndexRelationAutoWeight 仅修改算法权重值
 func UpdateIndexRelationAutoWeight(id, autoWeight int64) (err error) {
 	//修改数据
 	type updateType struct {

@@ -55,16 +55,18 @@ func SimilarityList(args *ArgsSimilarityList) (dataList []DataSimilarityList, er
 }
 
 // Similarity 计算一组数据的相似度
-func Similarity(libType string, data1, data2 []float64) float64 {
+func Similarity(libType string, data1, data2 []float64) (result float64) {
 	//根据libType选择不同的算法
 	switch libType {
 	case "1":
 		//皮尔逊相关系数
-		return CoreMathArraySimilarityPPMCC.ArraySimilarity(data1, data2)
+		result = CoreMathArraySimilarityPPMCC.ArraySimilarity(data1, data2)
 	case "2":
 		//斯皮尔曼相关系数
-		return CoreMathArraySimilaritySpearman.ArraySimilarity(data1, data2)
+		result = CoreMathArraySimilaritySpearman.ArraySimilarity(data1, data2)
 	}
+	//保留一定6个精度
+	result = float64(int(result*1000000)) / 1000000
 	//反馈相似度
-	return 0
+	return result
 }
