@@ -4,7 +4,29 @@ import (
 	"fmt"
 	BaseSQLTools "github.com/fotomxq/weeekj_core/v5/base/sql_tools"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
+	"time"
 )
+
+// GetValLastTime 获取最后导入的时间
+func GetValLastTime() (result time.Time, dataCount int64) {
+	var dataList []FieldsVal
+	dataCount, _ = indexValCustomDB.GetList().GetListSimple(&BaseSQLTools.ArgsGetListSimple{
+		Pages: CoreSQL2.ArgsPages{
+			Page: 1,
+			Max:  1,
+			Sort: "id",
+			Desc: true,
+		},
+		ConditionFields: nil,
+		IsRemove:        false,
+		Search:          "",
+	}, &dataList)
+	if len(dataList) < 1 {
+		return
+	}
+	result = dataList[0].CreateAt
+	return
+}
 
 // ArgsGetVal 获取具体的数据参数
 type ArgsGetVal struct {

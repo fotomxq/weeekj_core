@@ -1,6 +1,8 @@
 package AnalysisIndexEvent
 
 import (
+	"errors"
+	"fmt"
 	BaseSQLTools "github.com/fotomxq/weeekj_core/v5/base/sql_tools"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
@@ -63,7 +65,8 @@ func GetEventList(args *ArgsGetEventList) (dataList []FieldsEvent, dataCount int
 	ctx = ctx.SetStringQuery("extend5", args.Extend5)
 	//获取数据
 	dataCount, err = eventDB.GetList().GetListDo(ctx, &dataList)
-	if err != nil {
+	if err != nil || len(dataList) < 1 {
+		err = errors.New(fmt.Sprint("event get list error:", err))
 		return
 	}
 	//反馈
