@@ -8,12 +8,26 @@ import (
 
 // GetRound 四舍五入取整数
 func GetRound(data float64) float64 {
+	if math.IsNaN(data) || math.IsInf(data, 0) {
+		return 0
+	}
 	return math.Floor(data) + 0.5
 }
 
 // RoundToTwoDecimalPlaces 四舍五入保留2位小数点
 func RoundToTwoDecimalPlaces(num float64) float64 {
+	if math.IsNaN(num) || math.IsInf(num, 0) {
+		return 0
+	}
 	return math.Round(num*100) / 100 // 四舍五入到2位整数并返回float64类型结果
+}
+
+// RoundTo4DecimalPlaces 四舍五入保留4位小数点
+func RoundTo4DecimalPlaces(num float64) float64 {
+	if math.IsNaN(num) || math.IsInf(num, 0) {
+		return 0
+	}
+	return math.Round(num*10000) / 10000 // 四舍五入到2位整数并返回float64类型结果
 }
 
 func GetRoundToInt(data float64) int {
