@@ -2,6 +2,7 @@ package AnalysisIndex
 
 import (
 	"errors"
+	"fmt"
 	BaseSQLTools "github.com/fotomxq/weeekj_core/v5/base/sql_tools"
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 )
@@ -99,14 +100,15 @@ type ArgsCreateIndexParam struct {
 // CreateIndexParam 创建新的指标
 func CreateIndexParam(args *ArgsCreateIndexParam) (err error) {
 	//指标必须存在
-	indexData, _ := GetIndexByID(args.IndexID)
-	if indexData.ID < 1 {
-		err = errors.New("index not exist")
+	var indexData FieldsIndex
+	indexData, err = GetIndexByID(args.IndexID)
+	if err != nil || indexData.ID < 1 {
+		err = errors.New(fmt.Sprint("index not exist: ", err))
 		return
 	}
 	//检查code是否重复
 	if b, _ := indexParamDB.GetInfo().CheckInfoByFields(map[string]any{
-		"index_id": args.IndexID,
+		"index_id": indexData.ID,
 		"code":     args.Code,
 	}, true); b {
 		err = errors.New("code is exist")

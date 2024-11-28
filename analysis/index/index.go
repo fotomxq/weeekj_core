@@ -259,6 +259,7 @@ func GetIndexByID(id int64) (data FieldsIndex, err error) {
 	//获取数据
 	err = indexDB.GetInfo().GetInfoByID(id, &data)
 	if err != nil {
+		err = errors.New(fmt.Sprint("no data: ", err, ", id: ", id))
 		return
 	}
 	//反馈

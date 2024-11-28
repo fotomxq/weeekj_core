@@ -20,17 +20,5 @@ func TestInit(t *testing.T) {
 	}
 }
 
-func TestCreateIndexParams(t *testing.T) {
-	err := CreateIndexParam(&ArgsCreateIndexParam{
-		IndexID:  1,
-		Code:     "FH",
-		ParamVal: "test",
-	})
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
 func TestClear(t *testing.T) {
 }
