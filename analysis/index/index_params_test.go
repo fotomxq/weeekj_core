@@ -11,8 +11,10 @@ var (
 
 func TestInitParams(t *testing.T) {
 	TestInit(t)
+	TestGetIndexByCode(t)
 	TestCreateIndex(t)
 	TestGetIndexList(t)
+	TestGetIndexParamList(t)
 }
 
 func TestCreateIndexParams(t *testing.T) {

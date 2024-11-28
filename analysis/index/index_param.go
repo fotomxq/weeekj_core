@@ -36,6 +36,7 @@ func GetIndexParamList(args *ArgsGetIndexParamList) (dataList []FieldsIndexParam
 		Search:          args.Search,
 	}, &dataList)
 	if err != nil || len(dataList) < 1 {
+		err = errors.New(fmt.Sprint("not found data:", err))
 		return
 	}
 	for k, v := range dataList {
