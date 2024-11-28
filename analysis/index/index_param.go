@@ -53,6 +53,11 @@ func GetIndexParamList(args *ArgsGetIndexParamList) (dataList []FieldsIndexParam
 
 // GetIndexParamByIndexCode 获取指定编码参数
 func GetIndexParamByIndexCode(indexCode string, code string) (data FieldsIndexParam, err error) {
+	//如果为空
+	if code == "" {
+		err = errors.New("code is empty")
+		return
+	}
 	//获取指标
 	var indexData FieldsIndex
 	indexData, err = GetIndexByCode(indexCode)
@@ -67,6 +72,29 @@ func GetIndexParamByIndexCode(indexCode string, code string) (data FieldsIndexPa
 	if err != nil {
 		return
 	}
+	//反馈
+	return
+}
+
+// GetIndexParamValByIndexCode 获取指定编码参数
+func GetIndexParamValByIndexCode(indexCode string, code string) (result string) {
+	//如果为空
+	if code == "" {
+		return
+	}
+	//获取指标
+	var indexData FieldsIndex
+	indexData, _ = GetIndexByCode(indexCode)
+	if indexData.ID < 1 {
+		return
+	}
+	//获取数据
+	var rawData FieldsIndexParam
+	_ = indexParamDB.GetInfo().GetInfoByFields(map[string]any{
+		"index_id": indexData.ID,
+		"code":     code,
+	}, true, &rawData)
+	result = rawData.ParamVal
 	//反馈
 	return
 }

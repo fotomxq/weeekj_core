@@ -95,6 +95,8 @@ func CalcRFM(args *ArgsCalcRFM) (err error) {
 	} else {
 		rfmResult = rfmCore.GetScoreByWeight(args.RVal, args.FVal, args.MVal, 0)
 	}
+	//修正结果
+	rfmResult = CoreFilter.RoundTo4DecimalPlaces(rfmResult)
 	//获取数据
 	rawData := getRFMByCodeAndYMAndExtendRaw(&ArgsGetRFMByCodeAndYMAndExtend{
 		Code:    args.Code,

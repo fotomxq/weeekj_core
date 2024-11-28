@@ -71,19 +71,7 @@ type ArgsGetVal struct {
 
 // GetVal 获取具体的数据
 func GetVal(args *ArgsGetVal) (data FieldsVal, err error) {
-	err = indexValCustomDB.GetInfo().GetInfoByFields(map[string]any{
-		"code":    args.Code,
-		"year_md": args.YearMD,
-		"extend1": args.Extend1,
-		"extend2": args.Extend2,
-		"extend3": args.Extend3,
-		"extend4": args.Extend4,
-		"extend5": args.Extend5,
-		"extend6": args.Extend6,
-		"extend7": args.Extend7,
-		"extend8": args.Extend8,
-		"extend9": args.Extend9,
-	}, true, &data)
+	err = indexValCustomDB.GetClient().DB.GetPostgresql().Get(&data, "SELECT * FROM "+indexValCustomDB.GetClient().TableName+" WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md = $2 AND extend1 = $3 AND extend2 = $4 AND extend3 = $5 AND extend4 = $6 AND extend5 = $7 AND extend6 = $8 AND extend7 = $9 AND extend8 = $10 AND extend9 = $11 AND is_remove = false", args.Code, args.YearMD, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5, args.Extend6, args.Extend7, args.Extend8, args.Extend9)
 	if err != nil {
 		return
 	}

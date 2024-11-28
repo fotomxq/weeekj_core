@@ -243,6 +243,10 @@ func GetIndexListByTop() (dataList []DataGetIndexListByTop, dataCount int64, err
 
 // GetIndexByCode 通过编码获取指标
 func GetIndexByCode(code string) (data FieldsIndex, err error) {
+	if code == "" {
+		err = errors.New("index code is empty")
+		return
+	}
 	//获取数据
 	err = indexDB.GetInfo().GetInfoByFields(map[string]any{
 		"code": code,
@@ -275,6 +279,9 @@ func GetIndexNameByID(id int64) (name string) {
 // GetIndexNameByCode 获取指标名称
 func GetIndexNameByCode(code string) (name string) {
 	data, _ := GetIndexByCode(code)
+	if data.ID < 1 {
+		return
+	}
 	return data.Name
 }
 

@@ -121,9 +121,9 @@ type DataGetAnalysisIndexValTotalAll struct {
 // 不含维度筛选
 func GetAnalysisIndexValTotalAll(args *ArgsGetAnalysisIndexValTotalAll) (dataList []DataGetAnalysisIndexValTotalAll, err error) {
 	if len(args.CodeList) < 1 {
-		_ = indexValDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT code, count(id) as data_count, min(year_md) as min_time, max(year_md) as max_time, min(val_raw) as min_val, max(val_raw) as max_val FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND ($1 = '' OR year_md >= $1) AND ($2 = '' OR year_md <= $2) AND extend1 = '' AND extend2 = '' AND extend3 = '' AND extend4 = '' AND extend5 = '' GROUP BY code", args.StartAt, args.EndAt)
+		err = indexValDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT code, count(id) as data_count, min(year_md) as min_time, max(year_md) as max_time, ROUND(min(val_raw)::numeric, 4) as min_val, ROUND(max(val_raw)::numeric, 4) as max_val FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND ($1 = '' OR year_md >= $1) AND ($2 = '' OR year_md <= $2) AND extend1 = '' AND extend2 = '' AND extend3 = '' AND extend4 = '' AND extend5 = '' AND is_forecast = false GROUP BY code", args.StartAt, args.EndAt)
 	} else {
-		_ = indexValDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT code, count(id) as data_count, min(year_md) as min_time, max(year_md) as max_time, min(val_raw) as min_val, max(val_raw) as max_val FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND ($1 = '' OR year_md >= $1) AND ($2 = '' OR year_md <= $2) AND extend1 = '' AND extend2 = '' AND extend3 = '' AND extend4 = '' AND extend5 = '' AND code = ANY($3) GROUP BY code", args.StartAt, args.EndAt, args.CodeList)
+		err = indexValDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT code, count(id) as data_count, min(year_md) as min_time, max(year_md) as max_time, ROUND(min(val_raw)::numeric, 4) as min_val, ROUND(max(val_raw)::numeric, 4) as max_val FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND ($1 = '' OR year_md >= $1) AND ($2 = '' OR year_md <= $2) AND extend1 = '' AND extend2 = '' AND extend3 = '' AND extend4 = '' AND extend5 = '' AND code = ANY($3) AND is_forecast = false GROUP BY code", args.StartAt, args.EndAt, args.CodeList)
 	}
 	return
 }

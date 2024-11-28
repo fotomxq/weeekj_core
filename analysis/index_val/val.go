@@ -5,6 +5,7 @@ import (
 	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"github.com/golang-module/carbon"
+	"math"
 )
 
 // ArgsGetValsByBetweenAt 获取指定时间范围内的指标值参数
@@ -330,16 +331,7 @@ type ArgsGetValsByFilter struct {
 // GetValsByFilter 获取指定的数据
 // 注意判断YearMD，如果为空则没有数据
 func GetValsByFilter(args *ArgsGetValsByFilter) (data FieldsVal) {
-	_ = indexValDB.GetInfo().GetInfoByFields(map[string]any{
-		"code":        args.Code,
-		"year_md":     args.YearMD,
-		"extend1":     args.Extend1,
-		"extend2":     args.Extend2,
-		"extend3":     args.Extend3,
-		"extend4":     args.Extend4,
-		"extend5":     args.Extend5,
-		"is_forecast": args.IsForecast,
-	}, true, &data)
+	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&data, "SELECT * FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md = $2 AND extend1 = $3 AND extend2 = $4 AND extend3 = $5 AND extend4 = $6 AND extend5 = $7 AND is_forecast = $8", args.Code, args.YearMD, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5, args.IsForecast)
 	return
 }
 
@@ -373,16 +365,13 @@ type ArgsCreateVal struct {
 func CreateVal(args *ArgsCreateVal) (err error) {
 	//获取数据
 	var rawData FieldsVal
-	_ = indexValDB.GetInfo().GetInfoByFields(map[string]any{
-		"code":        args.Code,
-		"year_md":     args.YearMD,
-		"extend1":     args.Extend1,
-		"extend2":     args.Extend2,
-		"extend3":     args.Extend3,
-		"extend4":     args.Extend4,
-		"extend5":     args.Extend5,
-		"is_forecast": args.IsForecast,
-	}, true, &rawData)
+	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&rawData, "SELECT * FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md = $2 AND extend1 = $3 AND extend2 = $4 AND extend3 = $5 AND extend4 = $6 AND extend5 = $7 AND is_forecast = $8", args.Code, args.YearMD, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5, args.IsForecast)
+	//修正浮点数
+	if math.IsNaN(rawData.ValRaw) || math.IsInf(rawData.ValRaw, 0) {
+		rawData.ValRaw = 0
+	}
+	//修正结果
+	rawData.ValRaw = CoreFilter.RoundTo4DecimalPlaces(rawData.ValRaw)
 	if rawData.ID < 1 {
 		//插入数据
 		type insertType struct {
@@ -467,16 +456,7 @@ type argsReviseNormVal struct {
 func reviseNormVal(args *argsReviseNormVal) (err error) {
 	//获取数据
 	var rawData FieldsVal
-	err = indexValDB.GetInfo().GetInfoByFields(map[string]any{
-		"code":        args.Code,
-		"year_md":     args.YearMD,
-		"extend1":     "",
-		"extend2":     "",
-		"extend3":     "",
-		"extend4":     "",
-		"extend5":     "",
-		"is_forecast": args.IsForecast,
-	}, true, &rawData)
+	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&rawData, "SELECT * FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md = $2 AND extend1 = $3 AND extend2 = $4 AND extend3 = $5 AND extend4 = $6 AND extend5 = $7 AND is_forecast = $8", args.Code, args.YearMD, "", "", "", "", "", args.IsForecast)
 	if rawData.ID < 1 {
 		err = errors.New(fmt.Sprint("no data, ", err))
 		return
@@ -492,6 +472,13 @@ func reviseNormVal(args *argsReviseNormVal) (err error) {
 		ID:      rawData.ID,
 		ValNorm: args.ValNorm,
 	}
+	//修正浮点数
+	if math.IsNaN(updateData.ValNorm) || math.IsInf(updateData.ValNorm, 0) {
+		updateData.ValNorm = 0
+	}
+	//修正结果
+	updateData.ValNorm = CoreFilter.RoundTo4DecimalPlaces(updateData.ValNorm)
+	//执行修改
 	err = indexValDB.GetUpdate().UpdateByID(&updateData)
 	if err != nil {
 		return
