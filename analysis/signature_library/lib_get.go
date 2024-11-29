@@ -5,7 +5,7 @@ import BaseSQLTools "github.com/fotomxq/weeekj_core/v5/base/sql_tools"
 // ArgsGetSimilarityDataByIndex 获取指定指标的相似度数据参数
 type ArgsGetSimilarityDataByIndex struct {
 	//算法模型类型
-	// 1.皮尔逊相关系数 CoreMathArraySimilarityPPMCC
+	// 1.皮尔森相关系数 CoreMathArraySimilarityPPMCC
 	// 2.斯皮尔曼相关系数 CoreMathArraySimilaritySpearman
 	LibType string `db:"lib_type" json:"libType" check:"des" min:"1" max:"50" empty:"true" index:"true"`
 }

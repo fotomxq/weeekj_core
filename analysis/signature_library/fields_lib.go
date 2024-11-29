@@ -13,7 +13,7 @@ type FieldsLib struct {
 	//删除时间
 	DeleteAt time.Time `db:"delete_at" json:"deleteAt" default:"0" index:"true"`
 	//算法模型类型
-	// 1.皮尔逊相关系数 CoreMathArraySimilarityPPMCC
+	// 1.皮尔森相关系数 CoreMathArraySimilarityPPMCC
 	// 2.斯皮尔曼相关系数 CoreMathArraySimilaritySpearman
 	LibType string `db:"lib_type" json:"libType" check:"des" min:"1" max:"50" index:"true"`
 	//指标1编码

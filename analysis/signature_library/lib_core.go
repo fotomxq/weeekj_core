@@ -8,7 +8,7 @@ import (
 // ArgsSimilarityList 识别一系列数据的相似度参数
 type ArgsSimilarityList struct {
 	//算法模型类型
-	// 1.皮尔逊相关系数 CoreMathArraySimilarityPPMCC
+	// 1.皮尔森相关系数 CoreMathArraySimilarityPPMCC
 	// 2.斯皮尔曼相关系数 CoreMathArraySimilaritySpearman
 	LibType string `db:"lib_type" json:"libType" check:"des" min:"1" max:"50" index:"true"`
 	//参数组
@@ -82,7 +82,7 @@ func Similarity(libType string, data1, data2 []float64) (result float64) {
 	//根据libType选择不同的算法
 	switch libType {
 	case "1":
-		//皮尔逊相关系数
+		//皮尔森相关系数
 		result = CoreMathArraySimilarityPPMCC.ArraySimilarity(data1, data2)
 	case "2":
 		//斯皮尔曼相关系数
