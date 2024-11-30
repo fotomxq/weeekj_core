@@ -2,6 +2,7 @@ package BaseSQLTools
 
 import (
 	"errors"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	"reflect"
 )
 
@@ -15,12 +16,14 @@ type QuickUpdate struct {
 func (c *QuickUpdate) UpdateByID(args any) (err error) {
 	//获取当前结构体
 	fieldList := c.quickClient.getFields()
+	paramsType := reflect.TypeOf(args).Elem()
+	valueType := reflect.ValueOf(args).Elem()
 	//获取写入参数
 	var argID int64
 	var setFields []string
 	var setVals map[string]any
-	paramsType := reflect.TypeOf(args).Elem()
-	valueType := reflect.ValueOf(args).Elem()
+	setVals = make(map[string]any)
+	//开始遍历
 	step := 0
 	for step < paramsType.NumField() {
 		//捕捉结构
@@ -47,14 +50,14 @@ func (c *QuickUpdate) UpdateByID(args any) (err error) {
 			//找到ID
 			argID = vValueType.Int()
 		case "create_at":
-			//禁止更新
+			//禁止标记创造
+		case "update_at":
+			//标记更新时间
+			setVals[vField.Tag.Get("db")] = CoreFilter.GetNowTime()
 		case "delete_at":
-			//软删除，不能采用此方法操作
+			//禁止标记删除
 		default:
 			//找到更新字段
-			if setVals == nil {
-				setVals = make(map[string]any)
-			}
 			setFields = append(setFields, vTagDB)
 			setVals[vField.Tag.Get("db")] = vValueType.Interface()
 		}

@@ -104,53 +104,6 @@ func (t *ClientInsertCtx) execAndResultIDChild() (int64, error) {
 		return 0, errors.New("no insert data")
 	}
 	t.getSQL()
-	//defer func() {
-	//	if e := recover(); e != nil {
-	//		appendLog("insert", t.clientCtx.query, false, t.clientCtx.client.startAt, nil, errors.New(fmt.Sprint(e)))
-	//		return
-	//	}
-	//}()
-	////事务关系开始运行
-	//tx := t.clientCtx.MustBegin()
-	////运行sql
-	//result, err := tx.NamedExec(t.clientCtx.query, t.clientCtx.appendArgs[0])
-	//if err != nil {
-	//	err2 := tx.Rollback()
-	//	if err2 != nil {
-	//		err = errors.New("rollback failed: " + err.Error() + ", err: " + err2.Error())
-	//		return 0, err
-	//	}
-	//	return 0, err
-	//}
-	////获取影响的行ID
-	//resultID, err := result.RowsAffected()
-	//if err != nil {
-	//	resultID, err = result.LastInsertId()
-	//	if err != nil {
-	//		err2 := tx.Rollback()
-	//		if err2 != nil {
-	//			err = errors.New("rollback failed: " + err.Error() + ", err: " + err2.Error())
-	//			return 0, err
-	//		}
-	//		return 0, err
-	//	}
-	//}
-	//if resultID < 1 {
-	//	err2 := tx.Rollback()
-	//	if err2 != nil {
-	//		err = errors.New("rollback failed: " + err.Error() + ", err: " + err2.Error())
-	//		return 0, err
-	//	} else {
-	//		err = errors.New("result id is empty")
-	//	}
-	//	return 0, err
-	//}
-	////启动事务
-	//err = tx.Commit()
-	//if err != nil {
-	//	return 0, err
-	//}
-	////反馈
 	//return resultID, nil
 	tx := t.clientCtx.MustBegin()
 	stmt, err := tx.PrepareNamed(t.clientCtx.query + " RETURNING id")
