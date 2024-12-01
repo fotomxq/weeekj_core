@@ -8,6 +8,7 @@ import (
 	AnalysisIndex "github.com/fotomxq/weeekj_core/v5/analysis/index"
 	AnalysisIndexDimensions "github.com/fotomxq/weeekj_core/v5/analysis/index_dimensions"
 	AnalysisIndexEvent "github.com/fotomxq/weeekj_core/v5/analysis/index_event"
+	AnalysisIndexFilter "github.com/fotomxq/weeekj_core/v5/analysis/index_filter"
 	AnalysisIndexRFM "github.com/fotomxq/weeekj_core/v5/analysis/index_rfm"
 	AnalysisIndexVal "github.com/fotomxq/weeekj_core/v5/analysis/index_val"
 	AnalysisIndexValCustom "github.com/fotomxq/weeekj_core/v5/analysis/index_val_custom"
@@ -198,6 +199,11 @@ func Init() (err error) {
 	AnalysisSignatureLibrary.OpenSub = OpenSub
 	if err = AnalysisSignatureLibrary.Init(); err != nil {
 		err = errors.New("analysis signature library, " + err.Error())
+		return
+	}
+	//指标筛选值
+	if err = AnalysisIndexFilter.Init(); err != nil {
+		err = errors.New("analysis index filter, " + err.Error())
 		return
 	}
 
