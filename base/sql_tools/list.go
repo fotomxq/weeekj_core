@@ -35,6 +35,7 @@ type ArgsGetListSimpleConditionID struct {
 }
 
 // GetListSimple 获取简单列表
+// 注意筛选条件会判断是否为空，<0的数值不会被筛选
 func (c *QuickList) GetListSimple(args *ArgsGetListSimple, result any) (dataCount int64, err error) {
 	//组装条件
 	ctx := c.quickClient.client.Select().SetDefaultListFields().SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove)
@@ -104,6 +105,8 @@ type ArgsGetAll struct {
 	IsRemove bool `db:"is_remove" json:"isRemove" check:"bool"`
 }
 
+// GetAll 获取所有数据
+// 注意筛选条件会判断是否为空，<0的数值不会被筛选
 func (c *QuickList) GetAll(args *ArgsGetAll, result any) (dataCount int64, err error) {
 	//组装条件
 	ctx := c.quickClient.client.Select().SetDefaultListFields().SetDeleteQuery("delete_at", args.IsRemove)

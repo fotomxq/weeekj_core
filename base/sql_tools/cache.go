@@ -41,3 +41,8 @@ func (c *Quick) DeleteCacheByID(id int64) {
 	Router2SystemConfig.MainCache.DeleteMark(c.GetCacheMarkByInfoID(id))
 	Router2SystemConfig.MainCache.DeleteMark(c.GetCacheMarkByListID(id))
 }
+
+// DeleteCachePrefix 删除缓冲
+func (c *Quick) DeleteCachePrefix() {
+	Router2SystemConfig.MainCache.DeleteSearchMark(c.prefixCacheMark)
+}

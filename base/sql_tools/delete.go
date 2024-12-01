@@ -33,11 +33,13 @@ func (c *QuickDelete) DeleteByField(fieldName string, val any) (err error) {
 	if err != nil {
 		return
 	}
+	//删除缓冲
+	c.quickClient.DeleteCachePrefix()
 	//返回
 	return
 }
 
-// DeleteByField 根据字段删除
+// DeleteByFieldReal 根据字段删除
 // 真实删除无视软删除
 func (c *QuickDelete) DeleteByFieldReal(fieldName string, val any) (err error) {
 	//执行删除
@@ -45,6 +47,8 @@ func (c *QuickDelete) DeleteByFieldReal(fieldName string, val any) (err error) {
 	if err != nil {
 		return
 	}
+	//删除缓冲
+	c.quickClient.DeleteCachePrefix()
 	//返回
 	return
 }
@@ -56,6 +60,8 @@ func (c *QuickDelete) Clear() (err error) {
 	if err != nil {
 		return
 	}
+	//删除缓冲
+	c.quickClient.DeleteCachePrefix()
 	//返回
 	return
 }

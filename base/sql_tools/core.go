@@ -106,3 +106,10 @@ func (c *Quick) GetDelete() *QuickDelete {
 		quickClient: c,
 	}
 }
+
+// GetAnalysis 获取analysis
+func (c *Quick) GetAnalysis() *QuickAnalysis {
+	return &QuickAnalysis{
+		quickClient: c,
+	}
+}

@@ -149,6 +149,18 @@ func GetIndexAll() (dataList []DataGetIndexAll, err error) {
 	return
 }
 
+// GetIndexAllNoStruct 获取所有指标且不需要结构化
+func GetIndexAllNoStruct() (dataList []FieldsIndex) {
+	_, _ = indexDB.GetList().GetAll(&BaseSQLTools.ArgsGetAll{
+		ConditionFields: nil,
+		IsRemove:        false,
+	}, &dataList)
+	if len(dataList) < 1 {
+		return
+	}
+	return
+}
+
 // getIndexAllRelChild 无限递归构建子指标关系
 func getIndexAllRelChild(indexRawList []FieldsIndex, relationRawList []FieldsIndexRelation, indexID int64) (result []DataGetIndexAll) {
 	for _, vRel := range relationRawList {
