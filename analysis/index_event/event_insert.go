@@ -42,8 +42,9 @@ type ArgsInsertEvent struct {
 // InsertEvent 插入新的预警事件
 func InsertEvent(args *ArgsInsertEvent) (err error) {
 	//检查指标是否已触发过风险
-	_, err = getEventBySystem(args.FromSystem, args.FromID, args.FromType)
-	if err != nil {
+	var findData FieldsEvent
+	findData, err = getEventBySystem(args.FromSystem, args.FromID, args.FromType)
+	if err == nil && findData.ID > 0 {
 		err = nil
 		return
 	}
