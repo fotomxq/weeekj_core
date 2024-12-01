@@ -3,6 +3,7 @@ package AnalysisSignatureLibrary
 import (
 	"errors"
 	AnalysisIndexVal "github.com/fotomxq/weeekj_core/v5/analysis/index_val"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
 	CoreMathCore "github.com/fotomxq/weeekj_core/v5/core/math/core"
 )
 
@@ -21,7 +22,8 @@ type ArgsCreateSimilarityDataByIndexCodeAndTimeRange struct {
 func CreateSimilarityDataByIndexCodeAndTimeRange(args *ArgsCreateSimilarityDataByIndexCodeAndTimeRange) (err error) {
 	//清理数据
 	for _, v := range args.IndexCode {
-		ClearAllIndexData(v)
+		ClearAllIndexData("1", v)
+		ClearAllIndexData("2", v)
 	}
 	//获取指标数据
 	var indexCodeList []AnalysisIndexVal.ArgsGetValsByBetweenAtAndAutoFullChild
@@ -125,6 +127,7 @@ type argsInsertLib struct {
 
 // insertLib 插入算法模型数据
 func insertLib(args *argsInsertLib) (err error) {
+	args.Score = CoreFilter.RoundTo6DecimalPlaces(args.Score)
 	_, err = libDB.GetInsert().InsertRow(args)
 	return
 }

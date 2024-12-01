@@ -12,12 +12,13 @@ type DataGetEventLevelCount struct {
 }
 
 // GetEventLevelCount 获取风险等级统计
+// 该方法会无视维度，获取所有风险等级的数量统计
 func GetEventLevelCount() (dataList []DataGetEventLevelCount) {
-	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT level,count(*) as count FROM "+eventDB.GetClient().TableName+" WHERE extend1 = '' AND extend2 = '' AND extend3 = '' AND extend4 = '' AND extend5 = '' GROUP BY level")
+	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT level,count(*) as count FROM "+eventDB.GetClient().TableName+" GROUP BY level")
 	return
 }
 
-// ArgsGetEventLevelCountByExtend 获取指定指标的数量关系参数
+// ArgsGetEventLevelCountByExtend 获取指定维度的风险事件数量关系参数
 type ArgsGetEventLevelCountByExtend struct {
 	//指标编码
 	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" empty:"true" index:"true" field_list:"true"`
@@ -34,7 +35,7 @@ type ArgsGetEventLevelCountByExtend struct {
 	Extend5 string `db:"extend5" json:"extend5" index:"true" field_list:"true"`
 }
 
-// DataGetEventLevelCountByExtend 获取指定指标的数量关系数据
+// DataGetEventLevelCountByExtend 获取指定维度的风险事件数量关系数据
 type DataGetEventLevelCountByExtend struct {
 	//预警等级
 	// 根据项目需求划定等级
@@ -44,7 +45,8 @@ type DataGetEventLevelCountByExtend struct {
 	Count int64 `db:"count" json:"count"`
 }
 
-// GetEventLevelCountByExtend 获取指定指标的数量关系
+// GetEventLevelCountByExtend 获取指定维度的风险事件数量关系
+// 该方法需指定具体维度，以获取指定维度的风险等级数量统计
 func GetEventLevelCountByExtend(args *ArgsGetEventLevelCountByExtend) (dataList []DataGetEventLevelCountByExtend) {
 	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf("SELECT level, count(*) as count FROM %s WHERE code = $1 AND extend1 = $2 AND extend2 = $3 AND extend3 = $4 AND extend4 = $5 AND extend5 = $6 GROUP BY level", eventDB.GetClient().TableName), args.Code, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5)
 	return

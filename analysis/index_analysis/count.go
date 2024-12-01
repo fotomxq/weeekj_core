@@ -65,9 +65,14 @@ func GetAnalysisIndexCount(args *ArgsGetAnalysisIndexCount) (dataList []DataGetA
 	}
 	//获取指标filter的数据量
 	for _, v := range args.CodeList {
+		findKey := -1
 		isFind := false
 		for k2, v2 := range dataList {
-			if v == v2.Code && v2.DataCount > 0 {
+			if v != v2.Code {
+				continue
+			}
+			findKey = k2
+			if v2.DataCount > 0 {
 				isFind = true
 				continue
 			}
@@ -76,15 +81,20 @@ func GetAnalysisIndexCount(args *ArgsGetAnalysisIndexCount) (dataList []DataGetA
 			break
 		}
 		if !isFind {
-			dataList = append(dataList, DataGetAnalysisIndexCount{
-				Code:      v,
-				DataCount: AnalysisIndexFilter.GetCount(v),
-				MinTime:   "",
-				MaxTime:   "",
-				MinVal:    0,
-				MaxVal:    0,
-				IsFilter:  true,
-			})
+			if findKey > -1 {
+				dataList[findKey].DataCount = AnalysisIndexFilter.GetCount(v)
+				dataList[findKey].IsFilter = true
+			} else {
+				dataList = append(dataList, DataGetAnalysisIndexCount{
+					Code:      v,
+					DataCount: AnalysisIndexFilter.GetCount(v),
+					MinTime:   "",
+					MaxTime:   "",
+					MinVal:    0,
+					MaxVal:    0,
+					IsFilter:  true,
+				})
+			}
 		}
 	}
 	//反馈
