@@ -53,10 +53,12 @@ func GetEventList(args *ArgsGetEventList) (dataList []FieldsEvent, dataCount int
 		Search:   args.Search,
 	})
 	ctx = ctx.SetStringQuery("code", args.Code)
-	ctx = ctx.SetTimeBetweenByArgQuery("year_md", args.BetweenAt)
+	if args.BetweenAt.MinTime != "" || args.BetweenAt.MaxTime != "" {
+		ctx = ctx.SetTimeBetweenByArgQuery("year_md", args.BetweenAt)
+	}
 	ctx = ctx.SetIntQuery("level", args.Level)
 	ctx = ctx.SetStringQuery("from_system", args.FromSystem)
-	ctx = ctx.SetIDThanLessQuery("from_id", args.FromID)
+	ctx = ctx.SetIDQuery("from_id", args.FromID)
 	ctx = ctx.SetStringQuery("from_type", args.FromType)
 	ctx = ctx.SetStringQuery("extend1", args.Extend1)
 	ctx = ctx.SetStringQuery("extend2", args.Extend2)
