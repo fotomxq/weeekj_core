@@ -37,6 +37,18 @@ func (c *QuickDelete) DeleteByField(fieldName string, val any) (err error) {
 	return
 }
 
+// DeleteByField 根据字段删除
+// 真实删除无视软删除
+func (c *QuickDelete) DeleteByFieldReal(fieldName string, val any) (err error) {
+	//执行删除
+	err = c.quickClient.client.Delete().NeedSoft(false).AddQuery(fieldName, val).ExecNamed(nil)
+	if err != nil {
+		return
+	}
+	//返回
+	return
+}
+
 // Clear 清理数据
 func (c *QuickDelete) Clear() (err error) {
 	//执行删除
