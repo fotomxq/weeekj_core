@@ -1,6 +1,6 @@
 module github.com/fotomxq/weeekj_core/v5
 
-go 1.19
+go 1.23
 
 require (
 	github.com/360EntSecGroup-Skylar/excelize v1.4.1
