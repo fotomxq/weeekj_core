@@ -17,11 +17,11 @@ type FieldsEvent struct {
 	// 可任意持续，如年，或仅年月
 	// 不建议构建小时及以下级别的指标
 	// 同一个维度和时间范围，仅会存在一个数据，否则将覆盖
-	YearMD string `db:"year_md" json:"yearMD" index:"true" field_list:"true"`
+	YearMD string `db:"year_md" json:"yearMD" index:"true" field_list:"true" field_search:"true"`
 	//预警等级
 	// 根据项目需求划定等级
 	// 例如：0 低风险; 1 中风险; 2 高风险
-	Level int `db:"level" json:"level" index:"true" field_list:"true"`
+	Level int `db:"level" json:"level" index:"true" field_list:"true" field_search:"true"`
 	//来源指标值的系统和ID
 	// 避免重复触发预警
 	FromSystem string `db:"from_system" json:"fromSystem" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
@@ -43,7 +43,7 @@ type FieldsEvent struct {
 	//指标预警阈值，触发预警时的值
 	Threshold int64 `db:"threshold" json:"threshold" index:"true"`
 	//触发值
-	IndexVal float64 `db:"index_val" json:"indexVal"`
+	IndexVal float64 `db:"index_val" json:"indexVal" field_search:"true"`
 	//备注信息
 	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"3000" empty:"true" index:"true" field_list:"true"  field_search:"true"`
 }
