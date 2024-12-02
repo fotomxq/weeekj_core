@@ -56,3 +56,14 @@ func InsertEvent(args *ArgsInsertEvent) (err error) {
 	//反馈
 	return
 }
+
+// InsertEventList 插入一组新的预警事件
+func InsertEventList(args []ArgsInsertEvent) (err error) {
+	for _, v := range args {
+		err = InsertEvent(&v)
+		if err != nil {
+			return
+		}
+	}
+	return
+}

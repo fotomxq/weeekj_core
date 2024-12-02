@@ -4,16 +4,21 @@ import (
 	"testing"
 )
 
-func TestGetScoreLLMH(t *testing.T) {
+func TestGetScoreHMLM(t *testing.T) {
 	/**
-	|  低  |  低  |
 	|  中  |  高  |
+	|  低  |  中  |
 	*/
-	X := []float64{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 0}
-	Y := []float64{10.0, 20.0, 5.0, 4.0, 15.0, 25.0, 15}
+	X := []float64{7, 8, 9, 1, 2, 3, 1, 2, 3, 1, 2, 3}
+	Y := []float64{7, 8, 9, 7, 8, 9, 7, 8, 9, 1, 2, 3}
 	// 计算得分
-	scores := GetScoreLLMH(X, Y)
-	t.Log(scores)
+	scores, medX, medY, medP := GetScoreHMLM(X, Y)
+	t.Log("x: ", X)
+	t.Log("y: ", Y)
+	t.Log("medX: ", medX)
+	t.Log("medY: ", medY)
+	t.Log("medP: ", medP)
+	t.Log("scores: ", scores)
 }
 
 func TestGetScoreWeightedSum(t *testing.T) {
