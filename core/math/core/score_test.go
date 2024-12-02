@@ -1,6 +1,7 @@
 package CoreMathCore
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -35,4 +36,17 @@ func TestGetScoreWeightedSum(t *testing.T) {
 		return
 	}
 	t.Log(compositeIndicator)
+}
+
+func TestClassifyEqualWidth(t *testing.T) {
+	data := []float64{0.1, 0.4, 0.35, 0.8, 0.45, 0.9, 0.2, 0.75, 0.6, 0.15}
+	numBins := 3
+	bins, err := ClassifyEqualWidth(data, numBins)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	for i, bin := range bins {
+		t.Log(fmt.Sprintf("Bin %d: %v", i, bin))
+	}
 }

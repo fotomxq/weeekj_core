@@ -75,6 +75,17 @@ func GetEventList(args *ArgsGetEventList) (dataList []FieldsEvent, dataCount int
 	return
 }
 
+// 通过ID获取风险详情
+func GetEventByID(id int64) (data FieldsEvent, err error) {
+	//获取数据
+	err = eventDB.GetInfo().GetInfoByID(id, &data)
+	if err != nil {
+		return
+	}
+	//反馈
+	return
+}
+
 // getEventBySystem 通过系统来源获取数据
 func getEventBySystem(fromSystem string, fromID int64, fromType string) (data FieldsEvent, err error) {
 	//获取数据

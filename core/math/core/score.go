@@ -2,7 +2,9 @@ package CoreMathCore
 
 import (
 	"errors"
+	"fmt"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	"sort"
 )
 
 // GetScoreHMLM 根据X和Y的值以及它们的中位数来计算得分
@@ -99,4 +101,42 @@ func GetScoreWeightedSum(indicators [][]float64, weights []float64) ([]float64, 
 		compositeIndicator[i] = sum
 	}
 	return compositeIndicator, nil
+}
+
+// ClassifyEqualWidth 等宽区间划分算法
+// data: 数据
+// numBins: 切分数量
+/**
+使用方法：
+1. 使用本方法输出数据，然后对应数据的值就是切分单元
+2. 切分单元的key采用[0]~[n]为基准
+*/
+func ClassifyEqualWidth(data []float64, numBins int) ([][]float64, error) {
+	//检查参数
+	if len(data) == 0 {
+		return nil, fmt.Errorf("data is empty")
+	}
+	if numBins <= 0 {
+		return nil, fmt.Errorf("number of bins must be greater than 0")
+	}
+	// 排序数据
+	sort.Float64s(data)
+	// 计算区间宽度
+	minVal := data[0]
+	maxVal := data[len(data)-1]
+	binWidth := (maxVal - minVal) / float64(numBins)
+	// 初始化区间
+	bins := make([][]float64, numBins)
+	for i := range bins {
+		bins[i] = []float64{}
+	}
+	// 划分数据到区间
+	for _, val := range data {
+		binIndex := int((val - minVal) / binWidth)
+		if binIndex >= numBins {
+			binIndex = numBins - 1
+		}
+		bins[binIndex] = append(bins[binIndex], val)
+	}
+	return bins, nil
 }
