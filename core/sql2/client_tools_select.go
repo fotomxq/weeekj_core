@@ -15,7 +15,8 @@ type ClientListCtx struct {
 	fieldsList []string
 	//限定排序
 	// 如果没有指定，则按照列表字段执行
-	fieldsSort []string
+	fieldsSort     []string
+	fieldsSortJson []string
 	//分页
 	pages ArgsPages
 	//分页长度极限
@@ -88,16 +89,27 @@ func (t *ClientListCtx) SetDefaultIndexFields() *ClientListCtx {
 
 func (t *ClientListCtx) SetFieldsSort(fields []string) *ClientListCtx {
 	t.fieldsSort = fields
+	t.fieldsSortJson = []string{}
+	for _, v := range t.fieldsSort {
+		for _, v2 := range t.clientCtx.client.fieldNameList {
+			if v2.DBName == v {
+				t.fieldsSortJson = append(t.fieldsSortJson, v2.JSONName)
+				break
+			}
+		}
+	}
 	return t
 }
 
 func (t *ClientListCtx) SetFieldsSortDefault() *ClientListCtx {
 	t.fieldsSort = []string{}
+	t.fieldsSortJson = []string{}
 	for k := 0; k < len(t.clientCtx.client.fieldNameList); k++ {
 		if !t.clientCtx.client.fieldNameList[k].IsIndex && !t.clientCtx.client.fieldNameList[k].IsUnique {
 			continue
 		}
 		t.fieldsSort = append(t.fieldsSort, t.clientCtx.client.fieldNameList[k].DBName)
+		t.fieldsSortJson = append(t.fieldsSortJson, t.clientCtx.client.fieldNameList[k].JSONName)
 	}
 	return t
 }
@@ -419,6 +431,22 @@ func (t *ClientListCtx) getSQLSelect(where string, step int, limit int, sort str
 			}
 		}
 		if !isFind {
+			//继续寻找JSON
+			for _, v := range t.fieldsSortJson {
+				if v == sort {
+					for _, v2 := range t.clientCtx.client.fieldNameList {
+						if v2.JSONName == v {
+							sort = v2.DBName
+							isFind = true
+							break
+						}
+					}
+					break
+				}
+			}
+		}
+		if !isFind {
+			//替代为序列0的字段
 			if len(t.fieldsSort) > 0 {
 				sort = t.fieldsSort[0]
 			} else {
