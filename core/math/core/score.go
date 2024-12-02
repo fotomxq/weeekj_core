@@ -34,21 +34,20 @@ func GetScoreLLMH(X, Y []float64) []float64 {
 		// 根据这两个值与中位数的距离来分配得分
 		yScore := 100 * (Y[i] - minY) / (maxY - minY)
 		xScore := 100 * (maxX - X[i]) / (maxX - minX)
-		// 结合X和Y的得分，这里简单使用平均值
-		// 可以根据需要调整权重或结合方式
+		// 结合X和Y的得分，使用平均值，根据需要调整权重或结合方式
 		scores[i] = (yScore + xScore) / 2
 		// 根据象限调整得分
 		if Y[i] < medY {
 			if X[i] < medX {
-				// 第三象限：中，降低得分
+				// 第三象限：中得分
 				scores[i] *= 0.5
 			} else {
-				// 第四象限：高，提高得分
+				// 第四象限：高得分
 				scores[i] = 100 - scores[i]*0.5
 			}
 		} else {
-			// 第一或第二象限：低，保持或稍微降低得分
-			scores[i] = scores[i] * 0.5
+			// 第一或第二象限：低得分
+			scores[i] = scores[i] * 0.75
 		}
 	}
 	for k, v := range scores {
@@ -70,7 +69,7 @@ func GetScoreWeightedSum(indicators [][]float64, weights []float64) ([]float64, 
 	if len(weights) != len(indicators) {
 		return nil, errors.New("invalid weights")
 	}
-	// 初始化上级风险指标数组
+	// 初始化上级指标数组
 	compositeIndicator := make([]float64, numSamples)
 	// 计算加权和
 	for i := 0; i < numSamples; i++ {
