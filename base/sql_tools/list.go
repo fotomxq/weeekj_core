@@ -38,7 +38,7 @@ type ArgsGetListSimpleConditionID struct {
 // 注意筛选条件会判断是否为空，<0的数值不会被筛选
 func (c *QuickList) GetListSimple(args *ArgsGetListSimple, result any) (dataCount int64, err error) {
 	//组装条件
-	ctx := c.quickClient.client.Select().SetDefaultListFields().SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove)
+	ctx := c.quickClient.client.Select().SetDefaultListFields().SetFieldsSortDefault().SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove)
 	if args.ConditionFields != nil && len(args.ConditionFields) > 0 {
 		conditionFields := c.quickClient.getFieldsNameByConditionBoolTrue("field_list")
 		for _, v := range args.ConditionFields {
@@ -109,7 +109,7 @@ type ArgsGetAll struct {
 // 注意筛选条件会判断是否为空，<0的数值不会被筛选
 func (c *QuickList) GetAll(args *ArgsGetAll, result any) (dataCount int64, err error) {
 	//组装条件
-	ctx := c.quickClient.client.Select().SetDefaultListFields().SetDeleteQuery("delete_at", args.IsRemove)
+	ctx := c.quickClient.client.Select().SetDefaultListFields().SetFieldsSortDefault().SetDeleteQuery("delete_at", args.IsRemove)
 	if args.ConditionFields != nil && len(args.ConditionFields) > 0 {
 		conditionFields := c.quickClient.getFieldsNameByConditionBoolTrue("field_list")
 		for _, v := range args.ConditionFields {
@@ -177,7 +177,7 @@ type ArgsGetListPrev struct {
 
 // GetListPrev 获取高级列表
 func (c *QuickList) GetListPrev(args *ArgsGetListPrev) (ctx *CoreSQL2.ClientListCtx) {
-	ctx = c.quickClient.client.Select().SetDefaultListFields().SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove)
+	ctx = c.quickClient.client.Select().SetDefaultListFields().SetFieldsSortDefault().SetPages(args.Pages).SetDeleteQuery("delete_at", args.IsRemove)
 	if args.Search != "" {
 		searchFields := c.quickClient.getFieldsNameByConditionBoolTrue("field_search")
 		if len(searchFields) > 0 {

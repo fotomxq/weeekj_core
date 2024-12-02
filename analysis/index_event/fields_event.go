@@ -43,7 +43,7 @@ type FieldsEvent struct {
 	//指标预警阈值，触发预警时的值
 	Threshold int64 `db:"threshold" json:"threshold" index:"true"`
 	//触发值
-	IndexVal float64 `db:"index_val" json:"indexVal" field_search:"true"`
+	IndexVal float64 `db:"index_val" json:"indexVal" index:"true" field_search:"true" field_list:"true"`
 	//备注信息
-	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"3000" empty:"true" index:"true" field_list:"true"  field_search:"true"`
+	Remark string `db:"remark" json:"remark" check:"des" min:"1" max:"3000" empty:"true" field_list:"true"  field_search:"true"`
 }

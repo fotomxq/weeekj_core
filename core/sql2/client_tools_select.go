@@ -105,7 +105,7 @@ func (t *ClientListCtx) SetFieldsSortDefault() *ClientListCtx {
 	t.fieldsSort = []string{}
 	t.fieldsSortJson = []string{}
 	for k := 0; k < len(t.clientCtx.client.fieldNameList); k++ {
-		if !t.clientCtx.client.fieldNameList[k].IsIndex && !t.clientCtx.client.fieldNameList[k].IsUnique {
+		if !t.clientCtx.client.fieldNameList[k].IsIndex && !t.clientCtx.client.fieldNameList[k].IsUnique && !t.clientCtx.client.fieldNameList[k].IsList {
 			continue
 		}
 		t.fieldsSort = append(t.fieldsSort, t.clientCtx.client.fieldNameList[k].DBName)
