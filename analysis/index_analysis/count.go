@@ -4,6 +4,7 @@ import (
 	AnalysisIndex "github.com/fotomxq/weeekj_core/v5/analysis/index"
 	AnalysisIndexFilter "github.com/fotomxq/weeekj_core/v5/analysis/index_filter"
 	AnalysisIndexVal "github.com/fotomxq/weeekj_core/v5/analysis/index_val"
+	AnalysisIndexValCustom "github.com/fotomxq/weeekj_core/v5/analysis/index_val_custom"
 	"github.com/lib/pq"
 )
 
@@ -30,6 +31,8 @@ type DataGetAnalysisIndexCount struct {
 	MinVal float64 `db:"min_val" json:"minVal"`
 	//数据最大值
 	MaxVal float64 `db:"max_val" json:"maxVal"`
+	//是否为自定义指标
+	IsCustom bool `db:"is_custom" json:"isCustom"`
 	//是否为筛选指标
 	// 筛选类指标部分情况下，不包含时间维度
 	IsFilter bool `db:"is_filter" json:"isFilter"`
@@ -39,9 +42,9 @@ type DataGetAnalysisIndexCount struct {
 // 不含维度筛选
 func GetAnalysisIndexCount(args *ArgsGetAnalysisIndexCount) (dataList []DataGetAnalysisIndexCount) {
 	//如果给空，则获取所有指标数据
+	indexList := AnalysisIndex.GetIndexAllNoStruct()
 	if len(args.CodeList) == 0 {
 		//获取所有指标
-		indexList := AnalysisIndex.GetIndexAllNoStruct()
 		for _, v := range indexList {
 			args.CodeList = append(args.CodeList, v.Code)
 		}
@@ -60,8 +63,35 @@ func GetAnalysisIndexCount(args *ArgsGetAnalysisIndexCount) (dataList []DataGetA
 			MaxTime:   v.MaxTime,
 			MinVal:    v.MinVal,
 			MaxVal:    v.MaxVal,
+			IsCustom:  false,
 			IsFilter:  false,
 		})
+	}
+	//获取自定义指标数据量
+	valCustomList, _ := AnalysisIndexValCustom.GetAnalysisIndexValCustomTotalAll(&AnalysisIndexValCustom.ArgsGetAnalysisIndexValCustomTotalAll{
+		CodeList: args.CodeList,
+		StartAt:  args.StartAt,
+		EndAt:    args.EndAt,
+	})
+	for _, v := range indexList {
+		if !v.IsSystem {
+			continue
+		}
+		for _, v2 := range valCustomList {
+			if v.Code == v2.Code {
+				dataList = append(dataList, DataGetAnalysisIndexCount{
+					Code:      v2.Code,
+					DataCount: v2.DataCount,
+					MinTime:   v2.MinTime,
+					MaxTime:   v2.MaxTime,
+					MinVal:    v2.MinVal,
+					MaxVal:    v2.MaxVal,
+					IsCustom:  true,
+					IsFilter:  false,
+				})
+				break
+			}
+		}
 	}
 	//获取指标filter的数据量
 	for _, v := range args.CodeList {
@@ -92,6 +122,7 @@ func GetAnalysisIndexCount(args *ArgsGetAnalysisIndexCount) (dataList []DataGetA
 					MaxTime:   "",
 					MinVal:    0,
 					MaxVal:    0,
+					IsCustom:  false,
 					IsFilter:  true,
 				})
 			}
