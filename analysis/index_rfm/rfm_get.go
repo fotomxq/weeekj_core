@@ -149,14 +149,14 @@ type DataGetRFMByCodeExtend struct {
 // GetRFMByCodeExtend 不依赖时间的RFM
 // 适用于RFM为全局不涵盖时间的数据
 func GetRFMByCodeExtend(args *ArgsGetRFMByCodeExtend) (dataList DataGetRFMByCodeExtend) {
-	_ = rfmDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT code, year_m, extend1, extend2, extend3, extend4, extend5, r_val, r_min, r_max, r_weight, f_val, f_min, f_max, f_weight, m_val, m_min, m_max, m_weight, rfm_result FROM analysis_index_rfm WHERE code = $1 AND extend1 = $2 AND extend2 = $3 AND extend3 = $4 AND extend4 = $5 AND extend5 = $6 AND delete_at < to_timestamp(1000000)", args.Code, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5)
+	_ = rfmDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT code, year_m, extend1, extend2, extend3, extend4, extend5, r_val, r_min, r_max, r_weight, f_val, f_min, f_max, f_weight, m_val, m_min, m_max, m_weight, rfm_result FROM analysis_index_rfm WHERE code = $1 AND extend1 = $2 AND extend2 = $3 AND extend3 = $4 AND extend4 = $5 AND extend5 = $6 AND delete_at < to_timestamp(1000000) order by rfm_result desc", args.Code, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5)
 	return
 }
 
 // GetRFMByCodeExtendOR 不依赖时间的RFM，且条件为或
 // 适用于RFM为全局不涵盖时间，且维度关系可选的方式
 func GetRFMByCodeExtendOR(args *ArgsGetRFMByCodeExtend) (dataList DataGetRFMByCodeExtend) {
-	_ = rfmDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT code, year_m, extend1, extend2, extend3, extend4, extend5, r_val, r_min, r_max, r_weight, f_val, f_min, f_max, f_weight, m_val, m_min, m_max, m_weight, rfm_result FROM analysis_index_rfm WHERE code = $1 AND ($2 = '' OR extend1 = $2) AND ($3 = '' OR extend2 = $3) AND ($3 = '' OR extend3 = $4) AND ($5 = '' OR extend4 = $5) AND ($6 = '' OR extend5 = $6) AND delete_at < to_timestamp(1000000)", args.Code, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5)
+	_ = rfmDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT code, year_m, extend1, extend2, extend3, extend4, extend5, r_val, r_min, r_max, r_weight, f_val, f_min, f_max, f_weight, m_val, m_min, m_max, m_weight, rfm_result FROM analysis_index_rfm WHERE code = $1 AND ($2 = '' OR extend1 = $2) AND ($3 = '' OR extend2 = $3) AND ($3 = '' OR extend3 = $4) AND ($5 = '' OR extend4 = $5) AND ($6 = '' OR extend5 = $6) AND delete_at < to_timestamp(1000000) order by rfm_result desc", args.Code, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5)
 	return
 }
 
@@ -164,7 +164,8 @@ func GetRFMByCodeExtendOR(args *ArgsGetRFMByCodeExtend) (dataList DataGetRFMByCo
 // 适用于RFM为全局不涵盖时间，且维度关系可选的方式
 func GetRFMByCodeExtendORNot(code string, extendInt int) (dataList DataGetRFMByCodeExtend) {
 	extendField := fmt.Sprintf("extend%d", extendInt)
-	_ = rfmDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprint("SELECT code, year_m, extend1, extend2, extend3, extend4, extend5, r_val, r_min, r_max, r_weight, f_val, f_min, f_max, f_weight, m_val, m_min, m_max, m_weight, rfm_result FROM analysis_index_rfm WHERE code = $1 AND ", extendField, " != '' AND delete_at < to_timestamp(1000000)"), code)
+	_ = rfmDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprint("SELECT code, year_m, extend1, extend2, extend3, extend4, extend5, r_val, r_min, r_max, r_weight, f_val, f_min, f_max, f_weight, m_val, m_min, m_max, m_weight, rfm_result FROM analysis_index_rfm WHERE code = $1 AND ", extendField, " != '' AND delete_at < to_timestamp(1000000) order by rfm_result desc"), code)
+	//反馈
 	return
 }
 
