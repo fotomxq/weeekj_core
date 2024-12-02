@@ -47,7 +47,7 @@ func GetEventLevelCountByExtendOne(extend int) (dataList []DataGetEventLevelCoun
 */
 func GetEventLevelCountByExtendOneTop10(extend int) (dataList []DataGetEventLevelCountByExtendOne) {
 	extendField := fmt.Sprintf("extend%d", extend)
-	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf("with r_sum as ( select %s, count(id) as count from %s group by extend2) select e.%s as extend_val, e.level as level, count(e.id), max(r.count) as all_count from %s as e, r_sum as r where e.%s != '' and e.%s = r.%s group by e.extend2, e.level order by max(r.count) desc limit 30;", extendField, eventDB.GetClient().TableName, eventDB.GetClient().TableName, extendField, extendField, extendField, extendField))
+	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf(fmt.Sprint("with r_sum as ( select ", extendField, ", count(id) as count from %s group by extend2) select e.", extendField, " as extend_val, e.level as level, count(e.id), max(r.count) as all_count from %s as e, r_sum as r where e.", extendField, " != '' and e.", extendField, " = r.", extendField, " group by e.", extendField, ", e.level order by max(r.count) desc limit 30;"), eventDB.GetClient().TableName, eventDB.GetClient().TableName))
 	return
 }
 
