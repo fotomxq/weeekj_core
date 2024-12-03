@@ -166,7 +166,7 @@ func GetValsByBetweenAtAndAutoFull(args *ArgsGetValsByBetweenAtAndAutoFull) (dat
 			startAt, err = CoreFilter.GetTimeCarbonByDefault(args.StartAt)
 		}
 		if err != nil {
-			err = errors.New(fmt.Sprint("arg start at error, ", err))
+			err = errors.New(fmt.Sprint("arg start at error, ", err, ", ", args.StartAt))
 			return
 		}
 		startAt = startAt.StartOfMonth()
@@ -181,7 +181,7 @@ func GetValsByBetweenAtAndAutoFull(args *ArgsGetValsByBetweenAtAndAutoFull) (dat
 			endAt, err = CoreFilter.GetTimeCarbonByDefault(args.EndAt)
 		}
 		if err != nil {
-			err = errors.New(fmt.Sprint("arg end at error, ", err))
+			err = errors.New(fmt.Sprint("arg end at error, ", err, ", ", args.EndAt))
 			return
 		}
 		endAt = endAt.EndOfMonth()

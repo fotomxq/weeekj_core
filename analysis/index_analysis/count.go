@@ -74,7 +74,7 @@ func GetAnalysisIndexCount(args *ArgsGetAnalysisIndexCount) (dataList []DataGetA
 		EndAt:    args.EndAt,
 	})
 	for _, v := range indexList {
-		if !v.IsSystem {
+		if v.IsSystem {
 			continue
 		}
 		for _, v2 := range valCustomList {
