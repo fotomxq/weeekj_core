@@ -31,6 +31,8 @@ type DataGetAnalysisIndexCount struct {
 	MinVal float64 `db:"min_val" json:"minVal"`
 	//数据最大值
 	MaxVal float64 `db:"max_val" json:"maxVal"`
+	//是否系统内置
+	IsSystem bool `db:"is_system" json:"isSystem"`
 	//是否为自定义指标
 	IsCustom bool `db:"is_custom" json:"isCustom"`
 	//是否为筛选指标
@@ -49,23 +51,42 @@ func GetAnalysisIndexCount(args *ArgsGetAnalysisIndexCount) (dataList []DataGetA
 			args.CodeList = append(args.CodeList, v.Code)
 		}
 	}
+	//初始化dataList
+	for k := 0; k < len(indexList); k++ {
+		v := indexList[k]
+		dataList = append(dataList, DataGetAnalysisIndexCount{
+			Code:      v.Code,
+			DataCount: 0,
+			MinTime:   "",
+			MaxTime:   "",
+			MinVal:    0,
+			MaxVal:    0,
+			IsSystem:  v.IsSystem,
+			IsCustom:  false,
+			IsFilter:  false,
+		})
+	}
 	//获取指标val的数据量
 	valTotalList, _ := AnalysisIndexVal.GetAnalysisIndexValTotalAll(&AnalysisIndexVal.ArgsGetAnalysisIndexValTotalAll{
 		CodeList: args.CodeList,
 		StartAt:  args.StartAt,
 		EndAt:    args.EndAt,
 	})
-	for _, v := range valTotalList {
-		dataList = append(dataList, DataGetAnalysisIndexCount{
-			Code:      v.Code,
-			DataCount: v.DataCount,
-			MinTime:   v.MinTime,
-			MaxTime:   v.MaxTime,
-			MinVal:    v.MinVal,
-			MaxVal:    v.MaxVal,
-			IsCustom:  false,
-			IsFilter:  false,
-		})
+	for kIndex, vIndex := range dataList {
+		for _, v := range valTotalList {
+			if v.Code != vIndex.Code {
+				continue
+			}
+			if v.DataCount < 1 {
+				continue
+			}
+			dataList[kIndex].DataCount = v.DataCount
+			dataList[kIndex].MinTime = v.MinTime
+			dataList[kIndex].MaxTime = v.MaxTime
+			dataList[kIndex].MinVal = v.MinVal
+			dataList[kIndex].MaxVal = v.MaxVal
+			break
+		}
 	}
 	//获取自定义指标数据量
 	valCustomList, _ := AnalysisIndexValCustom.GetAnalysisIndexValCustomTotalAll(&AnalysisIndexValCustom.ArgsGetAnalysisIndexValCustomTotalAll{
@@ -73,60 +94,35 @@ func GetAnalysisIndexCount(args *ArgsGetAnalysisIndexCount) (dataList []DataGetA
 		StartAt:  args.StartAt,
 		EndAt:    args.EndAt,
 	})
-	for _, v := range indexList {
-		if v.IsSystem {
+	for kIndex, vIndex := range dataList {
+		if vIndex.IsSystem {
 			continue
 		}
-		for _, v2 := range valCustomList {
-			if v.Code == v2.Code {
-				dataList = append(dataList, DataGetAnalysisIndexCount{
-					Code:      v2.Code,
-					DataCount: v2.DataCount,
-					MinTime:   v2.MinTime,
-					MaxTime:   v2.MaxTime,
-					MinVal:    v2.MinVal,
-					MaxVal:    v2.MaxVal,
-					IsCustom:  true,
-					IsFilter:  false,
-				})
-				break
+		for _, v := range valCustomList {
+			if v.Code != vIndex.Code {
+				continue
 			}
+			if v.DataCount < 1 {
+				continue
+			}
+			dataList[kIndex].DataCount = v.DataCount
+			dataList[kIndex].MinTime = v.MinTime
+			dataList[kIndex].MaxTime = v.MaxTime
+			dataList[kIndex].MinVal = v.MinVal
+			dataList[kIndex].MaxVal = v.MaxVal
+			dataList[kIndex].IsCustom = true
 		}
 	}
 	//获取指标filter的数据量
-	for _, v := range args.CodeList {
-		findKey := -1
-		isFind := false
-		for k2, v2 := range dataList {
-			if v != v2.Code {
-				continue
-			}
-			findKey = k2
-			if v2.DataCount > 0 {
-				isFind = true
-				continue
-			}
-			dataList[k2].DataCount = AnalysisIndexFilter.GetCount(v)
-			dataList[k2].IsFilter = true
-			break
+	for kIndex, vIndex := range dataList {
+		vCount := AnalysisIndexFilter.GetCount(vIndex.Code)
+		if vCount < 1 {
+			continue
 		}
-		if !isFind {
-			if findKey > -1 {
-				dataList[findKey].DataCount = AnalysisIndexFilter.GetCount(v)
-				dataList[findKey].IsFilter = true
-			} else {
-				dataList = append(dataList, DataGetAnalysisIndexCount{
-					Code:      v,
-					DataCount: AnalysisIndexFilter.GetCount(v),
-					MinTime:   "",
-					MaxTime:   "",
-					MinVal:    0,
-					MaxVal:    0,
-					IsCustom:  false,
-					IsFilter:  true,
-				})
-			}
+		if vIndex.DataCount < 1 {
+			dataList[kIndex].DataCount = vCount
 		}
+		dataList[kIndex].IsFilter = true
 	}
 	//反馈
 	return
