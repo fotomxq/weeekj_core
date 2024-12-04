@@ -51,7 +51,7 @@ func GetEventList(args *ArgsGetEventList) (dataList []FieldsEvent, dataCount int
 		Pages:    args.Pages,
 		IsRemove: args.IsRemove,
 		Search:   args.Search,
-	})
+	}).SetDeleteQuery("delete_at", args.IsRemove)
 	ctx = ctx.SetStringQuery("code", args.Code)
 	if args.BetweenAt.MinTime != "" || args.BetweenAt.MaxTime != "" {
 		ctx = ctx.SetTimeBetweenByArgQuery("year_md", args.BetweenAt)
@@ -75,7 +75,7 @@ func GetEventList(args *ArgsGetEventList) (dataList []FieldsEvent, dataCount int
 	return
 }
 
-// 通过ID获取风险详情
+// GetEventByID 通过ID获取风险详情
 func GetEventByID(id int64) (data FieldsEvent, err error) {
 	//获取数据
 	err = eventDB.GetInfo().GetInfoByID(id, &data)

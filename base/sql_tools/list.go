@@ -157,7 +157,13 @@ func (c *QuickList) GetAll(args *ArgsGetAll, result any) (dataCount int64, err e
 // GetDistinctList 获取指定字段的所有差异值清单
 func (c *QuickList) GetDistinctList(fieldName string) (result pq.StringArray, err error) {
 	//获取数据
-	err = c.quickClient.client.DB.GetPostgresql().Select(&result, "SELECT DISTINCT "+fieldName+" as name FROM "+c.quickClient.client.TableName+";")
+	execSQL := "SELECT DISTINCT " + fieldName + " as name FROM " + c.quickClient.client.TableName
+	if c.quickClient.openSoftDelete {
+		execSQL = fmt.Sprint(execSQL, " WHERE delete_at < to_timestamp(1000000);")
+	} else {
+		execSQL = fmt.Sprint(execSQL, ";")
+	}
+	err = c.quickClient.client.DB.GetPostgresql().Select(&result, execSQL)
 	if err != nil {
 		return
 	}

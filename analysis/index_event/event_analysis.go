@@ -14,7 +14,7 @@ type DataGetEventLevelCount struct {
 // GetEventLevelCount 获取风险等级统计
 // 该方法会无视维度，获取所有风险等级的数量统计
 func GetEventLevelCount() (dataList []DataGetEventLevelCount) {
-	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT level, count(id) as count FROM "+eventDB.GetClient().TableName+" GROUP BY level")
+	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT level, count(id) as count FROM "+eventDB.GetClient().TableName+" WHERE delete_at < to_timestamp(1000000) GROUP BY level")
 	return
 }
 
@@ -35,7 +35,7 @@ type DataGetEventLevelCountByExtendOne struct {
 // GetEventLevelCountByExtendOne 获取指定维度的风险事件数量关系
 func GetEventLevelCountByExtendOne(extend int) (dataList []DataGetEventLevelCountByExtendOne) {
 	extendField := fmt.Sprintf("extend%d", extend)
-	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf("with r_sum as ( select %s, count(id) as count from %s group by extend2) select e.%s as extend_val, e.level as level, count(e.id), max(r.count) as all_count from %s as e, r_sum as r where e.%s != '' and e.%s = r.%s group by e.extend2, e.level order by max(r.count) desc;", extendField, eventDB.GetClient().TableName, eventDB.GetClient().TableName, extendField, extendField, extendField, extendField))
+	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf("with r_sum as ( select %s, count(id) as count from %s group by extend2) select e.%s as extend_val, e.level as level, count(e.id), max(r.count) as all_count from %s as e, r_sum as r where e.%s != '' and e.%s = r.%s and e.delete_at < to_timestamp(1000000) group by e.extend2, e.level order by max(r.count) desc;", extendField, eventDB.GetClient().TableName, eventDB.GetClient().TableName, extendField, extendField, extendField, extendField))
 	return
 }
 
@@ -47,7 +47,7 @@ func GetEventLevelCountByExtendOne(extend int) (dataList []DataGetEventLevelCoun
 */
 func GetEventLevelCountByExtendOneTop10(extend int) (dataList []DataGetEventLevelCountByExtendOne) {
 	extendField := fmt.Sprintf("extend%d", extend)
-	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf(fmt.Sprint("with r_sum as ( select ", extendField, ", count(id) as count from %s group by extend2) select e.", extendField, " as extend_val, e.level as level, count(e.id), max(r.count) as all_count from %s as e, r_sum as r where e.", extendField, " != '' and e.", extendField, " = r.", extendField, " group by e.", extendField, ", e.level order by max(r.count) desc limit 30;"), eventDB.GetClient().TableName, eventDB.GetClient().TableName))
+	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf(fmt.Sprint("with r_sum as ( select ", extendField, ", count(id) as count from %s group by extend2) select e.", extendField, " as extend_val, e.level as level, count(e.id), max(r.count) as all_count from %s as e, r_sum as r where e.", extendField, " != '' and e.", extendField, " = r.", extendField, " and e.delete_at < to_timestamp(1000000) group by e.", extendField, ", e.level order by max(r.count) desc limit 30;"), eventDB.GetClient().TableName, eventDB.GetClient().TableName))
 	return
 }
 
@@ -81,7 +81,7 @@ type DataGetEventLevelCountByExtend struct {
 // GetEventLevelCountByExtend 获取指定维度的风险事件数量关系
 // 该方法需指定具体维度，以获取指定维度的风险等级数量统计
 func GetEventLevelCountByExtend(args *ArgsGetEventLevelCountByExtend) (dataList []DataGetEventLevelCountByExtend) {
-	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf("SELECT level, count(*) as count FROM %s WHERE code = $1 AND extend1 = $2 AND extend2 = $3 AND extend3 = $4 AND extend4 = $5 AND extend5 = $6 GROUP BY level", eventDB.GetClient().TableName), args.Code, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5)
+	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf("SELECT level, count(*) as count FROM %s WHERE code = $1 AND extend1 = $2 AND extend2 = $3 AND extend3 = $4 AND extend4 = $5 AND extend5 = $6 AND delete_at < to_timestamp(1000000) GROUP BY level", eventDB.GetClient().TableName), args.Code, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5)
 	return
 }
 
@@ -98,7 +98,7 @@ type DataArgsDataGetEventLevelCountRanking struct {
 
 // GetEventLevelCountRanking 获取指标的数量排名
 func GetEventLevelCountRanking(args *ArgsGetEventLevelCountByExtend) (dataList []DataArgsDataGetEventLevelCountRanking) {
-	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf("SELECT code, level, count(*) as count FROM %s GROUP BY code, level ORDER BY count DESC", eventDB.GetClient().TableName))
+	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, fmt.Sprintf("SELECT code, level, count(*) as count FROM %s GROUP BY code, level WHERE delete_at < to_timestamp(1000000) ORDER BY count DESC", eventDB.GetClient().TableName))
 	return
 }
 

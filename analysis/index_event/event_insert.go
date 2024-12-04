@@ -11,13 +11,23 @@ func InsertEvent(args *FieldsEvent) (err error) {
 	}
 	//如果存在数据，则更新
 	if findData.ID > 0 {
-		args.ID = findData.ID
-		err = eventDB.GetUpdate().UpdateByID(args)
-		if err != nil {
+		//如果存在数据，且日期不同，则软删除数据
+		if findData.YearMD != args.YearMD {
+			err = eventDB.GetDelete().DeleteByID(findData.ID)
+			if err != nil {
+				return
+			}
+			findData.ID = 0
+		} else {
+			args.ID = findData.ID
+			err = eventDB.GetUpdate().UpdateByID(args)
+			if err != nil {
+				return
+			}
 			return
 		}
-		return
-	} else {
+	}
+	if findData.ID > 0 {
 		//写入数据
 		_, err = eventDB.GetInsert().InsertRow(args)
 		if err != nil {

@@ -56,7 +56,7 @@ type ArgsCalcRFM struct {
 }
 
 // CalcRFM 计算RFM值并记录
-// 注意RFM计算中，R指标需根据需求提前根据需求反转（也可以不反转），否则计算结果将出现异常
+// 注意RFM计算中，R指标需根据需求提前反转（也可以不反转），否则计算结果将出现异常
 func CalcRFM(args *ArgsCalcRFM) (err error) {
 	//计算RFM值
 	var rfmCore CoreMathRFM.Core
@@ -87,7 +87,7 @@ func CalcRFM(args *ArgsCalcRFM) (err error) {
 		useDefaultWeight = true
 	}
 	//设置范围
-	rfmCore.SetDataRange(args.RMin, args.RMax, args.FMin, args.FMax, args.MMin, args.MMax)
+	rfmCore.SetDataRange(args.RMin, args.FMin, args.MMin, args.RMax, args.FMax, args.MMax)
 	//计算结果
 	var rfmResult float64
 	if useDefaultWeight {
