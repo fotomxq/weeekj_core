@@ -38,3 +38,28 @@ func GetSimilarityDataByIndex(args *ArgsGetSimilarityDataByIndex) (dataList []Da
 	//反馈
 	return
 }
+
+// FilterSimilarityDataByIndex 剔除异常指标
+func FilterSimilarityDataByIndex(dataList []DataSimilarityList, needRemoveSame, needRemoveZero bool) (result []DataSimilarityList) {
+	for _, v := range dataList {
+		isRemove := false
+		//剔除相同指标
+		if needRemoveSame {
+			if v.Code1 == v.Code2 {
+				isRemove = true
+			}
+		}
+		//剔除为0指标
+		if needRemoveZero {
+			if v.Score == 0 {
+				isRemove = true
+			}
+		}
+		//添加或剔除
+		if !isRemove {
+			result = append(result, v)
+		}
+	}
+	//反馈
+	return dataList
+}
