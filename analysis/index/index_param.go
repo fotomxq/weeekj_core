@@ -99,6 +99,22 @@ func GetIndexParamValByIndexCode(indexCode string, code string) (result string) 
 	return
 }
 
+// GetIndexParamValByCode 获取指定编码参数
+func GetIndexParamValByCode(code string) (result string) {
+	//如果为空
+	if code == "" {
+		return
+	}
+	//获取数据
+	var rawData FieldsIndexParam
+	_ = indexParamDB.GetInfo().GetInfoByFields(map[string]any{
+		"code": code,
+	}, true, &rawData)
+	result = rawData.ParamVal
+	//反馈
+	return
+}
+
 // GetIndexParamByCode 获取指定编码参数
 func GetIndexParamByCode(indexID int64, code string) (data FieldsIndexParam, err error) {
 	//获取数据

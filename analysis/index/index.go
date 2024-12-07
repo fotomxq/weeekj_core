@@ -74,6 +74,18 @@ type DataGetIndexAll struct {
 	//是否启用
 	// 关闭后将不对该指标进行汇总运算
 	IsEnable bool `db:"is_enable" json:"isEnable" index:"true" field_list:"true"`
+	//指标类型
+	// 指标类型方便程序做指标汇总时，进行识别，例如比率型可直接用于汇算；计数型、汇总型、平均型需根据业务特点进行汇总计算（需开发修正数据）
+	// ratio 比率型; count 计数型; sum 汇总型; avg 平均型
+	// ratio 比率型，必须是0-100%，建议存储为0.00-100.00的浮点数
+	// count 计数型，必须是整数类型，建议存储为int64，一般用于次数记录
+	// sum 汇总型，代表业务上是合计数据，建议存储为浮点数。一般用于财务指标
+	// avg 平均型，代表业务上是平均数据，建议存储为浮点数。一般用于财务指标
+	IndexType string `db:"index_type" json:"indexType" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
+	//指标方向
+	// 用于描述指标好坏，可用于程序识别、业务识别，例如up表示指标越大越好，down表示指标越小越好
+	// up 上升型; down 下降型
+	IndexDirection string `db:"index_direction" json:"indexDirection" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
 	//子指标
 	SubIndex []DataGetIndexAll `json:"subIndex"`
 }
@@ -99,15 +111,17 @@ func GetIndexAll() (dataList []DataGetIndexAll, err error) {
 	if len(relationRawList) < 1 {
 		for k := 0; k < len(indexRawList); k++ {
 			dataList = append(dataList, DataGetIndexAll{
-				ID:          indexRawList[k].ID,
-				Code:        indexRawList[k].Code,
-				Name:        indexRawList[k].Name,
-				IsSystem:    indexRawList[k].IsSystem,
-				Description: indexRawList[k].Description,
-				Decision:    indexRawList[k].Decision,
-				Threshold:   indexRawList[k].Threshold,
-				IsEnable:    indexRawList[k].IsEnable,
-				SubIndex:    []DataGetIndexAll{},
+				ID:             indexRawList[k].ID,
+				Code:           indexRawList[k].Code,
+				Name:           indexRawList[k].Name,
+				IsSystem:       indexRawList[k].IsSystem,
+				Description:    indexRawList[k].Description,
+				Decision:       indexRawList[k].Decision,
+				Threshold:      indexRawList[k].Threshold,
+				IsEnable:       indexRawList[k].IsEnable,
+				IndexType:      indexRawList[k].IndexType,
+				IndexDirection: indexRawList[k].IndexDirection,
+				SubIndex:       []DataGetIndexAll{},
 			})
 		}
 		return
@@ -124,15 +138,17 @@ func GetIndexAll() (dataList []DataGetIndexAll, err error) {
 		}
 		if !isFind {
 			dataList = append(dataList, DataGetIndexAll{
-				ID:          vIndex.ID,
-				Code:        vIndex.Code,
-				Name:        vIndex.Name,
-				IsSystem:    vIndex.IsSystem,
-				Description: vIndex.Description,
-				Decision:    vIndex.Decision,
-				Threshold:   vIndex.Threshold,
-				IsEnable:    vIndex.IsEnable,
-				SubIndex:    []DataGetIndexAll{},
+				ID:             vIndex.ID,
+				Code:           vIndex.Code,
+				Name:           vIndex.Name,
+				IsSystem:       vIndex.IsSystem,
+				Description:    vIndex.Description,
+				Decision:       vIndex.Decision,
+				Threshold:      vIndex.Threshold,
+				IsEnable:       vIndex.IsEnable,
+				IndexType:      vIndex.IndexType,
+				IndexDirection: vIndex.IndexDirection,
+				SubIndex:       []DataGetIndexAll{},
 			})
 		}
 	}
@@ -173,15 +189,17 @@ func getIndexAllRelChild(indexRawList []FieldsIndex, relationRawList []FieldsInd
 				continue
 			}
 			result = append(result, DataGetIndexAll{
-				ID:          vIndex.ID,
-				Code:        vIndex.Code,
-				Name:        vIndex.Name,
-				IsSystem:    vIndex.IsSystem,
-				Description: vIndex.Description,
-				Decision:    vIndex.Decision,
-				Threshold:   vIndex.Threshold,
-				IsEnable:    vIndex.IsEnable,
-				SubIndex:    getIndexAllRelChild(indexRawList, relationRawList, vIndex.ID),
+				ID:             vIndex.ID,
+				Code:           vIndex.Code,
+				Name:           vIndex.Name,
+				IsSystem:       vIndex.IsSystem,
+				Description:    vIndex.Description,
+				Decision:       vIndex.Decision,
+				Threshold:      vIndex.Threshold,
+				IsEnable:       vIndex.IsEnable,
+				IndexType:      vIndex.IndexType,
+				IndexDirection: vIndex.IndexDirection,
+				SubIndex:       getIndexAllRelChild(indexRawList, relationRawList, vIndex.ID),
 			})
 			break
 		}
@@ -240,12 +258,24 @@ type DataGetIndexListByTop struct {
 	Description string `db:"description" json:"description" check:"des" min:"1" max:"100" field_search:"true" field_list:"true" empty:"true"`
 	//指标决策建议
 	Decision string `db:"decision" json:"decision" check:"des" min:"1" max:"-1" empty:"true" field_search:"true"`
+	//指标类型
+	// 指标类型方便程序做指标汇总时，进行识别，例如比率型可直接用于汇算；计数型、汇总型、平均型需根据业务特点进行汇总计算（需开发修正数据）
+	// ratio 比率型; count 计数型; sum 汇总型; avg 平均型
+	// ratio 比率型，必须是0-100%，建议存储为0.00-100.00的浮点数
+	// count 计数型，必须是整数类型，建议存储为int64，一般用于次数记录
+	// sum 汇总型，代表业务上是合计数据，建议存储为浮点数。一般用于财务指标
+	// avg 平均型，代表业务上是平均数据，建议存储为浮点数。一般用于财务指标
+	IndexType string `db:"index_type" json:"indexType" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
+	//指标方向
+	// 用于描述指标好坏，可用于程序识别、业务识别，例如up表示指标越大越好，down表示指标越小越好
+	// up 上升型; down 下降型
+	IndexDirection string `db:"index_direction" json:"indexDirection" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
 }
 
 // GetIndexListByTop 获取指标列表顶部
 func GetIndexListByTop() (dataList []DataGetIndexListByTop, dataCount int64, err error) {
 	//获取数据
-	err = indexDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT i.id as index_id, i.code as code, max(i.name) as name, max(i.description) as description, max(i.decision) as decision FROM analysis_index as i, analysis_index_relation as r WHERE i.delete_at < to_timestamp(100000) and i.id = r.index_id GROUP BY i.id, i.code ORDER BY i.code;")
+	err = indexDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT i.id as index_id, i.code as code, max(i.name) as name, max(i.description) as description, max(i.decision) as decision, max(i.index_type) as index_type, max(i.index_direction) as index_direction FROM analysis_index as i, analysis_index_relation as r WHERE i.delete_at < to_timestamp(100000) and i.id = r.index_id GROUP BY i.id, i.code ORDER BY i.code;")
 	if err != nil || len(dataList) < 1 {
 		return
 	}
@@ -318,6 +348,18 @@ type ArgsCreateIndex struct {
 	// 关闭后将不对该指标进行汇总运算
 	// 通过接口应强制给予false
 	IsEnable bool `db:"is_enable" json:"isEnable" index:"true"`
+	//指标类型
+	// 指标类型方便程序做指标汇总时，进行识别，例如比率型可直接用于汇算；计数型、汇总型、平均型需根据业务特点进行汇总计算（需开发修正数据）
+	// ratio 比率型; count 计数型; sum 汇总型; avg 平均型
+	// ratio 比率型，必须是0-100%，建议存储为0.00-100.00的浮点数
+	// count 计数型，必须是整数类型，建议存储为int64，一般用于次数记录
+	// sum 汇总型，代表业务上是合计数据，建议存储为浮点数。一般用于财务指标
+	// avg 平均型，代表业务上是平均数据，建议存储为浮点数。一般用于财务指标
+	IndexType string `db:"index_type" json:"indexType" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
+	//指标方向
+	// 用于描述指标好坏，可用于程序识别、业务识别，例如up表示指标越大越好，down表示指标越小越好
+	// up 上升型; down 下降型
+	IndexDirection string `db:"index_direction" json:"indexDirection" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
 }
 
 // CreateIndex 创建新的指标
@@ -356,6 +398,18 @@ type ArgsUpdateIndex struct {
 	//是否启用
 	// 关闭后将不对该指标进行汇总运算
 	IsEnable bool `db:"is_enable" json:"isEnable" index:"true"`
+	//指标类型
+	// 指标类型方便程序做指标汇总时，进行识别，例如比率型可直接用于汇算；计数型、汇总型、平均型需根据业务特点进行汇总计算（需开发修正数据）
+	// ratio 比率型; count 计数型; sum 汇总型; avg 平均型
+	// ratio 比率型，必须是0-100%，建议存储为0.00-100.00的浮点数
+	// count 计数型，必须是整数类型，建议存储为int64，一般用于次数记录
+	// sum 汇总型，代表业务上是合计数据，建议存储为浮点数。一般用于财务指标
+	// avg 平均型，代表业务上是平均数据，建议存储为浮点数。一般用于财务指标
+	IndexType string `db:"index_type" json:"indexType" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
+	//指标方向
+	// 用于描述指标好坏，可用于程序识别、业务识别，例如up表示指标越大越好，down表示指标越小越好
+	// up 上升型; down 下降型
+	IndexDirection string `db:"index_direction" json:"indexDirection" check:"des" min:"1" max:"50" index:"true" field_list:"true"`
 }
 
 // UpdateIndex 更新指标定义
