@@ -58,6 +58,37 @@ func (c *QuickInfo) GetInfoByField(fieldName string, fieldVal any, haveDelete bo
 	return
 }
 
+// GetInfoByFieldToID 通过指定字段获取信息（必须是唯一的字段）反馈ID
+// 注意，当字段存在软删除时，请务必启用haveDelete，否则将出现异常
+func (c *QuickInfo) GetInfoByFieldToID(fieldName string, fieldVal any, haveDelete bool) (findID int64, err error) {
+	//获取数据
+	ctx := c.quickClient.client.Get().NeedLimit().SetFieldsOne([]string{"id"})
+	if haveDelete {
+		ctx = ctx.SetDeleteQuery("delete_at", false)
+	}
+	switch fieldVal.(type) {
+	case int:
+		ctx = ctx.SetIntQuery(fieldName, fieldVal.(int))
+	case int64:
+		ctx = ctx.SetInt64Query(fieldName, fieldVal.(int64))
+	case string:
+		ctx = ctx.SetStringQuery(fieldName, fieldVal.(string))
+	default:
+		err = errors.New("field type error")
+	}
+	type findType struct {
+		ID int64 `db:"id"`
+	}
+	var findData findType
+	err = ctx.Result(&findData)
+	if err != nil {
+		return
+	}
+	findID = findData.ID
+	//反馈
+	return
+}
+
 // GetInfoByFields 多个条件获取数据
 func (c *QuickInfo) GetInfoByFields(fields map[string]any, haveDelete bool, result any) (err error) {
 	//获取数据

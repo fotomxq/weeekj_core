@@ -67,3 +67,53 @@ func (c *QuickInsert) InsertRow(args any) (newID int64, err error) {
 	//反馈
 	return
 }
+
+// InsertOrUpdateRowByID 融合插入数据
+// 自动更新或插入，根据 id 判断
+func (c *QuickInsert) InsertOrUpdateRowByID(args any) (err error) {
+	//找到ID
+	var findID int64
+	//获取参数
+	paramsType := reflect.TypeOf(args).Elem()
+	valueType := reflect.ValueOf(args).Elem()
+	//开始遍历
+	step := 0
+	for step < paramsType.NumField() {
+		//捕捉结构
+		vField := paramsType.Field(step)
+		vValueType := valueType.Field(step)
+		vTagDB := vField.Tag.Get("db")
+		//下一步
+		step += 1
+		//内置字段禁止设置，主要用于其他操作
+		switch vTagDB {
+		case "id":
+			findID = vValueType.Int()
+		}
+	}
+	//如果存在ID，则更新数据
+	if findID > 0 {
+		err = c.quickClient.GetUpdate().UpdateByID(args)
+	} else {
+		_, err = c.InsertRow(args)
+	}
+	//反馈
+	return
+}
+
+// InsertOrUpdateRowByField 融合插入数据
+// 自动更新或插入，根据 findField 判断
+func (c *QuickInsert) InsertOrUpdateRowByField(args any, findField string, findVal any, haveDelete bool) (err error) {
+	//找到数据
+	var findID int64
+	findID, err = c.quickClient.GetInfo().GetInfoByFieldToID(findField, findVal, haveDelete)
+	//TODO: 需优化，找到ID后赋予 args
+	//如果存在ID，则更新数据
+	if err == nil && findID > 0 {
+		err = c.quickClient.GetUpdate().UpdateByID(args)
+	} else {
+		_, err = c.InsertRow(args)
+	}
+	//反馈
+	return
+}
