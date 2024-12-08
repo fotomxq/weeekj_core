@@ -1,5 +1,7 @@
 package AnalysisIndexEvent
 
+import "errors"
+
 // InsertEvent 插入新的预警事件
 func InsertEvent(args *FieldsEvent) (err error) {
 	//检查指标是否已触发过风险
@@ -10,11 +12,12 @@ func InsertEvent(args *FieldsEvent) (err error) {
 		return
 	}
 	//如果存在数据，则更新
-	if findData.ID > 0 {
+	if err == nil && findData.ID > 0 {
 		//如果存在数据，且日期不同，则软删除数据
 		if findData.YearMD != args.YearMD {
 			err = eventDB.GetDelete().DeleteByID(findData.ID)
 			if err != nil {
+				err = errors.New("delete event error: " + err.Error())
 				return
 			}
 			findData.ID = 0
@@ -27,7 +30,7 @@ func InsertEvent(args *FieldsEvent) (err error) {
 			return
 		}
 	}
-	if findData.ID > 0 {
+	if err != nil || findData.ID < 1 {
 		//写入数据
 		_, err = eventDB.GetInsert().InsertRow(args)
 		if err != nil {
