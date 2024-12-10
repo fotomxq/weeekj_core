@@ -50,3 +50,10 @@ func TestClassifyEqualWidth(t *testing.T) {
 		t.Log(fmt.Sprintf("Bin %d: %v", i, bin))
 	}
 }
+
+func TestGetScoreWeightedSumFloat64(t *testing.T) {
+	data := []float64{23.26, 73.15, 0}
+	weight := []float64{0.4, 0.35, 0.25}
+	result := GetScoreWeightedSumFloat64(data, weight)
+	t.Log(result)
+}

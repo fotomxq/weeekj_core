@@ -140,3 +140,16 @@ func ClassifyEqualWidth(data []float64, numBins int) ([][]float64, error) {
 	}
 	return bins, nil
 }
+
+// GetScoreWeightedSumFloat64 计算一组浮点数在指定权重关系的最终得分
+func GetScoreWeightedSumFloat64(data []float64, weights []float64) (result float64) {
+	//检查参数
+	if len(data) != len(weights) {
+		return
+	}
+	//计算
+	for k, v := range data {
+		result += v * weights[k]
+	}
+	return
+}
