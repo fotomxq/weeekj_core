@@ -112,3 +112,27 @@ func GetEventExtendDistinctList(extendNum int) (dataList []string, err error) {
 	//反馈
 	return
 }
+
+type DataGetAnalysisModelSupplierRFMOrderDaysByCompanyOrder struct {
+	//code
+	Code string `json:"code"`
+	//最大值
+	MaxVal float64 `json:"maxVal"`
+	//平均值
+	AvgVal float64 `json:"avgVal"`
+	//排名
+	Rank int64 `json:"rank"`
+	//等级
+	Level int `json:"level"`
+	//desc
+	Desc string `json:"desc"`
+}
+
+// GetAnalysisModelByCompany 专用场景风险评估数据
+func GetAnalysisModelByCompany(code, supplierName, purchaseObject string) (data DataGetAnalysisModelSupplierRFMOrderDaysByCompanyOrder) {
+	data.Code = code
+	_ = eventDB.GetClient().DB.GetPostgresql().Get(&data, "SELECT max(index_val) as maxVal, level FROM analysis_index_events WHERE code = $1 AND extend1 = $2 AND (extend2 = $3 OR $3 = '') AND index_val > 0 group by level ;", code, supplierName, purchaseObject)
+	_ = eventDB.GetClient().DB.GetPostgresql().Get(&data, "SELECT avg(index_val) as AvgVal FROM analysis_index_events WHERE code = $1 AND index_val > 0;", code)
+	_ = eventDB.GetClient().DB.GetPostgresql().Get(&data, "WITH RankedEvents AS (SELECT extend1, RANK() OVER (ORDER BY index_val DESC) AS rank FROM analysis_index_events WHERE code = $1) SELECT rank FROM RankedEvents WHERE extend1 = $2 LIMIT 1;", code, supplierName)
+	return
+}
