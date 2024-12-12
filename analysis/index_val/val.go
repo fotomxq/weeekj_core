@@ -486,3 +486,10 @@ func reviseNormVal(args *argsReviseNormVal) (err error) {
 	//返回
 	return
 }
+
+// GetAvgValByCode 获取指定指标平均值
+func GetAvgValByCode(code string) (avg float64) {
+	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&avg, "SELECT AVG(val_raw) FROM analysis_index_vals WHERE code = $1", code)
+	return
+
+}
