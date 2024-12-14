@@ -437,6 +437,66 @@ func CreateVal(args *ArgsCreateVal) (err error) {
 	return
 }
 
+type ArgsUpdateNormalValByCode struct {
+	//指标编码
+	Code string `db:"code" json:"code" check:"des" min:"1" max:"50" index:"true"`
+	//年月日
+	// 可任意持续，如年，或仅年月
+	// 不建议构建小时及以下级别的指标
+	// 同一个维度和时间范围，仅会存在一个数据，否则将覆盖
+	YearMD string `db:"year_md" json:"yearMD" index:"true"`
+	//扩展维度1
+	// 可建议特别的维度关系，例如特定供应商的数据、特定地区的数据等
+	Extend1 string `db:"extend1" json:"extend1" index:"true"`
+	//扩展维度2
+	Extend2 string `db:"extend2" json:"extend2" index:"true"`
+	//扩展维度3
+	Extend3 string `db:"extend3" json:"extend3" index:"true"`
+	//扩展维度4
+	Extend4 string `db:"extend4" json:"extend4" index:"true"`
+	//扩展维度5
+	Extend5 string `db:"extend5" json:"extend5" index:"true"`
+	//归一化值
+	ValNorm float64 `db:"val_norm" json:"valNorm" index:"true"`
+	//是否为预测值
+	IsForecast bool `db:"is_forecast" json:"isForecast"`
+}
+
+// UpdateNormalValByCode 修订指定数据的归一化值
+func UpdateNormalValByCode(args *ArgsUpdateNormalValByCode) (err error) {
+	//获取数据
+	var rawData FieldsVal
+	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&rawData, "SELECT * FROM analysis_index_vals WHERE delete_at < to_timestamp(1000000) AND code = $1 AND year_md = $2 AND extend1 = $3 AND extend2 = $4 AND extend3 = $5 AND extend4 = $6 AND extend5 = $7 AND is_forecast = $8", args.Code, args.YearMD, args.Extend1, args.Extend2, args.Extend3, args.Extend4, args.Extend5, args.IsForecast)
+	if rawData.ID < 1 {
+		err = errors.New(fmt.Sprint("no data, ", err))
+		return
+	}
+	//更新数据
+	type updateType struct {
+		// ID
+		ID int64 `db:"id" json:"id" check:"id" unique:"true"`
+		//归一化值
+		ValNorm float64 `db:"val_norm" json:"valNorm" index:"true"`
+	}
+	updateData := updateType{
+		ID:      rawData.ID,
+		ValNorm: args.ValNorm,
+	}
+	//修正浮点数
+	if math.IsNaN(updateData.ValNorm) || math.IsInf(updateData.ValNorm, 0) {
+		updateData.ValNorm = 0
+	}
+	//修正结果
+	updateData.ValNorm = CoreFilter.RoundTo4DecimalPlaces(updateData.ValNorm)
+	//执行修改
+	err = indexValDB.GetUpdate().UpdateByID(&updateData)
+	if err != nil {
+		return
+	}
+	//返回
+	return
+}
+
 // argsReviseNormVal 修订归一化值参数
 type argsReviseNormVal struct {
 	//指标编码

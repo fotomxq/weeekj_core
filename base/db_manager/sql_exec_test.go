@@ -3,7 +3,6 @@ package BaseDBManager
 import (
 	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	"testing"
-	"time"
 )
 
 var (
@@ -15,11 +14,7 @@ func TestSQLExecInit(t *testing.T) {
 }
 
 func TestCreateSQL(t *testing.T) {
-	err := CreateSQL(&FieldsSQL{
-		ID:         0,
-		CreateAt:   time.Time{},
-		UpdateAt:   time.Time{},
-		DeleteAt:   time.Time{},
+	err := CreateSQL(&ArgsCreateSQL{
 		FromSystem: "test",
 		FromModule: "test",
 		FromCode:   "test",
@@ -56,14 +51,8 @@ func TestGetSQLList(t *testing.T) {
 }
 
 func TestUpdateSQL(t *testing.T) {
-	err := UpdateSQL(&FieldsSQL{
+	err := UpdateSQL(&ArgsUpdateSQL{
 		ID:         newSQLData.ID,
-		CreateAt:   time.Time{},
-		UpdateAt:   time.Time{},
-		DeleteAt:   time.Time{},
-		FromSystem: "test",
-		FromModule: "test",
-		FromCode:   "test",
 		CarbonCode: "",
 		PostURL:    "",
 		SQLData:    "",
