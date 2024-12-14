@@ -17,6 +17,7 @@ import (
 	BaseAutoCode "github.com/fotomxq/weeekj_core/v5/base/auto_code"
 	BaseBPM "github.com/fotomxq/weeekj_core/v5/base/bpm"
 	BaseConfig "github.com/fotomxq/weeekj_core/v5/base/config"
+	BaseDBManager "github.com/fotomxq/weeekj_core/v5/base/db_manager"
 	BaseExpireTip "github.com/fotomxq/weeekj_core/v5/base/expire_tip"
 	BaseFileSys2 "github.com/fotomxq/weeekj_core/v5/base/filesys2"
 	BaseIPAddr "github.com/fotomxq/weeekj_core/v5/base/ipaddr"
@@ -152,6 +153,12 @@ func Init() (err error) {
 	BaseApprover.Init()
 	//编码生成器
 	BaseAutoCode.Init()
+	//SQL DB管理器
+	BaseDBManager.OpenSub = OpenSub
+	if err = BaseDBManager.Init(); err != nil {
+		err = errors.New("base db manager, " + err.Error())
+		return
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//统计
