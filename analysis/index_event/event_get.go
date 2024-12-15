@@ -108,6 +108,5 @@ type GetEventCodeBySystemData struct {
 // GetEventCodeBySystem 获取指标事件中的指标编码
 func GetEventCodeBySystem() (dataList []GetEventCodeBySystemData, err error) {
 	_ = eventDB.GetClient().DB.GetPostgresql().Select(&dataList, "SELECT code from analysis_index_events group by code")
-	fmt.Println(dataList)
 	return
 }
