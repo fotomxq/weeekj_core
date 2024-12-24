@@ -36,6 +36,25 @@ func GetLookupList(args *ArgsGetLookupList) (dataList []FieldsLookup, dataCount 
 	return
 }
 
+// GetLookupAll 获取所有数据
+func GetLookupAll(domainID int64, unitID int64) (dataList []FieldsLookup, err error) {
+	err = lookupDB.DB.GetPostgresql().Select(&dataList, "SELECT id FROM base_lookup_child WHERE domain_id = $1 AND unit_id = $2 AND delete_at < to_timestamp(1000000)", domainID, unitID)
+	if err != nil {
+		return
+	}
+	if len(dataList) < 1 {
+		return
+	}
+	for k, v := range dataList {
+		vData := getLookupID(v.ID)
+		if vData.ID < 1 {
+			continue
+		}
+		dataList[k] = vData
+	}
+	return
+}
+
 func GetLookupID(id int64) (data FieldsLookup) {
 	data = getLookupID(id)
 	if data.ID < 1 {

@@ -46,6 +46,15 @@ func GetDomainNameByID(id int64) (name string) {
 	return data.Name
 }
 
+func GetDomainByName(name string) (data FieldsDomain) {
+	_ = domainDB.DB.GetPostgresql().DB.Get(&data, "SELECT id FROM base_lookup_domain WHERE name = $1 and delete_at < to_timestamp(1000000)", name)
+	if data.ID < 1 {
+		return
+	}
+	data = GetDomainID(data.ID)
+	return
+}
+
 func getDomainID(id int64) (data FieldsDomain) {
 	cacheMark := getDomainCacheMark(id)
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
