@@ -64,6 +64,7 @@ func SetLookupList(args *ArgsSetLookupList) (err error) {
 	allCode, _ := GetLookupAll(args.DomainID, args.UnitID)
 	var readyCodes []string
 	for _, v := range allCode {
+		isFind := false
 		for _, v2 := range args.DataList {
 			if v.Code == v2.Code {
 				err = UpdateLookup(&ArgsUpdateLookup{
@@ -75,13 +76,35 @@ func SetLookupList(args *ArgsSetLookupList) (err error) {
 				})
 				if err != nil {
 					err = errors.New("update error, code: " + v.Code)
+					return
 				}
+				isFind = true
 			}
 		}
-		vData := GetLookupCode(v.Code)
-		if vData.ID > 0 {
+		if isFind {
+			readyCodes = append(readyCodes, v.Code)
 		}
-		readyCodes = append(readyCodes, v.Code)
+	}
+	for _, v := range args.DataList {
+		isFind := false
+		for _, v2 := range readyCodes {
+			if v.Code == v2 {
+				isFind = true
+			}
+		}
+		if !isFind {
+			_, err = CreateLookup(&ArgsCreateLookup{
+				IsSys:    false,
+				DomainID: args.DomainID,
+				UnitID:   args.UnitID,
+				Code:     v.Code,
+				Name:     v.Name,
+			})
+			if err != nil {
+				err = errors.New("set error, code: " + v.Code)
+				return
+			}
+		}
 	}
 	return
 }
