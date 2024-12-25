@@ -133,7 +133,7 @@ func SetWeeklyRecipeRaw(args *ArgsSetWeeklyRecipeRaw) (err error) {
 	return
 }
 
-// 更新指定周菜谱的原材料参数
+// ArgsUpdateWeeklyRecipeRaw 更新指定周菜谱的原材料参数
 type ArgsUpdateWeeklyRecipeRaw struct {
 	//ID
 	ID int64 `db:"id" json:"id" check:"id"`
@@ -145,7 +145,7 @@ type ArgsUpdateWeeklyRecipeRaw struct {
 	TotalPrice float64 `db:"total_price" json:"totalPrice" check:"intThan0" empty:"true"`
 }
 
-// 更新指定周菜谱的原材料
+// UpdateWeeklyRecipeRaw 更新指定周菜谱的原材料
 func UpdateWeeklyRecipeRaw(args *ArgsUpdateWeeklyRecipeRaw) (err error) {
 	//更新数据
 	err = weeklyRecipeRawDB.Update().SetFields([]string{"use_count", "price", "total_price"}).NeedUpdateTime().AddWhereID(args.ID).NamedExec(map[string]any{
@@ -157,7 +157,6 @@ func UpdateWeeklyRecipeRaw(args *ArgsUpdateWeeklyRecipeRaw) (err error) {
 	deleteWeeklyRecipeRawCache(args.ID)
 	//反馈
 	return
-
 }
 
 // DeleteWeeklyRecipeRaw 删除指定周菜谱的原材料
@@ -170,6 +169,7 @@ func DeleteWeeklyRecipeRaw(id int64) (err error) {
 	return
 }
 
+// GetWeeklyRecipeRawData 获取数据
 func GetWeeklyRecipeRawData(id int64) (data FieldsWeeklyRecipeRaw) {
 	cacheMark := getWeeklyRecipeRawCacheMark(id)
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
