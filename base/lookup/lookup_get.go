@@ -84,6 +84,12 @@ func GetLookupCode(code string) (data FieldsLookup) {
 	return
 }
 
+func GetLookupNameByCode(code string) (name string) {
+	data := GetLookupCode(code)
+	name = data.Name
+	return
+}
+
 func getLookupID(id int64) (data FieldsLookup) {
 	cacheMark := getLookupCacheMark(id)
 	if err := Router2SystemConfig.MainCache.GetStruct(cacheMark, &data); err == nil && data.ID > 0 {
