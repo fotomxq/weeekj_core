@@ -305,12 +305,24 @@ func (t *ClientListCtx) SetBoolAndNeedQuery(field string, needParam, param bool)
 	return t
 }
 
+// AddQueryAny 给予任意条件
+// 注意条件所对应的参数引用值，必须是$x，否则会造成参数不匹配
+// 例如：field_name = $x
+func (t *ClientListCtx) AddQueryAny(field string, param any) *ClientListCtx {
+	t.addPreemptionNum()
+	field = strings.ReplaceAll(field, "$x", fmt.Sprint("$", t.preemptionNum))
+	t.addPreemption(field, param)
+	return t
+}
+
 func (t *ClientListCtx) AddQueryAndParam(field string, param any) *ClientListCtx {
 	t.addPreemptionNum()
 	t.addPreemption(field, param)
 	return t
 }
 
+// AddQuery 增加无参数的条件
+// 例如：field_name = ' '
 func (t *ClientListCtx) AddQuery(field string) *ClientListCtx {
 	t.preemptionAppend = append(t.preemptionAppend, field)
 	return t

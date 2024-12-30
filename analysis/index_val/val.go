@@ -553,3 +553,10 @@ func GetAvgValByCode(code string) (avg float64) {
 	return
 
 }
+
+// GetAvgValNormByCode 获取指定指标平均值
+func GetAvgValNormByCode(code string) (avg float64) {
+	_ = indexValDB.GetClient().DB.GetPostgresql().Get(&avg, "SELECT AVG(val_norm) FROM analysis_index_vals WHERE code = $1", code)
+	return
+
+}
