@@ -47,7 +47,7 @@ func GetDomainNameByID(id int64) (name string) {
 }
 
 func GetDomainByName(name string) (data FieldsDomain) {
-	_ = domainDB.DB.GetPostgresql().DB.Get(&data, "SELECT id FROM base_lookup_domain WHERE name = $1 and delete_at < to_timestamp(1000000)", name)
+	_ = domainDB.DB.GetPostgresql().Get(&data, "SELECT id FROM base_lookup_domain WHERE name = $1 and delete_at < to_timestamp(1000000)", name)
 	if data.ID < 1 {
 		return
 	}
