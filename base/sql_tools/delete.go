@@ -39,6 +39,23 @@ func (c *QuickDelete) DeleteByField(fieldName string, val any) (err error) {
 	return
 }
 
+// DeleteByField 根据字段删除
+func (c *QuickDelete) DeleteByFields(args map[string]any) (err error) {
+	//执行删除
+	ctx := c.quickClient.client.Delete().NeedSoft(c.quickClient.openSoftDelete)
+	for k, v := range args {
+		ctx = ctx.AddQuery(k, v)
+	}
+	err = ctx.ExecNamed(nil)
+	if err != nil {
+		return
+	}
+	//删除缓冲
+	c.quickClient.DeleteCachePrefix()
+	//返回
+	return
+}
+
 // DeleteByFieldReal 根据字段删除
 // 真实删除无视软删除
 func (c *QuickDelete) DeleteByFieldReal(fieldName string, val any) (err error) {
