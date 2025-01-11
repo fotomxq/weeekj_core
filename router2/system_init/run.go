@@ -17,6 +17,12 @@ import (
 // Run 核心run
 // 请阻塞本函数，不要使用go运行，否则应用会跳出
 func Run(urlHandle func()) {
+	//捕捉异常
+	defer func() {
+		if r := recover(); r != nil {
+			CoreLog.Error("Router2SystemInit.Run panic, ", r)
+		}
+	}()
 	///////////////////////////////////////////////////////////////////////////////////
 	//系统底层
 	// 必须引用的关键组件
