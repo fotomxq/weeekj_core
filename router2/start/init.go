@@ -16,6 +16,7 @@ import (
 	MapCityData "github.com/fotomxq/weeekj_core/v5/map/city_data"
 	MapRoom "github.com/fotomxq/weeekj_core/v5/map/room"
 	OrgCoreCore "github.com/fotomxq/weeekj_core/v5/org/core"
+	OrgSign "github.com/fotomxq/weeekj_core/v5/org/sign"
 	OrgSubscription "github.com/fotomxq/weeekj_core/v5/org/subscription"
 	RouterAPIRunBase "github.com/fotomxq/weeekj_core/v5/router/api/run_base"
 	ServiceHousekeeping "github.com/fotomxq/weeekj_core/v5/service/housekeeping"
@@ -95,6 +96,11 @@ func moduleInit() (err error) {
 	}
 	//组织订阅
 	OrgSubscription.Init()
+	//组织签名
+	if err = OrgSign.Init(); err != nil {
+		err = errors.New("org sign, " + err.Error())
+		return
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//设备

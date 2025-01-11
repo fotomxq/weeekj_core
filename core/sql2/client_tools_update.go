@@ -90,6 +90,11 @@ func (t *ClientUpdateCtx) AddWhereOrgID(orgID int64) *ClientUpdateCtx {
 	return t
 }
 
+func (t *ClientUpdateCtx) AddWhereOrgBindID(orgBindID int64) *ClientUpdateCtx {
+	t.SetWhereOrThan("org_bind_id", orgBindID)
+	return t
+}
+
 func (t *ClientUpdateCtx) AddWhereUserID(userID int64) *ClientUpdateCtx {
 	t.SetWhereOrThan("user_id", userID)
 	return t

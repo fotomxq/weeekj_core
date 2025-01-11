@@ -39,7 +39,7 @@ func (c *QuickDelete) DeleteByField(fieldName string, val any) (err error) {
 	return
 }
 
-// DeleteByField 根据字段删除
+// DeleteByFields 根据字段删除
 func (c *QuickDelete) DeleteByFields(args map[string]any) (err error) {
 	//执行删除
 	ctx := c.quickClient.client.Delete().NeedSoft(c.quickClient.openSoftDelete)

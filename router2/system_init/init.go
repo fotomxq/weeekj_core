@@ -65,6 +65,7 @@ import (
 	OrgMap "github.com/fotomxq/weeekj_core/v5/org/map"
 	OrgShareSpace "github.com/fotomxq/weeekj_core/v5/org/share_space"
 	OrgShareSpaceFileExcel "github.com/fotomxq/weeekj_core/v5/org/share_space_file_excel"
+	OrgSign "github.com/fotomxq/weeekj_core/v5/org/sign"
 	OrgSubscription "github.com/fotomxq/weeekj_core/v5/org/subscription"
 	OrgTime "github.com/fotomxq/weeekj_core/v5/org/time"
 	OrgUser "github.com/fotomxq/weeekj_core/v5/org/user"
@@ -299,6 +300,11 @@ func Init() (err error) {
 	//考勤打卡
 	OrgTime.OpenSub = OpenSub
 	OrgTime.Init()
+	//组织签名
+	if err = OrgSign.Init(); err != nil {
+		err = errors.New("org sign, " + err.Error())
+		return
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//设备

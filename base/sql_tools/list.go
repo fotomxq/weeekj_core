@@ -150,6 +150,10 @@ func (c *QuickList) GetAll(args *ArgsGetAll, result any) (dataCount int64, err e
 	if err != nil {
 		return
 	}
+	if dataCount < 1 {
+		err = errors.New("no data")
+		return
+	}
 	//反馈
 	return
 }
