@@ -72,28 +72,8 @@ func CreateSign(args *ArgsCreateSign) (errCode string, err error) {
 			"is_default": false,
 		})
 	} else {
-		//如果没有设置默认，则检查是否有默认签名
-		var dataList []FieldsSign
-		dataList, err = GetSignAll(&ArgsGetSignAll{
-			OrgID:     args.OrgID,
-			OrgBindID: args.OrgBindID,
-			UserID:    args.UserID,
-		})
-		haveDefault := false
-		for _, vData := range dataList {
-			if vData.IsDefault {
-				haveDefault = true
-				break
-			}
-		}
-		if !haveDefault {
-			_ = SelectSignDefault(&ArgsSelectSignDefault{
-				ID:        dataList[0].ID,
-				OrgID:     args.OrgID,
-				OrgBindID: args.OrgBindID,
-				UserID:    args.UserID,
-			})
-		}
+		//修正默认值数据
+		updateDefaultSign(args.OrgID, args.OrgBindID, args.UserID)
 	}
 	//如果为临时传递
 	if args.IsTemp {

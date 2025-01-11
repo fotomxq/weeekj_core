@@ -75,3 +75,32 @@ func SelectSignDefault(args *ArgsSelectSignDefault) (err error) {
 	}
 	return
 }
+
+// 自动修正默认签名
+// 如果没有默认时才会生效
+func updateDefaultSign(orgID int64, orgBindID int64, userID int64) {
+	//获取所有数据
+	dataList, err := GetSignAll(&ArgsGetSignAll{
+		OrgID:     orgID,
+		OrgBindID: orgBindID,
+		UserID:    userID,
+	})
+	if err == nil && len(dataList) > 0 {
+		//如果存在数据，且没有其他默认时，则更换一个作为默认签名
+		haveDefault := false
+		for _, vData := range dataList {
+			if vData.IsDefault {
+				haveDefault = true
+				break
+			}
+		}
+		if !haveDefault {
+			_ = SelectSignDefault(&ArgsSelectSignDefault{
+				ID:        dataList[0].ID,
+				OrgID:     orgID,
+				OrgBindID: orgBindID,
+				UserID:    userID,
+			})
+		}
+	}
+}

@@ -30,35 +30,13 @@ func DeleteSignByID(args *ArgsDeleteSignByID) (err error) {
 		err = errors.New("org_id not match")
 		return
 	}
-	//获取所有数据
-	var dataList []FieldsSign
-	dataList, err = GetSignAll(&ArgsGetSignAll{
-		OrgID:     args.OrgID,
-		OrgBindID: args.OrgBindID,
-		UserID:    args.UserID,
-	})
-	if err == nil && len(dataList) > 0 {
-		//如果存在数据，且没有其他默认时，则更换一个作为默认签名
-		haveDefault := false
-		for _, vData := range dataList {
-			if vData.IsDefault {
-				haveDefault = true
-				break
-			}
-		}
-		if !haveDefault {
-			_ = SelectSignDefault(&ArgsSelectSignDefault{
-				ID:        dataList[0].ID,
-				OrgID:     args.OrgID,
-				OrgBindID: args.OrgBindID,
-				UserID:    args.UserID,
-			})
-		}
-	}
 	//删除数据
 	err = signDB.GetDelete().DeleteByID(args.ID)
 	if err != nil {
 		return
 	}
+	//修正默认值数据
+	updateDefaultSign(data.OrgID, data.OrgBindID, data.UserID)
+	//反馈
 	return
 }
