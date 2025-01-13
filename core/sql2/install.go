@@ -297,6 +297,28 @@ func (t *Client) InstallSQL() (err error) {
 					appendTypeSQL = fmt.Sprint("varchar(", maxVal, ")")
 					appendClientField.DBType = "varchar"
 				}
+			case "[]string":
+				if maxVal < 1 {
+					maxVal = 255
+				}
+				if defaultVal != "" {
+					appendDefaultSQL = " default '" + defaultVal + "'"
+				} else {
+					appendDefaultSQL = " default '{}'::varchar[]"
+				}
+				appendTypeSQL = fmt.Sprint("varchar(", maxVal, ")[]")
+				appendClientField.DBType = fmt.Sprint("varchar(", maxVal, ")[]")
+			case "pq.StringArray":
+				if maxVal < 1 {
+					maxVal = 255
+				}
+				if defaultVal != "" {
+					appendDefaultSQL = " default '" + defaultVal + "'"
+				} else {
+					appendDefaultSQL = " default '{}'::varchar[]"
+				}
+				appendTypeSQL = fmt.Sprint("varchar(", maxVal, ")[]")
+				appendClientField.DBType = fmt.Sprint("varchar(", maxVal, ")[]")
 			default:
 				//err = errors.New("install sql error: table " + t.TableName + " field " + dbVal + " type " + vType + " not support")
 				//return
