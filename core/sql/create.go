@@ -90,8 +90,12 @@ func CreateOneAndData(db *sqlx.DB, tableName string, query string, args interfac
 	var lastID int64
 	lastID, err = CreateOneAndID(db, query, args)
 	if err != nil {
+		err = errors.New(fmt.Sprint("create one and id error: ", err))
 		return
 	}
 	err = db.Get(data, "SELECT * FROM "+tableName+" WHERE id = $1", lastID)
+	if err != nil {
+		err = errors.New(fmt.Sprint("get data error: ", err, ",last id: ", lastID))
+	}
 	return
 }
