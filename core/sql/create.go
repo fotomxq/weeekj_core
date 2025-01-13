@@ -19,19 +19,31 @@ func CreateOne(db *sqlx.DB, query string, args interface{}) (result sql.Result, 
 	if args == nil {
 		result, err = tx.Exec(query)
 		if err != nil {
-			_ = tx.Rollback()
+			err2 := tx.Rollback()
+			if err2 != nil {
+				err = errors.New(fmt.Sprint(err, ",rollback error: ", err2))
+				return
+			}
 			return
 		}
 	} else {
 		result, err = tx.NamedExec(query, args)
 		if err != nil {
-			_ = tx.Rollback()
+			err2 := tx.Rollback()
+			if err2 != nil {
+				err = errors.New(fmt.Sprint(err, ",rollback error: ", err2))
+				return
+			}
 			return
 		}
 	}
 	err = LastRowsAffected(tx, result, err)
 	if err != nil {
-		_ = tx.Rollback()
+		err2 := tx.Rollback()
+		if err2 != nil {
+			err = errors.New(fmt.Sprint(err, ",rollback error: ", err2))
+			return
+		}
 		return
 	}
 	err = tx.Commit()
@@ -51,10 +63,20 @@ func CreateMore(db *sqlx.DB, query string, args []interface{}) (err error) {
 		var result sql.Result
 		result, err = tx.NamedExec(query, v)
 		if err != nil {
+			err2 := tx.Rollback()
+			if err2 != nil {
+				err = errors.New(fmt.Sprint(err, ",rollback error: ", err2))
+				return
+			}
 			return
 		}
 		err = LastRowsAffected(tx, result, err)
 		if err != nil {
+			err2 := tx.Rollback()
+			if err2 != nil {
+				err = errors.New(fmt.Sprint(err, ",rollback error: ", err2))
+				return
+			}
 			return
 		}
 	}
@@ -75,10 +97,20 @@ func CreateOneAndID(db *sqlx.DB, query string, args interface{}) (lastID int64, 
 	var stmt *sqlx.NamedStmt
 	stmt, err = tx.PrepareNamed(query + " RETURNING id;")
 	if err != nil {
+		err2 := tx.Rollback()
+		if err2 != nil {
+			err = errors.New(fmt.Sprint(err, ",rollback error: ", err2))
+			return
+		}
 		return
 	}
 	lastID, err = LastRowsAffectedCreate(tx, stmt, args, err)
 	if err != nil {
+		err2 := tx.Rollback()
+		if err2 != nil {
+			err = errors.New(fmt.Sprint(err, ",rollback error: ", err2))
+			return
+		}
 		return
 	}
 	err = tx.Commit()
@@ -90,8 +122,12 @@ func CreateOneAndData(db *sqlx.DB, tableName string, query string, args interfac
 	var lastID int64
 	lastID, err = CreateOneAndID(db, query, args)
 	if err != nil {
+		err = errors.New(fmt.Sprint("create one and id error: ", err))
 		return
 	}
 	err = db.Get(data, "SELECT * FROM "+tableName+" WHERE id = $1", lastID)
+	if err != nil {
+		err = errors.New(fmt.Sprint("get data error: ", err, ",last id: ", lastID))
+	}
 	return
 }
