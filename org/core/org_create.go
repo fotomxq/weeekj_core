@@ -78,12 +78,14 @@ func CreateOrg(args *ArgsCreateOrg) (orgData FieldsOrg, errCode string, err erro
 		})
 		if err != nil {
 			errCode = "err_parent"
+			err = errors.New("get parent org, " + err.Error())
 			return
 		}
 		//检查上一级功能和本次开通功能
 		err = checkOrgInParentFunc(parentData.OpenFunc, args.OpenFunc)
 		if err != nil {
 			errCode = "err_func_not_in_area"
+			err = errors.New("open func not in parent func, " + err.Error())
 			return
 		}
 	}
@@ -92,6 +94,7 @@ func CreateOrg(args *ArgsCreateOrg) (orgData FieldsOrg, errCode string, err erro
 		args.Key, err = CoreFilter.GetRandStr3(10)
 		if err != nil {
 			errCode = "err_key"
+			err = errors.New("get rand key, " + err.Error())
 			return
 		}
 	}
@@ -106,6 +109,7 @@ func CreateOrg(args *ArgsCreateOrg) (orgData FieldsOrg, errCode string, err erro
 	//生成数据
 	if err = CoreSQL.CreateOneAndData(Router2SystemConfig.MainDB.DB, "org_core", "INSERT INTO org_core (user_id, name, key, des, parent_id, parent_func, open_func, sort_id) VALUES (:user_id, :name, :key, :des, :parent_id, :parent_func, :open_func, :sort_id)", args, &orgData); err != nil {
 		errCode = "err_insert"
+		err = errors.New("create org, " + err.Error())
 		return
 	}
 	//建立绑定关系
@@ -125,6 +129,7 @@ func CreateOrg(args *ArgsCreateOrg) (orgData FieldsOrg, errCode string, err erro
 		Params:     CoreSQLConfig.FieldsConfigsType{},
 	}); err != nil {
 		errCode = "err_org_bind"
+		err = errors.New("set org bind, " + err.Error())
 		return
 	}
 	//发送用户消息
