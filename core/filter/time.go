@@ -165,6 +165,36 @@ func GetTimeByDefaultNoErr(str string) (timeAt time.Time) {
 	return
 }
 
+// GetTimeByExcelStrDefault 解析 Excel 格式的日期字符串，并返回 time.Time 类型
+func GetTimeByExcelStrDefault(dateStr string) (timeAt time.Time, err error) {
+	layouts := []string{
+		"2006-01-02",       // 常见的日期格式
+		"2006/01/02",       // 另一种常见的日期格式
+		"2006.01.02",       // 另一种常见的日期格式
+		"2006-01-02 15:04", // 带时间的日期格式
+		"2006/01/02 15:04", // 带时间的日期格式
+		"2006.01.02 15:04", // 带时间的日期格式
+		"01-02-2006",       // 另一种常见的日期格式
+		"01/02/2006",       // 另一种常见的日期格式
+		"01.02.2006",       // 另一种常见的日期格式
+		"02-01-2006",       // 另一种常见的日期格式
+		"02/01/2006",       // 另一种常见的日期格式
+		"02.01.2006",       // 另一种常见的日期格式
+		"2006年01月02日",   // 另一种常见的日期格式
+		"2006年1月2日",
+		"2006年01月2日",
+		"2006年1月02日", // 另一种常见的日期格式
+	}
+	for _, layout := range layouts {
+		timeAt, err = time.ParseInLocation(layout, dateStr, LoadTimeLocation("Asia/Shanghai"))
+		if err == nil {
+			return
+		}
+	}
+	err = errors.New("cannot get time from Excel")
+	return
+}
+
 // GetTimeCarbonByDefault 获取carbon时间
 func GetTimeCarbonByDefault(str string) (timeAt carbon.Carbon, err error) {
 	var t time.Time
