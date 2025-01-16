@@ -3,6 +3,8 @@ package RestaurantWeeklyRecipeMarge
 import (
 	"fmt"
 	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
+	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CoreSQL2 "github.com/fotomxq/weeekj_core/v5/core/sql2"
 	RestaurantRecipe "github.com/fotomxq/weeekj_core/v5/restaurant/recipe"
 	Router2SystemConfig "github.com/fotomxq/weeekj_core/v5/router2/system_config"
 )
@@ -29,6 +31,43 @@ func GetWeeklyRecipeChild(args *ArgsGetWeeklyRecipeChild) (dataList []FieldsWeek
 		return
 	}
 	Router2SystemConfig.MainCache.SetStruct(cacheMark, dataList, CoreCache.CacheTime1Hour)
+	return
+}
+
+// ArgsGetWeeklyRecipeChildNameList 获取任意时间端的菜品名称参数
+type ArgsGetWeeklyRecipeChildNameList struct {
+	//分公司ID
+	OrgID int64 `db:"org_id" json:"orgID" check:"id" index:"true"`
+	//门店ID
+	StoreID int64 `db:"store_id" json:"storeID" check:"id" index:"true"`
+	//时间范围
+	BetweenAt CoreSQL2.ArgsTimeBetween `db:"between_at" json:"betweenAt"`
+}
+
+// DataGetWeeklyRecipeChildNameList 获取任意时间端的菜品名称结构
+type DataGetWeeklyRecipeChildNameList struct {
+	//菜品ID
+	RecipeID int64 `db:"recipe_id" json:"recipeID" check:"id" index:"true"`
+	//菜品名称
+	Name string `db:"name" json:"name"`
+}
+
+// GetWeeklyRecipeChildNameList 获取任意时间端的菜品名称结构
+// 用于查询任意时间段，菜品名称以及其他信息，未来可根据实际需要扩展
+func GetWeeklyRecipeChildNameList(args *ArgsGetWeeklyRecipeChildNameList) (dataList []DataGetWeeklyRecipeChildNameList, err error) {
+	var betweenAt CoreSQL2.FieldsTimeBetween
+	betweenAt, err = args.BetweenAt.GetFields()
+	if err != nil {
+		return
+	}
+	betweenAtMin := betweenAt.MinTime.Format("20060102")
+	betweenAtMinInt := CoreFilter.GetInt64ByStringNoErr(betweenAtMin)
+	betweenAtMax := betweenAt.MaxTime.Format("20060102")
+	betweenAtMaxInt := CoreFilter.GetInt64ByStringNoErr(betweenAtMax)
+	err = weeklyRecipeDB.DB.GetPostgresql().Select(&dataList, "select max(c.recipe_id) as recipe_id, c.name as name from restaurant_weekly_recipe_child as c, restaurant_weekly_recipe_day as d, restaurant_weekly_recipe as r where c.weekly_recipe_day_id = d.id and d.weekly_recipe_id = r.id and r.delete_at < to_timestamp(1000000) and d.delete_at < to_timestamp(1000000) and c.delete_at < to_timestamp(1000000) and c.recipe_id > 0 and ($1 < 0 or r.org_id = $1) and ($2 < 0 or r.store_id = $2) and ($3 < 0 or d.dining_date >= to_timestamp($3)) and ($4 < 0 or d.dining_date <= to_timestamp($4)) group by c.name;", args.OrgID, args.StoreID, betweenAtMinInt, betweenAtMaxInt)
+	if err != nil {
+		return
+	}
 	return
 }
 

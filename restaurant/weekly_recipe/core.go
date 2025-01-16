@@ -13,6 +13,12 @@ import (
 
 var (
 	//数据表
+	/**
+	weeklyRecipeDB 表头，同时代表每周提报的菜谱信息
+	weeklyRecipeDayDB 每日提报的信息，挂靠在weeklyRecipeDB下
+	weeklyRecipeChildDB 子菜品信息，挂靠在weeklyRecipeDayDB下
+	weeklyRecipeRawDB 原材料信息，挂靠在weeklyRecipeChildDB下
+	*/
 	weeklyRecipeDB      CoreSQL2.Client
 	weeklyRecipeDayDB   CoreSQL2.Client
 	weeklyRecipeChildDB CoreSQL2.Client
