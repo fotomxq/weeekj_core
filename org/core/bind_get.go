@@ -91,6 +91,39 @@ func GetBindList(args *ArgsGetBindList) (dataList []FieldsBind, dataCount int64,
 	return
 }
 
+type DataBindInOrg struct {
+	//ID
+	ID int64 `db:"id" json:"id"`
+	//创建时间
+	CreateAt string `db:"create_at" json:"createAt"`
+	//审核通过时间
+	AuditAt string `db:"audit_at" json:"auditAt"`
+	//审核拒绝时间
+	BanAt string `db:"ban_at" json:"banAt"`
+	//拒绝审核原因
+	BanDes string `db:"ban_des" json:"banDes"`
+	//企业唯一标识码
+	// 用于特殊识别和登陆识别等操作
+	Key string `db:"key" json:"key"`
+	//构架名称，或组织名称
+	Name string `db:"name" json:"name"`
+	//组织描述
+	Des string `db:"des" json:"des"`
+	//上级ID
+	ParentID int64 `db:"parent_id" json:"parentID"`
+	//上级控制权限限制
+	ParentFunc pq.StringArray `db:"parent_func" json:"parentFunc"`
+	//开通业务
+	// 该内容只有总管理员或订阅能进行控制
+	OpenFunc pq.StringArray `db:"open_func" json:"openFunc"`
+	//附加参数
+	Params CoreSQLConfig.FieldsConfigsType `db:"params" json:"params"`
+	//关联的组织ID
+	BindOrgID int64 `db:"bind_org_id" json:"bindOrgID"`
+	//关联组织的删除状态
+	BindOrgIsDelete bool `db:"bind_org_is_delete" json:"bindOrgIsDelete"`
+}
+
 // ArgsSearchBind 搜索组织成员参数
 type ArgsSearchBind struct {
 	//组织ID
@@ -351,6 +384,7 @@ type DataGetBindByUserMargeGroup struct {
 }
 
 func GetBindByUserMarge(args *ArgsGetBindByUser) (dataList []DataGetBindByUserMarge, err error) {
+	var filterResult []DataGetBindByUserMarge
 	//获取数据集合
 	var bindList []FieldsBind
 	bindList, err = GetBindByUser(args)
@@ -370,6 +404,7 @@ func GetBindByUserMarge(args *ArgsGetBindByUser) (dataList []DataGetBindByUserMa
 	if err != nil {
 		return
 	}
+	//遍历组织成员清单
 	for _, v := range bindList {
 		var vOrgData FieldsOrg
 		isFind := false
@@ -409,7 +444,7 @@ func GetBindByUserMarge(args *ArgsGetBindByUser) (dataList []DataGetBindByUserMa
 		//重组权限
 		vManager := GetPermissionByBindID(v.ID)
 		//写入数据
-		dataList = append(dataList, DataGetBindByUserMarge{
+		filterResult = append(filterResult, DataGetBindByUserMarge{
 			OrgID:          vOrgData.ID,
 			OrgUserID:      vOrgData.UserID,
 			OrgKey:         vOrgData.Key,
@@ -427,6 +462,19 @@ func GetBindByUserMarge(args *ArgsGetBindByUser) (dataList []DataGetBindByUserMa
 			Groups:         groups,
 			Params:         v.Params,
 		})
+	}
+	//去除dataList重复的OrgID项目
+	for _, v := range filterResult {
+		isFind := false
+		for _, v2 := range dataList {
+			if v.OrgID == v2.OrgID {
+				isFind = true
+				break
+			}
+		}
+		if !isFind {
+			dataList = append(dataList, v)
+		}
 	}
 	//反馈
 	return
