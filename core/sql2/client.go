@@ -4,6 +4,7 @@ import (
 	"errors"
 	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
+	CorePostgres "github.com/fotomxq/weeekj_core/v5/core/postgres"
 	"github.com/golang-module/carbon"
 	"reflect"
 	"sync"
@@ -131,6 +132,11 @@ func (t *Client) GetFields() []string {
 		result = append(result, v.DBName)
 	}
 	return result
+}
+
+// GetRawDB 获取SQL原生头
+func (t *Client) GetRawDB() *CorePostgres.Client {
+	return t.DB.GetPostgresql()
 }
 
 func (t *Client) SetCache(obj *CoreCache.CacheData) *Client {
