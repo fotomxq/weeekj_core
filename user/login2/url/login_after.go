@@ -381,6 +381,8 @@ type DataGetOrgBindsInOrg struct {
 	Name string `json:"name"`
 	//组织头像及LOGO
 	Avatar string `json:"avatar"`
+	//上级组织ID
+	OrgParentID int64 `json:"orgParentID"`
 	//开通功能列
 	OpenFunc []string `json:"openFunc"`
 	//开通功能描述列
@@ -400,13 +402,14 @@ func GetOrgBindsInOrg(args *ArgsGetOrgBindsInOrg) (dataList []DataGetOrgBindsInO
 	}
 	for _, v := range bindList {
 		dataList = append(dataList, DataGetOrgBindsInOrg{
-			ID:       v.OrgID,
-			Key:      v.OrgKey,
-			Name:     v.OrgName,
-			Avatar:   BaseFileSys2.GetPublicURLByClaimID(v.OrgCoverFileID),
-			OpenFunc: v.OrgOpenFunc,
-			Manager:  v.Manager,
-			BindID:   v.BindID,
+			ID:          v.OrgID,
+			Key:         v.OrgKey,
+			Name:        v.OrgName,
+			Avatar:      BaseFileSys2.GetPublicURLByClaimID(v.OrgCoverFileID),
+			OrgParentID: v.OrgParentID,
+			OpenFunc:    v.OrgOpenFunc,
+			Manager:     v.Manager,
+			BindID:      v.BindID,
 		})
 	}
 	return
