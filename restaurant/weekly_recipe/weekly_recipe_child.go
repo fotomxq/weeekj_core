@@ -1,6 +1,7 @@
 package RestaurantWeeklyRecipeMarge
 
 import (
+	"errors"
 	"fmt"
 	CoreCache "github.com/fotomxq/weeekj_core/v5/core/cache"
 	CoreFilter "github.com/fotomxq/weeekj_core/v5/core/filter"
@@ -55,12 +56,18 @@ type DataGetWeeklyRecipeChildNameList struct {
 	DayType int `db:"day_type" json:"dayType"`
 }
 
-// GetWeeklyRecipeChildNameList 获取任意时间端的菜品名称结构
+// GetWeeklyRecipeChildNameList 获取任意时间端的菜品名称列表
 // 用于查询任意时间段，菜品名称以及其他信息，未来可根据实际需要扩展
 func GetWeeklyRecipeChildNameList(args *ArgsGetWeeklyRecipeChildNameList) (dataList []DataGetWeeklyRecipeChildNameList, err error) {
 	var betweenAt CoreSQL2.FieldsTimeBetween
 	betweenAt, err = args.BetweenAt.GetFields()
 	if err != nil {
+		return
+	}
+	carbonMin := CoreFilter.GetCarbonByTime(betweenAt.MinTime)
+	carbonMax := CoreFilter.GetCarbonByTime(betweenAt.MaxTime)
+	if carbonMin.DiffInDaysWithAbs(carbonMax) > 60 {
+		err = errors.New(fmt.Sprint("time range too long, max 60 days"))
 		return
 	}
 	betweenAtMin := betweenAt.MinTime.Format("20060102")
