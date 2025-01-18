@@ -89,28 +89,10 @@ func LoginAfter(c *Router2Mid.RouterURLHeaderC, userInfo *UserCore.FieldsUserTyp
 	}
 	//检查用户是否具备组织
 	if len(orgBindList) > 0 {
-		//反馈的数据结构
-		type reportOrgData struct {
-			ID       int64    `json:"id"`
-			Key      string   `json:"key"`
-			Name     string   `json:"name"`
-			Avatar   string   `json:"avatar"`
-			OpenFunc []string `json:"openFunc"`
-			Manager  []string `json:"manager"`
-			BindID   int64    `json:"bindID"`
-		}
-		var newDataOrg []reportOrgData
-		for _, v := range orgBindList {
-			newDataOrg = append(newDataOrg, reportOrgData{
-				ID:       v.OrgID,
-				Key:      v.OrgKey,
-				Name:     v.OrgName,
-				Avatar:   BaseFileSys2.GetPublicURLByClaimID(v.OrgCoverFileID),
-				OpenFunc: v.OrgOpenFunc,
-				Manager:  v.Manager,
-				BindID:   v.BindID,
-			})
-		}
+		//获取加入的组织清单
+		newDataOrg := GetOrgBindsInOrg(&ArgsGetOrgBindsInOrg{
+			UserID: userInfo.OrgID,
+		})
 		//填充数据
 		newDataAny["orgBindData"] = newDataOrg
 	}
@@ -248,28 +230,10 @@ func LoginAfter2(c *Router2Mid.RouterURLHeaderC, userInfo *UserCore.FieldsUserTy
 	}
 	//检查用户是否具备组织
 	if len(orgBindList) > 0 {
-		//反馈的数据结构
-		type reportOrgData struct {
-			ID       int64    `json:"id"`
-			Key      string   `json:"key"`
-			Name     string   `json:"name"`
-			Avatar   string   `json:"avatar"`
-			OpenFunc []string `json:"openFunc"`
-			Manager  []string `json:"manager"`
-			BindID   int64    `json:"bindID"`
-		}
-		var newDataOrg []reportOrgData
-		for _, v := range orgBindList {
-			newDataOrg = append(newDataOrg, reportOrgData{
-				ID:       v.OrgID,
-				Key:      v.OrgKey,
-				Name:     v.OrgName,
-				Avatar:   BaseFileSys2.GetPublicURLByClaimID(v.OrgCoverFileID),
-				OpenFunc: v.OrgOpenFunc,
-				Manager:  v.Manager,
-				BindID:   v.BindID,
-			})
-		}
+		//获取加入的组织清单
+		newDataOrg := GetOrgBindsInOrg(&ArgsGetOrgBindsInOrg{
+			UserID: userInfo.OrgID,
+		})
 		//填充数据
 		newDataAny["orgBindData"] = newDataOrg
 	}
@@ -397,6 +361,53 @@ func getLoginData(c *Router2Mid.RouterURLHeaderC, userID int64) (userData UserCo
 	})
 	if err != nil {
 		err = nil
+	}
+	return
+}
+
+// ArgsGetOrgBindsInOrg 获取用户加入的所有组织参数
+type ArgsGetOrgBindsInOrg struct {
+	//用户ID
+	UserID int64 `json:"userID" check:"id"`
+}
+
+// DataGetOrgBindsInOrg 获取用户加入的所有组织数据
+type DataGetOrgBindsInOrg struct {
+	//组织ID
+	ID int64 `json:"id"`
+	//组织Key
+	Key string `json:"key"`
+	//组织名称
+	Name string `json:"name"`
+	//组织头像及LOGO
+	Avatar string `json:"avatar"`
+	//开通功能列
+	OpenFunc []string `json:"openFunc"`
+	//开通功能描述列
+	Manager []string `json:"manager"`
+	//组织成员ID
+	// 用户的所属成员ID
+	BindID int64 `json:"bindID"`
+}
+
+// GetOrgBindsInOrg 获取用户加入的所有组织
+func GetOrgBindsInOrg(args *ArgsGetOrgBindsInOrg) (dataList []DataGetOrgBindsInOrg) {
+	bindList, err := OrgCoreCore.GetBindByUserMarge(&OrgCoreCore.ArgsGetBindByUser{
+		UserID: args.UserID,
+	})
+	if err != nil {
+		return
+	}
+	for _, v := range bindList {
+		dataList = append(dataList, DataGetOrgBindsInOrg{
+			ID:       v.OrgID,
+			Key:      v.OrgKey,
+			Name:     v.OrgName,
+			Avatar:   BaseFileSys2.GetPublicURLByClaimID(v.OrgCoverFileID),
+			OpenFunc: v.OrgOpenFunc,
+			Manager:  v.Manager,
+			BindID:   v.BindID,
+		})
 	}
 	return
 }
