@@ -43,6 +43,9 @@ type ArgsGetWeeklyRecipeChildNameList struct {
 	StoreID int64 `db:"store_id" json:"storeID" check:"id" index:"true"`
 	//时间范围
 	BetweenAt CoreSQL2.ArgsTimeBetween `db:"between_at" json:"betweenAt"`
+	//当日类型
+	// 1:早餐; 2:中餐; 3:晚餐
+	DayType int `db:"day_type" json:"dayType"`
 	//搜索
 	Search string `db:"search" json:"search" check:"search" index:"true"`
 }
@@ -76,7 +79,7 @@ func GetWeeklyRecipeChildNameList(args *ArgsGetWeeklyRecipeChildNameList) (dataL
 	betweenAtMinInt := CoreFilter.GetInt64ByStringNoErr(betweenAtMin)
 	betweenAtMax := betweenAt.MaxTime.Format("20060102")
 	betweenAtMaxInt := CoreFilter.GetInt64ByStringNoErr(betweenAtMax)
-	err = weeklyRecipeDB.GetRawDB().Select(&dataList, "select max(c.recipe_id) as recipe_id, c.name as name, max(c.day_type) as day_type from restaurant_weekly_recipe_child as c, restaurant_weekly_recipe_day as d, restaurant_weekly_recipe as r where c.weekly_recipe_day_id = d.id and d.weekly_recipe_id = r.id and r.delete_at < to_timestamp(1000000) and d.delete_at < to_timestamp(1000000) and c.delete_at < to_timestamp(1000000) and c.recipe_id > 0 and ($1 < 0 or r.org_id = $1) and ($2 < 0 or r.store_id = $2) and ($3 < 0 or d.dining_date >= $3) and ($4 < 0 or d.dining_date <= $4) and c.name like $5 group by c.name;", args.OrgID, args.StoreID, betweenAtMinInt, betweenAtMaxInt, "%"+args.Search+"%")
+	err = weeklyRecipeDB.GetRawDB().Select(&dataList, "select max(c.recipe_id) as recipe_id, c.name as name, max(c.day_type) as day_type from restaurant_weekly_recipe_child as c, restaurant_weekly_recipe_day as d, restaurant_weekly_recipe as r where c.weekly_recipe_day_id = d.id and d.weekly_recipe_id = r.id and r.delete_at < to_timestamp(1000000) and d.delete_at < to_timestamp(1000000) and c.delete_at < to_timestamp(1000000) and c.recipe_id > 0 and ($1 < 0 or r.org_id = $1) and ($2 < 0 or r.store_id = $2) and ($3 < 0 or d.dining_date >= $3) and ($4 < 0 or d.dining_date <= $4) and ($5 = '' or c.name like $5) and (d.day_type = $6 or $6 < 0) group by c.name;", args.OrgID, args.StoreID, betweenAtMinInt, betweenAtMaxInt, "%"+args.Search+"%", args.DayType)
 	if err != nil {
 		return
 	}
