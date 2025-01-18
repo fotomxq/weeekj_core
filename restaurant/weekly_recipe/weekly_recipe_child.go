@@ -50,6 +50,9 @@ type DataGetWeeklyRecipeChildNameList struct {
 	RecipeID int64 `db:"recipe_id" json:"recipeID" check:"id" index:"true"`
 	//菜品名称
 	Name string `db:"name" json:"name"`
+	//当日类型
+	// 1:早餐; 2:中餐; 3:晚餐
+	DayType int `db:"day_type" json:"dayType"`
 }
 
 // GetWeeklyRecipeChildNameList 获取任意时间端的菜品名称结构
@@ -64,7 +67,7 @@ func GetWeeklyRecipeChildNameList(args *ArgsGetWeeklyRecipeChildNameList) (dataL
 	betweenAtMinInt := CoreFilter.GetInt64ByStringNoErr(betweenAtMin)
 	betweenAtMax := betweenAt.MaxTime.Format("20060102")
 	betweenAtMaxInt := CoreFilter.GetInt64ByStringNoErr(betweenAtMax)
-	err = weeklyRecipeDB.DB.GetPostgresql().Select(&dataList, "select max(c.recipe_id) as recipe_id, c.name as name from restaurant_weekly_recipe_child as c, restaurant_weekly_recipe_day as d, restaurant_weekly_recipe as r where c.weekly_recipe_day_id = d.id and d.weekly_recipe_id = r.id and r.delete_at < to_timestamp(1000000) and d.delete_at < to_timestamp(1000000) and c.delete_at < to_timestamp(1000000) and c.recipe_id > 0 and ($1 < 0 or r.org_id = $1) and ($2 < 0 or r.store_id = $2) and ($3 < 0 or d.dining_date >= to_timestamp($3)) and ($4 < 0 or d.dining_date <= to_timestamp($4)) group by c.name;", args.OrgID, args.StoreID, betweenAtMinInt, betweenAtMaxInt)
+	err = weeklyRecipeDB.DB.GetPostgresql().Select(&dataList, "select max(c.recipe_id) as recipe_id, c.name as name, max(c.day_type) as day_type from restaurant_weekly_recipe_child as c, restaurant_weekly_recipe_day as d, restaurant_weekly_recipe as r where c.weekly_recipe_day_id = d.id and d.weekly_recipe_id = r.id and r.delete_at < to_timestamp(1000000) and d.delete_at < to_timestamp(1000000) and c.delete_at < to_timestamp(1000000) and c.recipe_id > 0 and ($1 < 0 or r.org_id = $1) and ($2 < 0 or r.store_id = $2) and ($3 < 0 or d.dining_date >= to_timestamp($3)) and ($4 < 0 or d.dining_date <= to_timestamp($4)) group by c.name;", args.OrgID, args.StoreID, betweenAtMinInt, betweenAtMaxInt)
 	if err != nil {
 		return
 	}
