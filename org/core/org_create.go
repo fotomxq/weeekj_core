@@ -91,8 +91,8 @@ func CreateOrg(args *ArgsCreateOrg) (orgData FieldsOrg, errCode string, err erro
 	}
 	//检查key
 	if args.Key == "" {
-		args.Key, err = CoreFilter.GetRandStr3(10)
-		if err != nil {
+		args.Key = CoreFilter.GetRandStr4(10)
+		if args.Key == "" {
 			errCode = "err_key"
 			err = errors.New("get rand key, " + err.Error())
 			return
