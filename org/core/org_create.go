@@ -40,7 +40,7 @@ type ArgsCreateOrg struct {
 func CreateOrg(args *ArgsCreateOrg) (orgData FieldsOrg, errCode string, err error) {
 	//生成key
 	if args.Key == "" {
-		args.Key = makeKey(args.Name)
+		args.Key = makeKey(args.Name) + CoreFilter.GetRandStr4(5)
 	}
 	//获取用户信息
 	if args.UserID < 1 {
