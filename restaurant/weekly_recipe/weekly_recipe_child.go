@@ -115,9 +115,7 @@ func SetWeeklyRecipeChild(weeklyRecipeID int64, weeklyRecipeDayID int64, dayType
 	//创建数据
 	for k := 0; k < len(newData); k++ {
 		v := newData[k]
-		if v.Name == "" {
-			v.Name = RestaurantRecipe.GetRecipeNameByID(v.RecipeID)
-		}
+		v.Name = RestaurantRecipe.GetRecipeNameByID(v.RecipeID)
 		err = weeklyRecipeChildDB.Insert().SetFields([]string{"weekly_recipe_id", "weekly_recipe_day_id", "day_type", "recipe_id", "name", "price", "recipe_count", "unit", "unit_id"}).Add(map[string]any{
 			"weekly_recipe_id":     weeklyRecipeID,
 			"weekly_recipe_day_id": weeklyRecipeDayID,
